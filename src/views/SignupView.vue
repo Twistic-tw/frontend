@@ -11,7 +11,7 @@ import '../styles.css'
     <body class="h-full">
     ```
   -->
-  <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="flex-1 mt-[96px] ml-[104px] flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <img class="mx-auto h-10 w-auto" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=emerald&shade=500" alt="Your Company" />
       <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Sign up</h2>
@@ -49,8 +49,7 @@ import '../styles.css'
         <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Start a 14 day free trial</a>
       </p>
     </div>
-  </div>
-</template>
+  </div></template>
 
 
 
