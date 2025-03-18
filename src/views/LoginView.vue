@@ -14,8 +14,7 @@ import '../styles.css'
     <div class="flex-1 mt-[96px] ml-[104px] flex-col justify-center px-6 py-12 lg:px-8">
         <div class="w-120 m-auto p-5 py-20 rounded-3xl shadow-[0px_20px_24px_30px_rgba(0,_0,_0,_0.1)]">
             <div class="sm:mx-auto sm:w-full sm:max-w-sm ">
-                <img class="mx-auto h-10 w-auto" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=emerald&shade=500" alt="Your Company" />
-                <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Log into your account</h2>
+                <h2 class="text-center text-2xl/9 font-bold tracking-tight text-gray-900">Log into your account</h2>
             </div>
     
             <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -42,7 +41,7 @@ import '../styles.css'
                     </div>
     
                     <div>
-                        <button type="submit" class="flex w-full justify-center rounded-md bg-emerald-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-emerald-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Log in</button>
+                        <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Log in</button>
                     </div>
                 </form>
     
