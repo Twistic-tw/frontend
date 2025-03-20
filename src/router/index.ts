@@ -5,6 +5,11 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/pdf',
+      name: 'pdf',
+      component: () => import('../views/PDFView.vue')
+    },
+    {
       path: '/login',
       name: 'login',
       component: HomeView,
