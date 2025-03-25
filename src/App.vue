@@ -7,7 +7,7 @@ import { ref } from 'vue'
 
 <template>
     
-    <div class="flex h-screen">
+    <div class="flex h-screen dark:bg-neutral-950">
         <nav class="flex h-24 items-center bg-gradient-to-l from-neutral-950 to-slate-800 w-full fixed top-0">
             <div class="flex justify-end flex-1">
                 <RouterLink to="/login" class="mx-2 px-10 py-2 text-center text-2xl/9 font-bold tracking-tight rounded-2xl transition duration-200 ease-in-out text-white hover:bg-slate-800" active-class="bg-slate-900">Login</RouterLink>
@@ -30,11 +30,26 @@ import { ref } from 'vue'
             </nav>
         </div> -->
         <div class="flex grow">
-            <RouterView/><br>
+            <RouterView v-slot="{ Component }">
+                <transition name="page" mode="out-in">
+                    <component :is="Component"/>
+                </transition>
+            </RouterView><br>
         </div>
     </div>
 </template>
 
+<style>
+.page-enter-from,
+.page-leave-to{
+    opacity: 0;
+}
+
+.page-enter-active,
+.page-leave-active{
+    transition: opacity 0.6s ease-out;
+}
+</style>
 
 <script lang="js">
 const sideExpanded = ref(false);
