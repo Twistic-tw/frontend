@@ -14,10 +14,10 @@ import { ref } from 'vue'
                 <RouterLink to="/signup" class="mx-2 px-10 py-2 text-center text-2xl/9 font-bold tracking-tight rounded-2xl transition duration-200 ease-in-out text-white hover:bg-slate-800" active-class="bg-slate-900">Signup</RouterLink>
             </div>
         </nav>
-        <RouterLink to="/" class="peer bg-white dark:bg-neutral-950 w-[200px] h-[96px] rounded-tr-3xl flex text-4xl items-center justify-center transition-all duration-200 ease-in-out fixed top-0">
-                <p class="text-neutral-950 dark:text-white ">TWISTIC</p>
-            </RouterLink>
- <!--        <div class="flex overflow-hidden fixed h-full mt-[96px] shadow-none transition-all duration-200 ease-in-out peer-hover:shadow-[13px_18px_0px_1px_rgba(0,_0,_0,_0.5)] w-[104px]" :class="{'w-[300px] rounded-tr-3xl': sideExpanded}" >
+        <div @click="ToggleSidenav" class="peer bg-neutral-950 w-[104px] h-[96px] rounded-tr-3xl flex text-4xl items-center justify-center transition-all duration-200 ease-in-out hover:text-5xl hover:shadow-[13px_16px_0px_1px_rgba(0,_0,_0,_0.5)] fixed top-0">
+                <p class="text-white ">TW</p>
+            </div>
+        <div class="flex overflow-hidden fixed h-full mt-[96px] shadow-none transition-all duration-200 ease-in-out peer-hover:shadow-[13px_18px_0px_1px_rgba(0,_0,_0,_0.5)] w-[104px]" :class="{'w-[300px] rounded-tr-3xl': sideExpanded}" >
             <nav class="flex-1 w-20 flex-shrink-0 overflow-y-auto bg-gradient-to-b from-neutral-950 to-slate-800 p-3 ">
                 <RouterLink to="/" class="relative w-20 h-20 mb-2 flex p-3 rounded-4xl hover:bg-gradient-to-r from-indigo-600 to-cyan-500  items-center" :class="{'w-65': sideExpanded}" active-class="bg-slate-900">
                     <svg class="w-[56px]" fill="#ffffff" viewBox="-4.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>home</title> <path class="w-20" d="M19.469 12.594l3.625 3.313c0.438 0.406 0.313 0.719-0.281 0.719h-2.719v8.656c0 0.594-0.5 1.125-1.094 1.125h-4.719v-6.063c0-0.594-0.531-1.125-1.125-1.125h-2.969c-0.594 0-1.125 0.531-1.125 1.125v6.063h-4.719c-0.594 0-1.125-0.531-1.125-1.125v-8.656h-2.688c-0.594 0-0.719-0.313-0.281-0.719l10.594-9.625c0.438-0.406 1.188-0.406 1.656 0l2.406 2.156v-1.719c0-0.594 0.531-1.125 1.125-1.125h2.344c0.594 0 1.094 0.531 1.094 1.125v5.875z"></path> </g></svg>
@@ -28,13 +28,28 @@ import { ref } from 'vue'
                     <span class="px-2 text-white text-3xl" :class="{'hidden': !sideExpanded}">Search</span>
                 </RouterLink>
             </nav>
-        </div> -->
+        </div>
         <div class="flex grow">
-            <RouterView/><br>
+            <RouterView v-slot="{ Component }">
+                <transition name="page" mode="out-in">
+                    <component :is="Component"/>
+                </transition>
+            </RouterView><br>
         </div>
     </div>
 </template>
 
+<style>
+.page-enter-from,
+.page-leave-to{
+    opacity: 0;
+}
+
+.page-enter-active,
+.page-leave-active{
+    transition: opacity 0.6s ease-out;
+}
+</style>
 
 <script lang="js">
 const sideExpanded = ref(false);
