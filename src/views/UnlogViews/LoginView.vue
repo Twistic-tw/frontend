@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import '../styles.css'
+import '../../styles.css'
 </script>
 
 <template>
-    <div class="flex-1 mt-[96px] flex-col justify-center px-6 py-12 lg:px-8 bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:bg-gradient-to-r dark:from-neutral-950 dark:via-none dark:to-slate-900 p-3">
+    <div class="flex-1 mt-[60px] flex-col justify-center px-6 py-12 lg:px-8 bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:bg-gradient-to-r dark:from-neutral-950 dark:via-none dark:to-slate-900 p-3">
         <div class="w-120 m-auto p-5 py-20 bg-white rounded-3xl shadow-[0px_20px_24px_30px_rgba(0,_0,_0,_0.1)] dark:bg-gray-700">
             <div class="sm:mx-auto sm:w-full sm:max-w-sm ">
                 <h2 class="text-center text-2xl/9 font-bold tracking-tight text-gray-900 dark:text-indigo-50">Log into your account</h2>
@@ -38,8 +38,8 @@ import '../styles.css'
                 </form>
     
                 <p class="mt-10 text-center text-sm/6 text-gray-500">
-                    Not a member? {{ ' ' }}
-                    <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Start a 14 day free trial</a>
+                    You don't have an account?
+                    <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Sign up to have your own</a>
                 </p>
             </div>
         </div>
