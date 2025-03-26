@@ -27,6 +27,16 @@ const router = createRouter({
       name: 'home',
       component: () => import('../views/UnlogViews/HomeView.vue')
     },
+    {
+      path: '/allcatalogues',
+      name: 'allcatalogues',
+      component: () => import('../views/AdminViews/AllCataloguesView.vue')
+    },
+    {
+      path: '/allusers',
+      name: 'allusers',
+      component: () => import('../views/AdminViews/UsersListView.vue')
+    },
   ],
 })
 
