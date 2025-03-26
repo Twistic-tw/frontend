@@ -4,7 +4,7 @@ import { RouterLink} from 'vue-router'
 </script>
 
 <template>
-    <div class="flex flex-1 mt-[60px] bg-gradient-to-r from-white via-slate-200 to-slate-400 px-6 py-12 lg:px-8 dark:bg-gradient-to-r dark:from-neutral-950 dark:via-none dark:to-slate-900 p-3">
+    <div class="flex divide-slate-900 divide-x-2 flex-1 mt-[60px] bg-gradient-to-r from-white via-slate-200 to-slate-400 px-6 py-12 lg:px-8 dark:bg-gradient-to-r dark:from-neutral-950 dark:via-none dark:to-slate-900 dark:divide-slate-50 p-3">
         <div class="p-5 text-center w-[600px] mt-[200px] mb-[205px]">
             <h2 class="text-4xl font-semibold text-slate-800 dark:text-white m-10 mt-0 mb5-1 font-mono">Create simple catalogues with just a few steps</h2>
             <RouterLink to="/login" class="p-3 px-20 text-2xl text-white rounded-2xl transition-all duration-500 ease-in-out bg-slate-500 dark:bg-neutral-600 hover:bg-indigo-700">Log In</RouterLink><br>
