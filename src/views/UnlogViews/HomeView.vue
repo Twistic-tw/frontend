@@ -9,7 +9,7 @@ import { RouterLink} from 'vue-router'
             <h2 class="text-4xl font-semibold text-slate-800 dark:text-white m-10 mt-0 mb5-1 font-mono">Create simple catalogues with just a few steps</h2>
             <RouterLink to="/login" class="p-3 px-20 text-2xl text-white rounded-2xl transition-all duration-500 ease-in-out bg-slate-500 dark:bg-neutral-600 hover:bg-indigo-700">Log In</RouterLink><br>
             <h2 class="inline-block font-semibold text-slate-800 dark:text-white text-xl mt-5 mb-10 pr-2">or, if you don't have an account,</h2>
-            <RouterLink to="/login" class="underline font-semibold transition-all duration-300 ease-in-out text-cyan-700 hover:text-cyan-500 dark:text-cyan-300 dark:hover:text-cyan-100 text-xl mt-8 mb-10">Sign Up</RouterLink>
+            <RouterLink to="/signup" class="underline font-semibold transition-all duration-300 ease-in-out text-cyan-700 hover:text-cyan-500 dark:text-cyan-300 dark:hover:text-cyan-100 text-xl mt-8 mb-10">Sign Up</RouterLink>
         </div>
         <div class="flex-auto text-center m-10">
             <h1 class="text-8xl text-slate-800 font-bold dark:text-white mt-40 z-4">TWISTIC</h1>
