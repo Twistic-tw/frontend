@@ -44,7 +44,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="js">
 import '../../styles.css'
 import axios from 'axios';
 const logUser = () => {
@@ -62,7 +62,7 @@ const logUser = () => {
                 })
         })
         .catch(err =>{
-            onsole.log(err)
+            console.log(err)
         })
         }
 </script>
