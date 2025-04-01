@@ -55,13 +55,15 @@ const logUser = () => {
                 password: this.password
             })
                 .then(response => {
-                    // redireccion a la pantalla de admin o user
+                    console.log(response)
                 })
                 .catch(err => {
-                    // mensaje en plan "usuario no existe peaso burro"
+                    console.log(err)
                 })
         })
-        .catch()
+        .catch(err =>{
+            onsole.log(err)
+        })
         }
 </script>
 

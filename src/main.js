@@ -13,6 +13,6 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
-axios.get('http://api-catalogos.twistic.app//sanctum/csrf-cookie', { withCredentials: true });
+
 
 app.mount('#app')
