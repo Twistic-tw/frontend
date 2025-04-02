@@ -52,6 +52,7 @@ import axios from 'axios';
 
 <script lang="js">
 const logUser = () => {
+    axios.defaults.headers.common['Accept'] = 'application/json'
     axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', { withCredentials: true })
         .then(() =>{
             axios.post('https://api-catalogos.twistic.app/api/loginProcess', {withCredentials: true}, {
@@ -66,10 +67,14 @@ const logUser = () => {
                     console.log("Mal usuario")
                 })
         })
-        .catch(err =>{
-            console.log(err)
-            console.log("CRSF problem")
-        })
+        .catch(err => {
+  if (err.response && err.response.status === 401) {
+    error.value = 'Credenciales incorrectas'
+  } else {
+    error.value = 'Error de conexión'
+  }
+  console.error('Error login', err)
+})
         }
 </script>
 
