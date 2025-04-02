@@ -48,7 +48,7 @@
 import '../../styles.css'
 import axios from 'axios';
 const logUser = () => {
-    axios.get('http://api-catalogos.twistic.app//sanctum/csrf-cookie', { withCredentials: true })
+    axios.get('http://api-catalogos.twistic.app/sanctum/csrf-cookie', { withCredentials: true })
         .then(() =>{
             axios.post('http://api-catalogos.twistic.app/api/loginProcess', {withCredentials: true}, {
                 email: this.email,
@@ -59,10 +59,12 @@ const logUser = () => {
                 })
                 .catch(err => {
                     console.log(err)
+                    console.log("Mal usuario")
                 })
         })
         .catch(err =>{
             console.log(err)
+            console.log("CRSF problem")
         })
         }
 </script>
