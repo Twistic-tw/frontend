@@ -52,9 +52,9 @@ import axios from 'axios';
 
 <script lang="js">
 const logUser = () => {
-    axios.get('http://api-catalogos.twistic.app/sanctum/csrf-cookie', { withCredentials: true })
+    axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', { withCredentials: true })
         .then(() =>{
-            axios.post('http://api-catalogos.twistic.app/api/loginProcess', {withCredentials: true}, {
+            axios.post('https://api-catalogos.twistic.app/api/loginProcess', {withCredentials: true}, {
                 email: this.email,
                 password: this.password
             })
