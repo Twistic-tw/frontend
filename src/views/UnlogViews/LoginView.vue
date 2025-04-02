@@ -1,4 +1,7 @@
-
+<script setup lang="js">
+import '../../styles.css'
+import axios from 'axios';
+</script>
 
 <template>
     <div class="flex-1 mt-[60px] flex-col justify-center px-6 py-12 lg:px-8 bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:bg-gradient-to-r dark:from-neutral-950 dark:via-none dark:to-slate-900 p-3">
@@ -44,9 +47,10 @@
     </div>
 </template>
 
-<script setup lang="js">
-import '../../styles.css'
-import axios from 'axios';
+
+
+
+<script lang="js">
 const logUser = () => {
     axios.get('http://api-catalogos.twistic.app/sanctum/csrf-cookie', { withCredentials: true })
         .then(() =>{
