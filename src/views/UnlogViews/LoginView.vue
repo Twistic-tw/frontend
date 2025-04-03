@@ -47,37 +47,41 @@ import axios from 'axios';
     </div>
 </template>
 
+<script setup lang="js">
+import { ref } from 'vue'
 
+// Datos del formulario
+const email = ref('')
+const password = ref('')
+const error = ref(null)
 
-
-<script lang="js">
 const logUser = () => {
-    axios.defaults.headers.common['Accept'] = 'application/json'
-    axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', { withCredentials: true })
-        .then(() =>{
-            axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
-                email: email,
-                password: password
-            }, {
-                withCredentials: true
-            })
-                .then(response => {
-                    console.log(response)
-                })
-                .catch(err => {
-                    console.log(err)
-                    console.log("Mal usuario")
-                })
+  axios.defaults.headers.common['Accept'] = 'application/json'
+
+  axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', { withCredentials: true })
+    .then(() => {
+      axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
+        email: email.value,
+        password: password.value
+      }, {
+        withCredentials: true
+      })
+        .then(response => {
+          console.log(response)
         })
         .catch(err => {
-            router.push("/")
-            if (err.response && err.response.status === 401) {
-                error.value = 'Credenciales incorrectas'
-            } else {
-                error.value = 'Error de conexión'
-            }
-            console.error('Error login', err)
+          console.log(err)
+          console.log("Mal usuario")
         })
+    })
+    .catch(err => {
+      if (err.response && err.response.status === 401) {
+        error.value = 'Credenciales incorrectas'
+      } else {
+        error.value = 'Error de conexión'
+      }
+      console.error('Error login', err)
+    })
 }
 </script>
 
