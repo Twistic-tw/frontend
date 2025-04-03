@@ -67,6 +67,7 @@ const logUser = () => {
         withCredentials: true
       })
         .then(response => {
+            router.push("/")
           console.log(response)
         })
         .catch(err => {
