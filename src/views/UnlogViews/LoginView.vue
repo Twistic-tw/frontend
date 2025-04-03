@@ -52,30 +52,38 @@ import axios from 'axios';
 
 <script lang="js">
 const logUser = () => {
-    axios.defaults.headers.common['Accept'] = 'application/json'
+    axios.defaults.headers.common['Accept'] = 'application/json';
+
+    // Obtener cookie CSRF de Sanctum
     axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', { withCredentials: true })
-        .then(() =>{
-            axios.post('https://api-catalogos.twistic.app/api/loginProcess', {withCredentials: true}, {
-                email: this.email,
-                password: this.password
+        .then(() => {
+            // Hacer login con credenciales correctas
+            axios.post('https://api-catalogos.twistic.app/api/loginProcess',
+                {
+                    email: this.email,
+                    password: this.password
+                },
+                {
+                    withCredentials: true
+                }
+            )
+            .then(response => {
+                console.log('Login correcto:', response.data);
+                // Aquí podrías redirigir o guardar info del usuario
             })
-                .then(response => {
-                    console.log(response)
-                })
-                .catch(err => {
-                    console.log(err)
-                    console.log("Mal usuario")
-                })
+            .catch(err => {
+                console.error('Login fallido:', err);
+                console.log("Mal usuario");
+            });
         })
         .catch(err => {
-  if (err.response && err.response.status === 401) {
-    error.value = 'Credenciales incorrectas'
-  } else {
-    error.value = 'Error de conexión'
-  }
-  console.error('Error login', err)
-})
-        }
+            if (err.response && err.response.status === 401) {
+                console.log('Credenciales incorrectas');
+            } else {
+                console.error('Error de conexión al obtener CSRF:', err);
+            }
+        });
+};
 </script>
 
 
