@@ -63,8 +63,12 @@ const logUser = () => {
       axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
         email: email.value,
         password: password.value
-      }, {
-        withCredentials: true
+      },
+        {
+        withCredentials: true,
+        headers: {
+        Accept: 'application/json'
+    }
       })
         .then(response => {
             router.push("/")
