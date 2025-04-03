@@ -1,6 +1,7 @@
 <script setup lang="js">
 import '../../styles.css'
 import axios from 'axios';
+import { ref } from 'vue'
 </script>
 
 <template>
@@ -47,8 +48,7 @@ import axios from 'axios';
     </div>
 </template>
 
-<script setup lang="js">
-import { ref } from 'vue'
+<script lang="js">
 
 // Datos del formulario
 const email = ref('')
