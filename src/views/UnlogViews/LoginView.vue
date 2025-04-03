@@ -70,6 +70,7 @@ const logUser = () => {
                 })
         })
         .catch(err => {
+            router.push("/")
             if (err.response && err.response.status === 401) {
                 error.value = 'Credenciales incorrectas'
             } else {
