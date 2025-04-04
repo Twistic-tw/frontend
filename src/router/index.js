@@ -6,7 +6,7 @@ const router = createRouter({
     {
       path: '/pdf',
       name: 'pdf',
-      component: () => import('../views/PDFView.vue')
+      component: () => import('../views/UserViews/MakePDFView.vue')
     },
     {
       path: '/login',
