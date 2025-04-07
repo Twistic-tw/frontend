@@ -59,7 +59,7 @@ const logUser = () => {
 
   axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', { 
     withCredentials: true,
-    timeout: 5000,
+    timeout: 15000,
   })
     .then(() => {
       axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
@@ -67,7 +67,7 @@ const logUser = () => {
         password: password.value
       }, {
         withCredentials: true,
-        timeout: 5000,
+        timeout: 15000,
         headers: {
           Accept: 'application/json'
         }
