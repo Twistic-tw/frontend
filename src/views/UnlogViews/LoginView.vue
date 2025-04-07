@@ -50,54 +50,63 @@ import { ref } from 'vue'
 
 <script lang="js">
 
+// Datos del formulario
 const email = ref('')
 const password = ref('')
 const error = ref(null)
 
-const getCookie = (name) => {
+// Función para obtener el valor de una cookie
+function getCookie(name) {
   const value = `; ${document.cookie}`
   const parts = value.split(`; ${name}=`)
   if (parts.length === 2) return parts.pop().split(';').shift()
 }
 
+// Función de login
 const logUser = async () => {
+  error.value = null
+
   try {
-    // Activar envío de cookies
-    axios.defaults.withCredentials = true
-    axios.defaults.headers.common['Accept'] = 'application/json'
-
-    // Primero pedir CSRF cookie
-    await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie')
-
-    // Obtener XSRF-TOKEN de las cookies
-    const csrfToken = getCookie('XSRF-TOKEN')
-
-    // Hacer login mandando el X-XSRF-TOKEN
-    const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
-      email: email.value,
-      password: password.value
-    }, {
+    // Primero pedimos el csrf-cookie para obtener XSRF-TOKEN y laravel_session
+    await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', {
       withCredentials: true,
-      headers: {
-        'Accept': 'application/json',
-        'X-XSRF-TOKEN': csrfToken
-      }
     })
+
+    console.log('CSRF cookie obtenida')
+
+    // Recuperamos el XSRF-TOKEN de la cookie
+    const csrfToken = decodeURIComponent(getCookie('XSRF-TOKEN'))
+
+    // Ahora enviamos el login
+    const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess',
+      {
+        email: email.value,
+        password: password.value
+      },
+      {
+        withCredentials: true,
+        headers: {
+          Accept: 'application/json',
+          'X-XSRF-TOKEN': csrfToken
+        }
+      }
+    )
 
     console.log('Login exitoso:', response.data)
 
-    // Redirigir si quieres
-    // window.location.href = '/dashboard'
+    // Aquí haces redirección si quieres, ejemplo:
+    window.location.href = '/dashboard'
 
   } catch (err) {
+    console.error('Error en login:', err)
+
     if (err.response && err.response.status === 401) {
       error.value = 'Credenciales incorrectas'
     } else if (err.response && err.response.status === 419) {
-      error.value = 'Token CSRF inválido'
+      error.value = 'Sesión expirada. Recarga la página.'
     } else {
       error.value = 'Error de conexión'
     }
-    console.error('Error en login', err)
   }
 }
 </script>
