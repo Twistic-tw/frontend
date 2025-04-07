@@ -49,47 +49,58 @@ import { ref } from 'vue'
 </template>
 
 <script lang="js">
+import axios from 'axios'
+import { ref } from 'vue'
 
+// Datos del formulario
 const email = ref('')
 const password = ref('')
 const error = ref(null)
+const loading = ref(false)
 
-const logUser = () => {
-  axios.defaults.headers.common['Accept'] = 'application/json'
+const logUser = async () => {
+  error.value = null
+  loading.value = true
 
-  axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', { 
-    withCredentials: true,
-    timeout: 15000,
-  })
-    .then(() => {
-      axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
-        email: email.value,
-        password: password.value
-      }, {
-        withCredentials: true,
-        timeout: 15000,
-        headers: {
-          Accept: 'application/json'
-        }
-      })
-      .then(response => {
-        console.log('Login exitoso:', response.data)
-      })
-      .catch(err => {
-        console.error('Error en login:', err)
-        console.log('Mal usuario')
-      })
+  try {
+    axios.defaults.withCredentials = true
+    axios.defaults.timeout = 15000 // 15 segundos
+    axios.defaults.headers.common['Accept'] = 'application/json'
+
+    console.log('Solicitando CSRF cookie...')
+    await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie')
+    console.log('CSRF cookie recibida')
+
+    console.log('Enviando datos de login...')
+    const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
+      email: email.value,
+      password: password.value
     })
-    .catch(err => {
-      if (err.code === 'ECONNABORTED') {
-        error.value = 'Tiempo de espera agotado'
-      } else if (err.response && err.response.status === 401) {
+
+    console.log('Login exitoso')
+    console.log('Respuesta:', response.data)
+
+    window.location.href = '/dashboard' 
+
+  } catch (err) {
+    console.error('Error en login', err)
+
+    if (err.response) {
+      // Errores HTTP
+      if (err.response.status === 401) {
         error.value = 'Credenciales incorrectas'
       } else {
-        error.value = 'Error de conexión'
+        error.value = 'Error: ' + (err.response.data.message || 'Error desconocido')
       }
-      console.error('Error csrf-cookie:', err)
-    })
+    } else if (err.code === 'ECONNABORTED') {
+      // Error por timeout
+      error.value = 'La solicitud tardó demasiado (timeout)'
+    } else {
+      // Otros errores
+      error.value = 'Error de conexión o servidor no disponible'
+    }
+  } finally {
+    loading.value = false
+  }
 }
-
 </script>
