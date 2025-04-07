@@ -50,7 +50,6 @@ import { ref } from 'vue'
 
 <script lang="js">
 
-// Datos del formulario
 const email = ref('')
 const password = ref('')
 const error = ref(null)
@@ -58,35 +57,38 @@ const error = ref(null)
 const logUser = () => {
   axios.defaults.headers.common['Accept'] = 'application/json'
 
-  axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', { withCredentials: true })
+  axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', { 
+    withCredentials: true,
+  })
     .then(() => {
       axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
         email: email.value,
         password: password.value
-      },
-        {
+      }, {
         withCredentials: true,
+        timeout: 5000,
         headers: {
-        Accept: 'application/json'
-    }
+          Accept: 'application/json'
+        }
       })
-        .then(response => {
-          console.log(response)
-        })
-        .catch(err => {
-          console.log(err)
-          console.log("Mal usuario")
-        })
+      .then(response => {
+        console.log('Login exitoso:', response.data)
+      })
+      .catch(err => {
+        console.error('Error en login:', err)
+        console.log('Mal usuario')
+      })
     })
     .catch(err => {
-      if (err.response && err.response.status === 401) {
+      if (err.code === 'ECONNABORTED') {
+        error.value = 'Tiempo de espera agotado'
+      } else if (err.response && err.response.status === 401) {
         error.value = 'Credenciales incorrectas'
       } else {
         error.value = 'Error de conexión'
       }
-      console.error('Error login', err)
+      console.error('Error csrf-cookie:', err)
     })
 }
+
 </script>
-
-
