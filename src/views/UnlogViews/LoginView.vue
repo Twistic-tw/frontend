@@ -59,6 +59,7 @@ const logUser = () => {
 
   axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', { 
     withCredentials: true,
+    timeout: 5000,
   })
     .then(() => {
       axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
