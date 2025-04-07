@@ -49,58 +49,52 @@ import { ref } from 'vue'
 </template>
 
 <script lang="js">
-import axios from 'axios'
-import { ref } from 'vue'
 
 // Datos del formulario
 const email = ref('')
 const password = ref('')
 const error = ref(null)
-const loading = ref(false)
 
 const logUser = async () => {
-  error.value = null
-  loading.value = true
-
   try {
     axios.defaults.withCredentials = true
-    axios.defaults.timeout = 15000 // 15 segundos
     axios.defaults.headers.common['Accept'] = 'application/json'
 
-    console.log('Solicitando CSRF cookie...')
+    // Obtener la cookie de CSRF
     await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie')
-    console.log('CSRF cookie recibida')
 
-    console.log('Enviando datos de login...')
+    // Leer manualmente el XSRF-TOKEN de la cookie
+    const getCookie = (name) => {
+      const value = `; ${document.cookie}`
+      const parts = value.split(`; ${name}=`)
+      if (parts.length === 2) return parts.pop().split(';').shift()
+    }
+
+    const csrfToken = getCookie('XSRF-TOKEN')
+
+    // Ahora hacer el login enviando X-XSRF-TOKEN
     const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
       email: email.value,
       password: password.value
+    }, {
+      headers: {
+        'Accept': 'application/json',
+        'X-XSRF-TOKEN': csrfToken,   // 💥 Aquí mandas el token correcto
+      }
     })
 
-    console.log('Login exitoso')
-    console.log('Respuesta:', response.data)
-
-    window.location.href = '/dashboard' 
+    console.log('Login exitoso', response.data)
 
   } catch (err) {
-    console.error('Error en login', err)
-
-    if (err.response) {
-      // Errores HTTP
-      if (err.response.status === 401) {
-        error.value = 'Credenciales incorrectas'
-      } else {
-        error.value = 'Error: ' + (err.response.data.message || 'Error desconocido')
-      }
-    } else if (err.code === 'ECONNABORTED') {
-      // Error por timeout
-      error.value = 'La solicitud tardó demasiado (timeout)'
+    if (err.response && err.response.status === 401) {
+      error.value = 'Credenciales incorrectas'
+    } else if (err.response && err.response.status === 419) {
+      error.value = 'Token CSRF inválido o expirado'
     } else {
-      // Otros errores
-      error.value = 'Error de conexión o servidor no disponible'
+      error.value = 'Error de conexión'
     }
-  } finally {
-    loading.value = false
+    console.error('Error en login', err)
   }
 }
+
 </script>
