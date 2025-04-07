@@ -1,7 +1,6 @@
 <script setup lang="js">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-import './styles.css'
+import '../styles.css'
 import { ref } from 'vue'
 </script>
 
