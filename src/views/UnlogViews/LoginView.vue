@@ -50,51 +50,54 @@ import { ref } from 'vue'
 
 <script lang="js">
 
-// Datos del formulario
 const email = ref('')
 const password = ref('')
 const error = ref(null)
 
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
 const logUser = async () => {
   try {
+    // Activar envío de cookies
     axios.defaults.withCredentials = true
     axios.defaults.headers.common['Accept'] = 'application/json'
 
-    // Obtener la cookie de CSRF
+    // Primero pedir CSRF cookie
     await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie')
 
-    // Leer manualmente el XSRF-TOKEN de la cookie
-    const getCookie = (name) => {
-      const value = `; ${document.cookie}`
-      const parts = value.split(`; ${name}=`)
-      if (parts.length === 2) return parts.pop().split(';').shift()
-    }
-
+    // Obtener XSRF-TOKEN de las cookies
     const csrfToken = getCookie('XSRF-TOKEN')
 
-    // Ahora hacer el login enviando X-XSRF-TOKEN
+    // Hacer login mandando el X-XSRF-TOKEN
     const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
       email: email.value,
       password: password.value
     }, {
+      withCredentials: true,
       headers: {
         'Accept': 'application/json',
-        'X-XSRF-TOKEN': csrfToken,   // 💥 Aquí mandas el token correcto
+        'X-XSRF-TOKEN': csrfToken
       }
     })
 
-    console.log('Login exitoso', response.data)
+    console.log('Login exitoso:', response.data)
+
+    // Redirigir si quieres
+    // window.location.href = '/dashboard'
 
   } catch (err) {
     if (err.response && err.response.status === 401) {
       error.value = 'Credenciales incorrectas'
     } else if (err.response && err.response.status === 419) {
-      error.value = 'Token CSRF inválido o expirado'
+      error.value = 'Token CSRF inválido'
     } else {
       error.value = 'Error de conexión'
     }
     console.error('Error en login', err)
   }
 }
-
 </script>
