@@ -94,7 +94,7 @@ const logUser = async () => {
 
     console.log('Login exitoso:', response.data)
 
-    // Aquí haces redirección si quieres, ejemplo:
+    // Redirección:
     window.location.href = '/dashboard'
 
   } catch (err) {
