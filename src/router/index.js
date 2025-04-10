@@ -10,12 +10,12 @@ const router = createRouter({
     },
     {
       path: '/Dashboard',
-      name: 'dashboard',
+      name: 'Dashboard',
       component: () => import('../views/LoggedViews/DashboardView.vue')
     },
     {
       path: '/Pdf',
-      name: 'pdf',
+      name: 'Pdf',
       component: () => import('../views/UserViews/MakePDFView.vue')
     },
     {
