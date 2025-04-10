@@ -4,14 +4,18 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/pdf',
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/UnlogViews/LoginView.vue'),
+    },
+    {
+      path: '/Pdf',
       name: 'pdf',
       component: () => import('../views/UserViews/MakePDFView.vue')
     },
     {
-      path: '/login',
-      name: 'login',
-      component: () => import('../views/UnlogViews/LoginView.vue'),
+      path: '/Logout',
+      name: 'pdf',
     },
     {
       path: '/signup',
