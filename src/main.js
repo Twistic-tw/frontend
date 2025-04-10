@@ -5,11 +5,9 @@ import { createPinia } from 'pinia'
 import axios from 'axios';
 import PrimeVue from 'primevue/config';
 import { abilitiesPlugin } from '@casl/vue'
-import { defineAbilitiesFor } from './abilities/abilities'
+import defineUserAbility from './abilities/abilities';
 
 axios.defaults.withCredentials = true;
-const loadingApp = createApp(LoadingScreen);
-loadingApp.mount('#app');
 
 async function bootstrap() {
   try {
