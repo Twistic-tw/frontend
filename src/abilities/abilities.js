@@ -1,29 +1,21 @@
-import { AbilityBuilder, Ability } from '@casl/ability';
+import { defineAbility } from '@casl/ability';
 
 /**
- * @param {String} role - Rol principal del usuario
- * @param {Array} permissions - Array de permisos extra personalizados
+ * Define las abilities del usuario basado en su rol
+ * @param {Object} user - Usuario con información del rol
  */
-export function defineAbilitiesFor(role, permissions = []) {
-  const { can, cannot, build } = new AbilityBuilder(Ability);
+export default function defineUserAbility(user) {
+  return defineAbility((can, cannot) => {
+    // Permiso base para todos: gestionar su perfil
+    can('manage', 'profile');
 
-  switch (role) {
-    case 'ROLE_ADMINISTRATOR':
-      can('manage', 'all'); // El admin puede TODO
-      break;
-
-    case 'ROLE_READING':
-      can('read', 'Public'); // Clientes básicos pueden leer cosas públicas
-      // Ahora añadimos los permisos personalizados
-      permissions.forEach(permission => {
-        can(permission.action, permission.subject);
-      });
-      break;
-
-    default:
-      can('read', 'Public'); // Visitantes
-      break;
-  }
-
-  return build();
+    if (user.role?.name === 'ROLE_ADMINISTRATOR') {
+      can('manage', 'all'); // Admin hace todo
+    } else {
+      // Cualquier otro rol = Cliente
+      can('read', 'catalog');         // Ver catálogos
+      can('create', 'notification');  // Enviar notificaciones
+      can('create', 'pdf');            // Generar PDFs
+    }
+  });
 }
