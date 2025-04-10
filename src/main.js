@@ -8,6 +8,8 @@ import { abilitiesPlugin } from '@casl/vue'
 import { defineAbilitiesFor } from './abilities'
 
 axios.defaults.withCredentials = true;
+const loadingApp = createApp(LoadingScreen);
+loadingApp.mount('#app');
 
 async function bootstrap() {
   try {
