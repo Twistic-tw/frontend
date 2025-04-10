@@ -10,7 +10,7 @@ import { ref } from 'vue'
             <div class="sm:mx-auto sm:w-full sm:max-w-sm ">
                 <h2 class="text-center text-2xl/9 font-bold tracking-tight text-gray-900 dark:text-indigo-50">Log into your account</h2>
             </div>
-    
+
             <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form @submit.prevent="logUser()" class="space-y-6" action="#" method="POST">
                     <div>
@@ -20,7 +20,7 @@ import { ref } from 'vue'
                             />
                         </div>
                     </div>
-    
+
                     <div>
                         <div class="flex items-center justify-between">
                             <label for="password" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Password</label>
@@ -33,12 +33,12 @@ import { ref } from 'vue'
                             />
                         </div>
                     </div>
-    
+
                     <div>
                         <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Log in</button>
                     </div>
                 </form>
-    
+
                 <p class="mt-10 text-center text-sm/6 text-gray-500">
                     You don't have an account?
                     <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Sign up to have your own</a>
@@ -94,7 +94,11 @@ const logUser = async () => {
 
     console.log('Login exitoso:', response.data)
 
+<<<<<<< HEAD
     // Redirección:
+=======
+    // Redirección a la sección principal
+>>>>>>> 6c1b08b7fe8caf15fd8a400021a96792e8b6b23d
     window.location.href = '/dashboard'
 
   } catch (err) {
