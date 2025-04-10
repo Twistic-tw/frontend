@@ -9,6 +9,11 @@ const router = createRouter({
       component: () => import('../views/UnlogViews/LoginView.vue'),
     },
     {
+      path: '/Dashboard',
+      name: 'dashboard',
+      component: () => import('../views/UserViews/DashboardView.vue')
+    },
+    {
       path: '/Pdf',
       name: 'pdf',
       component: () => import('../views/UserViews/MakePDFView.vue')
