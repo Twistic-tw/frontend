@@ -1,8 +1,6 @@
 <script setup lang="js">
 import { ref } from 'vue'
 
-// Puedes hacer dinámico más adelante
-const username = ref('Cristian')
 </script>
 
 <template>
@@ -10,7 +8,7 @@ const username = ref('Cristian')
 
     <!-- Título de bienvenida -->
     <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">
-      ¡Bienvenido, {{ username }}!
+      ¡Bienvenido, Usuario!
     </h1>
 
     <!-- Tarjetas principales -->
