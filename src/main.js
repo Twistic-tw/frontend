@@ -7,6 +7,15 @@ import PrimeVue from 'primevue/config';
 import { abilitiesPlugin } from '@casl/vue'
 import defineUserAbility from './abilities/abilities';
 
+// Título de la página
+router.afterEach((to) => {
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  } else {
+    document.title = 'Twistic';
+  }
+});
+
 axios.defaults.withCredentials = true;
 /*
 async function bootstrap() {
