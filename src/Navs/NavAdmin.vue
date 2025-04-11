@@ -1,5 +1,5 @@
 <script setup lang="ts">
-//import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import '../styles.css'
 import { ref } from 'vue'
 
@@ -65,7 +65,6 @@ const sideExpanded = ref(false);
             </div>
             <RouterLink to="/profile" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Profile</RouterLink>
             <RouterLink to="/notifications" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Notifications</RouterLink>
-            <!--<RouterLink to="/pdf" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Configuration</RouterLink>-->
             <RouterLink to="/logout" class="rounded-b-2xl transition-all duration-200 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Log Out</RouterLink>
         </div>
 
