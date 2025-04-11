@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+//import { RouterLink, RouterView } from 'vue-router'
 import '../styles.css'
 //import { ref } from 'vue'
 </script>
@@ -16,11 +16,7 @@ import '../styles.css'
                 <p class="text-neutral-950 dark:text-white ">TWISTIC</p>
             </RouterLink>
         <div class="flex grow">
-            <RouterView v-slot="{ Component }">
-                <transition name="page" mode="out-in">
-                    <component :is="Component"/>
-                </transition>
-            </RouterView><br>
+
         </div>
     </div>
 </template>
