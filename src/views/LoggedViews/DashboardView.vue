@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const role = sessionStorage.getItem('userRole') || null;
+import { useUserRole } from '@/composable/userRoles';
+const { role } = useUserRole();
 </script>
 
 <template>
