@@ -51,6 +51,16 @@ const logUser = async () => {
 
     console.log('Login exitoso:', response.data)
     if (response.status === 200) {
+      let userRole = response.data.user.role; // Obtiene el rol de la respuesta
+      switch(userRole):
+      case 'ROLE_ADMINISTRATOR':
+        userRole = 'admin';
+        break;
+      default:
+        userRole = 'client';
+        break;
+      end
+      sessionStorage.setItem('userRole', userRole); // Guarda el rol en sessionStorage
       router.push('/dashboard')
     } else {
       error.value = 'Error inesperado'
