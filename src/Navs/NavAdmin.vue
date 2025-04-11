@@ -1,21 +1,16 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+import { useRoute } from 'vue-router';
 import '../styles.css'
-import { ref } from 'vue'
-
-//Obtener el rol
-//const role = sessionStorage.getItem('userRole') || null;
+import { ref, watch } from 'vue'
 
 // Definir la variable de título para usarla en el template como navegación
 const title = ref(document.title);
+const route = useRoute();
+watch(() => route.fullPath, () => {
+  title.value = document.title;
+});
 
-/*
-const sideExpanded = ref(false);
-
- const ToggleSidenav = () => {
-    sideExpanded.value = !sideExpanded.value
- }
-*/
  const navExpanded = ref(false);
 
  const ToggleNav = () => {
@@ -23,7 +18,6 @@ const sideExpanded = ref(false);
     console.log(navExpanded.value)
  }
 
- // Obtiene el rol
 </script>
 
 <template>
