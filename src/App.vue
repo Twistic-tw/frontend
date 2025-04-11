@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import NavUnlog from './Navs/NavUnlog.vue';
-import NavLogged from './Navs/NavLogged.vue'
+import NavLogged from './Navs/NavLogged.vue';
 import './styles.css'
 
 // Manejar mostrar las barras si está logeado
