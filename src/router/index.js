@@ -26,7 +26,7 @@ const router = createRouter({
           await axios.post('https://api-catalogos.twistic.app/api/logout', {}, {
             withCredentials: true
           });
-    
+
           next('/');
         } catch (error) {
           console.error('Error cerrando sesión:', error);
