@@ -2,16 +2,13 @@
 import { RouterView } from 'vue-router';
 import NavUnlog from './Navs/NavUnlog.vue'
 import NavAdmin from './Navs/NavAdmin.vue'
-import { ref } from 'vue'
+import { computed } from 'vue';
 import './styles.css'
 
-// Manejar mostrar las barras si está logeado
-const isLogged = ref(false);
-
 // Saber si está logeado
-const userSession = document.cookie.includes('laravel_session') || document.cookie.includes('XSRF-TOKEN');
-isLogged.value = userSession;
-console.log('isLogged:', isLogged.value);
+const isLogged = computed(() => {
+  return document.cookie.includes('laravel_session') || document.cookie.includes('XSRF-TOKEN');
+});
 </script>
 
 <template>
