@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+//import { RouterLink, RouterView } from 'vue-router'
 import '../styles.css'
 import { ref } from 'vue'
 
@@ -68,8 +68,6 @@ const sideExpanded = ref(false);
             <!--<RouterLink to="/pdf" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Configuration</RouterLink>-->
             <RouterLink to="/logout" class="rounded-b-2xl transition-all duration-200 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Log Out</RouterLink>
         </div>
-        <div class="flex grow">
-            <RouterView/><br>
-        </div>
+
     </div>
 </template>
