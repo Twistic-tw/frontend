@@ -51,7 +51,7 @@ const logUser = async () => {
 
     console.log('Login exitoso:', response.data)
     if (response.status === 200) {
-      let userRole = response.data.user.user_rol || 'client'
+      let userRole = response.data.user.user_rol[0] || 'client'
 
       switch (userRole) {
         case 'ROLE_ADMINISTRATOR':
