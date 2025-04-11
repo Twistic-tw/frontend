@@ -3,7 +3,7 @@
     "target": "ES2015",         
     "module": "ESNext",
     "moduleResolution": "Node",
-    "allowJs": true,
+    "allowJs": false,
     "checkJs": false,
     "strict": false,
     "skipLibCheck": true,
