@@ -58,11 +58,12 @@ watch(() => route.fullPath, () => {
                 </RouterLink>
             </nav>
         </div>
-        <div class="w-46 h-[0px] bg-neutral-950 rounded-b-2xl transition-all duration-200 ease-in-out fixed right-0 mt-[68px] flex flex-col" :class="{'h-[244px]': navExpanded}">
-            <RouterLink to="/pdf" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Profile</RouterLink>
+        -->
+        <div class="w-46 h-[0px] bg-neutral-950 rounded-b-2xl transition-all duration-200 ease-in-out fixed right-0 mt-[68px] flex flex-col mr-2" :class="{'h-[244px]': navExpanded}">
+            <RouterLink to="/dashboard" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Dashboard</RouterLink>
+            <RouterLink to="/profile" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Profile</RouterLink>
             <RouterLink to="/notifications" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Notifications</RouterLink>
-            <RouterLink to="/pdf" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Configuration</RouterLink>
-            <RouterLink to="/pdf" class="rounded-b-2xl transition-all duration-200 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Log Out</RouterLink>
+            <RouterLink to="/logout" class="rounded-b-2xl transition-all duration-200 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Log Out</RouterLink>
         </div>
 
     </div>
