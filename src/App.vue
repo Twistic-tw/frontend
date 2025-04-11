@@ -12,6 +12,7 @@ const isLogged = ref(false);
 // Saber si está logeado
 const userSession = document.cookie.includes('laravel_session') || document.cookie.includes('XSRF-TOKEN');
 isLogged.value = userSession;
+console.log('isLogged:', isLogged.value);
 </script>
 
 <template>
