@@ -1,7 +1,20 @@
-<script setup>
+<script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import '../styles.css'
 import { ref } from 'vue'
+
+const sideExpanded = ref(false);
+
+ const ToggleSidenav = () => {
+    sideExpanded.value = !sideExpanded.value
+ }
+
+ const navExpanded = ref(false);
+
+ const ToggleNav = () => {
+    navExpanded.value = !navExpanded.value
+    console.log(navExpanded.value)
+ }
 </script>
 
 <template>
@@ -30,31 +43,15 @@ import { ref } from 'vue'
                 </RouterLink>
             </nav>
         </div>
-        <div class="w-46 bg-neutral-950 rounded-b-2xl transition-all delay-0 ease-in-out fixed right-0 mt-[68px] flex flex-col border dark:border-neutral-800 border-t-0 z-50" :class="{'h-[0px] delay-150 duration-650 border-b-0': !navExpanded}, {'h-[244px] delay-0 duration-500': navExpanded}">
-            <RouterLink to="/login" class="transition-opacity text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'opacity-0 delay-300': !navExpanded}, {'h-[244px] delay-30': navExpanded}">Profile</RouterLink>
-            <RouterLink to="/login" class="transition-opacity text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'opacity-0 delay-200': !navExpanded}, {'h-[244px] delay-150': navExpanded}">Notifications</RouterLink>
-            <RouterLink to="/login" class="transition-opacity  text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'opacity-0 delay-100': !navExpanded}, {'h-[244px] delay-300': navExpanded}">Configuration</RouterLink>
-            <RouterLink to="/login" class="rounded-b-2xl transition-opacity text-white text-center p-4 pb-5 text-xl hover:bg-slate-900 z-2" active-class="bg-slate-800" :class="{'opacity-0 delay-0': !navExpanded}, {'h-[244px] delay-450': navExpanded}">Log Out</RouterLink>
+        <div class="w-46 bg-neutral-950 rounded-b-2xl transition-all delay-0 ease-in-out fixed right-0 mt-[68px] flex flex-col border dark:border-neutral-800 border-t-0 z-50" :class="{'h-[0px] delay-150 duration-650 border-b-0': !navExpanded, 'h-[244px] delay-0 duration-500': navExpanded}">
+            <RouterLink to="/login" class="transition-opacity text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'opacity-0 delay-300': !navExpanded, 'h-[244px] delay-30': navExpanded}">Profile</RouterLink>
+            <RouterLink to="/login" class="transition-opacity text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'opacity-0 delay-200': !navExpanded, 'h-[244px] delay-150': navExpanded}">Notifications</RouterLink>
+            <RouterLink to="/login" class="transition-opacity  text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'opacity-0 delay-100': !navExpanded, 'h-[244px] delay-300': navExpanded}">Configuration</RouterLink>
+            <RouterLink to="/login" class="rounded-b-2xl transition-opacity text-white text-center p-4 pb-5 text-xl hover:bg-slate-900 z-2" active-class="bg-slate-800" :class="{'opacity-0 delay-0': !navExpanded, 'h-[244px] delay-450': navExpanded}">Log Out</RouterLink>
         </div>
         <div class="flex grow">
             <RouterView/><br>
         </div>
     </div>
 </template>
-
-
-<script lang="ts">
-const sideExpanded = ref(false);
-
- const ToggleSidenav = () => {
-    sideExpanded.value = !sideExpanded.value
- }
-
- const navExpanded = ref(false);
-
- const ToggleNav = () => {
-    navExpanded.value = !navExpanded.value
-    console.log(navExpanded.value)
- }
-</script>
 
