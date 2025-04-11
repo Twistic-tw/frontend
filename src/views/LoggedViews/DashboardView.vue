@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useUserRole } from '@/composable/userRoles';
-const { role } = useUserRole();
+import { userRoles } from '@/composable/userRoles.js';
+const { role } = userRoles();
 </script>
 
 <template>
