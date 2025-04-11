@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const role = sessionStorage.getItem('role') || 'client';
+const role = sessionStorage.getItem('userRole') || 'client';
 console.log(role);
 </script>
 
