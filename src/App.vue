@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
-import NavUnlog from './Navs/NavUnlog.vue';
-import NavAdmin from './Navs/NavAdmin.vue';
+import NavUnlog from './Navs/NavUnlog.vue'
+import NavAdmin from './Navs/NavAdmin.vue'
+import { ref } from 'vue'
 import './styles.css'
 
 // Manejar mostrar las barras si está logeado
-import { ref } from 'vue';
-
 const isLogged = ref(false);
 
 // Saber si está logeado
@@ -20,7 +19,7 @@ console.log('isLogged:', isLogged.value);
 
     <header>
       <NavAdmin v-if="isLogged" />
-      <NavUnlog v-else />
+      <NavUnlog v-else/>
     </header>
 
     <!-- Solo contenido principal -->
