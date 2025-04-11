@@ -18,6 +18,13 @@ router.afterEach((to) => {
   }
 });
 
+onMounted(() => {
+  const savedRole = sessionStorage.getItem('userRole');
+  if (savedRole) {
+      role.value = savedRole;
+  }
+});
+
 axios.defaults.withCredentials = true;
 /*
 async function bootstrap() {
