@@ -1,0 +1,24 @@
+# Activa el motor de reescritura
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Si es un archivo o directorio real, lo sirve normalmente
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Si no existe (por ejemplo /dashboard, /perfil, etc.), sirve index.html
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Opcional: Mejorar la caché de archivos estáticos
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+</IfModule>
+
+# Opcional: CORS Headers si necesitas compartir recursos
+<IfModule mod_headers.c>
+  Header set Access-Control-Allow-Origin "*"
+</IfModule>

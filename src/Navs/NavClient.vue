@@ -1,7 +1,20 @@
-<script setup lang="js">
+<script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import '../styles.css'
 import { ref } from 'vue'
+
+const sideExpanded = ref(false);
+
+ const ToggleSidenav = () => {
+    sideExpanded.value = !sideExpanded.value
+ }
+
+ const navExpanded = ref(false);
+
+ const ToggleNav = () => {
+    navExpanded.value = !navExpanded.value
+    console.log(navExpanded.value)
+ }
 </script>
 
 <template>
@@ -24,7 +37,7 @@ import { ref } from 'vue'
                     <svg class="w-9 min-w-9" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M61.8,29.4l8.9,8.9l0,0c2,1.9,2,5.1,0,7l0,0L47.5,68.4V36.6l7.2-7.2C56.6,27.4,59.9,27.4,61.8,29.4z M80,62.5V75c0,2.8-2.2,5-5,5H43.8l22.5-22.5H75C77.8,57.5,80,59.8,80,62.5z M20,68.8V25c0-2.8,2.2-5,5-5h12.5c2.8,0,5,2.2,5,5v43.8 c0,6.2-5,11.2-11.2,11.2S20,75,20,68.8z M31.2,73.8c2.8,0,5-2.2,5-5s-2.2-5-5-5s-5,2.2-5,5S28.5,73.8,31.2,73.8z"></path> </g></svg>
                     <span class="px-2 text-white text-2xl ml-2 text-center" :class="{'hidden': !sideExpanded}">Catalogues</span>
                 </RouterLink>
-                <RouterLink class="relative mb-2 flex p-3 rounded-4xl hover:bg-gradient-to-r from-indigo-600 to-cyan-500  items-center" :class="{'w-48': sideExpanded}" active-class="bg-slate-900">
+                <RouterLink to="/templates" class="relative mb-2 flex p-3 rounded-4xl hover:bg-gradient-to-r from-indigo-600 to-cyan-500  items-center" :class="{'w-48': sideExpanded}" active-class="bg-slate-900">
                     <svg class="w-9 min-w-9" fill="#000000" viewBox="0 0 24 24" id="file-code-3" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="secondary" points="19 21 21 19 19 17" style="fill: none; stroke: #ffffff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><polyline id="secondary-2" data-name="secondary" points="15 17 13 19 15 21" style="fill: none; stroke: #ffffff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="secondary-3" data-name="secondary" d="M7,13h6M7,9h6" style="fill: none; stroke: #ffffff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path><path id="primary" d="M9,21H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H15l2,2v8" style="fill: none; stroke: #ffffff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path><polygon id="primary-2" data-name="primary" points="15 3 15 5 17 5 15 3" style="fill: none; stroke: #ffffff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polygon></g></svg>
                     <span class="px-2 text-white text-2xl ml-2 text-center" :class="{'hidden': !sideExpanded}">Templates</span>
                 </RouterLink>
@@ -41,20 +54,4 @@ import { ref } from 'vue'
         </div>
     </div>
 </template>
-
-
-<script lang="js">
-const sideExpanded = ref(false);
-
- const ToggleSidenav = () => {
-    sideExpanded.value = !sideExpanded.value
- }
-
- const navExpanded = ref(false);
-
- const ToggleNav = () => {
-    navExpanded.value = !navExpanded.value
-    console.log(navExpanded.value)
- }
-</script>
 
