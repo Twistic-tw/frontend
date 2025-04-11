@@ -7,16 +7,19 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../views/UnlogViews/LoginView.vue'),
+      meta: { title: 'Login' }
     },
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: () => import('../views/LoggedViews/DashboardView.vue')
+      component: () => import('../views/LoggedViews/DashboardView.vue'),
+      meta: { title: 'Dashboard' }
     },
     {
       path: '/Pdf',
       name: 'pdf',
-      component: () => import('../views/UserViews/MakePDFView.vue')
+      component: () => import('../views/UserViews/MakePDFView.vue'),
+      meta: { title: 'PDF' }
     },
     {
       path: '/logout',
@@ -42,21 +45,25 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/UnlogViews/SignupView.vue'),
+      meta: { title: 'Singup' }
     },
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/UnlogViews/HomeView.vue')
+      component: () => import('../views/UnlogViews/HomeView.vue'),
+      meta: { title: 'Catálogos | Twistic' }
     },
     {
       path: '/allcatalogues',
       name: 'allcatalogues',
-      component: () => import('../views/AdminViews/AllCataloguesView.vue')
+      component: () => import('../views/AdminViews/AllCataloguesView.vue'),
+      meta: { title: 'Catálogos' }
     },
     {
       path: '/allusers',
       name: 'allusers',
-      component: () => import('../views/AdminViews/UsersListView.vue')
+      component: () => import('../views/AdminViews/UsersListView.vue'),
+      meta: { title: 'Usuarios' }
     },
   ],
 })
