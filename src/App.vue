@@ -5,10 +5,11 @@ import NavAdmin from './Navs/NavAdmin.vue'
 import { computed } from 'vue';
 import './styles.css'
 
-// Saber si está logeado
-const isLogged = computed(() => {
-  return document.cookie.includes('laravel_session') || document.cookie.includes('XSRF-TOKEN');
-});
+// Computado para saber si hay sesión activa
+const isLogged = computed(() =>
+  document.cookie.includes('laravel_session') || document.cookie.includes('XSRF-TOKEN')
+);
+
 </script>
 
 <template>
