@@ -1,20 +1,14 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import '../styles.css'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 //Obtener el rol
-const role = ref('client');
+//const role = sessionStorage.getItem('userRole') || null;
 
 // Definir la variable de título para usarla en el template como navegación
 const title = ref(document.title);
 
-onMounted(() => {
-    const savedRole = sessionStorage.getItem('userRole');
-    if (savedRole) {
-        role.value = savedRole;
-    }
-});
 /*
 const sideExpanded = ref(false);
 
