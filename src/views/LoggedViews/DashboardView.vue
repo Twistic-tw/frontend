@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const role = sessionStorage.getItem('userRole');
+const userName = sessionStorage.getItem('userName');
 </script>
 
 <template>
@@ -7,7 +8,7 @@ const role = sessionStorage.getItem('userRole');
 
     <!-- Título de bienvenida -->
     <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6 mt-12">
-      ¡Bienvenido, Usuario!
+      ¡Bienvenido, {{userName}}!
     </h1>
 
     <!-- Tarjetas principales -->
