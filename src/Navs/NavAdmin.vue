@@ -7,7 +7,7 @@ import { ref, onMounted } from 'vue'
 const role = ref('client');
 
 // Definir la variable de título para usarla en el template como navegación
-//const title = ref('Admin Panel');
+const title = ref('Admin Panel');
 
 onMounted(() => {
     const savedRole = sessionStorage.getItem('userRole');
@@ -66,7 +66,9 @@ const sideExpanded = ref(false);
         </div>
         -->
         <div class="w-46 h-[0px] bg-neutral-950 rounded-b-2xl transition-all duration-200 ease-in-out fixed right-0 mt-[68px] flex flex-col" :class="{'h-[244px]': navExpanded}">
-
+            <div class="flex items-center justify-start h-14 px-5">
+              <p class="text-white font-bold text-xl">TWISTIC | {{ title }}</p>
+            </div>
             <RouterLink to="/profile" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Profile</RouterLink>
             <RouterLink to="/notifications" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Notifications</RouterLink>
             <!--<RouterLink to="/pdf" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Configuration</RouterLink>-->
