@@ -1,11 +1,11 @@
-<script setup lang="js">
+<script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import '../styles.css'
 import { ref } from 'vue'
 </script>
 
 <template>
-    
+
     <div class="flex h-screen">
         <nav class="flex h-17 items-center bg-gradient-to-l from-neutral-950 to-slate-800 w-full fixed top-0">
             <div class="flex justify-end flex-1">
@@ -44,7 +44,7 @@ import { ref } from 'vue'
 </template>
 
 
-<script lang="js">
+<script lang="ts">
 const sideExpanded = ref(false);
 
  const ToggleSidenav = () => {
