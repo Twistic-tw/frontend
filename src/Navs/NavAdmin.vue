@@ -30,14 +30,16 @@ const sideExpanded = ref(false);
 
     <div class="flex h-auto">
 
-        <nav class="flex h-17 items-center bg-gradient-to-l from-neutral-950 to-slate-800 w-full fixed top-0">
-            <div class="flex justify-end flex-1">
-              <div class="flex items-center justify-start h-14 px-5">
-              <p class="text-white font-bold text-xl">TWISTIC | {{ title }}</p>
-            </div>
-                <div @click="ToggleNav" class="rounded-tl-2xl rounded-br-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 size-12 mr-15 transition-all duration-300 ease-in-out hover:shadow-[0px_0px_10px_2px_rgba(255,_255,_255,_0.2)]"></div>
-            </div>
-        </nav>
+      <nav class="flex h-17 items-center bg-gradient-to-l from-neutral-950 to-slate-800 w-full fixed top-0 px-5">
+        <!-- Título alineado a la izquierda -->
+        <div class="flex items-center flex-1 justify-start">
+          <p class="text-white font-bold text-xl">TWISTIC | {{ title }}</p>
+        </div>
+
+        <!-- Botón ToggleNav alineado a la derecha -->
+        <div @click="ToggleNav" class="rounded-tl-2xl rounded-br-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 size-12 mr-15 transition-all duration-300 ease-in-out hover:shadow-[0px_0px_10px_2px_rgba(255,_255,_255,_0.2)]"></div>
+      </nav>
+
         <!--
         <div @click="ToggleSidenav" class="peer bg-neutral-950 w-21 h-[68px] rounded-tr-3xl flex text-3xl items-center justify-center transition-all duration-200 ease-in-out hover:text-4xl hover:shadow-[13px_16px_0px_1px_rgba(0,_0,_0,_0.5)] fixed top-0">
 
