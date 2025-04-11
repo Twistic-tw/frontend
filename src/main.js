@@ -8,9 +8,11 @@ import { abilitiesPlugin } from '@casl/vue'
 import defineUserAbility from './abilities/abilities';
 
 // Título de la página
+let title = 'Twistic';
 router.afterEach((to) => {
   if (to.meta.title) {
     document.title = to.meta.title;
+    title = to.meta.title;
   } else {
     document.title = 'Twistic';
   }
