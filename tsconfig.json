@@ -1,14 +1,14 @@
 {
-  "files": [],
   "compilerOptions": {
+    "target": "ES2015",         
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "allowJs": true,
+    "checkJs": false,
+    "strict": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    }
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
