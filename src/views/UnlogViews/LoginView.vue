@@ -62,7 +62,10 @@ const logUser = async () => {
           break
       }
 
+      // Guardar los datos principales del usuario
       sessionStorage.setItem('userRole', userRole)
+      sessionStorage.setItem('userName', response.data.nombre);
+      sessionStorage.setItem('userEmail', response.data.email);
       router.push('/dashboard')
     } else {
       error.value = 'Error inesperado'
