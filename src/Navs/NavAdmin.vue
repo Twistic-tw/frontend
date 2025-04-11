@@ -28,10 +28,13 @@ const sideExpanded = ref(false);
 
 <template>
 
-    <div class="flex h-screen">
+    <div class="flex h-auto">
 
         <nav class="flex h-17 items-center bg-gradient-to-l from-neutral-950 to-slate-800 w-full fixed top-0">
             <div class="flex justify-end flex-1">
+              <div class="flex items-center justify-start h-14 px-5">
+              <p class="text-white font-bold text-xl">TWISTIC | {{ title }}</p>
+            </div>
                 <div @click="ToggleNav" class="rounded-tl-2xl rounded-br-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 size-12 mr-15 transition-all duration-300 ease-in-out hover:shadow-[0px_0px_10px_2px_rgba(255,_255,_255,_0.2)]"></div>
             </div>
         </nav>
@@ -61,9 +64,7 @@ const sideExpanded = ref(false);
         </div>
         -->
         <div class="w-46 h-[0px] bg-neutral-950 rounded-b-2xl transition-all duration-200 ease-in-out fixed right-0 mt-[68px] flex flex-col" :class="{'h-[244px]': navExpanded}">
-            <div class="flex items-center justify-start h-14 px-5">
-              <p class="text-white font-bold text-xl">TWISTIC | {{ title }}</p>
-            </div>
+
             <RouterLink to="/profile" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Profile</RouterLink>
             <RouterLink to="/notifications" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Notifications</RouterLink>
             <RouterLink to="/logout" class="rounded-b-2xl transition-all duration-200 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Log Out</RouterLink>
