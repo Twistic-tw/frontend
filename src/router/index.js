@@ -74,6 +74,11 @@ const router = createRouter({
       component: () => import('../views/AdminViews/UsersListView.vue'),
       meta: { title: 'Usuarios' }
     },
+    {
+      path: '/notifications',
+      name: 'notifications',
+      component: () => import('../views/LoggedViews/NotificationCenter.vue')
+    }
   ],
 })
 
