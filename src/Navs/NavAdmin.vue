@@ -15,33 +15,34 @@ onMounted(() => {
         role.value = savedRole;
     }
 });
-
+/*
 const sideExpanded = ref(false);
 
  const ToggleSidenav = () => {
     sideExpanded.value = !sideExpanded.value
  }
-
+*/
  const navExpanded = ref(false);
-
+/*
  const ToggleNav = () => {
     navExpanded.value = !navExpanded.value
     console.log(navExpanded.value)
  }
-
+*/
  // Obtiene el rol
 </script>
 
 <template>
 
     <div class="flex h-screen">
+      <!--
         <nav class="flex h-17 items-center bg-gradient-to-l from-neutral-950 to-slate-800 w-full fixed top-0">
             <div class="flex justify-end flex-1">
                 <div @click="ToggleNav" class="rounded-tl-2xl rounded-br-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 size-12 mr-15 transition-all duration-300 ease-in-out hover:shadow-[0px_0px_10px_2px_rgba(255,_255,_255,_0.2)]"></div>
             </div>
         </nav>
         <div @click="ToggleSidenav" class="peer bg-neutral-950 w-21 h-[68px] rounded-tr-3xl flex text-3xl items-center justify-center transition-all duration-200 ease-in-out hover:text-4xl hover:shadow-[13px_16px_0px_1px_rgba(0,_0,_0,_0.5)] fixed top-0">
-                <p class="text-white ">TWISTIC | {{ title }}</p>
+
             </div>
         <div class="flex overflow-hidden fixed h-full mt-[68px] shadow-none transition-all duration-200 ease-in-out peer-hover:shadow-[13px_18px_0px_1px_rgba(0,_0,_0,_0.5)] w-21" :class="{'w-54 rounded-tr-3xl': sideExpanded}" >
             <nav class="flex-1 w-19 flex-shrink-0 overflow-y-auto bg-gradient-to-b from-neutral-950 to-slate-800 p-3 ">
@@ -63,7 +64,11 @@ const sideExpanded = ref(false);
                 </RouterLink>
             </nav>
         </div>
+        -->
         <div class="w-46 h-[0px] bg-neutral-950 rounded-b-2xl transition-all duration-200 ease-in-out fixed right-0 mt-[68px] flex flex-col" :class="{'h-[244px]': navExpanded}">
+            <div class="flex items-center justify-start h-14 px-5">
+              <p class="text-white font-bold text-xl">TWISTIC | {{ title }}</p>
+            </div>
             <RouterLink to="/profile" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Profile</RouterLink>
             <RouterLink to="/notifications" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Notifications</RouterLink>
             <!--<RouterLink to="/pdf" class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800" :class="{'hidden': !navExpanded}">Configuration</RouterLink>-->
