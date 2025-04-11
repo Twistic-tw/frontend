@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { userRoles } from '../../composable/userRoles.js'
 const { role } = userRoles();
+console.log(role);
 </script>
 
 <template>
