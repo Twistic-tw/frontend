@@ -50,33 +50,27 @@ const logUser = async () => {
     )
 
     console.log('Login exitoso:', response.data)
-    if (response.status === 200) {
-      let userRole = response.data.user.role; // Obtiene el rol de la respuesta
-      switch(userRole):
-      case 'ROLE_ADMINISTRATOR':
-        userRole = 'admin';
-        break;
-      default:
-        userRole = 'client';
-        break;
-      end
-      sessionStorage.setItem('userRole', userRole); // Guarda el rol en sessionStorage
+    if (response.status === 200 && response.data.user) {
+      let userRole = response.data.user.role || 'client'
+
+      switch (userRole) {
+        case 'ROLE_ADMINISTRATOR':
+          userRole = 'admin'
+          break
+        default:
+          userRole = 'client'
+          break
+      }
+
+      sessionStorage.setItem('userRole', userRole)
       router.push('/dashboard')
     } else {
       error.value = 'Error inesperado'
     }
 
-
   } catch (err) {
     console.error('Error en login:', err)
-
-    if (axios.isAxiosError(err) && err.response && err.response.status === 401) {
-      error.value = 'Credenciales incorrectas'
-    } else if (axios.isAxiosError(err) && err.response && err.response.status === 419) {
-      error.value = 'Sesión expirada. Recarga la página.'
-    } else {
-      error.value = 'Error de conexión'
-    }
+    error.value = 'Error de conexión'
   }
 }
 
