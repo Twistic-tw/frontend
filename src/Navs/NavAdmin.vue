@@ -17,24 +17,25 @@ const sideExpanded = ref(false);
  }
 */
  const navExpanded = ref(false);
-/*
+
  const ToggleNav = () => {
     navExpanded.value = !navExpanded.value
     console.log(navExpanded.value)
  }
-*/
+
  // Obtiene el rol
 </script>
 
 <template>
 
     <div class="flex h-screen">
-      <!--
+
         <nav class="flex h-17 items-center bg-gradient-to-l from-neutral-950 to-slate-800 w-full fixed top-0">
             <div class="flex justify-end flex-1">
                 <div @click="ToggleNav" class="rounded-tl-2xl rounded-br-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 size-12 mr-15 transition-all duration-300 ease-in-out hover:shadow-[0px_0px_10px_2px_rgba(255,_255,_255,_0.2)]"></div>
             </div>
         </nav>
+        <!--
         <div @click="ToggleSidenav" class="peer bg-neutral-950 w-21 h-[68px] rounded-tr-3xl flex text-3xl items-center justify-center transition-all duration-200 ease-in-out hover:text-4xl hover:shadow-[13px_16px_0px_1px_rgba(0,_0,_0,_0.5)] fixed top-0">
 
             </div>
