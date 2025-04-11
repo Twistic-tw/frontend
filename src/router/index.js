@@ -19,8 +19,21 @@ const router = createRouter({
       component: () => import('../views/UserViews/MakePDFView.vue')
     },
     {
-      path: '/Logout',
-      name: 'pdf',
+      path: '/logout',
+      name: 'logout',
+      beforeEnter: async (to, from, next) => {
+        try {
+          await axios.post('https://api-catalogos.twistic.app/api/logout', {}, {
+            withCredentials: true
+          });
+
+          next('/');
+        } catch (error) {
+          console.error('Error cerrando sesión:', error);
+          // Redirigir al login aunque falle
+          next('/');
+        }
+      }
     },
     {
       path: '/signup',
