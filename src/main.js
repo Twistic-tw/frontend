@@ -8,7 +8,7 @@ import { abilitiesPlugin } from '@casl/vue'
 import defineUserAbility from './abilities/abilities';
 
 axios.defaults.withCredentials = true;
-
+/*
 async function bootstrap() {
   try {
     // Consultar al backend el usuario actual
@@ -45,6 +45,7 @@ async function bootstrap() {
 }
 
 bootstrap();
+*/
 
 import App from './App.vue'
 import router from './router'

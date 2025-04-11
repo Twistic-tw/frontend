@@ -9,9 +9,9 @@ const router = createRouter({
       component: () => import('../views/UnlogViews/LoginView.vue'),
     },
     {
-      path: '/Dashboard',
+      path: '/dashboard',
       name: 'dashboard',
-      component: () => import('../views/UserViews/DashboardView.vue')
+      component: () => import('../views/LoggedViews/DashboardView.vue')
     },
     {
       path: '/Pdf',
