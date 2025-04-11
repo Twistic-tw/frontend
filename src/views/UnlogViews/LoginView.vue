@@ -1,7 +1,9 @@
-<script setup lang="js">
+<script setup lang="ts">
 import '../../styles.css'
 import axios from 'axios';
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
 </script>
 
 <template>
@@ -48,18 +50,20 @@ import { ref } from 'vue'
     </div>
 </template>
 
-<script lang="js">
+<script lang="ts">
 
 // Datos del formulario
 const email = ref('')
 const password = ref('')
-const error = ref(null)
+const error = ref<string | null>(null)
+const router = useRouter()
 
 // Función para obtener el valor de una cookie
-function getCookie(name) {
-  const value = `; ${document.cookie}`
-  const parts = value.split(`; ${name}=`)
-  if (parts.length === 2) return parts.pop().split(';').shift()
+function getCookie(name: string): string {
+  const value: string = `; ${document.cookie}`
+  const parts: string[] = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop()?.split(';').shift() ?? ''
+  return ''
 }
 
 // Función de login
@@ -93,16 +97,15 @@ const logUser = async () => {
     )
 
     console.log('Login exitoso:', response.data)
+    router.push('/dashboard')
 
-
-    window.location.href = '/dashboard'
 
   } catch (err) {
     console.error('Error en login:', err)
 
-    if (err.response && err.response.status === 401) {
+    if (axios.isAxiosError(err) && err.response && err.response.status === 401) {
       error.value = 'Credenciales incorrectas'
-    } else if (err.response && err.response.status === 419) {
+    } else if (axios.isAxiosError(err) && err.response && err.response.status === 419) {
       error.value = 'Sesión expirada. Recarga la página.'
     } else {
       error.value = 'Error de conexión'
