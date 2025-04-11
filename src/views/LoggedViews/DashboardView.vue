@@ -1,5 +1,4 @@
 <script setup lang="js">
-import { ref } from 'vue'
 
 </script>
 
@@ -44,4 +43,6 @@ import { ref } from 'vue'
     </div>
 
   </div>
+
 </template>
+
