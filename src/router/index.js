@@ -26,8 +26,17 @@ const router = createRouter({
       name: 'logout',
       beforeEnter: async (to, from, next) => {
         try {
+
+          // 1. Borrar el localStorage
+          sessionStorage.clear();
+          // 2. Borrar todas las cookies
+          document.cookie.split(";").forEach((cookie) => {
+            const eqPos = cookie.indexOf("=");
+            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+          });
           await axios.post('https://api-catalogos.twistic.app/api/logout', {}, {
-            withCredentials: true
+            withCredentials: true,
           });
 
           next('/');
