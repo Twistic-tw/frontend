@@ -1,7 +1,7 @@
-<script setup lang="js">
+<script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import '../styles.css'
-import { ref } from 'vue'
+//import { ref } from 'vue'
 </script>
 
 <template>
@@ -37,11 +37,13 @@ import { ref } from 'vue'
 }
 </style>
 
-<script lang="js">
+<script lang="ts">
+/*
 const sideExpanded = ref(false);
 
  const ToggleSidenav = () => {
     sideExpanded.value = !sideExpanded.value
     console.log(sideExpanded.value)
  }
+    */
 </script>
