@@ -7,7 +7,7 @@ import { ref, onMounted } from 'vue'
 const role = ref('client');
 
 // Definir la variable de título para usarla en el template como navegación
-const title = ref('Admin Panel');
+const title = ref(document.title);
 
 onMounted(() => {
     const savedRole = sessionStorage.getItem('userRole');
