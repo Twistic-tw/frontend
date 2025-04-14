@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import axios from 'axios';
-import { useLogout } from '@/composable/useLogout';
+import { useLogout } from '../composable/logout.js';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
