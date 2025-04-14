@@ -27,7 +27,7 @@ const router = createRouter({
       path: '/logout',
       name: 'logout',
       beforeEnter: async (to, from, next) => {
-        await useLogout();
+        await useLogout().logout;
       }
     },
     {
