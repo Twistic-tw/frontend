@@ -23,12 +23,12 @@ const router = createRouter({
       meta: { title: 'PDF' }
     },
     {
-      path: '/Logout',
+      path: '/logout',
       name: 'logout',
       beforeEnter: async (to, from, next) => {
         try {
 
-          await axios.post('https://api-catalogos.twistic.app/api/logout', {}, {
+          await axios.post('https://api-catalogos.twistic.app/api/Logout', {}, {
             withCredentials: true,
           });
 
