@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import axios from 'axios';
+import { useLogout } from '@/composables/useLogout';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,27 +27,7 @@ const router = createRouter({
       path: '/logout',
       name: 'logout',
       beforeEnter: async (to, from, next) => {
-        try {
-
-          await axios.post('https://api-catalogos.twistic.app/api/Logout', {}, {
-            withCredentials: true,
-          });
-
-          // Limpiar sessionStorage
-          sessionStorage.clear();
-          localStorage.clear();
-
-          // Redirigir al home
-          router.push('/');
-
-          // Forzar recarga para actualizar las cookies eliminadas
-          window.location.reload();
-
-        } catch (error) {
-          console.error('Error cerrando sesión:', error);
-          // Redirigir al login aunque falle
-          next('/');
-        }
+        await useLogout();
       }
     },
     {
