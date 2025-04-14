@@ -23,7 +23,7 @@ const router = createRouter({
       meta: { title: 'PDF' }
     },
     {
-      path: '/logout',
+      path: '/Logout',
       name: 'logout',
       beforeEnter: async (to, from, next) => {
         try {
