@@ -26,6 +26,12 @@ const router = createRouter({
       meta: { title: 'PDF' }
     },
     {
+      path: '/templates',
+      name: 'templates',
+      component: () => import('../views/AdminViews/AllTemplatesView.vue'),
+      meta: { title: 'Templates' }
+    },
+    {
       path: '/logout',
       name: 'logout',
       beforeEnter: async (to, from, next) => {
