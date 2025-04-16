@@ -11,25 +11,25 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../views/UnlogViews/LoginView.vue'),
-      meta: { title: 'Login' }
+      meta: { title: 'Login | Twistic' }
     },
     {
       path: '/dashboard',
       name: 'dashboard',
       component: () => import('../views/LoggedViews/DashboardView.vue'),
-      meta: { title: 'Dashboard' }
+      meta: { title: 'Dashboard | Twistic' }
     },
     {
-      path: '/Pdf',
+      path: '/pdf',
       name: 'pdf',
       component: () => import('../views/UserViews/MakePDFView.vue'),
-      meta: { title: 'PDF' }
+      meta: { title: 'PDF | Twistic' }
     },
     {
       path: '/templates',
       name: 'templates',
       component: () => import('../views/AdminViews/AllTemplatesView.vue'),
-      meta: { title: 'Templates' }
+      meta: { title: 'Templates | Twistic' }
     },
     {
       path: '/logout',
@@ -45,7 +45,7 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/UnlogViews/SignupView.vue'),
-      meta: { title: 'Singup' }
+      meta: { title: 'Singup | Twistic' }
     },
     {
       path: '/',
@@ -54,21 +54,22 @@ const router = createRouter({
       meta: { title: 'Catálogos | Twistic' }
     },
     {
-      path: '/allcatalogues',
-      name: 'allcatalogues',
+      path: '/catalogs',
+      name: 'catalogs',
       component: () => import('../views/AdminViews/AllCataloguesView.vue'),
-      meta: { title: 'Catálogos' }
+      meta: { title: 'Catalogs List | Twistic' }
     },
     {
-      path: '/allusers',
-      name: 'allusers',
+      path: '/users',
+      name: 'users',
       component: () => import('../views/AdminViews/UsersListView.vue'),
-      meta: { title: 'Usuarios' }
+      meta: { title: 'Users | Twistic' }
     },
     {
       path: '/notifications',
       name: 'notifications',
-      component: () => import('../views/LoggedViews/NotificationCenter.vue')
+      component: () => import('../views/LoggedViews/NotificationCenter.vue'),
+      meta: { title: 'Notifications | Twistic' }
     }
   ],
 })
