@@ -11,25 +11,25 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../views/UnlogViews/LoginView.vue'),
-      meta: { title: 'Login | Twistic' }
+      meta: { title: 'Login' }
     },
     {
       path: '/dashboard',
       name: 'dashboard',
       component: () => import('../views/LoggedViews/DashboardView.vue'),
-      meta: { title: 'Dashboard | Twistic' }
+      meta: { title: 'Dashboard' }
     },
     {
       path: '/pdf',
       name: 'pdf',
       component: () => import('../views/UserViews/MakePDFView.vue'),
-      meta: { title: 'PDF | Twistic' }
+      meta: { title: 'PDF' }
     },
     {
       path: '/templates',
       name: 'templates',
       component: () => import('../views/AdminViews/AllTemplatesView.vue'),
-      meta: { title: 'Templates | Twistic' }
+      meta: { title: 'Templates' }
     },
     {
       path: '/logout',
@@ -45,7 +45,7 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/UnlogViews/SignupView.vue'),
-      meta: { title: 'Singup | Twistic' }
+      meta: { title: 'Singup' }
     },
     {
       path: '/',
@@ -57,21 +57,48 @@ const router = createRouter({
       path: '/catalogs',
       name: 'catalogs',
       component: () => import('../views/AdminViews/AllCataloguesView.vue'),
-      meta: { title: 'Catalogs List | Twistic' }
+      meta: { title: 'Catalogs List' }
     },
     {
       path: '/users',
       name: 'users',
       component: () => import('../views/AdminViews/UsersListView.vue'),
-      meta: { title: 'Users | Twistic' }
+      meta: { title: 'Users' }
     },
     {
       path: '/notifications',
       name: 'notifications',
       component: () => import('../views/LoggedViews/NotificationCenter.vue'),
-      meta: { title: 'Notifications | Twistic' }
+      meta: { title: 'Notifications' }
+    },
+    {
+      path: '/unauthorized',
+      name: 'unauthorized',
+      component: () => import('../views/UnlogViews/UnauthorizedView.vue'),
+      meta: { title: 'No autorizado' }
     }
   ],
 })
+
+// Proteger las rutas con Sanctum
+router.beforeEach(async (to, from, next) => {
+  const publicPages = ['home', 'login'];
+  const requiresAuth = !publicPages.includes(to.name);
+
+  if (!requiresAuth) {
+    try {
+      const response = await axios.get('https://api-catalogos.twistic.app/api/user');
+      if (response.status === 200) {
+        next();
+      } else {
+        next({ name: 'login' });
+      }
+    } catch (error) {
+      next({ name: 'login' });
+    }
+  } else {
+    next(); // Rutas públicas, deja pasar
+  }
+});
 
 export default router
