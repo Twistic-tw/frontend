@@ -74,7 +74,7 @@ const router = createRouter({
     {
       path: '/unauthorized',
       name: 'unauthorized',
-      component: () => import('../views/UnlogViews/UnauthorizedView.vue'),
+      component: () => import('../views/ErrorViews/UnauthorizedView.vue'),
       meta: { title: 'No autorizado' }
     }
   ],
