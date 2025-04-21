@@ -29,8 +29,6 @@ const logUser = async () => {
       withCredentials: true,
     })
 
-    console.log('CSRF cookie obtenida')
-
     // Recuperamos el XSRF-TOKEN de la cookie
     const csrfToken = decodeURIComponent(getCookie('XSRF-TOKEN'))
 
@@ -49,7 +47,6 @@ const logUser = async () => {
       }
     )
 
-    console.log('Login exitoso:', response.data)
     if (response.status === 200) {
       let userRole = response.data.user.roles[0] || 'client'
 
