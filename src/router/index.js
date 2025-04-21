@@ -10,10 +10,28 @@ const router = createRouter({
       meta: { title: 'Login' }
     },
     {
+      path: '/logout',
+      name: 'logout',
+      component: () => import('../views/LoggedViews/LogoutView.vue'),
+      meta: { title: 'Logout' }
+    },
+    {
+      path: '/',
+      name: 'home',
+      component: () => import('../views/UnlogViews/HomeView.vue'),
+      meta: { title: 'Catálogos | Twistic' }
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
       component: () => import('../views/LoggedViews/DashboardView.vue'),
       meta: { title: 'Dashboard' }
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('../views/LoggedViews/ProfileView.vue'),
+      meta: { title: 'Profile' }
     },
     {
       path: '/pdf',
@@ -27,24 +45,14 @@ const router = createRouter({
       component: () => import('../views/AdminViews/AllTemplatesView.vue'),
       meta: { title: 'Templates' }
     },
-    {
-      path: '/logout',
-      name: 'logout',
-      component: () => import('../views/LoggedViews/LogoutView.vue'),
-      meta: { title: 'Logout' }
-    },
+
     {
       path: '/signup',
       name: 'signup',
       component: () => import('../views/UnlogViews/SignupView.vue'),
       meta: { title: 'Singup' }
     },
-    {
-      path: '/',
-      name: 'home',
-      component: () => import('../views/UnlogViews/HomeView.vue'),
-      meta: { title: 'Catálogos | Twistic' }
-    },
+
     {
       path: '/catalogs',
       name: 'catalogs',
