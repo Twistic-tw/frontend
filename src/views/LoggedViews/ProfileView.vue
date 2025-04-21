@@ -1,5 +1,82 @@
+<script lang="ts">
+import { defineComponent, onMounted, ref } from 'vue'
+import axios from 'axios'
+
+// Interfaz del usuario
+interface User {
+  id: number
+  name: string
+  email: string
+  role: string
+  created_at: string
+}
+
+// Función para extraer una cookie por nombre
+function getCookie(name: string): string {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return decodeURIComponent(parts.pop()?.split(';').shift() || '')
+  return ''
+}
+
+export default defineComponent({
+  name: 'UserProfile',
+  setup() {
+    const user = ref<User | null>(null)
+    const loading = ref(true)
+    const error = ref(false)
+
+    const fetchUser = async () => {
+      try {
+        console.log('[AUTH] Obteniendo XSRF-TOKEN y cookies activas...')
+        const xsrfToken = getCookie('XSRF-TOKEN')
+        console.log('XSRF-TOKEN:', xsrfToken)
+
+        const response = await axios.get<User>('https://api-catalogos.twistic.app/api/user', {
+          withCredentials: true,
+          headers: {
+            'X-XSRF-TOKEN': xsrfToken,
+            Accept: 'application/json'
+          }
+        })
+
+        console.log('[AUTH] Usuario autenticado:', response.data)
+        user.value = response.data
+      } catch (err: unknown) {
+        console.error('[AUTH] Error al obtener el usuario')
+        if (axios.isAxiosError(err) && err.response) {
+          console.error('Status:', err.response.status)
+          console.error('Data:', err.response.data)
+        } else if (err instanceof Error) {
+          console.error('Error:', err.message)
+        } else {
+          console.error('Unknown error occurred')
+        }
+        error.value = true
+      } finally {
+        loading.value = false
+      }
+    }
+
+    const formatDate = (dateStr: string): string => {
+      return new Date(dateStr).toLocaleString()
+    }
+
+    onMounted(fetchUser)
+
+    return {
+      user,
+      loading,
+      error,
+      formatDate
+    }
+  }
+})
+</script>
+
+
 <template>
-  <div class="min-h-screen bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-6 mt-12">
+  <div class="min-h-screen bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-6 mt-14">
     <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6 text-center">
       User Profile
     </h1>
@@ -36,53 +113,3 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
-import axios from 'axios'
-
-interface User {
-  id: number
-  name: string
-  email: string
-  role: string
-  created_at: string
-}
-
-export default defineComponent({
-  name: 'UserProfile',
-  setup() {
-    const user = ref<User | null>(null)
-    const loading = ref(true)
-    const error = ref(false)
-
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get<User>('https://api-catalogos.twistic.app/api/user', {
-          withCredentials: true
-        })
-        user.value = response.data
-      } catch (err) {
-        console.error('Error fetching user:', err)
-        error.value = true
-      } finally {
-        loading.value = false
-      }
-    }
-
-    const formatDate = (dateStr: string): string => {
-      return new Date(dateStr).toLocaleString()
-    }
-
-    onMounted(() => {
-      fetchUser()
-    })
-
-    return {
-      user,
-      loading,
-      error,
-      formatDate
-    }
-  }
-})
-</script>
