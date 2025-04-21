@@ -1,6 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import axios from 'axios';
-import { logout } from '../composable/logout.js';
 
 const { logout } = useLogout();
 
@@ -34,17 +32,12 @@ const router = createRouter({
     {
       path: '/logout',
       name: 'logout',
-      beforeEnter: async (to, from, next) => {
-        const routerInstance = router;
-        await logout(routerInstance);
-      }
+      component: () => import('../views/LoggedViews/LogoutView.vue'),
+      meta: { title: 'Logout' }
     },
     {
       path: '/signup',
       name: 'signup',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/UnlogViews/SignupView.vue'),
       meta: { title: 'Singup' }
     },
