@@ -3,6 +3,7 @@ import axios from 'axios';
 
 export function useLogout() {
   const router = useRouter();
+  console.log('Router:', router);
 
   const logout = async () => {
     try {
