@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import axios from 'axios';
-import { useLogout } from '../composable/logout.js';
+import { logout } from '../composable/logout.js';
 
 const { logout } = useLogout();
 
@@ -35,7 +35,8 @@ const router = createRouter({
       path: '/logout',
       name: 'logout',
       beforeEnter: async (to, from, next) => {
-        await logout();
+        const routerInstance = router;
+        await logout(routerInstance);
       }
     },
     {
