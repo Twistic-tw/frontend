@@ -1,0 +1,88 @@
+<template>
+  <div class="min-h-screen bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-6 mt-12">
+    <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6 text-center">
+      User Profile
+    </h1>
+
+    <div v-if="loading" class="text-center text-gray-600 dark:text-gray-300">
+      Loading user data...
+    </div>
+
+    <div v-else-if="!user" class="text-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md text-gray-700 dark:text-gray-200">
+      User information could not be found.
+    </div>
+
+    <div v-else class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+      <div class="mb-4">
+        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Full Name</h2>
+        <p class="text-gray-700 dark:text-gray-200">{{ user.name }}</p>
+      </div>
+      <div class="mb-4">
+        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Email</h2>
+        <p class="text-gray-700 dark:text-gray-200">{{ user.email }}</p>
+      </div>
+      <div class="mb-4">
+        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Role</h2>
+        <p class="text-gray-700 dark:text-gray-200 capitalize">{{ user.role }}</p>
+      </div>
+      <div>
+        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Registered At</h2>
+        <p class="text-gray-700 dark:text-gray-200">{{ formatDate(user.created_at) }}</p>
+      </div>
+    </div>
+
+    <div v-if="error" class="text-center text-red-500 mt-6">
+      An error occurred while loading user information.
+    </div>
+  </div>
+</template>
+<script lang="ts">
+import { defineComponent, onMounted, ref } from 'vue'
+import axios from 'axios'
+
+interface User {
+  id: number
+  name: string
+  email: string
+  role: string
+  created_at: string
+}
+
+export default defineComponent({
+  name: 'UserProfile',
+  setup() {
+    const user = ref<User | null>(null)
+    const loading = ref(true)
+    const error = ref(false)
+
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get<User>('https://api-catalogos.twistic.app/api/user', {
+          withCredentials: true
+        })
+        user.value = response.data
+      } catch (err) {
+        console.error('Error fetching user:', err)
+        error.value = true
+      } finally {
+        loading.value = false
+      }
+    }
+
+    const formatDate = (dateStr: string): string => {
+      return new Date(dateStr).toLocaleString()
+    }
+
+    onMounted(() => {
+      fetchUser()
+    })
+
+    return {
+      user,
+      loading,
+      error,
+      formatDate
+    }
+  }
+})
+</script>
