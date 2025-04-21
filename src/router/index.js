@@ -70,35 +70,8 @@ const router = createRouter({
       name: 'notifications',
       component: () => import('../views/LoggedViews/NotificationCenter.vue'),
       meta: { title: 'Notifications' }
-    },/*
-    {
-      path: '/unauthorized',
-      name: 'unauthorized',
-      component: () => import('../views/ErrorViews/UnAuthorizedView.vue'),
-      meta: { title: 'No autorizado' }
-    }*/
+    }
   ],
 })
-
-// Proteger las rutas con Sanctum
-router.beforeEach(async (to, from, next) => {
-  const publicPages = ['home', 'login'];
-  const requiresAuth = !publicPages.includes(to.name);
-
-  if (!requiresAuth) {
-    try {
-      const response = await axios.get('https://api-catalogos.twistic.app/api/user');
-      if (response.status === 200) {
-        next();
-      } else {
-        next({ name: 'login' });
-      }
-    } catch (error) {
-      next({ name: 'login' });
-    }
-  } else {
-    next(); // Rutas públicas, deja pasar
-  }
-});
 
 export default router
