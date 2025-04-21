@@ -70,13 +70,13 @@ const router = createRouter({
       name: 'notifications',
       component: () => import('../views/LoggedViews/NotificationCenter.vue'),
       meta: { title: 'Notifications' }
-    },
+    },/*
     {
       path: '/unauthorized',
       name: 'unauthorized',
       component: () => import('../views/ErrorViews/UnAuthorizedView.vue'),
       meta: { title: 'No autorizado' }
-    }
+    }*/
   ],
 })
 
