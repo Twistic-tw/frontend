@@ -8,8 +8,11 @@ const error = ref(false)
 
 const fetchUsers = async () => {
   try {
-    const response = await axios.get('https://api-catalogos.twistic.app/api/users', { withCredentials: true })
-    users.value = response.data.users
+    const response = await axios.get('https://api-catalogos.twistic.app/api/users', {
+       withCredentials: true,
+       headers: {'Accept': 'application/json'}
+      })
+    users.value = response.data
     console.log('Users:', response)
     console.log('Users:', users.value)
   } catch (e) {
