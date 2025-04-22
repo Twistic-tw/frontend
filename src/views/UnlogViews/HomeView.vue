@@ -3,14 +3,14 @@ import '../../styles.css'
 import { RouterLink} from 'vue-router'
 </script>
 <template>
-  <div class="min-h-screen bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-8 space-y-24">
+  <div class="min-h-screen bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-8 space-y-24 mt-14">
 
     <!-- Bloque 1: Encabezado -->
     <section class="text-center space-y-4 animate-fadeInUp">
       <h1 class="text-5xl font-extrabold text-slate-800 dark:text-white">
         Welcome to TWISTIC Catalogues
       </h1>
-      <p class="text-lg text-slate-700 dark:text-slate-300 max-w-2xl mx-auto">
+      <p class="text-lg text-slate-700 dark:text-slate-300 max-w-2xl mx-auto mt-10">
         The easiest way to create, customize, and manage product catalogues for your business in just a few steps.
       </p>
     </section>
@@ -43,7 +43,7 @@ import { RouterLink} from 'vue-router'
         Ready to simplify your catalogue creation?
       </h2>
       <RouterLink
-        to="/signup"
+        to="/login"
         class="inline-block px-8 py-3 text-lg font-semibold text-white bg-indigo-600 rounded-xl shadow hover:bg-indigo-700 transition"
       >
         Get Started Now
