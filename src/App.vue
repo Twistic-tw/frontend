@@ -21,7 +21,7 @@ const isLogged = computed(() =>
     </header>
 
     <!-- Solo contenido principal -->
-    <main class="flex-1">
+    <main class="flex-1 mt-14">
       <RouterView v-slot="{ Component }">
         <transition
           enter-active-class="transition-all duration-500 ease-out"
