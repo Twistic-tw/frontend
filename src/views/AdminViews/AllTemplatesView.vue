@@ -68,7 +68,7 @@ watch(usuarioSeleccionado, () => {
         <tr>
           <th class="px-4 py-2 border border-gray-300 text-left">ID</th>
           <th class="px-4 py-2 border border-gray-300 text-left">Nombre</th>
-          <th class="px-4 py-2 border border-gray-300 text-left">Descripción</th>
+          <th class="px-4 py-2 border border-gray-300 text-left">Usuario</th>
         </tr>
       </thead>
       <tbody>
@@ -78,8 +78,8 @@ watch(usuarioSeleccionado, () => {
           class="hover:bg-violet-50 transition-colors"
         >
           <td class="px-4 py-2 border border-gray-200">{{ plantilla.id }}</td>
-          <td class="px-4 py-2 border border-gray-200">{{ plantilla.nombre }}</td>
-          <td class="px-4 py-2 border border-gray-200">{{ plantilla.descripcion }}</td>
+          <td class="px-4 py-2 border border-gray-200">{{ plantilla.name }}</td>
+          <td class="px-4 py-2 border border-gray-200">{{ plantilla.id_user }}</td>
         </tr>
         <tr v-if="plantillas.length === 0">
           <td colspan="3" class="text-center text-gray-500 py-4">No hay plantillas disponibles</td>
