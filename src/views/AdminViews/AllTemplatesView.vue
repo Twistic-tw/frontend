@@ -42,7 +42,7 @@ async function eliminarPlantilla(id) {
 
 <template>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen">
-    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Plantillas Disponibles</h2>
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Templates</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
@@ -53,11 +53,11 @@ async function eliminarPlantilla(id) {
         <h3 class="text-xl font-semibold text-violet-700 mb-2">{{ plantilla.name }}</h3>
 
         <p class="text-sm text-gray-500 mb-1">
-          Creado por: <span class="font-medium text-gray-700">{{ obtenerNombreUsuario(plantilla.id_user) }}</span>
+          Created by: <span class="font-medium text-gray-700">{{ obtenerNombreUsuario(plantilla.id_user) }}</span>
         </p>
 
         <p class="text-sm text-gray-500 mb-3">
-          Fecha de creación: <span class="font-medium text-gray-700">{{ new Date(plantilla.created_at).toLocaleDateString() }}</span>
+          Created date: <span class="font-medium text-gray-700">{{ new Date(plantilla.created_at).toLocaleDateString() }}</span>
         </p>
 
         <div>
@@ -71,13 +71,13 @@ async function eliminarPlantilla(id) {
           @click="eliminarPlantilla(plantilla.id)"
           class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition mt-4"
         >
-          Eliminar
+          Delete
         </button>
       </div>
     </div>
 
     <div v-if="plantillas.length === 0" class="text-center text-gray-500 mt-8">
-      No hay plantillas disponibles
+      No templates available
     </div>
   </div>
 </template>
