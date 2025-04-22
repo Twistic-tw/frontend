@@ -53,7 +53,7 @@ watch([filtroNombreCatalogo, usuarioSeleccionado], () => {
 
 <template>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen">
-    <h2 class="text-3xl font-bold text-violet-700 mb-6 text-center">Catálogos</h2>
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Catálogos</h2>
 
     <!-- Filtros -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -70,7 +70,7 @@ watch([filtroNombreCatalogo, usuarioSeleccionado], () => {
         v-model="usuarioSeleccionado"
         class="px-4 py-2 border border-violet-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-400 w-full"
       >
-        <option value="">-- Todos los usuarios --</option>
+        <option value="">Selecciona un usuario</option>
         <option v-for="user in usuarios" :key="user.id" :value="user.id">
           {{ user.nombre }}
         </option>
