@@ -13,11 +13,26 @@ onMounted(async () => {
     fields.value = []
   }
 })
+
+// Eliminar campo
+async function eliminarCampo(id) {
+  if (confirm('¿Estás seguro de que quieres eliminar este campo?')) {
+    try {
+      await axios.delete(`https://api-catalogos.twistic.app/api/DeleteField/${id}`)
+      // Eliminar del array localmente
+      fields.value = fields.value.filter(field => field.id !== id)
+      alert('Campo eliminado correctamente.')
+    } catch (error) {
+      console.error('Error al eliminar el campo:', error)
+      alert('Hubo un error al eliminar el campo.')
+    }
+  }
+}
 </script>
 
 <template>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen">
-    <h2 class="text-3xl font-bold text-violet-700 mb-6 text-center">Campos Disponibles</h2>
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Campos Disponibles</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
@@ -28,6 +43,13 @@ onMounted(async () => {
         <h3 class="text-xl font-semibold text-violet-700 mb-2">#{{ field.id }} - {{ field.field }}</h3>
         <p class="text-sm text-gray-500 mb-1">Creado: <span class="font-medium text-gray-700">{{ new Date(field.created_at).toLocaleDateString() }}</span></p>
         <p class="text-sm text-gray-500 mb-1">Actualizado: <span class="font-medium text-gray-700">{{ new Date(field.updated_at).toLocaleDateString() }}</span></p>
+        <!-- Botón Eliminar -->
+        <button
+          @click="eliminarCampo(field.id)"
+          class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+        >
+          Eliminar
+        </button>
       </div>
     </div>
 
