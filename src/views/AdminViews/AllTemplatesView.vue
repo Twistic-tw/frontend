@@ -41,7 +41,7 @@ watch(usuarioSeleccionado, () => {
 
 
 <template>
-  <div class="p-6 bg-white rounded-xl shadow-md  mt-14">
+  <div class="p-6 bg-white rounded-xl shadow-md  mt-4">
     <h2 class="text-2xl font-bold text-violet-700 mb-4">Gestión de Plantillas por Usuario</h2>
 
     <!-- Select de usuarios -->
