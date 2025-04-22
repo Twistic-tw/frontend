@@ -3,46 +3,78 @@ import '../../styles.css'
 import { RouterLink} from 'vue-router'
 </script>
 <template>
-  <div class="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-8">
+  <div class="min-h-screen bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-8 space-y-24">
 
-    <!-- Sección de bienvenida -->
-    <div class="text-center md:text-left max-w-xl space-y-6 mb-12 md:mb-0 md:mr-12">
-      <h2 class="text-4xl font-bold text-slate-800 dark:text-white font-sans">
-        Create simple catalogues <br class="hidden md:inline"> in just a few steps
+    <!-- Bloque 1: Encabezado -->
+    <section class="text-center space-y-4 animate-fadeInUp">
+      <h1 class="text-5xl font-extrabold text-slate-800 dark:text-white">
+        Welcome to TWISTIC Catalogues
+      </h1>
+      <p class="text-lg text-slate-700 dark:text-slate-300 max-w-2xl mx-auto">
+        The easiest way to create, customize, and manage product catalogues for your business in just a few steps.
+      </p>
+    </section>
+
+    <!-- Bloque 2: Beneficios -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-8 animate-fadeInUp delay-100">
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center transition transform hover:-translate-y-1 hover:shadow-2xl">
+        <h2 class="text-2xl font-semibold text-indigo-600 dark:text-indigo-400 mb-2">Easy Catalogue Creation</h2>
+        <p class="text-slate-600 dark:text-slate-300">
+          Upload your data and generate catalogues automatically. Simple, fast, and intuitive.
+        </p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center transition transform hover:-translate-y-1 hover:shadow-2xl">
+        <h2 class="text-2xl font-semibold text-indigo-600 dark:text-indigo-400 mb-2">Real-Time Notifications</h2>
+        <p class="text-slate-600 dark:text-slate-300">
+          Stay updated with instant notifications about your catalogue status.
+        </p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center transition transform hover:-translate-y-1 hover:shadow-2xl">
+        <h2 class="text-2xl font-semibold text-indigo-600 dark:text-indigo-400 mb-2">Custom Templates</h2>
+        <p class="text-slate-600 dark:text-slate-300">
+          Design and manage templates for consistent and professional catalogues.
+        </p>
+      </div>
+    </section>
+
+    <!-- Bloque 3: Animación y llamada a la acción -->
+    <section class="text-center space-y-6 animate-fadeInUp delay-200">
+      <h2 class="text-4xl font-bold text-slate-800 dark:text-white">
+        Ready to simplify your catalogue creation?
       </h2>
-
       <RouterLink
-        to="/login"
+        to="/signup"
         class="inline-block px-8 py-3 text-lg font-semibold text-white bg-indigo-600 rounded-xl shadow hover:bg-indigo-700 transition"
       >
-        Log In
+        Get Started Now
       </RouterLink>
-
-      <p class="text-slate-700 dark:text-slate-300 text-lg">
-        or, if you don't have an account,
-        <RouterLink
-          to="/signup"
-          class="underline font-semibold text-cyan-700 dark:text-cyan-300 hover:text-cyan-500 dark:hover:text-cyan-100 transition"
-        >
-          Sign Up
-        </RouterLink>
-      </p>
-    </div>
-
-    <!-- Sección del logo -->
-    <div class="text-center space-y-8">
-      <h1 class="text-6xl md:text-8xl font-extrabold text-slate-800 dark:text-white">
-        TWISTIC
-      </h1>
-
-      <div class="flex items-center justify-center space-x-6 text-slate-800 dark:text-slate-200 text-lg font-medium">
-        <span>Automatic</span>
-        <div class="w-1 h-1 bg-slate-600 dark:bg-slate-400 rounded-full"></div>
-        <span>Easy</span>
-        <div class="w-1 h-1 bg-slate-600 dark:bg-slate-400 rounded-full"></div>
-        <span>Customizable</span>
-      </div>
-    </div>
+    </section>
 
   </div>
 </template>
+
+<style scoped>
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+.delay-100 {
+  animation-delay: 0.3s;
+}
+
+.delay-200 {
+  animation-delay: 0.6s;
+}
+</style>
+
