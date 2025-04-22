@@ -59,7 +59,7 @@ onBeforeUnmount(() => {
       <!-- Toggle botón -->
       <div
         @click.stop="ToggleNav"
-        class="rounded-tl-2xl rounded-br-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 size-12 mr-15 transition-all duration-300 ease-in-out hover:shadow-[0px_0px_10px_2px_rgba(255,_255,_255,_0.2)] cursor-pointer">
+        class="rounded-tl-2xl rounded-br-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 size-12 mr-6 transition-all duration-300 ease-in-out hover:shadow-[0px_0px_10px_2px_rgba(255,_255,_255,_0.2)] cursor-pointer">
       </div>
     </nav>
 
