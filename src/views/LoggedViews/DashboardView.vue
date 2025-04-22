@@ -6,61 +6,62 @@ const userName = sessionStorage.getItem('userName');
 <template>
   <div class="min-h-screen bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-6 mt-12">
 
-    <!-- Título de bienvenida -->
+    <!-- Welcome Title -->
     <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">
-      ¡Bienvenido, {{userName}}!
+      Welcome, {{userName}}!
     </h1>
 
-    <!-- Tarjetas principales -->
+    <!-- Main Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
-      <!-- Tarjeta Crear Catálogos (admin) -->
+      <!-- Create Catalogs Card (admin) -->
       <RouterLink to="/catalogs" v-if="role && (role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
-        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Crear catálogos</h2>
-        <p class="text-gray-500 dark:text-gray-300">Crea catálogos para tus productos.</p>
+        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Create Catalogs</h2>
+        <p class="text-gray-500 dark:text-gray-300">Create catalogs for your products.</p>
         <button class="mt-4 inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
-          Crear catálogos
+          Create Catalogs
         </button>
       </RouterLink>
-      <!-- Tarjeta Ver Catálogos (client y admin) -->
+
+      <!-- View Catalogs Card (client and admin) -->
       <RouterLink to="/catalogs" v-if="role && (role === 'client' || role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
-        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Ver catálogos</h2>
-        <p class="text-gray-500 dark:text-gray-300">Consulta todos los catálogos activos en la plataforma.</p>
+        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">View Catalogs</h2>
+        <p class="text-gray-500 dark:text-gray-300">View all active catalogs on the platform.</p>
         <button class="mt-4 inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
-          Consultar catálogos
+          View Catalogs
         </button>
       </RouterLink>
 
-      <!-- Tarjeta Operaciones de plantillas (admin) -->
-       <RouterLink to="/templates" v-if="role && (role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
-        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Operaciones de plantillas</h2>
-        <p class="text-gray-500 dark:text-gray-300">Crea o elimina plantillas para tus catálogos.</p>
+      <!-- Template Operations Card (admin) -->
+      <RouterLink to="/templates" v-if="role && (role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
+        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Template Operations</h2>
+        <p class="text-gray-500 dark:text-gray-300">Create or delete templates for your catalogs.</p>
         <button class="mt-4 inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
-          Operaciones en plantillas
+          Manage Templates
         </button>
       </RouterLink>
 
-      <!-- Tarjeta Notificaciones -->
+      <!-- Notifications Card (client and admin) -->
       <RouterLink to="notifications" v-if="role && (role === 'client' || role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
-        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Gestionar notificaciones</h2>
-        <p class="text-gray-500 dark:text-gray-300">Gestiona las notificaciones para tus catálogos.</p>
+        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Manage Notifications</h2>
+        <p class="text-gray-500 dark:text-gray-300">Manage notifications for your catalogs.</p>
         <button class="mt-4 inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
-          Gestionar notificaciones
+          Manage Notifications
         </button>
       </RouterLink>
 
-      <!-- Tarjeta Usuarios -->
+      <!-- Users Card (admin)-->
       <RouterLink to="users" v-if="role && (role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
-        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Operaciones de usuarios</h2>
-        <p class="text-gray-500 dark:text-gray-300">Crea, modifica o elimina usuarios para la plataforma.</p>
+        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">User Operations</h2>
+        <p class="text-gray-500 dark:text-gray-300">Create, modify or delete users for the platform.</p>
         <button class="mt-4 inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
-          Operaciones de usuario
+          Manage Users
         </button>
       </RouterLink>
 
     </div>
 
   </div>
-
 </template>
+
 
