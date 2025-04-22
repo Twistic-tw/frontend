@@ -64,25 +64,23 @@ onBeforeUnmount(() => {
     </nav>
 
     <!-- Menú desplegable -->
-    <div
-      class="w-46 h-[0px] bg-neutral-950 rounded-b-2xl transition-all duration-200 ease-in-out fixed right-0 mt-[68px] flex flex-col mr-2"
-      :class="{ 'h-[244px]': navExpanded }">
+    <div class="w-46 h-[0px] bg-neutral-950 rounded-b-2xl transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] fixed right-0 mt-[68px] flex flex-col mr-2" :class="{ 'h-[244px]': navExpanded }">
 
-      <RouterLink to="/dashboard" @click="closeNav"
-        class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900"
-        active-class="bg-slate-800" :class="{ 'hidden': !navExpanded }">Dashboard</RouterLink>
+        <RouterLink to="/dashboard" @click="closeNav"
+          class="transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] text-white text-center p-4 text-xl hover:bg-slate-900"
+          active-class="bg-slate-800" :class="{ 'hidden': !navExpanded }">Dashboard</RouterLink>
 
-      <RouterLink to="/profile" @click="closeNav"
-        class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900"
-        active-class="bg-slate-800" :class="{ 'hidden': !navExpanded }">Profile</RouterLink>
+        <RouterLink to="/profile" @click="closeNav"
+          class="transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] text-white text-center p-4 text-xl hover:bg-slate-900"
+          active-class="bg-slate-800" :class="{ 'hidden': !navExpanded }">Profile</RouterLink>
 
-      <RouterLink to="/notifications" @click="closeNav"
-        class="transition-all duration-200 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900"
-        active-class="bg-slate-800" :class="{ 'hidden': !navExpanded }">Notifications</RouterLink>
+        <RouterLink to="/notifications" @click="closeNav"
+          class="transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] text-white text-center p-4 text-xl hover:bg-slate-900"
+          active-class="bg-slate-800" :class="{ 'hidden': !navExpanded }">Notifications</RouterLink>
 
-      <RouterLink to="/logout" @click="closeNav"
-        class="rounded-b-2xl transition-all duration-200 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900"
-        active-class="bg-slate-800" :class="{ 'hidden': !navExpanded }">Log Out</RouterLink>
+        <RouterLink to="/logout" @click="closeNav"
+          class="rounded-b-2xl transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] text-white text-center p-4 pb-5 text-xl hover:bg-slate-900"
+          active-class="bg-slate-800" :class="{ 'hidden': !navExpanded }">Log Out</RouterLink>
     </div>
   </div>
 </template>
