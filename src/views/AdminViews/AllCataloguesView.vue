@@ -53,7 +53,7 @@ watch([filtroNombreCatalogo, usuarioSeleccionado], () => {
 
 <template>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen">
-    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Catálogos</h2>
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Catalogs</h2>
 
     <!-- Filtros -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -61,7 +61,7 @@ watch([filtroNombreCatalogo, usuarioSeleccionado], () => {
       <input
         v-model="filtroNombreCatalogo"
         type="text"
-        placeholder="Buscar catálogo..."
+        placeholder="Searching catalog..."
         class="px-4 py-2 border border-violet-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-400 w-full"
       />
 
@@ -70,7 +70,7 @@ watch([filtroNombreCatalogo, usuarioSeleccionado], () => {
         v-model="usuarioSeleccionado"
         class="px-4 py-2 border border-violet-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-400 w-full"
       >
-        <option value="">Selecciona un usuario</option>
+        <option value="">Select user</option>
         <option v-for="user in usuarios" :key="user.id" :value="user.id">
           {{ user.nombre }}
         </option>
@@ -85,13 +85,13 @@ watch([filtroNombreCatalogo, usuarioSeleccionado], () => {
         class="bg-white rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
         <h3 class="text-xl font-semibold text-violet-700 mb-2">{{ catalogo.name }}</h3>
-        <p class="text-sm text-gray-500 mb-1">Creado por: <span class="font-medium text-gray-700">{{ catalogo.user_name }}</span></p>
-        <p class="text-sm text-gray-500 mb-1">Fecha: <span class="font-medium text-gray-700">{{ new Date(catalogo.created_at).toLocaleDateString() }}</span></p>
+        <p class="text-sm text-gray-500 mb-1">Created by: <span class="font-medium text-gray-700">{{ catalogo.user_name }}</span></p>
+        <p class="text-sm text-gray-500 mb-1">Creat date: <span class="font-medium text-gray-700">{{ new Date(catalogo.created_at).toLocaleDateString() }}</span></p>
       </div>
     </div>
 
     <div v-if="catalogos.length === 0" class="text-center text-gray-500 mt-8">
-      No hay catálogos disponibles
+      No cataglos available
     </div>
   </div>
 </template>
