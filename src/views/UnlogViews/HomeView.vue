@@ -10,7 +10,7 @@ import { RouterLink} from 'vue-router'
       <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-800 dark:text-white">
         Welcome to TWISTIC Catalogues
       </h1>
-      <p class="text-base sm:text-lg text-slate-700 dark:text-slate-300 max-w-xl mx-auto mt-6 sm:mt-10 px-2">
+      <p class="text-base sm:text-lg text-slate-700 dark:text-slate-300 max-w-xl mx-auto mt-6 mb-6 sm:mt-10 px-2">
         The easiest way to create, customize, and manage product catalogues for your business in just a few steps.
       </p>
     </section>
@@ -38,7 +38,7 @@ import { RouterLink} from 'vue-router'
     </section>
 
     <!-- Bloque 3: Call to Action -->
-    <section class="text-center space-y-4 sm:space-y-6 animate-fadeInUp delay-200 px-2">
+    <section class="text-center space-y-4 sm:space-y-6 animate-fadeInUp delay-200 px-2 mb-6">
       <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 dark:text-white">
         Ready to simplify your catalogue creation?
       </h2>
