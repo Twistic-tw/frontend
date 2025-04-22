@@ -21,6 +21,22 @@ const obtenerNombreUsuario = (id_user) => {
   const user = usuarios.value.find(u => u.id === id_user)
   return user ? user.name : 'Desconocido'
 }
+
+// Eliminar plantilla
+async function eliminarPlantilla(id) {
+  if (confirm('¿Estás seguro de que quieres eliminar esta plantilla?')) {
+    try {
+      await axios.delete(`https://api-catalogos.twistic.app/api/templates/${id}`, {
+        withCredentials: true,
+      })
+      plantillas.value = plantillas.value.filter(p => p.id !== id)
+      alert('Plantilla eliminada correctamente.')
+    } catch (error) {
+      console.error('Error al eliminar la plantilla:', error)
+      alert('Hubo un error al eliminar la plantilla.')
+    }
+  }
+}
 </script>
 
 
@@ -50,6 +66,13 @@ const obtenerNombreUsuario = (id_user) => {
             <li v-for="field in plantilla.fields" :key="field.id">{{ field.field }}</li>
           </ul>
         </div>
+        <!-- Botón Eliminar -->
+        <button
+          @click="eliminarPlantilla(plantilla.id)"
+          class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+        >
+          Eliminar
+        </button>
       </div>
     </div>
 
