@@ -61,7 +61,7 @@ async function eliminarPlantilla(id) {
         </p>
 
         <div>
-          <h4 class="text-sm font-semibold text-gray-700 mb-2">Campos:</h4>
+          <h4 class="text-sm font-semibold text-gray-700 mb-2">Fields:</h4>
           <ul class="list-disc list-inside text-gray-600">
             <li v-for="field in plantilla.fields" :key="field.id">{{ field.field }}</li>
           </ul>
