@@ -63,7 +63,7 @@ const router = createRouter({
       path: '/users',
       name: 'users',
       component: () => import('../views/AdminViews/UsersListView.vue'),
-      meta: { title: 'Users' }
+      meta: { title: 'Users Management' }
     },
     {
       path: '/notifications',
