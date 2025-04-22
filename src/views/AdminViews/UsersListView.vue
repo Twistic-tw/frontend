@@ -10,6 +10,8 @@ const fetchUsers = async () => {
   try {
     const response = await axios.get('https://api-catalogos.twistic.app/api/users', { withCredentials: true })
     users.value = response.data.users
+    console.log('Users:', response)
+    console.log('Users:', users.value)
   } catch (e) {
     console.error('Error fetching users:', e)
     error.value = true
