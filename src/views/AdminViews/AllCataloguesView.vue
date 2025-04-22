@@ -1,41 +1,97 @@
+<script setup lang="ts">
+import { ref, onMounted, watch } from 'vue'
+import axios from 'axios'
+
+const usuarios = ref([])
+const catalogos = ref([])
+
+const filtroNombreCatalogo = ref('')
+const usuarioSeleccionado = ref('')
+
+// Cargar usuarios y catálogos al iniciar
+onMounted(async () => {
+  await cargarUsuarios()
+  await cargarCatalogos()
+})
+
+// Cargar usuarios
+async function cargarUsuarios() {
+  try {
+    const res = await axios.get('https://api-catalogos.twistic.app/api/users')
+    usuarios.value = res.data
+  } catch (error) {
+    console.error('Error al cargar usuarios:', error)
+  }
+}
+
+// Cargar catálogos con filtros
+async function cargarCatalogos() {
+  try {
+    let url = 'https://api-catalogos.twistic.app/api/ShowCatalogs'
+
+    if (usuarioSeleccionado.value) {
+      url += `id_user=${usuarioSeleccionado.value}&`
+    }
+
+    if (filtroNombreCatalogo.value.trim() !== '') {
+      url += `template=${encodeURIComponent(filtroNombreCatalogo.value)}&`
+    }
+
+    const res = await axios.get(url)
+    catalogos.value = res.data.catalogs.data
+  } catch (error) {
+    console.error('Error al cargar catálogos:', error)
+    catalogos.value = []
+  }
+}
+
+// Actualizar dinámicamente al cambiar filtros
+watch([filtroNombreCatalogo, usuarioSeleccionado], () => {
+  cargarCatalogos()
+})
+</script>
 
 <template>
-    <div class="flex-1 mt-[60px] ml-21 flex-col justify-center px-6 py-12 lg:px-8 mt-4">
+  <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen">
+    <h2 class="text-3xl font-bold text-violet-700 mb-6 text-center">Catálogos</h2>
 
+    <!-- Filtros -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+      <!-- Buscar por nombre de catálogo -->
+      <input
+        v-model="filtroNombreCatalogo"
+        type="text"
+        placeholder="Buscar catálogo..."
+        class="px-4 py-2 border border-violet-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-400 w-full"
+      />
+
+      <!-- Filtrar por usuario -->
+      <select
+        v-model="usuarioSeleccionado"
+        class="px-4 py-2 border border-violet-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-400 w-full"
+      >
+        <option value="">-- Todos los usuarios --</option>
+        <option v-for="user in usuarios" :key="user.id" :value="user.id">
+          {{ user.nombre }}
+        </option>
+      </select>
     </div>
+
+    <!-- Lista de catálogos -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        v-for="catalogo in catalogos"
+        :key="catalogo.id"
+        class="bg-white rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
+      >
+        <h3 class="text-xl font-semibold text-violet-700 mb-2">{{ catalogo.name }}</h3>
+        <p class="text-sm text-gray-500 mb-1">Creado por: <span class="font-medium text-gray-700">{{ catalogo.user_name }}</span></p>
+        <p class="text-sm text-gray-500 mb-1">Fecha: <span class="font-medium text-gray-700">{{ new Date(catalogo.created_at).toLocaleDateString() }}</span></p>
+      </div>
+    </div>
+
+    <div v-if="catalogos.length === 0" class="text-center text-gray-500 mt-8">
+      No hay catálogos disponibles
+    </div>
+  </div>
 </template>
-
-<script setup lang="ts">
-import '../../styles.css'
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-const message = ref('');
-const loading = ref(true);
-const error = ref('');
-
-onMounted(() => {
-  // Si usas Sanctum, primero obtén la cookie CSRF
-   axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', {
-      withCredentials: true,
-    })
-    .then(() => {
-      return axios.get('https://api-catalogos.twistic.app/api/ShowCatalogs',{
-        headers:{
-            'Access-Control-Allow-Origin':'*'
-        }});
-    })
-    .then(response => {
-      message.value = response.data;
-      console.log('holiwi?')
-      console.log(message);
-    })
-    .catch(err => {
-      error.value = "Ocurrió un error al obtener la información.";
-      console.error(err);
-      console.log('errorcito errorcito')
-    })
-    .finally(() => {
-      loading.value = false;
-    });
-});
-</script>
