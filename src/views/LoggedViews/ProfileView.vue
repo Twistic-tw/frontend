@@ -2,7 +2,6 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import axios from 'axios'
 
-// Interfaz del usuario
 interface User {
   active_catalogos: number
   nombre: string
@@ -11,7 +10,6 @@ interface User {
   created_at: string
 }
 
-// Función para extraer una cookie por nombre
 function getCookie(name: string): string {
   const value = `; ${document.cookie}`
   const parts = value.split(`; ${name}=`)
@@ -30,7 +28,7 @@ export default defineComponent({
       try {
         const xsrfToken = getCookie('XSRF-TOKEN')
 
-        const response = await axios.get<User>('https://api-catalogos.twistic.app/api/user', {
+        const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
           withCredentials: true,
           headers: {
             'X-XSRF-TOKEN': xsrfToken,
@@ -38,9 +36,8 @@ export default defineComponent({
           }
         })
 
-        user.value = response.data
+        user.value = response.data.user // CORREGIDO AQUÍ
       } catch (err: unknown) {
-        console.error('🔴 [AUTH] Error al obtener el usuario');
         if (axios.isAxiosError(err) && err.response) {
           console.error('🔸 Status:', err.response.status);
           console.error('🔸 Mensaje:', err.response.data.message || 'Sin mensaje');
@@ -71,7 +68,6 @@ export default defineComponent({
   }
 })
 </script>
-
 
 <template>
   <div class="min-h-screen bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-6 mt-14">
