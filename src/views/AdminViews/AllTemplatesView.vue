@@ -7,6 +7,7 @@ const plantillas = ref([])
 onMounted(async () => {
   try {
     const res = await axios.get('https://api-catalogos.twistic.app/api/ViewTemplates')
+    console.log('Plantillas:', res.data)
     plantillas.value = res.data
   } catch (error) {
     console.error('Error al cargar plantillas:', error)
