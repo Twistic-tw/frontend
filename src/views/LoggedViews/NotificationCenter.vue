@@ -95,7 +95,7 @@ export default defineComponent({
         </p>
 
         <h2
-          class="text-sm font-medium mt-2 text-white px-2 py-1 rounded w-fit" :class="{
+          class="text-xl font-medium mt-2 text-white px-2 py-1 rounded w-fit" :class="{
             'bg-[#10B981]': noti.status === 'Completed',
             'bg-[#F59E0B]': noti.status === 'Pending',
             'bg-[#3B82F6]': noti.status === 'In Progress'
