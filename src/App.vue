@@ -52,13 +52,29 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
   </div>
   <!-- Botón Volver Arriba -->
-  <button v-if="showButton" @click="scrollToTop"
-    class="fixed bottom-6 right-6 bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-4 rounded-full shadow-2xl
-    hover:from-indigo-600 hover:to-purple-700 hover:shadow-[0_0_20px_rgba(79,57,246,0.6)]
-    transition-all duration-500 ease-in-out transform hover:scale-110 z-50">
-    <!-- Icono SVG de flecha hacia arriba -->
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
-    </svg>
-  </button>
+  <transition name="fade-up">
+    <button v-if="showButton" @click="scrollToTop"
+      class="fixed bottom-6 right-6 bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-4 rounded-full shadow-2xl
+      hover:from-indigo-600 hover:to-purple-700 hover:shadow-[0_0_20px_rgba(79,57,246,0.6)]
+      transition-transform duration-500 ease-in-out transform hover:scale-110 z-50">
+      <!-- Icono SVG -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+      </svg>
+    </button>
+  </transition>
 </template>
+
+<style lang="css" scoped>
+.fade-up-enter-active, .fade-up-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-up-enter-from, .fade-up-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.fade-up-enter-to, .fade-up-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
