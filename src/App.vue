@@ -11,16 +11,17 @@ const isLogged = computed(() =>
 );
 
 const showButton = ref(false)
+
 const handleScroll = () => {
   showButton.value = window.scrollY > 200
 }
 
-onMounted(() => window.addEventListener('scroll', handleScroll))
-onUnmounted(() => window.removeEventListener('scroll', handleScroll))
-
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
+
+onMounted(() => window.addEventListener('scroll', handleScroll))
+onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
 </script>
 
@@ -50,8 +51,14 @@ const scrollToTop = () => {
     </main>
 
   </div>
+  <!-- Botón Volver Arriba -->
   <button v-if="showButton" @click="scrollToTop"
-  class="fixed bottom-6 right-6 bg-[#4f39f6] text-white p-3 rounded-full shadow-lg hover:bg-[#3a2ac9] transition-transform duration-300 hover:scale-110">
-    ↑
+    class="fixed bottom-6 right-6 bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-4 rounded-full shadow-2xl
+    hover:from-indigo-600 hover:to-purple-700 hover:shadow-[0_0_20px_rgba(79,57,246,0.6)]
+    transition-all duration-500 ease-in-out transform hover:scale-110 z-50">
+    <!-- Icono SVG de flecha hacia arriba -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+    </svg>
   </button>
 </template>
