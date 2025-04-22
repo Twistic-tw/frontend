@@ -55,59 +55,62 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-6 mt-14">
-    <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6 text-center">
-      Notificaciones
+  <div class="min-h-screen bg-[#0F172A] p-6 mt-14">
+    <h1 class="text-3xl font-bold text-[#F1F5F9] mb-6 text-center">
+      Notifications
     </h1>
 
-    <div v-if="loading" class="text-center text-gray-600 dark:text-gray-300">
-      Cargando notificaciones...
+    <div v-if="loading" class="text-center text-[#94A3B8]">
+      Loading notifications...
     </div>
 
-    <div v-else-if="!notifications.length" class="text-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md text-gray-700 dark:text-gray-200">
-      No hay notificaciones disponibles.
+    <div v-else-if="!notifications.length" class="text-center bg-[#1E293B] p-6 rounded-2xl shadow-md text-[#F1F5F9]">
+      No notifications available.
     </div>
 
     <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       <div
         v-for="noti in notifications"
         :key="noti.catalog_name + noti.message"
-        class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800"
+        class="p-6 bg-[#1E293B] rounded-2xl shadow-md hover:shadow-lg transition"
       >
-        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-2">
+        <h2 class="text-xl font-semibold text-[#06B6D4] mb-2">
           {{ noti.catalog_name }}
         </h2>
 
-        <p class="text-gray-600 dark:text-gray-300 mb-1">
-          <strong>Ruta del archivo:</strong> {{ noti.file_path }}
+        <p class="text-[#94A3B8] mb-1">
+          <strong>File path:</strong> {{ noti.file_path }}
         </p>
 
-        <p class="text-gray-600 dark:text-gray-300 mb-1">
-          <strong>Orden de campos:</strong> {{ parseFields(noti.fields_order) }}
+        <p class="text-[#94A3B8] mb-1">
+          <strong>Fields order:</strong> {{ parseFields(noti.fields_order) }}
         </p>
 
-        <p class="text-gray-600 dark:text-gray-300 mb-1">
-          <strong>ID del usuario:</strong> {{ noti.id_user }}
+        <p class="text-[#94A3B8] mb-1">
+          <strong>User ID:</strong> {{ noti.id_user }}
         </p>
 
-        <p class="text-gray-600 dark:text-gray-300 mb-1">
-          <strong>Mensaje:</strong> {{ noti.message }}
+        <p class="text-[#94A3B8] mb-1">
+          <strong>Message:</strong> {{ noti.message }}
         </p>
 
-        <p class="text-sm font-medium mt-2 text-white px-2 py-1 rounded w-fit"
-           :class="{
-             'bg-green-600': noti.status === 'Finalizada',
-             'bg-yellow-500': noti.status === 'Pendiente',
-             'bg-blue-500': noti.status === 'En proceso'
-           }">
+        <p
+          class="text-sm font-medium mt-2 text-white px-2 py-1 rounded w-fit"
+          :class="{
+            'bg-[#10B981]': noti.status === 'Completed',
+            'bg-[#F59E0B]': noti.status === 'Pending',
+            'bg-[#3B82F6]': noti.status === 'In Progress'
+          }"
+        >
           {{ noti.status }}
         </p>
       </div>
     </div>
 
     <div v-if="error" class="text-center text-red-500 mt-6">
-      Ocurrió un error al cargar las notificaciones.
+      An error occurred while loading notifications.
     </div>
   </div>
 </template>
+
 
