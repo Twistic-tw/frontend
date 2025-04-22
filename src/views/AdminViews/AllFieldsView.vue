@@ -43,14 +43,14 @@ async function eliminarCampo(id) {
         class="bg-white rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
         <h3 class="text-xl font-semibold text-violet-700 mb-2">#{{ field.id }} - {{ field.field }}</h3>
-        <p class="text-sm text-gray-500 mb-1">Creado: <span class="font-medium text-gray-700">{{ new Date(field.created_at).toLocaleDateString() }}</span></p>
-        <p class="text-sm text-gray-500 mb-1">Actualizado: <span class="font-medium text-gray-700">{{ new Date(field.updated_at).toLocaleDateString() }}</span></p>
+        <p class="text-sm text-gray-500 mb-1">Created: <span class="font-medium text-gray-700">{{ new Date(field.created_at).toLocaleDateString() }}</span></p>
+        <p class="text-sm text-gray-500 mb-1">Updated: <span class="font-medium text-gray-700">{{ new Date(field.updated_at).toLocaleDateString() }}</span></p>
         <!-- Botón Eliminar -->
         <button
           @click="eliminarCampo(field.id)"
           class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition mt-2"
         >
-          Eliminar
+          Delete
         </button>
       </div>
     </div>
