@@ -43,14 +43,15 @@ export default defineComponent({
         console.log('[AUTH] Usuario autenticado:', response.data)
         user.value = response.data
       } catch (err: unknown) {
-        console.error('[AUTH] Error al obtener el usuario')
+        console.error('🔴 [AUTH] Error al obtener el usuario');
         if (axios.isAxiosError(err) && err.response) {
-          console.error('Status:', err.response.status)
-          console.error('Data:', err.response.data)
+          console.error('🔸 Status:', err.response.status);
+          console.error('🔸 Mensaje:', err.response.data.message || 'Sin mensaje');
+          console.error('🔸 Data completa:', err.response.data);
         } else if (err instanceof Error) {
-          console.error('Error:', err.message)
+          console.error('🔸 Error JS:', err.message);
         } else {
-          console.error('Unknown error occurred')
+          console.error('🔸 Error desconocido');
         }
         error.value = true
       } finally {
