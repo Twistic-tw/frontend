@@ -2,25 +2,47 @@
 import '../../styles.css'
 import { RouterLink} from 'vue-router'
 </script>
-
 <template>
-    <div class="flex divide-slate-900 divide-x-2 flex-1 mt-[60px] bg-gradient-to-r from-white via-slate-200 to-slate-400 px-6 py-12 lg:px-8 dark:bg-gradient-to-r dark:from-neutral-950 dark:via-none dark:to-slate-900 dark:divide-slate-50 p-3">
-        <div class="p-5 text-center w-[600px] mt-[200px] mb-[205px]">
-            <h2 class="text-4xl font-semibold text-slate-800 dark:text-white m-10 mt-0 mb5-1 font-mono">Create simple catalogues with just a few steps</h2>
-            <RouterLink to="/login" class="p-3 px-20 text-2xl text-white rounded-2xl transition-all duration-500 ease-in-out bg-slate-500 dark:bg-neutral-600 hover:bg-indigo-700">Log In</RouterLink><br>
-            <h2 class="inline-block font-semibold text-slate-800 dark:text-white text-xl mt-5 mb-10 pr-2">or, if you don't have an account,</h2>
-            <RouterLink to="/signup" class="underline font-semibold transition-all duration-300 ease-in-out text-cyan-700 hover:text-cyan-500 dark:text-cyan-300 dark:hover:text-cyan-100 text-xl mt-8 mb-10">Sign Up</RouterLink>
-        </div>
-        <div class="flex-auto text-center m-10">
-            <h1 class="text-8xl text-slate-800 font-bold dark:text-white mt-40 z-4">TWISTIC</h1>
-            <div class="flex justify-evenly items-center m-10 text-center mx-15">
-                <span class="text-slate-800 font-medium dark:text-white">Authomatic</span>
-                <div class="bg-slate-900 w-0.5 h-4 rounded-full inline-block dark:bg-slate-100"></div>
-                <span class="text-slate-800 font-medium dark:text-white">Easy</span>
-                <div class="bg-slate-900 w-0.5 h-4 rounded-full inline-block dark:bg-slate-100"></div>
-                <span class="text-slate-800 font-medium dark:text-white">Customizable</span>
-            </div>
-        </div>
+  <div class="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-8">
+
+    <!-- Sección de bienvenida -->
+    <div class="text-center md:text-left max-w-xl space-y-6 mb-12 md:mb-0 md:mr-12">
+      <h2 class="text-4xl font-bold text-slate-800 dark:text-white font-sans">
+        Create simple catalogues <br class="hidden md:inline"> in just a few steps
+      </h2>
+
+      <RouterLink
+        to="/login"
+        class="inline-block px-8 py-3 text-lg font-semibold text-white bg-indigo-600 rounded-xl shadow hover:bg-indigo-700 transition"
+      >
+        Log In
+      </RouterLink>
+
+      <p class="text-slate-700 dark:text-slate-300 text-lg">
+        or, if you don't have an account,
+        <RouterLink
+          to="/signup"
+          class="underline font-semibold text-cyan-700 dark:text-cyan-300 hover:text-cyan-500 dark:hover:text-cyan-100 transition"
+        >
+          Sign Up
+        </RouterLink>
+      </p>
     </div>
-    
+
+    <!-- Sección del logo -->
+    <div class="text-center space-y-8">
+      <h1 class="text-6xl md:text-8xl font-extrabold text-slate-800 dark:text-white">
+        TWISTIC
+      </h1>
+
+      <div class="flex items-center justify-center space-x-6 text-slate-800 dark:text-slate-200 text-lg font-medium">
+        <span>Automatic</span>
+        <div class="w-1 h-1 bg-slate-600 dark:bg-slate-400 rounded-full"></div>
+        <span>Easy</span>
+        <div class="w-1 h-1 bg-slate-600 dark:bg-slate-400 rounded-full"></div>
+        <span>Customizable</span>
+      </div>
+    </div>
+
+  </div>
 </template>
