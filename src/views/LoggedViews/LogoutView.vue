@@ -30,6 +30,6 @@ onMounted(async () => {
 
 <template>
   <div style="padding: 2rem; text-align: center;">
-    Cerrando sesión...
+    Signing out...
   </div>
 </template>
