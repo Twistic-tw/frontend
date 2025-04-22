@@ -4,10 +4,10 @@ import axios from 'axios'
 
 // Interfaz del usuario
 interface User {
-  id: number
-  name: string
+  active_catalogos: number
+  nombre: string
   email: string
-  role: string
+  cargo: string
   created_at: string
 }
 
@@ -28,9 +28,7 @@ export default defineComponent({
 
     const fetchUser = async () => {
       try {
-        console.log('[AUTH] Obteniendo XSRF-TOKEN y cookies activas...')
         const xsrfToken = getCookie('XSRF-TOKEN')
-        console.log('XSRF-TOKEN:', xsrfToken)
 
         const response = await axios.get<User>('https://api-catalogos.twistic.app/api/user', {
           withCredentials: true,
@@ -40,7 +38,6 @@ export default defineComponent({
           }
         })
 
-        console.log('[AUTH] Usuario autenticado:', response.data)
         user.value = response.data
       } catch (err: unknown) {
         console.error('🔴 [AUTH] Error al obtener el usuario');
@@ -79,38 +76,44 @@ export default defineComponent({
 <template>
   <div class="min-h-screen bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-6 mt-14">
     <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6 text-center">
-      User Profile
+      Perfil de Usuario
     </h1>
 
     <div v-if="loading" class="text-center text-gray-600 dark:text-gray-300">
-      Loading user data...
+      Cargando datos de usuario...
     </div>
 
     <div v-else-if="!user" class="text-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md text-gray-700 dark:text-gray-200">
-      User information could not be found.
+      No se ha encontrado información de usuario.
     </div>
 
     <div v-else class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
       <div class="mb-4">
-        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Full Name</h2>
-        <p class="text-gray-700 dark:text-gray-200">{{ user.name }}</p>
+        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Nombre</h2>
+        <p class="text-gray-700 dark:text-gray-200">{{ user.nombre }}</p>
       </div>
       <div class="mb-4">
         <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Email</h2>
         <p class="text-gray-700 dark:text-gray-200">{{ user.email }}</p>
       </div>
       <div class="mb-4">
-        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Role</h2>
-        <p class="text-gray-700 dark:text-gray-200 capitalize">{{ user.role }}</p>
+        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Cargo</h2>
+        <p class="text-gray-700 dark:text-gray-200">{{ user.cargo }}</p>
       </div>
+      <div class="mb-4"></div>
+      <div class="mb-4">
+        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Catálogos activos</h2>
+        <p class="text-gray-700 dark:text-gray-200">{{ user.active_catalogos }}</p>
+      </div>
+      <div class="mb-4"></div>
       <div>
-        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Registered At</h2>
+        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Fecha de registro</h2>
         <p class="text-gray-700 dark:text-gray-200">{{ formatDate(user.created_at) }}</p>
       </div>
     </div>
 
     <div v-if="error" class="text-center text-red-500 mt-6">
-      An error occurred while loading user information.
+      Ha ocurrido un error al cargar los datos del usuario.
     </div>
   </div>
 </template>
