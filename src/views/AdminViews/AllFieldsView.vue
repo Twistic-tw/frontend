@@ -18,7 +18,9 @@ onMounted(async () => {
 async function eliminarCampo(id) {
   if (confirm('¿Estás seguro de que quieres eliminar este campo?')) {
     try {
-      await axios.delete(`https://api-catalogos.twistic.app/api/DeleteField/${id}`)
+      await axios.delete(`https://api-catalogos.twistic.app/api/DeleteField/${id}`, {
+        withCredentials: true,
+      })
       // Eliminar del array localmente
       fields.value = fields.value.filter(field => field.id !== id)
       alert('Campo eliminado correctamente.')
