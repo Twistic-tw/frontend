@@ -41,6 +41,15 @@ const userName = sessionStorage.getItem('userName');
         </button>
       </RouterLink>
 
+      <!-- Fields Operations Card (admin) -->
+      <RouterLink to="/fields" v-if="role && (role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
+        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Fields Operations</h2>
+        <p class="text-gray-500 dark:text-gray-300">Create or delete fields for your templates.</p>
+        <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
+          Manage Fields
+        </button>
+      </RouterLink>
+
       <!-- Notifications Card (client and admin) -->
       <RouterLink to="notifications" v-if="role && (role === 'client' || role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
         <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Manage Notifications</h2>
