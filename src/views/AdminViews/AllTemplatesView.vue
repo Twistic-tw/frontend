@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
+const usuarios = ref([])
 const plantillas = ref([])
 
 onMounted(async () => {
@@ -14,6 +15,12 @@ onMounted(async () => {
     plantillas.value = []
   }
 })
+
+// Función para obtener el nombre del usuario por id
+const obtenerNombreUsuario = (id_user) => {
+  const user = usuarios.value.find(u => u.id === id_user)
+  return user ? user.name : 'Desconocido'
+}
 </script>
 
 
@@ -28,12 +35,19 @@ onMounted(async () => {
         class="bg-white rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
         <h3 class="text-xl font-semibold text-violet-700 mb-2">{{ plantilla.name }}</h3>
-        <p class="text-sm text-gray-500 mb-4">Creado por: <span class="font-medium text-gray-700">{{ plantilla.user_name }}</span></p>
+
+        <p class="text-sm text-gray-500 mb-1">
+          Creado por: <span class="font-medium text-gray-700">{{ obtenerNombreUsuario(plantilla.id_user) }}</span>
+        </p>
+
+        <p class="text-sm text-gray-500 mb-3">
+          Fecha: <span class="font-medium text-gray-700">{{ new Date(plantilla.created_at).toLocaleDateString() }}</span>
+        </p>
 
         <div>
           <h4 class="text-sm font-semibold text-gray-700 mb-2">Campos:</h4>
           <ul class="list-disc list-inside text-gray-600">
-            <li v-for="field in plantilla.fields" :key="field.id">{{ field.name }}</li>
+            <li v-for="field in plantilla.fields" :key="field.id">{{ field.field }}</li>
           </ul>
         </div>
       </div>
@@ -44,3 +58,4 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
