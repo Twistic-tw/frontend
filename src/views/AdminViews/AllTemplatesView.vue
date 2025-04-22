@@ -10,7 +10,7 @@ const usuarioSeleccionado = ref('')
 // Cargar usuarios al iniciar
 onMounted(async () => {
   try {
-    const resUsers = await axios.get('https://api-catalogos.twistic.app/api/Users')
+    const resUsers = await axios.get('https://api-catalogos.twistic.app/api/users')
     usuarios.value = resUsers.data
 
     await cargarPlantillas() // carga inicial con todas las plantillas
