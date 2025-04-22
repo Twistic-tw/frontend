@@ -18,7 +18,7 @@ const userName = sessionStorage.getItem('userName');
       <RouterLink to="/catalogs" v-if="role && (role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
         <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Create Catalogs</h2>
         <p class="text-gray-500 dark:text-gray-300">Create catalogs for your products.</p>
-        <button class="mt-4 inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+        <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
           Create Catalogs
         </button>
       </RouterLink>
@@ -27,7 +27,7 @@ const userName = sessionStorage.getItem('userName');
       <RouterLink to="/catalogs" v-if="role && (role === 'client' || role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
         <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">View Catalogs</h2>
         <p class="text-gray-500 dark:text-gray-300">View all active catalogs on the platform.</p>
-        <button class="mt-4 inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+        <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
           View Catalogs
         </button>
       </RouterLink>
@@ -36,7 +36,7 @@ const userName = sessionStorage.getItem('userName');
       <RouterLink to="/templates" v-if="role && (role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
         <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Template Operations</h2>
         <p class="text-gray-500 dark:text-gray-300">Create or delete templates for your catalogs.</p>
-        <button class="mt-4 inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+        <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
           Manage Templates
         </button>
       </RouterLink>
@@ -45,7 +45,7 @@ const userName = sessionStorage.getItem('userName');
       <RouterLink to="notifications" v-if="role && (role === 'client' || role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
         <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Manage Notifications</h2>
         <p class="text-gray-500 dark:text-gray-300">Manage notifications for your catalogs.</p>
-        <button class="mt-4 inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+        <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
           Manage Notifications
         </button>
       </RouterLink>
@@ -54,7 +54,7 @@ const userName = sessionStorage.getItem('userName');
       <RouterLink to="users" v-if="role && (role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
         <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">User Operations</h2>
         <p class="text-gray-500 dark:text-gray-300">Create, modify or delete users for the platform.</p>
-        <button class="mt-4 inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+        <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
           Manage Users
         </button>
       </RouterLink>
