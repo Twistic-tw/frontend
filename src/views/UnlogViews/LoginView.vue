@@ -3,6 +3,7 @@ import '../../styles.css'
 import axios from 'axios';
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { RouterLink} from 'vue-router'
 
 
 // Datos del formulario
@@ -99,7 +100,7 @@ const logUser = async () => {
                         <div class="flex items-center justify-between">
                             <label for="password" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Password</label>
                             <div class="text-sm">
-                                <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                              <RouterLink to="/passwordRecover" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</RouterLink>
                             </div>
                         </div>
                         <div class="mt-2">
@@ -115,7 +116,7 @@ const logUser = async () => {
 
                 <p class="mt-10 text-center text-sm/6 text-gray-500">
                     You don't have an account?
-                    <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Sign up to have your own</a>
+                    <RouterLink to="/signup" class="font-semibold text-indigo-600 hover:text-indigo-500">Sign up to have your own</RouterLink>
                 </p>
             </div>
         </div>
