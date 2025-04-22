@@ -91,7 +91,7 @@ watch([filtroNombreCatalogo, usuarioSeleccionado], () => {
     </div>
 
     <div v-if="catalogos.length === 0" class="text-center text-gray-500 mt-8">
-      No cataglos available
+      No catalogs available
     </div>
   </div>
 </template>
