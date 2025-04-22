@@ -48,7 +48,7 @@ async function eliminarCampo(id) {
         <!-- Botón Eliminar -->
         <button
           @click="eliminarCampo(field.id)"
-          class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+          class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition mt-2"
         >
           Eliminar
         </button>
