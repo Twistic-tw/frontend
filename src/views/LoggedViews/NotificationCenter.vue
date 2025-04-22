@@ -55,16 +55,16 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#0F172A] p-6 mt-14">
-    <h1 class="text-3xl font-bold text-[#F1F5F9] mb-6 text-center">
+  <div class="min-h-screen bg-[#F1F5F9] p-6 mt-14">
+    <h1 class="text-3xl font-bold text-[#0F172A] mb-6 text-center">
       Notifications
     </h1>
 
-    <div v-if="loading" class="text-center text-[#94A3B8]">
+    <div v-if="loading" class="text-center text-[#334155]">
       Loading notifications...
     </div>
 
-    <div v-else-if="!notifications.length" class="text-center bg-[#1E293B] p-6 rounded-2xl shadow-md text-[#F1F5F9]">
+    <div v-else-if="!notifications.length" class="text-center bg-white p-6 rounded-2xl shadow-md text-[#334155]">
       No notifications available.
     </div>
 
@@ -72,25 +72,25 @@ export default defineComponent({
       <div
         v-for="noti in notifications"
         :key="noti.catalog_name + noti.message"
-        class="p-6 bg-[#1E293B] rounded-2xl shadow-md hover:shadow-lg transition"
+        class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition"
       >
         <h2 class="text-xl font-semibold text-[#06B6D4] mb-2">
           {{ noti.catalog_name }}
         </h2>
 
-        <p class="text-[#94A3B8] mb-1">
+        <p class="text-[#334155] mb-1">
           <strong>File path:</strong> {{ noti.file_path }}
         </p>
 
-        <p class="text-[#94A3B8] mb-1">
+        <p class="text-[#334155] mb-1">
           <strong>Fields order:</strong> {{ parseFields(noti.fields_order) }}
         </p>
 
-        <p class="text-[#94A3B8] mb-1">
+        <p class="text-[#334155] mb-1">
           <strong>User ID:</strong> {{ noti.id_user }}
         </p>
 
-        <p class="text-[#94A3B8] mb-1">
+        <p class="text-[#334155] mb-1">
           <strong>Message:</strong> {{ noti.message }}
         </p>
 
@@ -112,5 +112,6 @@ export default defineComponent({
     </div>
   </div>
 </template>
+
 
 
