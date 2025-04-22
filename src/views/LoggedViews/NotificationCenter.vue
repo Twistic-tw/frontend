@@ -94,16 +94,15 @@ export default defineComponent({
           <strong>Message:</strong> {{ noti.message }}
         </p>
 
-        <p
-          class="text-sm font-medium mt-2 text-white px-2 py-1 rounded w-fit"
-          :class="{
+        <h2
+          class="text-sm font-medium mt-2 text-white px-2 py-1 rounded w-fit" :class="{
             'bg-[#10B981]': noti.status === 'Completed',
             'bg-[#F59E0B]': noti.status === 'Pending',
             'bg-[#3B82F6]': noti.status === 'In Progress'
           }"
         >
           {{ noti.status }}
-        </p>
+        </h2>
       </div>
     </div>
 
