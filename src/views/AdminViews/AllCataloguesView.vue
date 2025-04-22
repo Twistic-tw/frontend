@@ -61,7 +61,7 @@ watch([filtroNombreCatalogo, usuarioSeleccionado], () => {
       <input
         v-model="filtroNombreCatalogo"
         type="text"
-        placeholder="Searching catalog..."
+        placeholder="Search catalog..."
         class="px-4 py-2 border border-violet-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-400 w-full"
       />
 
