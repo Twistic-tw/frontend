@@ -74,7 +74,7 @@ export default defineComponent({
         :key="noti.catalog_name + noti.message"
         class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition"
       >
-        <h2 class="text-xl font-semibold text-[#06B6D4] mb-2">
+        <h2 class="text-xl font-semibold text-[#4f39f6] mb-2">
           {{ noti.catalog_name }}
         </h2>
 
@@ -95,7 +95,7 @@ export default defineComponent({
         </p>
 
         <h2
-          class="text-xl font-medium mt-2 text-white px-2 py-1 rounded w-fit" :class="{
+          class="font-medium mt-2 text-white px-2 py-1 rounded w-fit" :class="{
             'bg-[#10B981]': noti.status === 'Completed',
             'bg-[#F59E0B]': noti.status === 'Pending',
             'bg-[#3B82F6]': noti.status === 'In Progress'
