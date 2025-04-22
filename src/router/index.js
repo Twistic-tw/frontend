@@ -45,7 +45,12 @@ const router = createRouter({
       component: () => import('../views/AdminViews/AllTemplatesView.vue'),
       meta: { title: 'Templates' }
     },
-
+    {
+      path: '/fields',
+      name: 'fields',
+      component: () => import('../views/AdminViews/AllFieldsView.vue'),
+      meta: { title: 'Fields' }
+    },
     {
       path: '/signup',
       name: 'signup',
