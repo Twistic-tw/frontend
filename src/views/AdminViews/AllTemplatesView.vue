@@ -26,7 +26,7 @@ const obtenerNombreUsuario = (id_user) => {
 
 <template>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen">
-    <h2 class="text-3xl font-bold text-violet-700 mb-6 text-center">Plantillas Disponibles</h2>
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Plantillas Disponibles</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
@@ -41,7 +41,7 @@ const obtenerNombreUsuario = (id_user) => {
         </p>
 
         <p class="text-sm text-gray-500 mb-3">
-          Fecha: <span class="font-medium text-gray-700">{{ new Date(plantilla.created_at).toLocaleDateString() }}</span>
+          Fecha de creación: <span class="font-medium text-gray-700">{{ new Date(plantilla.created_at).toLocaleDateString() }}</span>
         </p>
 
         <div>
