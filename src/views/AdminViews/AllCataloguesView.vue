@@ -5,7 +5,7 @@
     </div>
 </template>
 
-<script setup lang="js">
+<script setup lang="ts">
 import '../../styles.css'
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
