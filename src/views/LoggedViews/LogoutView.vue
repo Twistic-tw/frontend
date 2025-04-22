@@ -7,7 +7,7 @@ const router = useRouter();
 
 onMounted(async () => {
   try {
-    await axios.post('https://api-catalogos.twistic.app/api/Logout', {}, {
+    await axios.post('https://api-catalogos.twistic.app/api/logout', {}, {
       withCredentials: true,
     });
 
