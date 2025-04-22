@@ -76,7 +76,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-6 mt-14">
+  <div class="min-h-screen bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900 p-6 mt-4">
     <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6 text-center">User Management</h1>
 
     <!-- Barra de Búsqueda -->
