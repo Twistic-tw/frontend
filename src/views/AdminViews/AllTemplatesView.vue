@@ -23,8 +23,8 @@ onMounted(async () => {
 async function cargarPlantillas() {
   try {
     const url = usuarioSeleccionado.value
-      ? `https://api-catalogos.twistic.app/api/templates?id_user=${usuarioSeleccionado.value}`
-      : 'https://api-catalogos.twistic.app/api/ViewTemplates'
+      ? `api-catalogos.twistic.app/api/templates?id=${usuarioSeleccionado.value}`
+      : 'api-catalogos.twistic.app/api/ViewTemplates'
 
     const res = await axios.get(url)
     plantillas.value = res.data
