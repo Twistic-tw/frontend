@@ -1,90 +1,45 @@
-
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
-const usuarios = ref([])
 const plantillas = ref([])
-const usuarioSeleccionado = ref('')
 
-// Cargar usuarios al iniciar
 onMounted(async () => {
   try {
-    const resUsers = await axios.get('https://api-catalogos.twistic.app/api/users')
-    usuarios.value = resUsers.data
-
-    await cargarPlantillas() // carga inicial con todas las plantillas
-  } catch (error) {
-    console.error('Error al cargar usuarios o plantillas:', error)
-  }
-})
-
-// Cargar plantillas (todas o por usuario)
-async function cargarPlantillas() {
-  try {
-    const url = usuarioSeleccionado.value
-      ? `https://api-catalogos.twistic.app/api/templates?id=${usuarioSeleccionado.value}`
-      : 'https://api-catalogos.twistic.app/api/ViewTemplates'
-
-    const res = await axios.get(url)
+    const res = await axios.get('https://api-catalogos.twistic.app/api/ViewTemplates')
     plantillas.value = res.data
   } catch (error) {
     console.error('Error al cargar plantillas:', error)
     plantillas.value = []
   }
-}
-
-// Ver cambios en el select y recargar plantillas
-watch(usuarioSeleccionado, () => {
-  cargarPlantillas()
 })
 </script>
 
 
 <template>
-  <div class="p-6 bg-white rounded-xl shadow-md  mt-4">
-    <h2 class="text-2xl font-bold text-violet-700 mb-4">Gestión de Plantillas por Usuario</h2>
+  <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen">
+    <h2 class="text-3xl font-bold text-violet-700 mb-6 text-center">Plantillas Disponibles</h2>
 
-    <!-- Select de usuarios -->
-    <div class="mb-6">
-      <label for="userSelect" class="block mb-2 text-sm font-medium text-gray-700">
-        Selecciona un usuario:
-      </label>
-      <select
-        id="userSelect"
-        v-model="usuarioSeleccionado"
-        class="w-full px-4 py-2 border border-violet-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-400"
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        v-for="plantilla in plantillas"
+        :key="plantilla.id"
+        class="bg-white rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
-        <option value="">-- Mostrar todas las plantillas --</option>
-        <option v-for="user in usuarios" :key="user.id" :value="user.id">
-          {{ user.name }}
-        </option>
-      </select>
+        <h3 class="text-xl font-semibold text-violet-700 mb-2">{{ plantilla.name }}</h3>
+        <p class="text-sm text-gray-500 mb-4">Creado por: <span class="font-medium text-gray-700">{{ plantilla.user_name }}</span></p>
+
+        <div>
+          <h4 class="text-sm font-semibold text-gray-700 mb-2">Campos:</h4>
+          <ul class="list-disc list-inside text-gray-600">
+            <li v-for="field in plantilla.fields" :key="field.id">{{ field.name }}</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <!-- Tabla de plantillas -->
-    <table class="table-auto w-full border border-gray-300">
-      <thead class="bg-violet-100">
-        <tr>
-          <th class="px-4 py-2 border border-gray-300 text-left">ID</th>
-          <th class="px-4 py-2 border border-gray-300 text-left">Nombre</th>
-          <th class="px-4 py-2 border border-gray-300 text-left">Usuario</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="plantilla in plantillas"
-          :key="plantilla.id"
-          class="hover:bg-violet-50 transition-colors"
-        >
-          <td class="px-4 py-2 border border-gray-200">{{ plantilla.id }}</td>
-          <td class="px-4 py-2 border border-gray-200">{{ plantilla.name }}</td>
-          <td class="px-4 py-2 border border-gray-200">{{ plantilla.id_user }}</td>
-        </tr>
-        <tr v-if="plantillas.length === 0">
-          <td colspan="3" class="text-center text-gray-500 py-4">No hay plantillas disponibles</td>
-        </tr>
-      </tbody>
-    </table>
+    <div v-if="plantillas.length === 0" class="text-center text-gray-500 mt-8">
+      No hay plantillas disponibles
+    </div>
   </div>
 </template>
