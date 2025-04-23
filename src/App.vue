@@ -6,11 +6,6 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import './styles.css'
 import axios from 'axios';
 
-// Configuración de Axios para incluir cookies
-axios.defaults.withCredentials = true;
-axios.defaults.xsrfCookieName = 'XSRF-TOKEN';
-axios.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
-
 const isLogged = ref(false);
 
 // Verificar si el usuario está autenticado
