@@ -20,7 +20,7 @@ const logUser = async () => {
   try {
     await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie');
 
-    const response = await axios.post('https://api-catalogos.twistic.app/loginProcess', {
+    const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
       email: email.value,
       password: password.value
     },
