@@ -22,7 +22,7 @@ const isLogged = ref(false);
 
 // Función para verificar si el usuario está autenticado
 function checkAuthStatus() {
-  axios.get('/user')
+  axios.get('https://api-catalogos.twistic.app/api/user')
     .then(response => {
       console.log('Usuario autenticado:', response.data);
       isLogged.value = true;
@@ -39,7 +39,7 @@ function checkAuthStatus() {
 
 // Función de logout con verificación real
 function logout() {
-  axios.post('/logout', {}, {
+  axios.post('https://api-catalogos.twistic.app/logout', {}, {
     withCredentials: true,
     headers: {
       'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
