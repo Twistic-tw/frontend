@@ -12,14 +12,6 @@ const password = ref('')
 const error = ref<string | null>(null)
 const router = useRouter()
 
-// Función para obtener el valor de una cookie
-function getCookie(name: string): string {
-  const value: string = `; ${document.cookie}`
-  const parts: string[] = value.split(`; ${name}=`)
-  if (parts.length === 2) return parts.pop()?.split(';').shift() ?? ''
-  return ''
-}
-
 // Función de login
 const logUser = async () => {
   error.value = null
@@ -29,9 +21,6 @@ const logUser = async () => {
     await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', {
       withCredentials: true,
     })
-
-    // Recuperamos el XSRF-TOKEN de la cookie
-    const csrfToken = decodeURIComponent(getCookie('XSRF-TOKEN'))
 
     // Ahora enviamos el login
     const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess',
@@ -43,7 +32,6 @@ const logUser = async () => {
         withCredentials: true,
         headers: {
           Accept: 'application/json',
-          'X-XSRF-TOKEN': csrfToken
         }
       }
     )
