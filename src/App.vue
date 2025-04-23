@@ -8,11 +8,12 @@ import axios from 'axios';
 
 // Configuración de Axios para incluir cookies
 axios.defaults.withCredentials = true;
+axios.defaults.xsrfCookieName = 'XSRF-TOKEN';
+axios.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 
-// Ref para saber si hay sesión activa
 const isLogged = ref(false);
 
-// Función para verificar si el usuario está autenticado
+// Verificar si el usuario está autenticado
 function checkAuthStatus() {
   axios.get('https://api-catalogos.twistic.app/api/user')
     .then(response => {
@@ -29,50 +30,36 @@ function checkAuthStatus() {
     });
 }
 
-// Función de logout con verificación real
+// Logout
 function logout() {
-  axios.post('https://api-catalogos.twistic.app/logout', {}, {
-    withCredentials: true,
-    headers: {
-      'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
-    }
-  })
-  .then(response => {
-    console.log('Logout exitoso:', response.data);
-    checkAuthStatus(); // Verifica el estado tras logout
-  })
-  .catch(error => {
-    console.error('Error en logout:', error);
-  });
+  axios.post('https://api-catalogos.twistic.app/logout', {}, { withCredentials: true })
+    .then(response => {
+      console.log('Logout exitoso:', response.data);
+      checkAuthStatus();
+    })
+    .catch(error => {
+      console.error('Error en logout:', error);
+    });
 }
 
 // Botón volver arriba
 const showButton = ref(false)
+const handleScroll = () => { showButton.value = window.scrollY > 200 }
+const scrollToTop = () => { window.scrollTo({ top: 0, behavior: 'smooth' }) }
 
-const handleScroll = () => {
-  showButton.value = window.scrollY > 200
-}
+onMounted(async () => {
+  window.addEventListener('scroll', handleScroll);
 
-const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-  checkAuthStatus(); // Verifica si está logeado al cargar
+  try {
+    // Solicita las cookies necesarias de CSRF y sesión
+    await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie');
+    checkAuthStatus();
+  } catch (e) {
+    console.error('Error al inicializar cookies:', e);
+  }
 });
 
-onUnmounted(() => window.removeEventListener('scroll', handleScroll))
-
-// Función para obtener cookies
-function getCookie(name: string): string | null {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) {
-    return parts.pop()?.split(';').shift() || null;
-  }
-  return null;
-}
+onUnmounted(() => window.removeEventListener('scroll', handleScroll));
 </script>
 
 <template>
