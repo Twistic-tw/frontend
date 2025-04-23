@@ -61,19 +61,19 @@ async function eliminarPlantilla(id) {
         :key="plantilla.id"
         class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
-        <h3 class="text-xl font-semibold text-violet-700 mb-2">{{ plantilla.name }}</h3>
+        <h3 class="text-xl font-semibold text-indigo-600 mb-2">{{ plantilla.name }}</h3>
 
-        <p class="text-sm text-gray-500 mb-1">
-          Created by: <span class="font-medium text-gray-700">{{ obtenerNombreUsuario(plantilla.id_user) }}</span>
+        <p class="text-sm text-gray-500 dark:text-white mb-1">
+          Created by: <span class="font-medium text-gray-700 dark:text-white">{{ obtenerNombreUsuario(plantilla.id_user) }}</span>
         </p>
 
-        <p class="text-sm text-gray-500 mb-3">
-          Created date: <span class="font-medium text-gray-700">{{ new Date(plantilla.created_at).toLocaleDateString() }}</span>
+        <p class="text-sm text-gray-500 dark:text-white mb-3">
+          Created date: <span class="font-medium text-gray-700 dark:text-white">{{ new Date(plantilla.created_at).toLocaleDateString() }}</span>
         </p>
 
         <div>
-          <h4 class="text-sm font-semibold text-gray-700 mb-2">Fields:</h4>
-          <ul class="list-disc list-inside text-gray-600">
+          <h4 class="text-sm font-semibold text-gray-700 dark:text-white mb-2">Fields:</h4>
+          <ul class="list-disc list-inside text-gray-600 dark:text-white">
             <li v-for="field in plantilla.fields" :key="field.id">{{ field.field }}</li>
           </ul>
         </div>
