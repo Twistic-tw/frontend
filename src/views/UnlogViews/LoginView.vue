@@ -2,72 +2,35 @@
 import '../../styles.css';
 import axios from 'axios';
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+
 import { RouterLink } from 'vue-router';
 
 // Datos del formulario
 const email = ref('');
 const password = ref('');
-const error = ref<string | null>(null);
-const router = useRouter();
 const loading = ref(false);
 
 // Función de login con token Bearer
-const logUser = async () => {
-  error.value = null;
-  loading.value = true;
-
+const login = async () => {
   try {
-    const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
+    const response = await axios.post('https://api-catalogos.twistic.app/api/login', {
       email: email.value,
       password: password.value
-    }, {
-      headers: {
-        Accept: 'application/json'
-      }
     });
 
-    console.log("DATA LOGIN:", response.data);
+    const token = response.data.token;
+    localStorage.setItem('authToken', token);
 
-    if (response.status === 200) {
-      const token = response.data.token; // 🔥 Asume que backend envía token
-      localStorage.setItem('authToken', token);
+    // Para futuras peticiones
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-      // Configurar Axios para usar el token Bearer
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-      let userRole = response.data.user.rol[0] || 'client';
-
-      switch (userRole) {
-        case 'ROLE_ADMINISTRATOR':
-          userRole = 'admin';
-          break;
-        default:
-          userRole = 'client';
-          break;
-      }
-
-      // Guardar datos del usuario
-      sessionStorage.setItem('userRole', userRole);
-      sessionStorage.setItem('userName', response.data.user.nombre);
-      sessionStorage.setItem('userEmail', response.data.user.email);
-
-      router.push('/dashboard');
-    } else {
-      error.value = 'Error inesperado';
-    }
-
+    console.log('Login correcto:', response.data.user);
+    // Redirigir o lo que necesites
   } catch (err) {
-    if (err.response?.status === 401) {
-      error.value = 'Credenciales incorrectas';
-    } else {
-      error.value = 'Error de conexión';
-    }
-    console.error(error.value, err);
-  } finally {
-    loading.value = false;
+    console.error('Error en login:', err);
   }
 };
+
 </script>
 
 
@@ -80,7 +43,7 @@ const logUser = async () => {
             </div>
 
             <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form @submit.prevent="logUser()" class="space-y-6" action="#" method="POST">
+                <form @submit.prevent="login()" class="space-y-6" action="#" method="POST">
                     <div>
                         <label for="email" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Email address</label>
                         <div class="mt-2">
