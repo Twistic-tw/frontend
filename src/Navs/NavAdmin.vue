@@ -59,7 +59,7 @@ onBeforeUnmount(() => {
       <!-- Toggle botón -->
       <div
         @click.stop="ToggleNav"
-        class="size-12 mr-6 rounded-tl-2xl rounded-br-2xl overflow-hidden border-2 border-indigo-500 hover:border-cyan-400 transition-all duration-300 ease-in-out shadow-lg hover:shadow-indigo-500/50 cursor-pointer">
+        class="size-12 mr-4 rounded-tl-2xl rounded-br-2xl overflow-hidden border-2 border-indigo-500 hover:border-cyan-400 transition-all duration-300 ease-in-out shadow-lg hover:shadow-indigo-500/50 cursor-pointer">
         <img src="/avatar.png" alt="Avatar" class="w-full h-full object-cover" />
       </div>
 
