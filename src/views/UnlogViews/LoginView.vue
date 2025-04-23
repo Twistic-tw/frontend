@@ -32,7 +32,8 @@ const logUser = async () => {
       {
         withCredentials: true,
         headers: {
-          Accept: 'application/json'
+          Accept: 'application/json',
+          'X-XSRF-TOKEN': document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
         }
       }
     );
