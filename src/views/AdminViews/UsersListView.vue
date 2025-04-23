@@ -44,7 +44,7 @@ export default defineComponent({
             alert('Token CSRF no encontrado, recarga la página.');
             return;
           }
-          await axios.delete(`https://api-catalogos.twistic.app/api/Users/${id}`, {
+          await axios.delete(`https://api-catalogos.twistic.app/api/users/${id}`, {
             withCredentials: true,
             headers: {
               'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
@@ -86,7 +86,7 @@ export default defineComponent({
           payload.password = nuevaPassword.value;
         }
 
-        await axios.put(`https://api-catalogos.twistic.app/api/user/${usuarioSeleccionado.value.id}`, payload, {
+        await axios.put(`https://api-catalogos.twistic.app/api/users/${usuarioSeleccionado.value.id}`, payload, {
           withCredentials: true,
           headers: {
             'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
@@ -173,16 +173,17 @@ export default defineComponent({
     </div>
 
     <!-- Modal de edición -->
+    <transition name="fade-modal">
     <div v-if="mostrarModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Editar Usuario</h2>
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md transform transition-all duration-300 scale-95 hover:scale-100">
+        <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Edit User</h2>
         <form @submit.prevent="guardarCambios">
           <div class="mb-4">
-            <label class="block text-gray-700 dark:text-gray-200 mb-1">Nombre</label>
+            <label class="block text-gray-700 dark:text-gray-200 mb-1">Name</label>
             <input v-model="usuarioSeleccionado.nombre" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
           </div>
           <div class="mb-4">
-            <label class="block text-gray-700 dark:text-gray-200 mb-1">Cargo</label>
+            <label class="block text-gray-700 dark:text-gray-200 mb-1">Role</label>
             <input v-model="usuarioSeleccionado.cargo" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
           </div>
           <div class="mb-4">
@@ -190,17 +191,29 @@ export default defineComponent({
             <input v-model="usuarioSeleccionado.email" type="email" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
           </div>
           <div class="mb-4">
-            <label class="block text-gray-700 dark:text-gray-200 mb-1">Nueva Contraseña</label>
+            <label class="block text-gray-700 dark:text-gray-200 mb-1">New password</label>
             <input v-model="nuevaPassword" type="password" placeholder="Opcional" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Déjalo en blanco si no quieres cambiarla</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Leave it blank if you don't want to change it.</p>
           </div>
           <div class="flex justify-end space-x-2">
             <button type="button" @click="mostrarModal = false" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400">Cancelar</button>
-            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Guardar</button>
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save</button>
           </div>
         </form>
       </div>
     </div>
+    </transition>
 
   </div>
 </template>
+<style scoped>
+.fade-modal-enter-active, .fade-modal-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-modal-enter-from, .fade-modal-leave-to {
+  opacity: 0;
+}
+.fade-modal-enter-to, .fade-modal-leave-from {
+  opacity: 1;
+}
+</style>
