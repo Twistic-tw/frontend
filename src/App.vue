@@ -9,14 +9,6 @@ import axios from 'axios';
 // Configuración de Axios para incluir cookies
 axios.defaults.withCredentials = true;
 
-axios.interceptors.request.use(config => {
-  const token = getCookie('XSRF-TOKEN');
-  if (token) {
-    config.headers['X-XSRF-TOKEN'] = token;
-  }
-  return config;
-});
-
 // Ref para saber si hay sesión activa
 const isLogged = ref(false);
 
