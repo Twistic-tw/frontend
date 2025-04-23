@@ -18,7 +18,9 @@ const logUser = async () => {
   loading.value = true;
 
   try {
-    await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie');
+    await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', {
+      withCredentials: true
+    });
 
     const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
       email: email.value,
