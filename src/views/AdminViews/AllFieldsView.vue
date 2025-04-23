@@ -53,9 +53,9 @@ async function eliminarCampo(id) {
         :key="field.id"
         class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
-        <h3 class="text-xl font-semibold text-violet-700 mb-2">#{{ field.id }} - {{ field.field }}</h3>
-        <p class="text-sm text-gray-500 mb-1">Created: <span class="font-medium text-gray-700">{{ new Date(field.created_at).toLocaleDateString() }}</span></p>
-        <p class="text-sm text-gray-500 mb-1">Updated: <span class="font-medium text-gray-700">{{ new Date(field.updated_at).toLocaleDateString() }}</span></p>
+        <h3 class="text-xl font-semibold text-indigo-600 mb-2">#{{ field.id }} - {{ field.field }}</h3>
+        <p class="text-sm text-gray-500 dark:text-white mb-1">Created: <span class="font-medium text-gray-700 dark:text-white">{{ new Date(field.created_at).toLocaleDateString() }}</span></p>
+        <p class="text-sm text-gray-500 dark:text-white mb-1">Updated: <span class="font-medium text-gray-700 dark:text-white">{{ new Date(field.updated_at).toLocaleDateString() }}</span></p>
         <!-- Botón Eliminar -->
         <button
           @click="eliminarCampo(field.id)"
