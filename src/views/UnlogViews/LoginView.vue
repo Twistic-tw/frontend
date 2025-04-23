@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import '../../styles.css'
+import '../../styles.css';
 import axios from 'axios';
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { RouterLink} from 'vue-router'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { RouterLink } from 'vue-router';
 
+// Configuración global de Axios para manejar cookies y CSRF automáticamente
+axios.defaults.withCredentials = true;
+axios.defaults.xsrfCookieName = 'XSRF-TOKEN';
+axios.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 
 // Datos del formulario
-const email = ref('')
-const password = ref('')
-const error = ref<string | null>(null)
-const router = useRouter()
+const email = ref('');
+const password = ref('');
+const error = ref<string | null>(null);
+const router = useRouter();
 const loading = ref(false);
 
 // Función de login
@@ -19,9 +23,11 @@ const logUser = async () => {
   loading.value = true;
 
   try {
+    // Primero pedimos el csrf-cookie para obtener XSRF-TOKEN y laravel_session
     await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie');
 
-    const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
+    // Ahora enviamos el login (ruta en web.php, sin /api)
+    const response = await axios.post('https://api-catalogos.twistic.app/loginProcess', {
       email: email.value,
       password: password.value
     });
@@ -29,16 +35,18 @@ const logUser = async () => {
     console.log("DATA LOGIN:", response.data);
 
     if (response.status === 200) {
-      let userRole = response.data.user_rol[0] || 'client'
+      let userRole = response.data.user_rol[0] || 'client';
 
       switch (userRole) {
         case 'ROLE_ADMINISTRATOR':
-          userRole = 'admin'
-          break
+          userRole = 'admin';
+          break;
         default:
-          userRole = 'client'
-          break
+          userRole = 'client';
+          break;
       }
+
+      // Guardar los datos principales del usuario
       sessionStorage.setItem('userRole', userRole);
       sessionStorage.setItem('userName', response.data.nombre);
       sessionStorage.setItem('userEmail', response.data.email);
@@ -60,9 +68,8 @@ const logUser = async () => {
     loading.value = false;
   }
 };
-
-
 </script>
+
 
 <template>
     <div class="flex-1 mt-[60px] flex-col justify-center px-6 py-12 lg:px-8 bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:bg-gradient-to-r dark:from-neutral-950 dark:via-none dark:to-slate-900 p-3">
