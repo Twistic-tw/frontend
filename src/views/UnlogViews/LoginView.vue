@@ -18,7 +18,6 @@ const logUser = async () => {
   loading.value = true;
 
   try {
-    // No necesitas csrf-cookie
     const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
       email: email.value,
       password: password.value
