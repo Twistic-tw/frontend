@@ -72,7 +72,7 @@ export default defineComponent({
       <div
         v-for="noti in notifications"
         :key="noti.catalog_name + noti.message"
-        class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition"
+        class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition"
       >
         <h2 class="text-xl font-semibold text-[#4f39f6] mb-2">
           {{ noti.catalog_name }}
