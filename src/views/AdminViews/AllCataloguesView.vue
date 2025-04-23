@@ -52,7 +52,7 @@ watch([filtroNombreCatalogo, usuarioSeleccionado], () => {
 </script>
 
 <template>
-  <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen">
+  <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-4">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Catalogs</h2>
 
     <!-- Filtros -->
