@@ -92,6 +92,46 @@ onBeforeUnmount(() => {
       </RouterLink>
 
       <RouterLink
+        to="/newCatalog"
+        @click="closeNav"
+        class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900"
+        active-class="bg-slate-800"
+        :class="{ 'opacity-100 translate-y-0': navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !navExpanded }"
+      >
+        Create Catalogs
+      </RouterLink>
+
+      <RouterLink
+        to="/catalogs"
+        @click="closeNav"
+        class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900"
+        active-class="bg-slate-800"
+        :class="{ 'opacity-100 translate-y-0': navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !navExpanded }"
+      >
+        Catalogs
+      </RouterLink>
+
+      <RouterLink
+        to="/templates"
+        @click="closeNav"
+        class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900"
+        active-class="bg-slate-800"
+        :class="{ 'opacity-100 translate-y-0': navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !navExpanded }"
+      >
+        Templates
+      </RouterLink>
+
+      <RouterLink
+        to="/fields"
+        @click="closeNav"
+        class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900"
+        active-class="bg-slate-800"
+        :class="{ 'opacity-100 translate-y-0': navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !navExpanded }"
+      >
+        Fields
+      </RouterLink>
+
+      <RouterLink
         to="/notifications"
         @click="closeNav"
         class="transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900"
@@ -99,6 +139,16 @@ onBeforeUnmount(() => {
         :class="{ 'opacity-100 translate-y-0': navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !navExpanded }"
       >
         Notifications
+      </RouterLink>
+
+      <RouterLink
+        to="/users"
+        @click="closeNav"
+        class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900"
+        active-class="bg-slate-800"
+        :class="{ 'opacity-100 translate-y-0': navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !navExpanded }"
+      >
+        Users
       </RouterLink>
 
       <RouterLink
