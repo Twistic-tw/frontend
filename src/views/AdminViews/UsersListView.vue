@@ -17,6 +17,10 @@ export default defineComponent({
     const error = ref(false)
     const searchQuery = ref('')
 
+    const mostrarModal = ref(false)
+    const usuarioSeleccionado = ref<User | null>(null)
+    const nuevaPassword = ref('')
+
     const fetchUsers = async () => {
       try {
         const response = await axios.get('https://api-catalogos.twistic.app/api/users', {
@@ -35,9 +39,7 @@ export default defineComponent({
     const deleteUser = async (id: number) => {
       if (confirm('Are you sure you want to delete this user?')) {
         try {
-          // Obtener token CSRF de la cookie
           const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-
           if (!xsrfToken) {
             alert('Token CSRF no encontrado, recarga la página.');
             return;
@@ -59,10 +61,48 @@ export default defineComponent({
     }
 
     const editUser = (user: User) => {
-      // Aquí puedes redirigir a un formulario o abrir un modal, tú mandas 👑
-      alert(`Editing user: ${user.nombre}`)
-      // Por ejemplo: router.push(`/edit-user/${user.id}`)
+      usuarioSeleccionado.value = { ...user };
+      nuevaPassword.value = '';
+      mostrarModal.value = true;
     }
+
+    const guardarCambios = async () => {
+      if (!usuarioSeleccionado.value) return;
+
+      try {
+        const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+        if (!xsrfToken) {
+          alert('Token CSRF no encontrado, recarga la página.');
+          return;
+        }
+
+        const payload: { nombre: string; cargo: string; email: string; password?: string } = {
+          nombre: usuarioSeleccionado.value.nombre,
+          cargo: usuarioSeleccionado.value.cargo,
+          email: usuarioSeleccionado.value.email
+        };
+
+        if (nuevaPassword.value.trim() !== '') {
+          payload.password = nuevaPassword.value;
+        }
+
+        await axios.put(`https://api-catalogos.twistic.app/api/user/${usuarioSeleccionado.value.id}`, payload, {
+          withCredentials: true,
+          headers: {
+            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            'Accept': 'application/json'
+          }
+        });
+
+        alert('Usuario actualizado correctamente.');
+        mostrarModal.value = false;
+        fetchUsers();
+        nuevaPassword.value = '';
+      } catch (error) {
+        console.error('Error al actualizar el usuario:', error);
+        alert('Hubo un error al actualizar.');
+      }
+    };
 
     const filteredUsers = computed(() => {
       return users.value.filter(user =>
@@ -79,7 +119,11 @@ export default defineComponent({
       searchQuery,
       filteredUsers,
       deleteUser,
-      editUser
+      editUser,
+      mostrarModal,
+      usuarioSeleccionado,
+      nuevaPassword,
+      guardarCambios
     }
   }
 })
@@ -127,5 +171,36 @@ export default defineComponent({
     <div v-if="error" class="text-center text-red-500 mt-6">
       Failed to load users.
     </div>
+
+    <!-- Modal de edición -->
+    <div v-if="mostrarModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Editar Usuario</h2>
+        <form @submit.prevent="guardarCambios">
+          <div class="mb-4">
+            <label class="block text-gray-700 dark:text-gray-200 mb-1">Nombre</label>
+            <input v-model="usuarioSeleccionado.nombre" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 dark:text-gray-200 mb-1">Cargo</label>
+            <input v-model="usuarioSeleccionado.cargo" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 dark:text-gray-200 mb-1">Email</label>
+            <input v-model="usuarioSeleccionado.email" type="email" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 dark:text-gray-200 mb-1">Nueva Contraseña</label>
+            <input v-model="nuevaPassword" type="password" placeholder="Opcional" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Déjalo en blanco si no quieres cambiarla</p>
+          </div>
+          <div class="flex justify-end space-x-2">
+            <button type="button" @click="mostrarModal = false" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400">Cancelar</button>
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
   </div>
 </template>
