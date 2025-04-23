@@ -4,11 +4,22 @@ import { onMounted } from 'vue';
 import axios from 'axios';
 
 const router = useRouter();
+function getCookie(name) {
+  const matches = document.cookie.match(new RegExp(
+    // Busca algo como "XSRF-TOKEN=valor"
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
 
 onMounted(async () => {
   try {
-    await axios.post('https://api-catalogos.twistic.app/api/logout', {}, {
+    await axios.post('https://api-catalogos.twistic.app/api/Logout', {}, {
       withCredentials: true,
+      headers: {
+        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
+      }
     });
 
     sessionStorage.clear();
@@ -22,7 +33,7 @@ onMounted(async () => {
     await router.push('/');
     window.location.reload();
   } catch (error) {
-    console.error('Error cerrando sesión:', error);
+    console.error('Error al cerrar sesión', error.response ? error.response.data : error);
     await router.push('/');
   }
 });
