@@ -27,7 +27,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
       <NavUnlog v-else />
     </header>
 
-    <main class="flex-1 mt-14">
+    <main class="flex-1 pt-14">
       <RouterView v-slot="{ Component }">
         <transition
           enter-active-class="transition-all duration-500 ease-out"
