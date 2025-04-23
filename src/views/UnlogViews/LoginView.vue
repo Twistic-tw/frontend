@@ -13,7 +13,7 @@ const loading = ref(false);
 // Función de login con token Bearer
 const login = async () => {
   try {
-    const response = await axios.post('https://api-catalogos.twistic.app/api/login', {
+    const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
       email: email.value,
       password: password.value
     });
