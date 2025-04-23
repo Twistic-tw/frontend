@@ -10,20 +10,26 @@ const email = ref('');
 const password = ref('');
 const loading = ref(false);
 const error = ref(null);
-// Función de login con token Bearer
 const router = useRouter();
 
+// Función de login
 const logUser = async () => {
   error.value = null;
   loading.value = true;
 
   try {
-    // Primero pedimos el csrf-cookie para obtener XSRF-TOKEN y laravel_session
+    // Paso 1: Pedir cookies iniciales (XSRF-TOKEN y laravel_session)
     await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', {
       withCredentials: true
     });
 
-    // Ahora enviamos el login con cookies y token CSRF
+    // Paso 2: Obtener el token CSRF actual desde las cookies
+    const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+    if (!xsrfToken) {
+      throw new Error('No se encontró el token CSRF');
+    }
+
+    // Paso 3: Hacer login y dejar que el navegador actualice la laravel_session
     const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess',
       {
         email: email.value,
@@ -33,7 +39,7 @@ const logUser = async () => {
         withCredentials: true,
         headers: {
           Accept: 'application/json',
-          'X-XSRF-TOKEN': document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken)
         }
       }
     );
@@ -52,11 +58,12 @@ const logUser = async () => {
           break;
       }
 
-      // Guardar datos del usuario en sesión
+      // Guardar datos del usuario
       sessionStorage.setItem('userRole', userRole);
       sessionStorage.setItem('userName', response.data.nombre);
       sessionStorage.setItem('userEmail', response.data.email);
 
+      // Redirigir
       router.push('/dashboard');
     } else {
       error.value = 'Error inesperado';
@@ -75,11 +82,7 @@ const logUser = async () => {
     loading.value = false;
   }
 };
-
-
 </script>
-
-
 
 <template>
     <div class="flex-1 mt-[60px] flex-col justify-center px-6 py-12 lg:px-8 bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:bg-gradient-to-r dark:from-neutral-950 dark:via-none dark:to-slate-900 p-3">
