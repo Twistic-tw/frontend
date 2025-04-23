@@ -82,26 +82,35 @@ const logUser = async () => {
             </div>
 
             <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-              <form @submit.prevent="logUser()" class="space-y-6" action="#" method="POST">
-                <!-- campos email y password -->
+                <form @submit.prevent="logUser()" class="space-y-6" action="#" method="POST">
+                    <div>
+                        <label for="email" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Email address</label>
+                        <div class="mt-2">
+                            <input v-model="email" type="email" name="email" id="email" autocomplete="email" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-gray-500 dark:text-indigo-50 dark:outline-gray-500 dark:focus:outline-gray-800"
+                            />
+                        </div>
+                    </div>
 
-                <div>
-                  <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    Log in
-                  </button>
-                </div>
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <label for="password" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Password</label>
+                            <div class="text-sm">
+                              <RouterLink to="/passwordRecover" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</RouterLink>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <input v-model="password" type="password" name="password" id="password" autocomplete="current-password" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-gray-500 dark:text-indigo-50 dark:outline-gray-500 dark:focus:outline-gray-800"
+                            />
+                        </div>
+                    </div>
 
-                <!-- Mostrar errores -->
-                <div v-if="error" class="text-red-600 text-sm text-center">
-                  {{ error }}
-                </div>
-
-                <!-- Opcional: Cargando -->
-                <div v-if="loading" class="text-center text-gray-700 dark:text-indigo-50">
-                  Cargando...
-                </div>
-              </form>
-
+                    <div>
+                        <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Log in</button>
+                    </div>
+                    <div v-if="loading" class="text-center text-gray-700 dark:text-indigo-50">
+                      Loading...
+                    </div>
+                </form>
 
                 <p class="mt-10 text-center text-sm/6 text-gray-500">
                     You don't have an account?
