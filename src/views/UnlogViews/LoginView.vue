@@ -43,7 +43,7 @@ const logUser = async () => {
         'X-XSRF-TOKEN': csrfToken
       }
     });
-
+    console.log(csrfToken);
     console.log("DATA LOGIN:", response.data);
 
     if (response.status === 200) {
