@@ -2,15 +2,16 @@
 import '../../styles.css';
 import axios from 'axios';
 import { ref } from 'vue';
-
+import { useRouter } from 'vue-router';
 import { RouterLink } from 'vue-router';
 
 // Datos del formulario
 const email = ref('');
 const password = ref('');
 const loading = ref(false);
-
 // Función de login con token Bearer
+const router = useRouter();
+
 const login = async () => {
   try {
     const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
@@ -20,12 +21,10 @@ const login = async () => {
 
     const token = response.data.token;
     localStorage.setItem('authToken', token);
-
-    // Para futuras peticiones
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     console.log('Login correcto:', response.data.user);
-    // Redirigir o lo que necesites
+    router.push('/dashboard');
   } catch (err) {
     console.error('Error en login:', err);
   }
