@@ -44,8 +44,6 @@ const logUser = async () => {
       }
     );
 
-    console.log("DATA LOGIN:", response.data);
-
     if (response.status === 200) {
       let userRole = response.data.user_rol[0] || 'client';
 
