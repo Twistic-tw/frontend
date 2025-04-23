@@ -5,11 +5,6 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { RouterLink } from 'vue-router';
 
-// Configuración global de Axios para manejar cookies y CSRF automáticamente
-axios.defaults.withCredentials = true;
-axios.defaults.xsrfCookieName = 'XSRF-TOKEN';
-axios.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
-
 // Datos del formulario
 const email = ref('');
 const password = ref('');
@@ -23,11 +18,11 @@ const logUser = async () => {
   loading.value = true;
 
   try {
-    // Primero pedimos el csrf-cookie para obtener XSRF-TOKEN y laravel_session
     await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie');
 
-    // Ahora enviamos el login (ruta en web.php, sin /api)
     const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
+      withCredentials: true,
+      headers: { Accept: 'application/json' },
       email: email.value,
       password: password.value
     });
