@@ -10,8 +10,8 @@ const router = useRouter();
 const email = ref('');
 const password = ref('');
 const passwordConfirmation = ref('');
-const nombre = ref('');
-const cargo = ref('');
+const name = ref('');
+const role = ref('');
 
 // Mensaje de estado
 const statusMessage = ref('');
@@ -21,8 +21,8 @@ function handleRegister() {
   statusMessage.value = 'Registrando...';
 
   axios.post('https://api-catalogos.twistic.app/api/register', {
-    nombre: nombre.value,
-    cargo: cargo.value,
+    nombre: name.value,
+    cargo: role.value,
     email: email.value,
     password: password.value,
     password_confirmation: passwordConfirmation.value
@@ -50,6 +50,21 @@ function handleRegister() {
 
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form class="space-y-6" @submit.prevent="handleRegister">
+
+          <div>
+            <label for="name" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Name</label>
+            <div class="mt-2">
+              <input v-model="email" type="text" name="name" id="name" autocomplete="name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-gray-500 dark:text-indigo-50 dark:outline-gray-500 dark:focus:outline-gray-800"/>
+            </div>
+          </div>
+
+          <div>
+            <label for="role" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Role</label>
+            <div class="mt-2">
+              <input v-model="email" type="text" name="role" id="role" autocomplete="role" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-gray-500 dark:text-indigo-50 dark:outline-gray-500 dark:focus:outline-gray-800"/>
+            </div>
+          </div>
+
           <div>
             <label for="email" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Email address</label>
             <div class="mt-2">
