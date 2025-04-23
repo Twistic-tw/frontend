@@ -1,43 +1,13 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
+import { useRoute } from 'vue-router'
+const route = useRoute();
 import NavUnlog from './Navs/NavUnlog.vue'
 import NavAdmin from './Navs/NavAdmin.vue'
 import { ref, onMounted, onUnmounted } from 'vue';
 import './styles.css'
-import axios from 'axios';
 
-const isLogged = ref(false);
-
-// Verificar si el usuario está autenticado
-function checkAuthStatus() {
-  axios.get('https://api-catalogos.twistic.app/api/user')
-    .then(response => {
-      console.log('Usuario autenticado:', response.data);
-      isLogged.value = true;
-    })
-    .catch(error => {
-      if (error.response && error.response.status === 401) {
-        console.log('No autenticado');
-        isLogged.value = false;
-      } else {
-        console.error('Error al verificar autenticación:', error);
-      }
-    });
-}
-
-// Logout
-function logout() {
-  axios.post('https://api-catalogos.twistic.app/logout', {}, { withCredentials: true })
-    .then(response => {
-      console.log('Logout exitoso:', response.data);
-      checkAuthStatus();
-    })
-    .catch(error => {
-      console.error('Error en logout:', error);
-    });
-}
-
-// Botón volver arriba
+// Botón volvder arriba
 const showButton = ref(false)
 const handleScroll = () => { showButton.value = window.scrollY > 200 }
 const scrollToTop = () => { window.scrollTo({ top: 0, behavior: 'smooth' }) }
@@ -53,8 +23,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
   <div class="min-h-screen flex flex-col bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900">
 
     <header>
-      <NavAdmin v-if="isLogged" @logout="logout" />
-      <NavUnlog v-else/>
+      <NavAdmin v-if="route.meta.requiereNavAdmin" />
+      <NavUnlog v-else />
     </header>
 
     <main class="flex-1 mt-14">
