@@ -8,29 +8,11 @@ import axios from 'axios';
 
 const isLogged = ref(false);
 
-// Verificar si el usuario está autenticado
-function checkAuthStatus() {
-  axios.get('https://api-catalogos.twistic.app/api/user')
-    .then(response => {
-      console.log('Usuario autenticado:', response.data);
-      isLogged.value = true;
-    })
-    .catch(error => {
-      if (error.response && error.response.status === 401) {
-        console.log('No autenticado');
-        isLogged.value = false;
-      } else {
-        console.error('Error al verificar autenticación:', error);
-      }
-    });
-}
-
 // Logout
 function logout() {
   axios.post('https://api-catalogos.twistic.app/logout', {}, { withCredentials: true })
     .then(response => {
       console.log('Logout exitoso:', response.data);
-      checkAuthStatus();
     })
     .catch(error => {
       console.error('Error en logout:', error);
