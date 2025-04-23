@@ -74,23 +74,23 @@ export default defineComponent({
         :key="noti.catalog_name + noti.message"
         class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition"
       >
-        <h2 class="text-xl font-semibold text-[#4f39f6] mb-2">
+        <h2 class="text-xl font-semibold text-indigo-600 mb-2">
           {{ noti.catalog_name }}
         </h2>
 
-        <p class="text-[#334155] mb-1">
+        <p class="text-[#334155] dark:text-white mb-1">
           <strong>File path:</strong> {{ noti.file_path }}
         </p>
 
-        <p class="text-[#334155] mb-1">
+        <p class="text-[#334155] dark:text-white mb-1">
           <strong>Fields order:</strong> {{ parseFields(noti.fields_order) }}
         </p>
 
-        <p class="text-[#334155] mb-1">
+        <p class="text-[#334155] dark:text-white mb-1">
           <strong>User ID:</strong> {{ noti.id_user }}
         </p>
 
-        <p class="text-[#334155] mb-1">
+        <p class="text-[#334155] dark:text-white mb-1">
           <strong>Message:</strong> {{ noti.message }}
         </p>
 
