@@ -75,6 +75,7 @@ const logUser = async () => {
 
             <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form @submit.prevent="logUser()" class="space-y-6" action="#" method="POST">
+                  @CSRF
                     <div>
                         <label for="email" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Email address</label>
                         <div class="mt-2">
