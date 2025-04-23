@@ -62,14 +62,15 @@ const logUser = async () => {
     }
 
   } catch (err) {
-    if (err.response && err.response.status === 401) {
-      error.value = 'Credenciales incorrectas';
-    } else if (err.response && err.response.status === 419) {
-      error.value = 'Token CSRF inválido o caducado';
-    } else {
-      error.value = 'Error de conexión';
-    }
+      if (err.response && err.response.status === 401) {
+        error.value = 'Credenciales incorrectas';
+      } else if (err.response && err.response.status === 419) {
+        error.value = 'Token CSRF inválido o caducado';
+      } else {
+        error.value = 'Error de conexión';
       }
+      console.error(error, err);
+    }
 }
 
 </script>
