@@ -51,7 +51,7 @@ async function eliminarCampo(id) {
       <div
         v-for="field in fields"
         :key="field.id"
-        class="bg-white rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
         <h3 class="text-xl font-semibold text-violet-700 mb-2">#{{ field.id }} - {{ field.field }}</h3>
         <p class="text-sm text-gray-500 mb-1">Created: <span class="font-medium text-gray-700">{{ new Date(field.created_at).toLocaleDateString() }}</span></p>
