@@ -49,14 +49,6 @@ const scrollToTop = () => { window.scrollTo({ top: 0, behavior: 'smooth' }) }
 
 onMounted(async () => {
   window.addEventListener('scroll', handleScroll);
-
-  try {
-    // Solicita las cookies necesarias de CSRF y sesión
-    await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie');
-    checkAuthStatus();
-  } catch (e) {
-    console.error('Error al inicializar cookies:', e);
-  }
 });
 
 onUnmounted(() => window.removeEventListener('scroll', handleScroll));
