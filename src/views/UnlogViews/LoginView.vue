@@ -27,7 +27,7 @@ const logUser = async () => {
     await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie');
 
     // Ahora enviamos el login (ruta en web.php, sin /api)
-    const response = await axios.post('https://api-catalogos.twistic.app/loginProcess', {
+    const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
       email: email.value,
       password: password.value
     });
