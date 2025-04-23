@@ -44,7 +44,7 @@ async function eliminarCampo(id) {
 </script>
 
 <template>
-  <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen">
+  <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-4">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available fields</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
