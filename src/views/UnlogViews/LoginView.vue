@@ -9,26 +9,72 @@ import { RouterLink } from 'vue-router';
 const email = ref('');
 const password = ref('');
 const loading = ref(false);
+const error = ref(null);
 // Función de login con token Bearer
 const router = useRouter();
 
-const login = async () => {
+const logUser = async () => {
+  error.value = null;
+  loading.value = true;
+
   try {
-    const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
-      email: email.value,
-      password: password.value
+    // Primero pedimos el csrf-cookie para obtener XSRF-TOKEN y laravel_session
+    await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', {
+      withCredentials: true
     });
 
-    const token = response.data.token;
-    localStorage.setItem('authToken', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    // Ahora enviamos el login con cookies y token CSRF
+    const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess',
+      {
+        email: email.value,
+        password: password.value
+      },
+      {
+        withCredentials: true,
+        headers: {
+          Accept: 'application/json'
+        }
+      }
+    );
 
-    console.log('Login correcto:', response.data.user);
-    router.push('/dashboard');
+    console.log("DATA LOGIN:", response.data);
+
+    if (response.status === 200) {
+      let userRole = response.data.user_rol[0] || 'client';
+
+      switch (userRole) {
+        case 'ROLE_ADMINISTRATOR':
+          userRole = 'admin';
+          break;
+        default:
+          userRole = 'client';
+          break;
+      }
+
+      // Guardar datos del usuario en sesión
+      sessionStorage.setItem('userRole', userRole);
+      sessionStorage.setItem('userName', response.data.nombre);
+      sessionStorage.setItem('userEmail', response.data.email);
+
+      router.push('/dashboard');
+    } else {
+      error.value = 'Error inesperado';
+    }
+
   } catch (err) {
-    console.error('Error en login:', err);
+    if (err.response?.status === 401) {
+      error.value = 'Credenciales incorrectas';
+    } else if (err.response?.status === 419) {
+      error.value = 'Token CSRF inválido o caducado';
+    } else {
+      error.value = 'Error de conexión';
+    }
+    console.error(error.value, err);
+  } finally {
+    loading.value = false;
   }
 };
+
 
 </script>
 
@@ -42,7 +88,7 @@ const login = async () => {
             </div>
 
             <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form @submit.prevent="login()" class="space-y-6" action="#" method="POST">
+                <form @submit.prevent="logUser()" class="space-y-6" action="#" method="POST">
                     <div>
                         <label for="email" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Email address</label>
                         <div class="mt-2">
