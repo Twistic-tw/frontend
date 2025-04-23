@@ -22,6 +22,16 @@ const logUser = async () => {
       withCredentials: true
     });
 
+    // Obtener el token de la cookie
+    function getCookie(name: string): string | null {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+      return null;
+    }
+
+    const csrfToken = getCookie('XSRF-TOKEN');
+
     const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
       email: email.value,
       password: password.value
@@ -29,7 +39,8 @@ const logUser = async () => {
     {
       withCredentials: true,
       headers: {
-        Accept: 'application/json'
+        Accept: 'application/json',
+        'X-XSRF-TOKEN': csrfToken
       }
     });
 
