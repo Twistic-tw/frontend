@@ -35,9 +35,19 @@ export default defineComponent({
     const deleteUser = async (id: number) => {
       if (confirm('Are you sure you want to delete this user?')) {
         try {
+          // Obtener token CSRF de la cookie
+          const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+
+          if (!xsrfToken) {
+            alert('Token CSRF no encontrado, recarga la página.');
+            return;
+          }
           await axios.delete(`https://api-catalogos.twistic.app/api/Users/${id}`, {
             withCredentials: true,
-            headers: { Accept: 'application/json' }
+            headers: {
+              'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+              'Accept': 'application/json'
+            }
           })
           users.value = users.value.filter(user => user.id !== id)
           alert('User deleted successfully')
