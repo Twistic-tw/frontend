@@ -82,11 +82,11 @@ watch([filtroNombreCatalogo, usuarioSeleccionado], () => {
       <div
         v-for="catalogo in catalogos"
         :key="catalogo.id"
-        class="bg-white rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
-        <h3 class="text-xl font-semibold text-violet-700 mb-2">{{ catalogo.name }}</h3>
-        <p class="text-sm text-gray-500 mb-1">Created by: <span class="font-medium text-gray-700">{{ catalogo.user_name }}</span></p>
-        <p class="text-sm text-gray-500 mb-1">Creat date: <span class="font-medium text-gray-700">{{ new Date(catalogo.created_at).toLocaleDateString() }}</span></p>
+        <h3 class="text-xl font-semibold text-indigo-600 mb-2">{{ catalogo.name }}</h3>
+        <p class="text-sm text-gray-500 dark:text-white mb-1">Created by: <span class="font-medium text-gray-700 dark:text-white">{{ catalogo.user_name }}</span></p>
+        <p class="text-sm text-gray-500 dark:text-white mb-1">Creat date: <span class="font-medium text-gray-700 dark:text-white">{{ new Date(catalogo.created_at).toLocaleDateString() }}</span></p>
       </div>
     </div>
 
