@@ -4,20 +4,10 @@ import NavUnlog from './Navs/NavUnlog.vue'
 import NavAdmin from './Navs/NavAdmin.vue'
 import { ref, onMounted, onUnmounted } from 'vue';
 import './styles.css'
-import axios from 'axios';
+
 
 const isLogged = ref(false);
 
-// Logout
-function logout() {
-  axios.post('https://api-catalogos.twistic.app/logout', {}, { withCredentials: true })
-    .then(response => {
-      console.log('Logout exitoso:', response.data);
-    })
-    .catch(error => {
-      console.error('Error en logout:', error);
-    });
-}
 
 // Botón volver arriba
 const showButton = ref(false)
@@ -35,7 +25,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
   <div class="min-h-screen flex flex-col bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900">
 
     <header>
-      <NavAdmin v-if="isLogged" @logout="logout" />
+      <NavAdmin v-if="isLogged" />
       <NavUnlog v-else/>
     </header>
 
