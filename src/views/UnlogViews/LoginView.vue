@@ -15,32 +15,20 @@ const loading = ref(false);
 
 // Función de login
 const logUser = async () => {
-  error.value = null
+  error.value = null;
+  loading.value = true;
 
   try {
-    // Primero pedimos el csrf-cookie para obtener XSRF-TOKEN y laravel_session
-    await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', {
-      withCredentials: true,
-    })
+    await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie');
 
-    // Ahora enviamos el login
-    const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess',
-      {
-        email: email.value,
-        password: password.value
-      },
-      {
-        withCredentials: true,
-        headers: {
-          Accept: 'application/json',
-        }
-      }
-    )
+    const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
+      email: email.value,
+      password: password.value
+    });
 
     console.log("DATA LOGIN:", response.data);
 
     if (response.status === 200) {
-      loading.value = true;
       let userRole = response.data.user_rol[0] || 'client'
 
       switch (userRole) {
@@ -51,27 +39,28 @@ const logUser = async () => {
           userRole = 'client'
           break
       }
-
-      // Guardar los datos principales del usuario
-      sessionStorage.setItem('userRole', userRole)
+      sessionStorage.setItem('userRole', userRole);
       sessionStorage.setItem('userName', response.data.nombre);
       sessionStorage.setItem('userEmail', response.data.email);
-      router.push('/dashboard')
+      router.push('/dashboard');
     } else {
-      error.value = 'Error inesperado'
+      error.value = 'Error inesperado';
     }
 
   } catch (err) {
-      if (err.response && err.response.status === 401) {
-        error.value = 'Credenciales incorrectas';
-      } else if (err.response && err.response.status === 419) {
-        error.value = 'Token CSRF inválido o caducado';
-      } else {
-        error.value = 'Error de conexión';
-      }
-      console.error(error, err);
+    if (err.response?.status === 401) {
+      error.value = 'Credenciales incorrectas';
+    } else if (err.response?.status === 419) {
+      error.value = 'Token CSRF inválido o caducado';
+    } else {
+      error.value = 'Error de conexión';
     }
-}
+    console.error(error.value, err);
+  } finally {
+    loading.value = false;
+  }
+};
+
 
 </script>
 
