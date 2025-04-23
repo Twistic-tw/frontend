@@ -7,7 +7,7 @@ const userName = sessionStorage.getItem('userName');
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-4">
 
     <!-- Welcome Title -->
-    <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6 text-center">
+    <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-800 mb-6 text-center">
       Welcome, {{userName}}!
     </h1>
 
