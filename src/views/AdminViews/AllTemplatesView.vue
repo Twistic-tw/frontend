@@ -26,8 +26,19 @@ const obtenerNombreUsuario = (id_user) => {
 async function eliminarPlantilla(id) {
   if (confirm('¿Estás seguro de que quieres eliminar esta plantilla?')) {
     try {
+      // Obtener token CSRF de la cookie
+      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+
+      if (!xsrfToken) {
+        alert('Token CSRF no encontrado, recarga la página.');
+        return;
+      }
       await axios.delete(`https://api-catalogos.twistic.app/api/templates/${id}`, {
         withCredentials: true,
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'Accept': 'application/json'
+        }
       })
       plantillas.value = plantillas.value.filter(p => p.id !== id)
       alert('Plantilla eliminada correctamente.')
