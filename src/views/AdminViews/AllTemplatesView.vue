@@ -59,7 +59,7 @@ async function eliminarPlantilla(id) {
       <div
         v-for="plantilla in plantillas"
         :key="plantilla.id"
-        class="bg-white rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
         <h3 class="text-xl font-semibold text-violet-700 mb-2">{{ plantilla.name }}</h3>
 
