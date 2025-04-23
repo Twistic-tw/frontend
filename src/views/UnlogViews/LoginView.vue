@@ -12,42 +12,32 @@ const error = ref<string | null>(null);
 const router = useRouter();
 const loading = ref(false);
 
-// Función de login
+// Función de login con token Bearer
 const logUser = async () => {
   error.value = null;
   loading.value = true;
 
   try {
-    await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', {
-      withCredentials: true
-    });
-
-    // Obtener el token de la cookie
-    function getCookie(name: string): string | null {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
-      return null;
-    }
-
-    const csrfToken = getCookie('XSRF-TOKEN');
-
+    // No necesitas csrf-cookie
     const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
       email: email.value,
       password: password.value
-    },
-    {
-      withCredentials: true,
+    }, {
       headers: {
-        Accept: 'application/json',
-        'X-XSRF-TOKEN': csrfToken
+        Accept: 'application/json'
       }
     });
-    console.log(csrfToken);
+
     console.log("DATA LOGIN:", response.data);
 
     if (response.status === 200) {
-      let userRole = response.data.user_rol[0] || 'client';
+      const token = response.data.token; // 🔥 Asume que backend envía token
+      localStorage.setItem('authToken', token);
+
+      // Configurar Axios para usar el token Bearer
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      let userRole = response.data.user.rol[0] || 'client';
 
       switch (userRole) {
         case 'ROLE_ADMINISTRATOR':
@@ -58,10 +48,11 @@ const logUser = async () => {
           break;
       }
 
-      // Guardar los datos principales del usuario
+      // Guardar datos del usuario
       sessionStorage.setItem('userRole', userRole);
-      sessionStorage.setItem('userName', response.data.nombre);
-      sessionStorage.setItem('userEmail', response.data.email);
+      sessionStorage.setItem('userName', response.data.user.nombre);
+      sessionStorage.setItem('userEmail', response.data.user.email);
+
       router.push('/dashboard');
     } else {
       error.value = 'Error inesperado';
@@ -70,8 +61,6 @@ const logUser = async () => {
   } catch (err) {
     if (err.response?.status === 401) {
       error.value = 'Credenciales incorrectas';
-    } else if (err.response?.status === 419) {
-      error.value = 'Token CSRF inválido o caducado';
     } else {
       error.value = 'Error de conexión';
     }
@@ -81,6 +70,7 @@ const logUser = async () => {
   }
 };
 </script>
+
 
 
 <template>
