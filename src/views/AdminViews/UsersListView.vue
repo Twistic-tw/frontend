@@ -33,7 +33,7 @@ const {
 
 <!-- Modal Crear Usuario -->
 <transition name="fade-modal">
-  <div v-if="showCreateModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <div v-if="showCreateModal" class="fixed max-w-md w-full mx-auto inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
     <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl w-full max-w-lg shadow-lg transition-all duration-300">
       <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">New user</h2>
       <form @submit.prevent="submitCreateUser">
@@ -108,7 +108,7 @@ const {
 
     <!-- Modal de edición -->
     <transition name="fade-modal">
-    <div v-if="mostrarModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div v-if="mostrarModal" class="fixed max-w-md w-full mx-auto inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md transform transition-all duration-300 scale-95 hover:scale-100">
         <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Edit User</h2>
         <form @submit.prevent="guardarCambios">
