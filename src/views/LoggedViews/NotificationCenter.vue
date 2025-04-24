@@ -55,7 +55,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-4">
+  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3">
     <h1 class="text-3xl font-bold text-[#0F172A] mb-6 text-center">
       Notifications
     </h1>
