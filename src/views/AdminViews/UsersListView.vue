@@ -55,7 +55,7 @@ const {
         <div class="mb-3">
           <!-- Campo de Idioma -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Idioma</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Language</label>
           <select v-model="newUser.idioma" class="mt-1 block w-full rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             <option disabled value="">Seleccione un idioma</option>
             <option v-for="idioma in idiomasDisponibles" :key="idioma.id" :value="idioma.id">
