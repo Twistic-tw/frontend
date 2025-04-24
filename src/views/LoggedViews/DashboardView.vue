@@ -85,14 +85,16 @@ onMounted(fetchNotifications);
 
       <!-- Notifications Card (client and admin) -->
       <RouterLink to="notifications" v-if="role && (role === 'client' || role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
-        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Manage Notifications</h2>
-        <!-- Contador de notificaciones -->
-        <span
-          v-if="notifications.length"
-          class="bg-red-500 text-white text-sm font-semibold px-2 py-1 rounded-full"
-        >
-          {{ notifications.length }}
-        </span>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold text-gray-700 dark:text-white">Manage Notifications</h2>
+          <!-- Contador de notificaciones -->
+          <span
+            v-if="notifications.length"
+            class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full ml-2"
+          >
+            {{ notifications.length }}
+          </span>
+        </div>
         <p class="text-gray-500 dark:text-gray-300">Manage notifications for your catalogs.</p>
         <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
           Manage Notifications
