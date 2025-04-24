@@ -115,12 +115,10 @@ const logUser = async () => {
               class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600">Log in</button>
           </div>
           <div v-if="loading" class="flex justify-center items-center mt-10">
-            <div class="flex items-center space-x-3">
-              <!-- Spinner -->
-              <svg class="animate-spin h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z"></path>
-              </svg>
+            <div class="flex items-center space-x-4">
+              <!-- Spinner Dual Ring -->
+              <div class="w-8 h-8 border-4 border-indigo-600 border-dashed rounded-full animate-spin"></div>
+
               <!-- Texto bonito -->
               <span class="text-lg font-semibold text-gray-700 dark:text-indigo-50 animate-pulse">
                 Loading, please wait...
