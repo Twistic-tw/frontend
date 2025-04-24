@@ -55,7 +55,7 @@ watch(usuarioSeleccionado, () => {
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Catalogs</h2>
 
     <!-- Filtros -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+    <div class="mb-6 max-w-md mx-auto">
 
       <!-- Filtrar por usuario -->
       <select
