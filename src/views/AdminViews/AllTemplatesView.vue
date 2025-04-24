@@ -17,7 +17,6 @@ async function cargarUsuarios() {
       withCredentials: true
     })
     usuarios.value = res.data
-    console.log('Usuarios cargados:', usuarios.value)
   } catch (error) {
     console.error('Error al cargar usuarios:', error)
   }
@@ -30,7 +29,6 @@ async function cargarPlantillas() {
       withCredentials: true
     })
     plantillas.value = res.data
-    console.log('Plantillas cargadas:', plantillas.value)
   } catch (error) {
     console.error('Error al cargar plantillas:', error)
   }
