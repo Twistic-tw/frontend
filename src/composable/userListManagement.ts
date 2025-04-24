@@ -1,6 +1,7 @@
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 
+// Interface para el usuario
 interface User {
   id: number;
   nombre: string;
@@ -38,6 +39,13 @@ export function useUserListManagement() {
     }
   };
 
+  // Filtrar usuarios
+  const filteredUsers = computed(() => {
+    return users.value.filter(user =>
+      user.nombre.toLowerCase().includes(searchQuery.value.toLowerCase())
+    );
+  });
+
   // Crear usuario
   const openCreateModal = () => { showCreateModal.value = true; };
   const closeCreateModal = () => {
@@ -64,30 +72,6 @@ export function useUserListManagement() {
     } catch (err) {
       console.error('Error al crear usuario:', err);
       alert('Error al crear usuario.');
-    }
-  };
-
-  // Eliminar usuario
-  const deleteUser = async (id: number) => {
-    if (confirm('¿Seguro que deseas eliminar este usuario?')) {
-      try {
-        const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-        if (!xsrfToken) { alert('Token CSRF no encontrado'); return; }
-
-        await axios.delete(`https://api-catalogos.twistic.app/api/users/${id}`, {
-          withCredentials: true,
-          headers: {
-            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-            'Accept': 'application/json'
-          }
-        });
-
-        users.value = users.value.filter(user => user.id !== id);
-        alert('Usuario eliminado correctamente.');
-      } catch (err) {
-        console.error('Error eliminando usuario:', err);
-        alert('Error al eliminar usuario.');
-      }
     }
   };
 
@@ -133,12 +117,29 @@ export function useUserListManagement() {
     }
   };
 
-  // Filtrar usuarios
-  const filteredUsers = computed(() => {
-    return users.value.filter(user =>
-      user.nombre.toLowerCase().includes(searchQuery.value.toLowerCase())
-    );
-  });
+  // Eliminar usuario
+  const deleteUser = async (id: number) => {
+    if (confirm('¿Seguro que deseas eliminar este usuario?')) {
+      try {
+        const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+        if (!xsrfToken) { alert('Token CSRF no encontrado'); return; }
+
+        await axios.delete(`https://api-catalogos.twistic.app/api/users/${id}`, {
+          withCredentials: true,
+          headers: {
+            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            'Accept': 'application/json'
+          }
+        });
+
+        users.value = users.value.filter(user => user.id !== id);
+        alert('Usuario eliminado correctamente.');
+      } catch (err) {
+        console.error('Error eliminando usuario:', err);
+        alert('Error al eliminar usuario.');
+      }
+    }
+  };
 
   onMounted(fetchUsers);
 
