@@ -26,10 +26,6 @@ async function cargarUsuarios() {
 
 // Cargar catálogos por usuario seleccionado
 async function cargarCatalogos() {
-  if (!usuarioSeleccionado.value) {
-    catalogos.value = [] // Si no hay usuario seleccionado, no mostramos nada
-    return
-  }
 
   try {
     const url = `https://api-catalogos.twistic.app/api/ShowCatalogs?id_user=${usuarioSeleccionado.value}`
