@@ -201,18 +201,18 @@ const submitCreateUser = async () => {
     <!-- Botón para abrir modal -->
 <div class="text-center mb-6">
   <button @click="openCreateModal" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">
-    Crear Usuario
+    New user
   </button>
 </div>
 
 <!-- Modal Crear Usuario -->
-<transition name="fade">
+<transition name="fade-modal">
   <div v-if="showCreateModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
     <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl w-full max-w-lg shadow-lg transition-all duration-300">
-      <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">Crear Usuario</h2>
+      <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">New user</h2>
       <form @submit.prevent="submitCreateUser">
         <div class="mb-3">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nombre</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Name</label>
           <input v-model="newUser.nombre" type="text" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
         </div>
         <div class="mb-3">
@@ -220,16 +220,16 @@ const submitCreateUser = async () => {
           <input v-model="newUser.email" type="email" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
         </div>
         <div class="mb-3">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Cargo</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Role</label>
           <input v-model="newUser.cargo" type="text" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" />
         </div>
         <div class="mb-3">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Contraseña</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Password</label>
           <input v-model="newUser.password" type="password" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
         </div>
         <div class="flex justify-end space-x-2 mt-4">
           <button type="button" @click="closeCreateModal" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-md">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Guardar</button>
+          <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Save</button>
         </div>
       </form>
     </div>
