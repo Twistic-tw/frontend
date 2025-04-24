@@ -7,6 +7,7 @@ interface User {
   nombre: string;
   email: string;
   cargo: string;
+  idioma: string;
 }
 
 export function useUserListManagement() {
@@ -21,7 +22,7 @@ export function useUserListManagement() {
   const nuevaPassword = ref('');
 
   const showCreateModal = ref(false);
-  const newUser = ref({ nombre: '', email: '', cargo: '', password: '' });
+  const newUser = ref({ nombre: '', email: '', cargo: '', password: '' , idioma: '' });
 
   // Obtener usuarios
   const fetchUsers = async () => {
@@ -39,6 +40,21 @@ export function useUserListManagement() {
     }
   };
 
+  // Obtener idiomas
+  const idiomasDisponibles = ref([]);
+
+  const fetchIdiomas = async () => {
+    try {
+      const response = await axios.get('https://api-catalogos.twistic.app/api/Languages', {
+        withCredentials: true,
+        headers: { Accept: 'application/json' }
+      });
+      idiomasDisponibles.value = response.data;
+    } catch (err) {
+      console.error('Error al cargar idiomas:', err);
+    }
+  };
+
   // Filtrar usuarios
   const filteredUsers = computed(() => {
     return users.value.filter(user =>
@@ -50,7 +66,7 @@ export function useUserListManagement() {
   const openCreateModal = () => { showCreateModal.value = true; };
   const closeCreateModal = () => {
     showCreateModal.value = false;
-    newUser.value = { nombre: '', email: '', cargo: '', password: '' };
+    newUser.value = { nombre: '', email: '', cargo: '', password: '' , idioma: '' };
   };
 
   const submitCreateUser = async () => {
@@ -139,12 +155,16 @@ export function useUserListManagement() {
     }
   };
 
-  onMounted(fetchUsers);
+  onMounted(() => {
+    fetchUsers();
+    fetchIdiomas();
+  });
 
   return {
     users, loading, error, searchQuery, filteredUsers,
     deleteUser, editUser, mostrarModal, usuarioSeleccionado,
     nuevaPassword, guardarCambios,
-    openCreateModal, showCreateModal, submitCreateUser, newUser, closeCreateModal
+    openCreateModal, showCreateModal, submitCreateUser, newUser, closeCreateModal,
+    idiomasDisponibles, fetchIdiomas
   };
 }
