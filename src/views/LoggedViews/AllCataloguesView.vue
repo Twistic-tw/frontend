@@ -9,6 +9,7 @@ const usuarioSeleccionado = ref('')
 // Cargar usuarios al iniciar
 onMounted(async () => {
   cargarCatalogos()
+  cargarCatalogosPorUsuario()
   cargarUsuarios()
 })
 
@@ -24,8 +25,23 @@ async function cargarUsuarios() {
   }
 }
 
-// Cargar catálogos por usuario seleccionado
+// Cargar catálogos
 async function cargarCatalogos() {
+
+try {
+  const url = `https://api-catalogos.twistic.app/api/ShowCatalogs`
+  const res = await axios.get(url, {
+    withCredentials: true
+  })
+  catalogos.value = res.data.catalogs || []
+} catch (error) {
+  console.error('Error al cargar catálogos:', error)
+  catalogos.value = []
+}
+}
+
+// Cargar catálogos por usuario
+async function cargarCatalogosPorUsuario() {
 
   try {
     const url = `https://api-catalogos.twistic.app/api/ShowCatalogs?id_user=${usuarioSeleccionado.value}`
@@ -34,14 +50,14 @@ async function cargarCatalogos() {
     })
     catalogos.value = res.data.catalogs || []
   } catch (error) {
-    console.error('Error al cargar catálogos:', error)
+    console.error('Error al cargar catálogos por usuario:', error)
     catalogos.value = []
   }
 }
 
 // Al cambiar de usuario, carga sus catálogos
 watch(usuarioSeleccionado, () => {
-  cargarCatalogos()
+  cargarCatalogosPorUsuario()
 })
 </script>
 
