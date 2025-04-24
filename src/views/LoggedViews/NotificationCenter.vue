@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
+<script lang="ts">
+import { defineComponent, ref, onMounted } from 'vue'
 import axios from 'axios'
 
 interface Notification {
@@ -11,68 +11,70 @@ interface Notification {
   status: string
 }
 
-const notifications = ref<Notification[]>([])
-const loading = ref(true)
-const error = ref(false)
+export default defineComponent({
+  name: 'NotificationCenter',
+  setup() {
+    const notifications = ref<Notification[]>([])
+    const loading = ref(true)
+    const error = ref(false)
 
-const fetchNotifications = async () => {
-  try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/ShowNotifications', {
-      withCredentials: true
-    })
-    notifications.value = res.data.notifications
-  } catch (err) {
-    console.error('Error al obtener notificaciones:', err)
-    error.value = true
-  } finally {
-    loading.value = false
+    const fetchNotifications = async () => {
+      try {
+        const res = await axios.get('https://api-catalogos.twistic.app/api/ShowNotifications', {
+          withCredentials: true
+        })
+        notifications.value = res.data.notifications
+      } catch (err) {
+        console.error(err)
+        error.value = true
+      } finally {
+        loading.value = false
+      }
+    }
+
+    const parseFields = (jsonStr: string | null): string => {
+      try {
+        if (!jsonStr) return '-'
+        const fields = JSON.parse(jsonStr)
+        return Array.isArray(fields) ? fields.join(', ') : '-'
+      } catch {
+        return '-'
+      }
+    }
+
+    onMounted(fetchNotifications)
+
+    return {
+      notifications,
+      loading,
+      error,
+      parseFields
+    }
   }
-}
-
-const parseFields = (jsonStr: string | null): string => {
-  if (!jsonStr) return '-'
-  try {
-    const fields = JSON.parse(jsonStr)
-    return Array.isArray(fields) ? fields.join(', ') : '-'
-  } catch {
-    return '-'
-  }
-}
-
-onMounted(fetchNotifications)
+})
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3">
+  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-4">
     <h1 class="text-3xl font-bold text-[#0F172A] mb-6 text-center">
       Notifications
     </h1>
-    <!-- Contador de notificaciones -->
-    <span
-        v-if="notifications.length"
-        class="bg-red-500 text-white text-sm font-semibold px-2 py-1 rounded-full"
-      >
-        {{ notifications.length }}
-      </span>
 
-    <!-- Estado de carga -->
     <div v-if="loading" class="text-center text-[#334155]">
       Loading notifications...
     </div>
 
-    <!-- No hay notificaciones -->
-    <div v-else-if="!notifications.length && !error" class="text-center bg-white p-6 rounded-2xl shadow-md text-[#334155]">
+    <div v-else-if="!notifications.length" class="text-center bg-white p-6 rounded-2xl shadow-md text-[#334155]">
       No notifications available.
     </div>
 
-    <!-- Lista de notificaciones -->
-    <div v-else-if="notifications.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       <div
         v-for="noti in notifications"
         :key="noti.catalog_name + noti.message"
         class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition"
       >
-        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-2">
+        <h2 class="text-xl font-semibold text-indigo-600 mb-2">
           {{ noti.catalog_name }}
         </h2>
 
@@ -92,26 +94,23 @@ onMounted(fetchNotifications)
           <strong>Message:</strong> {{ noti.message }}
         </p>
 
-        <span
-          class="inline-block font-medium mt-2 text-white px-2 py-1 rounded"
-          :class="{
+        <h2
+          class="font-medium mt-2 text-white px-2 py-1 rounded w-fit" :class="{
             'bg-[#10B981]': noti.status === 'Completed',
             'bg-[#F59E0B]': noti.status === 'Pending',
             'bg-[#3B82F6]': noti.status === 'In Progress'
           }"
         >
           {{ noti.status }}
-        </span>
+        </h2>
       </div>
     </div>
 
-    <!-- Error al cargar -->
     <div v-if="error" class="text-center text-red-500 mt-6">
       An error occurred while loading notifications.
     </div>
   </div>
 </template>
-
 
 
 
