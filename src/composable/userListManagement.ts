@@ -50,6 +50,7 @@ export function useUserListManagement() {
         headers: { Accept: 'application/json' }
       });
       idiomasDisponibles.value = response.data;
+      console.log('Idiomas disponibles:', idiomasDisponibles.value);
     } catch (err) {
       console.error('Error al cargar idiomas:', err);
     }
