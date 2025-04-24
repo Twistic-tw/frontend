@@ -8,23 +8,23 @@ const plantillas = ref([])
 onMounted(async () => {
   try {
     const res = await axios.get('https://api-catalogos.twistic.app/api/ViewTemplates')
-    console.log('Plantillas:', res.data)
+    //console.log('Plantillas:', res.data)
     plantillas.value = res.data
   } catch (error) {
     console.error('Error al cargar plantillas:', error)
-    plantillas.value = []
+    //plantillas.value = []
   }
 })
 
 // Función para obtener el nombre del usuario por id
 const obtenerNombreUsuario = (id_user) => {
   const user = usuarios.value.find(u => u.id === id_user)
-  return user ? user.name : 'Desconocido'
+  return user ? user.name : 'Unknown'
 }
 
 // Eliminar plantilla
 async function eliminarPlantilla(id) {
-  if (confirm('¿Estás seguro de que quieres eliminar esta plantilla?')) {
+  if (confirm('Are you sure you want to delete this template?')) {
     try {
       // Obtener token CSRF de la cookie
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
@@ -41,10 +41,10 @@ async function eliminarPlantilla(id) {
         }
       })
       plantillas.value = plantillas.value.filter(p => p.id !== id)
-      alert('Plantilla eliminada correctamente.')
+      alert('Template successfully deleted.')
     } catch (error) {
       console.error('Error al eliminar la plantilla:', error)
-      alert('Hubo un error al eliminar la plantilla.')
+      alert('There was an error deleting the template.')
     }
   }
 }
