@@ -8,6 +8,7 @@ const usuarioSeleccionado = ref('')
 
 // Cargar usuarios al iniciar
 onMounted(async () => {
+  cargarCatalogos()
   await cargarUsuarios()
 })
 
@@ -59,7 +60,8 @@ watch(usuarioSeleccionado, () => {
       <!-- Filtrar por usuario -->
       <select
         v-model="usuarioSeleccionado"
-        class="px-4 py-2 border border-violet-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-400 w-full"
+        placeholder="Select user"
+        class="w-full px-4 py-2 rounded-lg bg-white border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
         <option value="">Select user</option>
         <option v-for="user in usuarios" :key="user.id" :value="user.id">
