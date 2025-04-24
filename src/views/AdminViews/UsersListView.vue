@@ -33,28 +33,30 @@ const {
 
 <!-- Modal Crear Usuario -->
 <transition name="fade-modal">
-  <div v-if="showCreateModal" class="fixed max-w-md w-full mx-auto inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl w-full max-w-lg shadow-lg transition-all duration-300">
-      <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">New user</h2>
+  <div v-if="showCreateModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 px-4">
+    <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl w-full max-w-sm sm:max-w-lg shadow-xl transition-all duration-300 transform scale-95 hover:scale-100">
+      <h2 class="text-lg sm:text-xl font-bold mb-4 text-gray-800 dark:text-white">New user</h2>
       <form @submit.prevent="submitCreateUser">
         <!-- Campo de Name -->
         <div class="mb-3">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Name</label>
           <input v-model="newUser.nombre" type="text" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
         </div>
+
+        <!-- Campo de Email -->
         <div class="mb-3">
-          <!-- Campo de Email -->
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
           <input v-model="newUser.email" type="email" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
         </div>
+
+        <!-- Campo de Role -->
         <div class="mb-3">
-          <!-- Campo de Role -->
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Role</label>
           <input v-model="newUser.cargo" type="text" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" />
         </div>
+
+        <!-- Campo de Idioma -->
         <div class="mb-3">
-          <!-- Campo de Idioma -->
-        <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Language</label>
           <select v-model="newUser.idioma" class="mt-1 block w-full rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             <option disabled value="">Seleccione un idioma</option>
@@ -63,10 +65,14 @@ const {
             </option>
           </select>
         </div>
+
         <!-- Campo de Password -->
+        <div class="mb-3">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Password</label>
           <input v-model="newUser.password" type="password" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
         </div>
+
+        <!-- Botones -->
         <div class="flex justify-end space-x-2 mt-4">
           <button type="button" @click="closeCreateModal" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-md">Cancelar</button>
           <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Save</button>
@@ -108,34 +114,34 @@ const {
 
     <!-- Modal de edición -->
     <transition name="fade-modal">
-    <div v-if="mostrarModal" class="fixed max-w-md w-full mx-auto inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md transform transition-all duration-300 scale-95 hover:scale-100">
-        <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Edit User</h2>
-        <form @submit.prevent="guardarCambios">
-          <div class="mb-4">
-            <label class="block text-gray-700 dark:text-gray-200 mb-1">Name</label>
-            <input v-model="usuarioSeleccionado.nombre" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 dark:text-gray-200 mb-1">Role</label>
-            <input v-model="usuarioSeleccionado.cargo" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 dark:text-gray-200 mb-1">Email</label>
-            <input v-model="usuarioSeleccionado.email" type="email" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 dark:text-gray-200 mb-1">New password</label>
-            <input v-model="nuevaPassword" type="password" placeholder="Opcional" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Leave it blank if you don't want to change it.</p>
-          </div>
-          <div class="flex justify-end space-x-2">
-            <button type="button" @click="mostrarModal = false" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400">Cancel</button>
-            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save</button>
-          </div>
-        </form>
+      <div v-if="mostrarModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-4">
+        <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-xl w-full max-w-sm sm:max-w-md transform transition-all duration-300 scale-95 hover:scale-100">
+          <h2 class="text-lg sm:text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Edit User</h2>
+          <form @submit.prevent="guardarCambios">
+            <div class="mb-4">
+              <label class="block text-gray-700 dark:text-gray-200 mb-1">Name</label>
+              <input v-model="usuarioSeleccionado.nombre" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 dark:text-gray-200 mb-1">Role</label>
+              <input v-model="usuarioSeleccionado.cargo" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 dark:text-gray-200 mb-1">Email</label>
+              <input v-model="usuarioSeleccionado.email" type="email" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 dark:text-gray-200 mb-1">New password</label>
+              <input v-model="nuevaPassword" type="password" placeholder="Optional" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Leave blank if you don't want to change it.</p>
+            </div>
+            <div class="flex justify-end space-x-2">
+              <button type="button" @click="mostrarModal = false" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400 dark:hover:bg-gray-500">Cancel</button>
+              <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save</button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
     </transition>
 
   </div>
