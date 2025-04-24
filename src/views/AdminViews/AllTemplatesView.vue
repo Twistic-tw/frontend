@@ -2,79 +2,42 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
-const usuarios = ref<{ id: number, nombre: string }[]>([])
-interface Plantilla {
-  id: number;
-  name: string;
-  id_user: number;
-  created_at: string;
-  fields: { id: number; field: string }[];
-}
-
-const plantillas = ref<Plantilla[]>([])
+const usuarios = ref([])
+const plantillas = ref([])
 
 onMounted(async () => {
-  await cargarUsuarios()
-  await cargarPlantillas()
-})
-
-// Función para cargar los usuarios
-async function cargarUsuarios() {
   try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/users', {
-      withCredentials: true
-    })
-    usuarios.value = res.data
-    console.log('Usuarios cargados:', usuarios.value)
-  } catch (error) {
-    console.error('Error al cargar usuarios:', error)
-  }
-}
-
-// Función para cargar las plantillas
-async function cargarPlantillas() {
-  try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/ViewTemplates', {
-      withCredentials: true
-    })
+    const res = await axios.get('https://api-catalogos.twistic.app/api/ViewTemplates')
+    console.log('Plantillas:', res.data)
     plantillas.value = res.data
   } catch (error) {
     console.error('Error al cargar plantillas:', error)
+    plantillas.value = []
   }
-}
+})
 
 // Función para obtener el nombre del usuario por id
-const obtenerNombreUsuario = (id_user: number): string => {
+const obtenerNombreUsuario = (id_user) => {
   const user = usuarios.value.find(u => u.id === id_user)
-  return user ? user.nombre : 'Unknown'
+  return user ? user.name : 'Desconocido'
 }
 
 // Eliminar plantilla
-async function eliminarPlantilla(id: number) {
-  if (confirm('Are you sure you want to delete this template?')) {
+async function eliminarPlantilla(id) {
+  if (confirm('¿Estás seguro de que quieres eliminar esta plantilla?')) {
     try {
-      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-      if (!xsrfToken) {
-        alert('Token CSRF no encontrado, recarga la página.');
-        return;
-      }
       await axios.delete(`https://api-catalogos.twistic.app/api/templates/${id}`, {
         withCredentials: true,
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          'Accept': 'application/json'
-        }
       })
       plantillas.value = plantillas.value.filter(p => p.id !== id)
-      alert('Template successfully deleted.')
+      alert('Plantilla eliminada correctamente.')
     } catch (error) {
       console.error('Error al eliminar la plantilla:', error)
-      alert('There was an error deleting the template.')
+      alert('Hubo un error al eliminar la plantilla.')
     }
   }
 }
 </script>
-
 
 <template>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
