@@ -68,10 +68,10 @@ export function useUserListManagement() {
 
       await fetchUsers();
       closeCreateModal();
-      alert('Usuario creado correctamente.');
+      alert('User created successfully.');
     } catch (err) {
-      console.error('Error al crear usuario:', err);
-      alert('Error al crear usuario.');
+      //console.error('Error al crear usuario:', err);
+      alert('Error creating user.');
     }
   };
 
@@ -87,7 +87,7 @@ export function useUserListManagement() {
 
     try {
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-      if (!xsrfToken) { alert('Token CSRF no encontrado'); return; }
+     // if (!xsrfToken) { alert('Token CSRF no encontrado'); return; }
 
       const payload: { nombre: string; cargo: string; email: string; password?: string } = {
         nombre: usuarioSeleccionado.value.nombre,
@@ -107,22 +107,21 @@ export function useUserListManagement() {
         }
       });
 
-      alert('Usuario actualizado correctamente.');
+      alert('User updated successfully.');
       mostrarModal.value = false;
       fetchUsers();
       nuevaPassword.value = '';
     } catch (error) {
-      console.error('Error actualizando usuario:', error);
-      alert('Hubo un error al actualizar.');
+      alert('Error updating user.');
     }
   };
 
   // Eliminar usuario
   const deleteUser = async (id: number) => {
-    if (confirm('¿Seguro que deseas eliminar este usuario?')) {
+    if (confirm('¿Are you sure you want to delete this user??')) {
       try {
         const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-        if (!xsrfToken) { alert('Token CSRF no encontrado'); return; }
+        //if (!xsrfToken) { alert('Token CSRF no encontrado'); return; }
 
         await axios.delete(`https://api-catalogos.twistic.app/api/users/${id}`, {
           withCredentials: true,
@@ -133,10 +132,9 @@ export function useUserListManagement() {
         });
 
         users.value = users.value.filter(user => user.id !== id);
-        alert('Usuario eliminado correctamente.');
+        alert('Successfully deleted user.');
       } catch (err) {
-        console.error('Error eliminando usuario:', err);
-        alert('Error al eliminar usuario.');
+        alert('Error deleting user.');
       }
     }
   };
