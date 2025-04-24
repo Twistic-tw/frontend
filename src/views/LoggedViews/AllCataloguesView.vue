@@ -9,7 +9,7 @@ const usuarioSeleccionado = ref('')
 // Cargar usuarios al iniciar
 onMounted(async () => {
   cargarCatalogos()
-  await cargarUsuarios()
+  cargarUsuarios()
 })
 
 // Cargar usuarios
