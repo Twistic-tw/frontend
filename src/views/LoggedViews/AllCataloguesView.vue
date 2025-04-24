@@ -4,40 +4,37 @@ import axios from 'axios'
 
 const usuarios = ref([])
 const catalogos = ref([])
-
-const filtroNombreCatalogo = ref('')
 const usuarioSeleccionado = ref('')
 
-// Cargar usuarios y catálogos al iniciar
+// Cargar usuarios al iniciar
 onMounted(async () => {
   await cargarUsuarios()
-  await cargarCatalogos()
 })
 
 // Cargar usuarios
 async function cargarUsuarios() {
   try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/users')
+    const res = await axios.get('https://api-catalogos.twistic.app/api/users', {
+      withCredentials: true
+    })
     usuarios.value = res.data
   } catch (error) {
     console.error('Error al cargar usuarios:', error)
   }
 }
 
-// Cargar catálogos con filtro por nombre
+// Cargar catálogos por usuario seleccionado
 async function cargarCatalogos() {
+  if (!usuarioSeleccionado.value) {
+    catalogos.value = [] // Si no hay usuario seleccionado, no mostramos nada
+    return
+  }
+
   try {
-    let url = 'https://api-catalogos.twistic.app/api/ShowCatalogs'
-
-    if (usuarioSeleccionado.value) {
-      url += `id_user=${usuarioSeleccionado.value}&`
-    }
-
-    if (filtroNombreCatalogo.value.trim() !== '') {
-      url += `template=${encodeURIComponent(filtroNombreCatalogo.value)}&`
-    }
-
-    const res = await axios.get(url)
+    const url = `https://api-catalogos.twistic.app/api/ShowCatalogs?id_user=${usuarioSeleccionado.value}`
+    const res = await axios.get(url, {
+      withCredentials: true
+    })
     catalogos.value = res.data.catalogs || []
   } catch (error) {
     console.error('Error al cargar catálogos:', error)
@@ -45,11 +42,12 @@ async function cargarCatalogos() {
   }
 }
 
-// Actualizar dinámicamente al cambiar filtros
-watch([filtroNombreCatalogo, usuarioSeleccionado], () => {
+// Al cambiar de usuario, carga sus catálogos
+watch(usuarioSeleccionado, () => {
   cargarCatalogos()
 })
 </script>
+
 
 <template>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
@@ -57,13 +55,6 @@ watch([filtroNombreCatalogo, usuarioSeleccionado], () => {
 
     <!-- Filtros -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-      <!-- Buscar por nombre de catálogo -->
-      <input
-        v-model="filtroNombreCatalogo"
-        type="text"
-        placeholder="Search catalog..."
-        class="px-4 py-2 border border-violet-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-400 w-full"
-      />
 
       <!-- Filtrar por usuario -->
       <select
