@@ -87,10 +87,10 @@ onMounted(fetchNotifications);
       <RouterLink to="notifications" v-if="role && (role === 'client' || role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white">Manage Notifications</h2>
-          <!-- Contador de notificaciones -->
+          <!-- Contador de notificaciones con animación -->
           <span
             v-if="notifications.length"
-            class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full ml-2"
+            class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full ml-2 animate-bounce"
           >
             {{ notifications.length }}
           </span>
