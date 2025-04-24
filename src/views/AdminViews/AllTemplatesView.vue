@@ -17,6 +17,7 @@ async function cargarUsuarios() {
       withCredentials: true
     })
     usuarios.value = res.data
+    console.log('Usuarios cargados:', usuarios.value)
   } catch (error) {
     console.error('Error al cargar usuarios:', error)
   }
@@ -36,6 +37,7 @@ async function cargarPlantillas() {
 
 // Función para obtener el nombre del usuario por id
 const obtenerNombreUsuario = (id_user) => {
+  console.log('ID del usuario:', id_user)
   const user = usuarios.value.find(u => u.id === id_user)
   return user ? user.nombre : 'Unknown'
 }
@@ -80,7 +82,7 @@ async function eliminarPlantilla(id) {
         <h3 class="text-xl font-semibold text-indigo-600 mb-2">{{ plantilla.name }}</h3>
 
         <p class="text-sm text-gray-500 dark:text-white mb-1">
-          Created by: <span class="font-medium text-gray-700 dark:text-white">{{ obtenerNombreUsuario(plantilla.user) }}</span>
+          Created by: <span class="font-medium text-gray-700 dark:text-white">{{ obtenerNombreUsuario(plantilla.id_user) }}</span>
         </p>
 
         <p class="text-sm text-gray-500 dark:text-white mb-3">
