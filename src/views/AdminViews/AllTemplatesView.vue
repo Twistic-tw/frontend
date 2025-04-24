@@ -83,7 +83,7 @@ async function eliminarPlantilla(id) {
         <h3 class="text-xl font-semibold text-indigo-600 mb-2">{{ plantilla.name }}</h3>
 
         <p class="text-sm text-gray-500 dark:text-white mb-1">
-          Created by: <span class="font-medium text-gray-700 dark:text-white">{{ obtenerNombreUsuario(plantilla.id_user) }}</span>
+          Created by: <span class="font-medium text-gray-700 dark:text-white">{{ plantilla.user_name || 'Unknown' }}</span>
         </p>
 
         <p class="text-sm text-gray-500 dark:text-white mb-3">
