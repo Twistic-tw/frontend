@@ -6,37 +6,68 @@ const usuarios = ref([])
 const plantillas = ref([])
 
 onMounted(async () => {
+  await cargarUsuarios()
+  await cargarPlantillas()
+})
+
+// Función para cargar los usuarios
+async function cargarUsuarios() {
   try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/ViewTemplates')
-    console.log('Plantillas:', res.data)
+    const res = await axios.get('https://api-catalogos.twistic.app/api/users', {
+      withCredentials: true
+    })
+    usuarios.value = res.data
+    console.log('Usuarios cargados:', usuarios.value)
+  } catch (error) {
+    console.error('Error al cargar usuarios:', error)
+  }
+}
+
+// Función para cargar las plantillas
+async function cargarPlantillas() {
+  try {
+    const res = await axios.get('https://api-catalogos.twistic.app/api/ViewTemplates', {
+      withCredentials: true
+    })
     plantillas.value = res.data
+    console.log('Plantillas cargadas:', plantillas.value)
   } catch (error) {
     console.error('Error al cargar plantillas:', error)
-    plantillas.value = []
   }
-})
+}
 
 // Función para obtener el nombre del usuario por id
 const obtenerNombreUsuario = (id_user) => {
+  console.log('ID del usuario:', id_user)
   const user = usuarios.value.find(u => u.id === id_user)
-  return user ? user.name : 'Desconocido'
+  return user ? user.nombre : 'Unknown'
 }
 
 // Eliminar plantilla
 async function eliminarPlantilla(id) {
-  if (confirm('¿Estás seguro de que quieres eliminar esta plantilla?')) {
+  if (confirm('Are you sure you want to delete this template?')) {
     try {
+      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+      if (!xsrfToken) {
+        alert('Token CSRF no encontrado, recarga la página.');
+        return;
+      }
       await axios.delete(`https://api-catalogos.twistic.app/api/templates/${id}`, {
         withCredentials: true,
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'Accept': 'application/json'
+        }
       })
       plantillas.value = plantillas.value.filter(p => p.id !== id)
-      alert('Plantilla eliminada correctamente.')
+      alert('Template successfully deleted.')
     } catch (error) {
       console.error('Error al eliminar la plantilla:', error)
-      alert('Hubo un error al eliminar la plantilla.')
+      alert('There was an error deleting the template.')
     }
   }
 }
+
 </script>
 
 <template>
@@ -62,7 +93,7 @@ async function eliminarPlantilla(id) {
         <div>
           <h4 class="text-sm font-semibold text-gray-700 dark:text-white mb-2">Fields:</h4>
           <ul class="list-disc list-inside text-gray-600 dark:text-white">
-            <li v-for="field in plantilla.fields" :key="field.id">{{ field.field }}</li>
+            <li v-for="field in plantilla.fields " :key="field.id">{{ field.field }}</li>
           </ul>
         </div>
         <!-- Botón Eliminar -->
