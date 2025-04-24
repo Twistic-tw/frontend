@@ -24,7 +24,7 @@ async function cargarUsuarios() {
   }
 }
 
-// Cargar catálogos con filtros
+// Cargar catálogos con filtro por nombre
 async function cargarCatalogos() {
   try {
     let url = 'https://api-catalogos.twistic.app/api/ShowCatalogs'
