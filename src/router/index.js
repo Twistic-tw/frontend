@@ -85,8 +85,8 @@ router.beforeEach(async (to, from, next) => {
       credentials: 'include'
     });
     isLoggedIn = res.ok;
-  } catch (err) {
-    console.error('Error verificando sesión:', err);
+  } catch (error) {
+    // Intencionalmente vacío, sin manejo de errores
   }
 
   if (requiresAuth && !isLoggedIn) {
