@@ -1,5 +1,5 @@
-<script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
 interface Notification {
@@ -11,47 +11,35 @@ interface Notification {
   status: string
 }
 
-export default defineComponent({
-  name: 'NotificationCenter',
-  setup() {
-    const notifications = ref<Notification[]>([])
-    const loading = ref(true)
-    const error = ref(false)
+const notifications = ref<Notification[]>([])
+const loading = ref(true)
+const error = ref(false)
 
-    const fetchNotifications = async () => {
-      try {
-        const res = await axios.get('https://api-catalogos.twistic.app/api/ShowNotifications', {
-          withCredentials: true
-        })
-        notifications.value = res.data.notifications
-      } catch (err) {
-        console.error(err)
-        error.value = true
-      } finally {
-        loading.value = false
-      }
-    }
-
-    const parseFields = (jsonStr: string | null): string => {
-      try {
-        if (!jsonStr) return '-'
-        const fields = JSON.parse(jsonStr)
-        return Array.isArray(fields) ? fields.join(', ') : '-'
-      } catch {
-        return '-'
-      }
-    }
-
-    onMounted(fetchNotifications)
-
-    return {
-      notifications,
-      loading,
-      error,
-      parseFields
-    }
+const fetchNotifications = async () => {
+  try {
+    const res = await axios.get('https://api-catalogos.twistic.app/api/ShowNotifications', {
+      withCredentials: true
+    })
+    notifications.value = res.data.notifications
+  } catch (err) {
+    console.error('Error al obtener notificaciones:', err)
+    error.value = true
+  } finally {
+    loading.value = false
   }
-})
+}
+
+const parseFields = (jsonStr: string | null): string => {
+  if (!jsonStr) return '-'
+  try {
+    const fields = JSON.parse(jsonStr)
+    return Array.isArray(fields) ? fields.join(', ') : '-'
+  } catch {
+    return '-'
+  }
+}
+
+onMounted(fetchNotifications)
 </script>
 
 <template>
