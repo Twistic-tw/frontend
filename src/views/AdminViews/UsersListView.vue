@@ -21,6 +21,7 @@ export default defineComponent({
     const usuarioSeleccionado = ref<User | null>(null)
     const nuevaPassword = ref('')
 
+    // Obtener usuarios
     const fetchUsers = async () => {
       try {
         const response = await axios.get('https://api-catalogos.twistic.app/api/users', {
@@ -35,6 +36,51 @@ export default defineComponent({
         loading.value = false
       }
     }
+
+const showCreateModal = ref(false);
+
+const newUser = ref({
+  nombre: '',
+  email: '',
+  cargo: '',
+  password: ''
+});
+
+const openCreateModal = () => {
+  showCreateModal.value = true;
+};
+
+const closeCreateModal = () => {
+  showCreateModal.value = false;
+  newUser.value = { nombre: '', email: '', cargo: '', password: '' };
+};
+
+const submitCreateUser = async () => {
+  try {
+    const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+    if (!xsrfToken) {
+      alert('Token CSRF no encontrado, recarga la página.');
+      return;
+    }
+
+    await axios.post('https://api-catalogos.twistic.app/api/Users', newUser.value, {
+      withCredentials: true,
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        'Accept': 'application/json'
+      }
+    });
+
+    await fetchUsers(); // recargar lista de usuarios
+    closeCreateModal();
+    alert('Usuario creado correctamente.');
+  } catch (err) {
+    console.error('Error al crear usuario:', err);
+    alert('Error al crear usuario.');
+  }
+};
+
+  // Eliminar usuario
 
     const deleteUser = async (id: number) => {
       if (confirm('Are you sure you want to delete this user?')) {
@@ -59,6 +105,8 @@ export default defineComponent({
         }
       }
     }
+
+    // Editar usuario
 
     const editUser = (user: User) => {
       usuarioSeleccionado.value = { ...user };
@@ -104,6 +152,8 @@ export default defineComponent({
       }
     };
 
+    // Filtrar usuarios
+
     const filteredUsers = computed(() => {
       return users.value.filter(user =>
         user.nombre.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -123,7 +173,12 @@ export default defineComponent({
       mostrarModal,
       usuarioSeleccionado,
       nuevaPassword,
-      guardarCambios
+      guardarCambios,
+      openCreateModal,
+      showCreateModal,
+      submitCreateUser,
+      newUser,
+      closeCreateModal
     }
   }
 })
@@ -142,6 +197,45 @@ export default defineComponent({
         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
       />
     </div>
+
+    <!-- Botón para abrir modal -->
+<div class="text-center mb-6">
+  <button @click="openCreateModal" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">
+    Crear Usuario
+  </button>
+</div>
+
+<!-- Modal Crear Usuario -->
+<transition name="fade">
+  <div v-if="showCreateModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl w-full max-w-lg shadow-lg transition-all duration-300">
+      <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">Crear Usuario</h2>
+      <form @submit.prevent="submitCreateUser">
+        <div class="mb-3">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nombre</label>
+          <input v-model="newUser.nombre" type="text" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
+        </div>
+        <div class="mb-3">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
+          <input v-model="newUser.email" type="email" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
+        </div>
+        <div class="mb-3">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Cargo</label>
+          <input v-model="newUser.cargo" type="text" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" />
+        </div>
+        <div class="mb-3">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Contraseña</label>
+          <input v-model="newUser.password" type="password" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
+        </div>
+        <div class="flex justify-end space-x-2 mt-4">
+          <button type="button" @click="closeCreateModal" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-md">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</transition>
+
 
     <!-- Usuarios Filtrados -->
     <div v-if="filteredUsers.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
