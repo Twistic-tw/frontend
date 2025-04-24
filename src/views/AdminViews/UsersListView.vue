@@ -5,7 +5,8 @@ const {
   error, searchQuery, filteredUsers,
   deleteUser, editUser, mostrarModal, usuarioSeleccionado,
   nuevaPassword, guardarCambios,
-  openCreateModal, showCreateModal, submitCreateUser, newUser, closeCreateModal
+  openCreateModal, showCreateModal, submitCreateUser, newUser, closeCreateModal,
+  idiomasDisponibles
 } = useUserListManagement();
 </script>
 
@@ -36,19 +37,33 @@ const {
     <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl w-full max-w-lg shadow-lg transition-all duration-300">
       <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">New user</h2>
       <form @submit.prevent="submitCreateUser">
+        <!-- Campo de Name -->
         <div class="mb-3">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Name</label>
           <input v-model="newUser.nombre" type="text" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
         </div>
         <div class="mb-3">
+          <!-- Campo de Email -->
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
           <input v-model="newUser.email" type="email" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
         </div>
         <div class="mb-3">
+          <!-- Campo de Role -->
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Role</label>
           <input v-model="newUser.cargo" type="text" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" />
         </div>
         <div class="mb-3">
+          <!-- Campo de Idioma -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Idioma</label>
+          <select v-model="newUser.idioma" class="mt-1 block w-full rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option disabled value="">Seleccione un idioma</option>
+            <option v-for="idioma in idiomasDisponibles" :key="idioma.id" :value="idioma.id">
+              {{ idioma.name }}
+            </option>
+          </select>
+        </div>
+        <!-- Campo de Password -->
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Password</label>
           <input v-model="newUser.password" type="password" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
         </div>
