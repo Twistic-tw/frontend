@@ -2,8 +2,16 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
-const usuarios = ref([])
-const plantillas = ref([])
+const usuarios = ref<{ id: number, nombre: string }[]>([])
+interface Plantilla {
+  id: number;
+  name: string;
+  id_user: number;
+  created_at: string;
+  fields: { id: number; field: string }[];
+}
+
+const plantillas = ref<Plantilla[]>([])
 
 onMounted(async () => {
   await cargarUsuarios()
@@ -36,14 +44,13 @@ async function cargarPlantillas() {
 }
 
 // Función para obtener el nombre del usuario por id
-const obtenerNombreUsuario = (id_user) => {
-  console.log('ID del usuario:', id_user)
+const obtenerNombreUsuario = (id_user: number): string => {
   const user = usuarios.value.find(u => u.id === id_user)
   return user ? user.nombre : 'Unknown'
 }
 
 // Eliminar plantilla
-async function eliminarPlantilla(id) {
+async function eliminarPlantilla(id: number) {
   if (confirm('Are you sure you want to delete this template?')) {
     try {
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
@@ -66,8 +73,8 @@ async function eliminarPlantilla(id) {
     }
   }
 }
-
 </script>
+
 
 <template>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
