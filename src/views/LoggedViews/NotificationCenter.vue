@@ -47,22 +47,32 @@ onMounted(fetchNotifications)
     <h1 class="text-3xl font-bold text-[#0F172A] mb-6 text-center">
       Notifications
     </h1>
+    <!-- Contador de notificaciones -->
+    <span
+        v-if="notifications.length"
+        class="bg-red-500 text-white text-sm font-semibold px-2 py-1 rounded-full"
+      >
+        {{ notifications.length }}
+      </span>
 
+    <!-- Estado de carga -->
     <div v-if="loading" class="text-center text-[#334155]">
       Loading notifications...
     </div>
 
-    <div v-else-if="!notifications.length" class="text-center bg-white p-6 rounded-2xl shadow-md text-[#334155]">
+    <!-- No hay notificaciones -->
+    <div v-else-if="!notifications.length && !error" class="text-center bg-white p-6 rounded-2xl shadow-md text-[#334155]">
       No notifications available.
     </div>
 
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <!-- Lista de notificaciones -->
+    <div v-else-if="notifications.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       <div
         v-for="noti in notifications"
         :key="noti.catalog_name + noti.message"
         class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition"
       >
-        <h2 class="text-xl font-semibold text-indigo-600 mb-2">
+        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-2">
           {{ noti.catalog_name }}
         </h2>
 
@@ -82,23 +92,26 @@ onMounted(fetchNotifications)
           <strong>Message:</strong> {{ noti.message }}
         </p>
 
-        <h2
-          class="font-medium mt-2 text-white px-2 py-1 rounded w-fit" :class="{
+        <span
+          class="inline-block font-medium mt-2 text-white px-2 py-1 rounded"
+          :class="{
             'bg-[#10B981]': noti.status === 'Completed',
             'bg-[#F59E0B]': noti.status === 'Pending',
             'bg-[#3B82F6]': noti.status === 'In Progress'
           }"
         >
           {{ noti.status }}
-        </h2>
+        </span>
       </div>
     </div>
 
+    <!-- Error al cargar -->
     <div v-if="error" class="text-center text-red-500 mt-6">
       An error occurred while loading notifications.
     </div>
   </div>
 </template>
+
 
 
 
