@@ -6,29 +6,45 @@ const usuarios = ref([])
 const plantillas = ref([])
 
 onMounted(async () => {
+  await cargarUsuarios()
+  await cargarPlantillas()
+})
+
+// Función para cargar los usuarios
+async function cargarUsuarios() {
   try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/ViewTemplates')
-    //console.log('Plantillas:', res.data)
+    const res = await axios.get('https://api-catalogos.twistic.app/api/users', {
+      withCredentials: true
+    })
+    usuarios.value = res.data
+  } catch (error) {
+    console.error('Error al cargar usuarios:', error)
+  }
+}
+
+// Función para cargar las plantillas
+async function cargarPlantillas() {
+  try {
+    const res = await axios.get('https://api-catalogos.twistic.app/api/ViewTemplates', {
+      withCredentials: true
+    })
     plantillas.value = res.data
   } catch (error) {
     console.error('Error al cargar plantillas:', error)
-    //plantillas.value = []
   }
-})
+}
 
 // Función para obtener el nombre del usuario por id
 const obtenerNombreUsuario = (id_user) => {
   const user = usuarios.value.find(u => u.id === id_user)
-  return user ? user.name : 'Unknown'
+  return user ? user.nombre : 'Unknown'
 }
 
 // Eliminar plantilla
 async function eliminarPlantilla(id) {
   if (confirm('Are you sure you want to delete this template?')) {
     try {
-      // Obtener token CSRF de la cookie
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-
       if (!xsrfToken) {
         alert('Token CSRF no encontrado, recarga la página.');
         return;
@@ -48,8 +64,8 @@ async function eliminarPlantilla(id) {
     }
   }
 }
-</script>
 
+</script>
 
 <template>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
