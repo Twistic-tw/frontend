@@ -11,7 +11,7 @@ const {
 
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3">
-    <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-800 mb-6 text-center">User Management</h1>
+    <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-800 mb-6 text-center">Users Management</h1>
 
     <!-- Barra de Búsqueda -->
     <div class="mb-6 max-w-md mx-auto">
