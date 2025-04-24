@@ -69,7 +69,7 @@ const {
         <!-- Campo de Password -->
         <div class="mb-3">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Password</label>
-          <input v-model="newUser.password" type="password" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
+          <input v-model="newUser.password" type="current-password" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
         </div>
 
         <!-- Botones -->
