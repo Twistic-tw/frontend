@@ -36,13 +36,6 @@ async function cargarPlantillas() {
   }
 }
 
-// Función para obtener el nombre del usuario por id
-const obtenerNombreUsuario = (id_user) => {
-  console.log('ID del usuario:', id_user)
-  const user = usuarios.value.find(u => u.id === id_user)
-  return user ? user.nombre : 'Unknown'
-}
-
 // Eliminar plantilla
 async function eliminarPlantilla(id) {
   if (confirm('Are you sure you want to delete this template?')) {
@@ -67,7 +60,6 @@ async function eliminarPlantilla(id) {
     }
   }
 }
-
 </script>
 
 <template>
