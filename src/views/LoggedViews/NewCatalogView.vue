@@ -176,7 +176,7 @@ export default {
           <!-- Step 7: Confirmation -->
           <div v-else-if="step === 7">
             <h2 class="text-3xl font-bold mb-4 text-green-600">Notification Created!</h2>
-            <p class="mb-6">Your notification has been saved successfully.</p>
+            <p class="mb-6">Your request has been created successfully. We will review it shortly, and you will be able to create your catalog.</p>
             <div class="flex justify-center space-x-4">
               <button @click="resetForm" class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition">Create Another</button>
               <button @click="goToDashboard" class="bg-gray-600 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-700 transition">Go to Dashboard</button>
