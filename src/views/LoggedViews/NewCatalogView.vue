@@ -137,11 +137,34 @@ export default {
             </div>
           </div>
 
-          <!-- Step 6: Confirmation -->
+          <!-- Paso 6: Resumen -->
           <div v-else-if="step === 6">
+            <h2 class="text-3xl font-bold mb-4 flex items-center">
+              <svg class="w-6 h-6 mr-2 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"></path></svg>
+              Review Summary
+            </h2>
+
+            <div class="mb-4">
+              <p><strong>Catalog Name:</strong> {{ form.catalog_name }}</p>
+              <p><strong>Selected Headers:</strong></p>
+              <ul class="list-disc list-inside ml-4">
+                <li v-for="header in form.selected_headers" :key="header">{{ header }}</li>
+              </ul>
+              <p class="mt-2"><strong>Message:</strong> {{ form.message }}</p>
+            </div>
+
+            <div class="flex justify-between mt-6">
+              <button @click="prevStep" class="bg-gray-400 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-500 transition">Back</button>
+              <button @click="submitForm" class="bg-green-500 text-white px-6 py-2 rounded-xl shadow hover:bg-green-600 transition">Confirm</button>
+            </div>
+          </div>
+
+          <!-- Paso 7: Confirmación -->
+          <div v-else-if="step === 7">
             <h2 class="text-3xl font-bold mb-4 text-green-600">Notification Created!</h2>
             <p>Your notification has been saved successfully.</p>
           </div>
+
         </div>
       </transition>
     </div>
