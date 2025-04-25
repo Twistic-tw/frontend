@@ -52,6 +52,12 @@ const router = createRouter({
       meta: { title: 'Fields' , requiereNavAdmin: true}
     },
     {
+      path: '/newCatalog',
+      name: 'newCatalog',
+      component: () => import('../views/LoggedViews/NewCatalogView.vue'),
+      meta: { title: 'Create Catalog' , requiereNavAdmin: true}
+    },
+    {
       path: '/catalogs',
       name: 'catalogs',
       component: () => import('../views/LoggedViews/AllCataloguesView.vue'),
