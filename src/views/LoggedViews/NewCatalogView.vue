@@ -5,7 +5,7 @@ export default {
   data() {
     return {
       step: 1,
-      loading: false, // Loader
+      loading: false,
       form: {
         catalog_name: '',
         excel_file: null,
@@ -32,17 +32,21 @@ export default {
       this.loading = true;
       const formData = new FormData();
       formData.append('file', this.form.excel_file);
+
+      // Obtener el token CSRF desde cookies
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
       if (!xsrfToken) {
-        throw new Error('No se encontró el token CSRF');
+        alert('CSRF token not found.');
+        this.loading = false;
+        return;
       }
 
       try {
         const response = await axios.post('https://api-catalogos.twistic.app/api/Import', formData, {
           headers: {
-            Accept: 'application/json',
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
             'Content-Type': 'multipart/form-data',
+            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            Accept: 'application/json'
           },
           withCredentials: true
         });
@@ -69,9 +73,21 @@ export default {
         }))
       ));
 
+      // Obtener el token CSRF desde cookies
+      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+      if (!xsrfToken) {
+        alert('CSRF token not found.');
+        this.loading = false;
+        return;
+      }
+
       try {
         await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            Accept: 'application/json'
+          },
           withCredentials: true
         });
 
