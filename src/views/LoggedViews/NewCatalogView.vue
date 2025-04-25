@@ -91,7 +91,7 @@ export default {
           },
           withCredentials: true,
           transformRequest: [(data, headers) => {
-            delete headers.common['Content-Type'];
+            delete headers['Content-Type'];
             return data;
           }]
         });
