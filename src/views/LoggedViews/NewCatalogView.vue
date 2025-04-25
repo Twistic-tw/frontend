@@ -52,11 +52,15 @@ export default {
         });
 
         this.excelHeaders = response.data.fields;
+        console.log('Raw headers:', this.excelHeaders);
+
         // Si fields es un objeto numerado, conviértelo:
         if (!Array.isArray(this.excelHeaders)) {
           this.excelHeaders = Object.values(this.excelHeaders);
         }
-        this.form.selected_headers = [...this.excelHeaders]; // Para ordenar
+
+        this.form.selected_headers = [...this.excelHeaders];
+        console.log('Headers as array:', this.form.selected_headers);
         this.nextStep();
         console.log(this.form.selected_headers)
       } catch (error) {
