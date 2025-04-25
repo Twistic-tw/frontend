@@ -2,10 +2,10 @@
 import axios from 'axios';
 
 export default {
-
   data() {
     return {
       step: 1,
+      loading: false, // Loader
       form: {
         catalog_name: '',
         excel_file: null,
@@ -22,32 +22,60 @@ export default {
     prevStep() {
       this.step--;
     },
-    handleFileUpload(event) {
-      this.form.excel_file = event.target.files[0];
+    handleFileUpload(event: Event) {
+      const target = event.target as HTMLInputElement;
+      if (target.files && target.files.length > 0) {
+        this.form.excel_file = target.files[0];
+      }
     },
-    analyzeExcel() {
-      this.excelHeaders = ['Code', 'Variety', 'Origin', 'Price', 'Stock'];
-      this.nextStep();
-    },
-    async submitForm() {
+    async analyzeExcel() {
+      this.loading = true;
       const formData = new FormData();
-      formData.append('catalog_name', this.form.catalog_name);
-      formData.append('excel_file', this.form.excel_file);
-      formData.append('fields_order', JSON.stringify(this.form.selected_headers));
-      formData.append('message', this.form.message);
+      formData.append('file', this.form.excel_file);
 
       try {
-        await axios.post('/api/notifications', formData, {
+        const response = await axios.post('https://api-catalogos.twistic.app/api/Import', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
           withCredentials: true
         });
+
+        this.excelHeaders = response.data.fields;
+        this.nextStep();
+      } catch (error) {
+        console.error('Error analyzing file:', error);
+        alert('Error analyzing the file.');
+      } finally {
+        this.loading = false;
+      }
+    },
+    async submitForm() {
+      this.loading = true;
+      const formData = new FormData();
+      formData.append('file', this.form.excel_file);
+      formData.append('template_name', this.form.catalog_name);
+      formData.append('fields', JSON.stringify(
+        this.form.selected_headers.map((field, index) => ({
+          field: field,
+          active: true,
+          order: index
+        }))
+      ));
+
+      try {
+        await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+          withCredentials: true
+        });
+
         this.step = 7;
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error creating template:', error);
+        alert('Error creating the template.');
+      } finally {
+        this.loading = false;
       }
     },
     resetForm() {
-      // Reset all fields and go back to step 1
       this.form = {
         catalog_name: '',
         excel_file: null,
@@ -55,10 +83,9 @@ export default {
         message: '',
       };
       this.excelHeaders = [];
-      this.router.push('/dashboard');
+      this.step = 1;
     },
     goToDashboard() {
-      // Redirect to dashboard
       this.$router.push('/dashboard');
     }
   },
@@ -183,13 +210,16 @@ export default {
               <button @click="goToDashboard" class="bg-gray-600 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-700 transition">Go to Dashboard</button>
             </div>
           </div>
+          <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-20 w-20"></div>
+          </div>
         </div>
       </transition>
     </div>
   </div>
 </template>
 
-<style>
+<style scoped>
 .fade-slide-enter-active, .fade-slide-leave-active {
   transition: all 0.5s ease;
 }
@@ -200,5 +230,14 @@ export default {
 .fade-slide-leave-to {
   opacity: 0;
   transform: translateX(-50px);
+}
+.loader {
+  border-top-color: #3498db;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
