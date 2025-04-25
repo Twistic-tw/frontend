@@ -25,7 +25,6 @@ export default {
       this.form.excel_file = event.target.files[0];
     },
     analyzeExcel() {
-      // Simulate Excel analysis (replace with backend call)
       this.excelHeaders = ['Code', 'Variety', 'Origin', 'Price', 'Stock'];
       this.nextStep();
     },
@@ -46,6 +45,21 @@ export default {
         console.error('Error:', error);
       }
     },
+    resetForm() {
+      // Reset all fields and go back to step 1
+      this.form = {
+        catalog_name: '',
+        excel_file: null,
+        selected_headers: [],
+        message: '',
+      };
+      this.excelHeaders = [];
+      this.step = 1;
+    },
+    goToDashboard() {
+      // Redirect to dashboard
+      window.location.href = '/dashboard'; // Adjust to your route
+    }
   },
 };
 </script>
@@ -55,7 +69,7 @@ export default {
     <div class="w-full max-w-3xl bg-white p-8 rounded-2xl shadow-xl relative">
 
       <!-- Progress Bar -->
-      <div class="mb-6">
+      <div class="mb-6" v-if="step <= 6">
         <div class="flex justify-between mb-2">
           <span>Step {{ step }} of 6</span>
         </div>
@@ -162,7 +176,11 @@ export default {
           <!-- Step 7: Confirmation -->
           <div v-else-if="step === 7">
             <h2 class="text-3xl font-bold mb-4 text-green-600">Notification Created!</h2>
-            <p>Your notification has been saved successfully.</p>
+            <p class="mb-6">Your notification has been saved successfully.</p>
+            <div class="flex justify-center space-x-4">
+              <button @click="resetForm" class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition">Create Another</button>
+              <button @click="goToDashboard" class="bg-gray-600 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-700 transition">Go to Dashboard</button>
+            </div>
           </div>
         </div>
       </transition>
