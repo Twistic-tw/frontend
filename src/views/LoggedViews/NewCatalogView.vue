@@ -32,10 +32,18 @@ export default {
       this.loading = true;
       const formData = new FormData();
       formData.append('file', this.form.excel_file);
+      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+      if (!xsrfToken) {
+        throw new Error('No se encontró el token CSRF');
+      }
 
       try {
         const response = await axios.post('https://api-catalogos.twistic.app/api/Import', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
+          headers: {
+            Accept: 'application/json',
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            'Content-Type': 'multipart/form-data',
+          },
           withCredentials: true
         });
 
