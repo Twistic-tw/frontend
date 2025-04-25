@@ -1,7 +1,10 @@
 <script lang="ts">
 import axios from 'axios';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 export default {
+
   data() {
     return {
       step: 1,
@@ -54,11 +57,11 @@ export default {
         message: '',
       };
       this.excelHeaders = [];
-      this.step = 1;
+      this.router.push('/dashboard');
     },
     goToDashboard() {
       // Redirect to dashboard
-      window.location.href = '/dashboard'; // Adjust to your route
+      router.push('/dashboard');
     }
   },
 };
