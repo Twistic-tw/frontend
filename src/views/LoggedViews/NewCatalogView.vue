@@ -53,14 +53,8 @@ export default {
 
         this.excelHeaders = response.data.fields;
         console.log('Raw headers:', this.excelHeaders);
-
-        // Si fields es un objeto numerado, conviértelo:
-        if (!Array.isArray(this.excelHeaders)) {
-          this.excelHeaders = Object.values(this.excelHeaders);
-        }
-
-        this.form.selected_headers = [...this.excelHeaders];
-        console.log('Headers as array:', this.form.selected_headers);
+        this.form.selected_headers = this.excelHeaders.map(field => ({ name: field }));
+        console.log('Headers as objects:', this.form.selected_headers);
         this.nextStep();
         console.log(this.form.selected_headers)
       } catch (error) {
@@ -76,12 +70,13 @@ export default {
       formData.append('file', this.form.excel_file);
       formData.append('template_name', this.form.catalog_name);
       formData.append('fields', JSON.stringify(
-        this.form.selected_headers.map((field, index) => ({
-          field: field,
-          active: true,
-          order: index
-        }))
-      ));
+      this.form.selected_headers.map((fieldObj, index) => ({
+        field: fieldObj.name,
+        active: true,
+        order: index
+      }))
+    ));
+
       formData.append('message', this.form.message);
 
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
@@ -170,11 +165,11 @@ export default {
 
           <div v-if="step === 3" class="bg-white p-6 rounded shadow">
             <h3 class="text-lg font-bold mb-4 text-center">Reorder Fields</h3>
-            <draggable v-model="form.selected_headers" class="bg-gray-50 p-4 rounded shadow space-y-2" item-key="field" animation="200">
+            <draggable v-model="form.selected_headers" class="bg-gray-50 p-4 rounded shadow space-y-2" item-key="name" animation="200">
               <template #item="{ element, index }">
                 <div class="p-3 bg-gray-100 rounded cursor-move flex items-center">
                   <span class="font-semibold text-gray-700 mr-2">{{ index + 1 }}.</span>
-                  <span class="text-gray-900">{{ element }}</span>
+                  <span class="text-gray-900">{{ element.name }}</span>
                 </div>
               </template>
             </draggable>
