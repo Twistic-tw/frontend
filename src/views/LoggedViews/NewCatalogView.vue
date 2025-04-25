@@ -44,11 +44,14 @@ export default {
       try {
         const response = await axios.post('https://api-catalogos.twistic.app/api/Import', formData, {
           headers: {
-            'Content-Type': 'multipart/form-data',
             'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-            Accept: 'application/json'
+            'Accept': 'application/json'
           },
-          withCredentials: true
+          withCredentials: true,
+          transformRequest: [(data, headers) => {
+            delete headers.common['Content-Type']; // Deja que el navegador lo maneje
+            return data;
+          }]
         });
 
         this.excelHeaders = response.data.fields;
@@ -73,7 +76,6 @@ export default {
         }))
       ));
 
-      // Obtener el token CSRF desde cookies
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
       if (!xsrfToken) {
         alert('CSRF token not found.');
@@ -84,11 +86,14 @@ export default {
       try {
         await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
           headers: {
-            'Content-Type': 'multipart/form-data',
             'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-            Accept: 'application/json'
+            'Accept': 'application/json'
           },
-          withCredentials: true
+          withCredentials: true,
+          transformRequest: [(data, headers) => {
+            delete headers.common['Content-Type'];
+            return data;
+          }]
         });
 
         this.step = 7;
