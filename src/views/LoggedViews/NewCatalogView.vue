@@ -1,4 +1,6 @@
 <script lang="ts">
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -23,28 +25,26 @@ export default {
       this.form.excel_file = event.target.files[0];
     },
     analyzeExcel() {
-      // Aquí simulas o haces una petición real al backend
-      // Simulación de encabezados:
-      this.excelHeaders = ['Código', 'Variedad', 'Origen', 'Precio', 'Stock'];
+      // Simulate Excel analysis (replace with backend call)
+      this.excelHeaders = ['Code', 'Variety', 'Origin', 'Price', 'Stock'];
       this.nextStep();
     },
     async submitForm() {
-      // Aquí haces la petición al backend para guardar en la tabla notifications
       const formData = new FormData();
       formData.append('catalog_name', this.form.catalog_name);
       formData.append('excel_file', this.form.excel_file);
       formData.append('fields_order', JSON.stringify(this.form.selected_headers));
       formData.append('message', this.form.message);
 
-      await fetch('/api/notifications', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Authorization': 'Bearer tu_token_aqui', // Si usas API protegida
-        },
-      });
-
-      this.step = 6; // Confirmación
+      try {
+        await axios.post('/api/notifications', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+          withCredentials: true
+        });
+        this.step = 7;
+      } catch (error) {
+        console.error('Error:', error);
+      }
     },
   },
 };
