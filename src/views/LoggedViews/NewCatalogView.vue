@@ -187,7 +187,7 @@ export default {
             </h2>
             <ul>
               <li v-for="(header, index) in form.selected_headers" :key="index" class="mb-2">
-                {{ index + 1 }}. {{ header }}
+                {{ index + 1 }}. {{ header.name }}
               </li>
             </ul>
             <div class="flex justify-between mt-6">
