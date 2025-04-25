@@ -57,17 +57,17 @@ export default {
       <!-- Progress Bar -->
       <div class="mb-6">
         <div class="flex justify-between mb-2">
-          <span>Step {{ step }} of 5</span>
+          <span>Step {{ step }} of 6</span>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2">
-          <div class="bg-blue-500 h-2 rounded-full" :style="{ width: (step / 5 * 100) + '%' }"></div>
+          <div class="bg-blue-500 h-2 rounded-full" :style="{ width: (step / 6 * 100) + '%' }"></div>
         </div>
       </div>
 
       <!-- Transition for steps -->
       <transition name="fade-slide" mode="out-in">
         <div :key="step">
-          <!-- Step 1 -->
+          <!-- Step 1: Catalog Name -->
           <div v-if="step === 1">
             <h2 class="text-3xl font-bold mb-4 flex items-center">
               <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
@@ -79,7 +79,7 @@ export default {
             </div>
           </div>
 
-          <!-- Step 2 -->
+          <!-- Step 2: Upload Excel -->
           <div v-else-if="step === 2">
             <h2 class="text-3xl font-bold mb-4 flex items-center">
               <svg class="w-6 h-6 mr-2 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18"></path></svg>
@@ -124,7 +124,7 @@ export default {
             </div>
           </div>
 
-          <!-- Step 5: Message -->
+          <!-- Step 5: Request Message -->
           <div v-else-if="step === 5">
             <h2 class="text-3xl font-bold mb-4 flex items-center">
               <svg class="w-6 h-6 mr-2 text-pink-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -133,11 +133,11 @@ export default {
             <textarea v-model="form.message" class="w-full p-3 border rounded-xl" rows="3" placeholder="Type your message..."></textarea>
             <div class="flex justify-between mt-6">
               <button @click="prevStep" class="bg-gray-400 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-500 transition">Back</button>
-              <button @click="submitForm" class="bg-green-500 text-white px-6 py-2 rounded-xl shadow hover:bg-green-600 transition">Finish</button>
+              <button @click="nextStep" class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition">Next</button>
             </div>
           </div>
 
-          <!-- Paso 6: Resumen -->
+          <!-- Step 6: Review Summary -->
           <div v-else-if="step === 6">
             <h2 class="text-3xl font-bold mb-4 flex items-center">
               <svg class="w-6 h-6 mr-2 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"></path></svg>
@@ -159,12 +159,11 @@ export default {
             </div>
           </div>
 
-          <!-- Paso 7: Confirmación -->
+          <!-- Step 7: Confirmation -->
           <div v-else-if="step === 7">
             <h2 class="text-3xl font-bold mb-4 text-green-600">Notification Created!</h2>
             <p>Your notification has been saved successfully.</p>
           </div>
-
         </div>
       </transition>
     </div>
