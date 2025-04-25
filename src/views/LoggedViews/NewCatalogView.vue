@@ -52,7 +52,7 @@ export default {
         });
 
         this.excelHeaders = response.data.fields;
-        this.form.selected_headers = [...this.excelHeaders];
+        this.form.selected_headers = [...this.excelHeaders]; // Para ordenar
         this.nextStep();
       } catch (error) {
         console.error('Error analyzing file:', error);
@@ -91,7 +91,7 @@ export default {
           withCredentials: true
         });
 
-        this.step = 5;
+        this.step = 7;
       } catch (error) {
         console.error('Error creating template:', error);
         alert('Error creating the template.');
@@ -99,76 +99,148 @@ export default {
         this.loading = false;
       }
     },
+    resetForm() {
+      this.form = {
+        catalog_name: '',
+        excel_file: null,
+        selected_headers: [],
+        message: '',
+      };
+      this.excelHeaders = [];
+      this.step = 1;
+    },
     goToDashboard() {
       this.$router.push('/dashboard');
     }
-  }
+  },
 };
 </script>
 
+
 <template>
-  <div class="max-w-2xl mx-auto mt-8">
-    <!-- Stepper / Progreso -->
-    <div class="mb-6 text-center">
-      <h2 class="text-xl font-bold mb-2">Step {{ step }} of 6</h2>
-    </div>
+  <div class="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center">
+    <div class="w-full max-w-3xl bg-white p-8 rounded-2xl shadow-xl relative">
 
-    <!-- Paso 1: Nombre del Catálogo -->
-    <div v-if="step === 1" class="bg-white p-6 rounded shadow">
-      <h3 class="text-lg font-bold mb-4">Catalog Name</h3>
-      <input v-model="form.catalog_name" type="text" class="w-full border p-2 rounded mb-4" placeholder="Enter catalog name">
-      <div class="flex justify-end">
-        <button @click="nextStep" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Next</button>
+      <!-- Progress Bar -->
+      <div class="mb-6" v-if="step <= 6">
+        <div class="flex justify-between mb-2">
+          <span>Step {{ step }} of 6</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div class="bg-blue-500 h-2 rounded-full" :style="{ width: (step / 6 * 100) + '%' }"></div>
+        </div>
       </div>
-    </div>
 
-    <!-- Paso 2: Subir Excel -->
-    <div v-if="step === 2" class="bg-white p-6 rounded shadow">
-      <h3 class="text-lg font-bold mb-4">Upload Excel File</h3>
-      <input type="file" @change="handleFileUpload" class="w-full border p-2 rounded mb-4">
-      <div class="flex justify-between">
-        <button @click="prevStep" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Back</button>
-        <button @click="analyzeExcel" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Analyze</button>
-      </div>
-    </div>
-
-    <!-- Paso 3: Ordenar Encabezados -->
-    <div v-if="step === 3" class="bg-white p-6 rounded shadow">
-      <h3 class="text-lg font-bold mb-4 text-center">Reorder Fields</h3>
-      <draggable v-model="form.selected_headers" class="bg-gray-50 p-4 rounded shadow space-y-2" item-key="field" animation="200">
-        <template #item="{ element, index }">
-          <div class="p-3 bg-gray-100 rounded cursor-move flex items-center">
-            <span class="font-semibold text-gray-700 mr-2">{{ index + 1 }}.</span>
-            <span class="text-gray-900">{{ element }}</span>
+      <!-- Transition for steps -->
+      <transition name="fade-slide" mode="out-in">
+        <div :key="step">
+          <!-- Step 1: Catalog Name -->
+          <div v-if="step === 1">
+            <h2 class="text-3xl font-bold mb-4 flex items-center">
+              <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
+              Catalog Name
+            </h2>
+            <input v-model="form.catalog_name" class="w-full p-3 border rounded-xl" placeholder="e.g. Wine Catalog">
+            <div class="flex justify-end mt-6">
+              <button @click="nextStep" class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition">Next</button>
+            </div>
           </div>
-        </template>
-      </draggable>
-      <div class="flex justify-between mt-6">
-        <button @click="prevStep" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Back</button>
-        <button @click="nextStep" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Next</button>
-      </div>
-    </div>
 
-    <!-- Paso 4: Mensaje Adicional -->
-    <div v-if="step === 4" class="bg-white p-6 rounded shadow">
-      <h3 class="text-lg font-bold mb-4">Additional Message</h3>
-      <textarea v-model="form.message" class="w-full border p-2 rounded mb-4" placeholder="Enter message"></textarea>
-      <div class="flex justify-between">
-        <button @click="prevStep" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Back</button>
-        <button @click="submitForm" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Submit</button>
-      </div>
-    </div>
+          <!-- Step 2: Upload Excel -->
+          <div v-else-if="step === 2">
+            <h2 class="text-3xl font-bold mb-4 flex items-center">
+              <svg class="w-6 h-6 mr-2 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18"></path></svg>
+              Upload Excel File
+            </h2>
+            <input type="file" @change="handleFileUpload" class="w-full p-3 border rounded-xl">
+            <div class="flex justify-between mt-6">
+              <button @click="prevStep" class="bg-gray-400 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-500 transition">Back</button>
+              <button @click="analyzeExcel" :disabled="!form.excel_file" class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition">Analyze</button>
+            </div>
+          </div>
 
-    <!-- Paso 5: Confirmación -->
-    <div v-if="step === 5" class="bg-white p-6 rounded shadow text-center">
-      <h3 class="text-xl font-bold text-green-600 mb-4">Notification Created!</h3>
-      <p class="mb-4">Your request has been created successfully.</p>
-      <button @click="goToDashboard" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Go to Dashboard</button>
-    </div>
+          <div v-if="step === 3" class="bg-white p-6 rounded shadow">
+            <h3 class="text-lg font-bold mb-4 text-center">Reorder Fields</h3>
+            <draggable v-model="form.selected_headers" class="bg-gray-50 p-4 rounded shadow space-y-2" item-key="field" animation="200">
+              <template #item="{ element, index }">
+                <div class="p-3 bg-gray-100 rounded cursor-move flex items-center">
+                  <span class="font-semibold text-gray-700 mr-2">{{ index + 1 }}.</span>
+                  <span class="text-gray-900">{{ element }}</span>
+                </div>
+              </template>
+            </draggable>
+            <div class="flex justify-between mt-6">
+              <button @click="prevStep" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Back</button>
+              <button @click="nextStep" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Next</button>
+            </div>
+          </div>
 
-    <!-- Loader -->
-    <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-20 w-20"></div>
+          <!-- Step 4: Order Headers -->
+          <div v-else-if="step === 4">
+            <h2 class="text-3xl font-bold mb-4 flex items-center">
+              <svg class="w-6 h-6 mr-2 text-purple-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+              Order Headers
+            </h2>
+            <ul>
+              <li v-for="(header, index) in form.selected_headers" :key="index" class="mb-2">
+                {{ index + 1 }}. {{ header }}
+              </li>
+            </ul>
+            <div class="flex justify-between mt-6">
+              <button @click="prevStep" class="bg-gray-400 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-500 transition">Back</button>
+              <button @click="nextStep" class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition">Next</button>
+            </div>
+          </div>
+
+          <!-- Step 5: Request Message -->
+          <div v-else-if="step === 5">
+            <h2 class="text-3xl font-bold mb-4 flex items-center">
+              <svg class="w-6 h-6 mr-2 text-pink-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              Request Message
+            </h2>
+            <textarea v-model="form.message" class="w-full p-3 border rounded-xl" rows="3" placeholder="Type your message..."></textarea>
+            <div class="flex justify-between mt-6">
+              <button @click="prevStep" class="bg-gray-400 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-500 transition">Back</button>
+              <button @click="nextStep" class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition">Next</button>
+            </div>
+          </div>
+
+          <!-- Step 6: Review Summary -->
+          <div v-else-if="step === 6">
+            <h2 class="text-3xl font-bold mb-4 flex items-center">
+              <svg class="w-6 h-6 mr-2 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"></path></svg>
+              Review Summary
+            </h2>
+
+            <div class="mb-4">
+              <p><strong>Catalog Name:</strong> {{ form.catalog_name }}</p>
+              <p><strong>Selected Headers:</strong></p>
+              <ul class="list-disc list-inside ml-4">
+                <li v-for="header in form.selected_headers" :key="header">{{ header }}</li>
+              </ul>
+              <p class="mt-2"><strong>Message:</strong> {{ form.message }}</p>
+            </div>
+
+            <div class="flex justify-between mt-6">
+              <button @click="prevStep" class="bg-gray-400 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-500 transition">Back</button>
+              <button @click="submitForm" class="bg-green-500 text-white px-6 py-2 rounded-xl shadow hover:bg-green-600 transition">Confirm</button>
+            </div>
+          </div>
+
+          <!-- Step 7: Confirmation -->
+          <div v-else-if="step === 7">
+            <h2 class="text-3xl font-bold mb-4 text-green-600">Notification Created!</h2>
+            <p class="mb-6">Your request has been created successfully. We will review it shortly, and you will be able to create your catalog.</p>
+            <div class="flex justify-center space-x-4">
+              <button @click="resetForm" class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition">Create Another</button>
+              <button @click="goToDashboard" class="bg-gray-600 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-700 transition">Go to Dashboard</button>
+            </div>
+          </div>
+          <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-20 w-20"></div>
+          </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
