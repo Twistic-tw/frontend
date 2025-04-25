@@ -54,6 +54,7 @@ export default {
         this.excelHeaders = response.data.fields;
         this.form.selected_headers = [...this.excelHeaders]; // Para ordenar
         this.nextStep();
+        console.log(this.form.selected_headers)
       } catch (error) {
         console.error('Error analyzing file:', error);
         alert('Error analyzing the file.');
