@@ -43,16 +43,12 @@ export default {
 
       try {
         const response = await axios.post('https://api-catalogos.twistic.app/api/Import', formData, {
-          headers: {
-            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-            'Accept': 'application/json'
-          },
-          withCredentials: true,
-          transformRequest: [(data, headers) => {
-            delete headers.common['Content-Type']; // Deja que el navegador lo maneje
-            return data;
-          }]
-        });
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'Accept': 'application/json'
+        },
+        withCredentials: true
+      });
 
         this.excelHeaders = response.data.fields;
         this.nextStep();
