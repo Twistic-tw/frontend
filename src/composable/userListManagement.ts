@@ -74,7 +74,7 @@ export function useUserListManagement() {
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
       if (!xsrfToken) { alert('Token CSRF no encontrado'); return; }
 
-      await axios.post('https://api-catalogos.twistic.app/api/Users', newUser.value, {
+      await axios.post('https://api-catalogos.twistic.app/api/users', newUser.value, {
         withCredentials: true,
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
