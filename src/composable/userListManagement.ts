@@ -45,7 +45,7 @@ export function useUserListManagement() {
 
   const fetchIdiomas = async () => {
     try {
-      const response = await axios.get('https://api-catalogos.twistic.app/api/languages', {
+      const response = await axios.get('https://api-catalogos.twistic.app/api/ViewLanguages', {
         withCredentials: true,
       });
       idiomasDisponibles.value = response.data;
