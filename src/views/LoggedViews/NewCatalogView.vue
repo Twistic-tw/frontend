@@ -32,6 +32,7 @@ export default {
     },
     getUserId() {
       const match = document.cookie.match(/id_user=([^;]+)/);
+      console.log("User ID:", this.getUserId());
       return match ? match[1] : null;
     },
     async analyzeExcel() {
