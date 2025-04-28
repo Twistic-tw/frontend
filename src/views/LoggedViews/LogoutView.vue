@@ -6,7 +6,6 @@ import axios from 'axios';
 const router = useRouter();
 function getCookie(name) {
   const matches = document.cookie.match(new RegExp(
-    // Busca algo como "XSRF-TOKEN=valor"
     "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
   ));
   return matches ? decodeURIComponent(matches[1]) : undefined;
@@ -15,7 +14,7 @@ function getCookie(name) {
 
 onMounted(async () => {
   try {
-    await axios.post('https://api-catalogos.twistic.app/api/logout', {}, {
+    await axios.post('https://api-catalogos.twistic.app/api/LogOut', {}, {
       withCredentials: true,
       headers: {
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
