@@ -5,9 +5,13 @@ import draggable from 'vuedraggable';
 export default {
   components: { draggable },
   data() {
+    const match = document.cookie.match(/id_user=([^;]+)/);
+    const userId = match ? match[1] : null;
+
     return {
       step: 1,
       loading: false,
+      userId: userId,
       form: {
         catalog_name: '',
         excel_file: null,
@@ -29,10 +33,6 @@ export default {
       if (target.files && target.files.length > 0) {
         this.form.excel_file = target.files[0];
       }
-    },
-    getUserId() {
-      const match = document.cookie.match(/id_user=([^;]+)/);
-      return match ? match[1] : null;
     },
     async analyzeExcel() {
       this.loading = true;
@@ -70,7 +70,7 @@ export default {
       const formData = new FormData();
       formData.append('file', this.form.excel_file);
       formData.append('template_name', this.form.catalog_name);
-      formData.append('id_user', this.getUserId());
+      formData.append('id_user', this.userId);
       formData.append('fields', JSON.stringify(
         this.form.selected_headers
           .filter(fieldObj => fieldObj.active)
@@ -84,7 +84,7 @@ export default {
 
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
       if (!xsrfToken) {
-        alert('Sesión caducada.');
+        alert('Session expired.');
         this.loading = false;
         return;
       }
@@ -97,8 +97,8 @@ export default {
           },
           withCredentials: true
         });
-        console.log(formData)
-        console.log("User ID:", this.getUserId());
+        console.log("Submitted form data:", this.form);
+        console.log("User ID:", this.userId);
         this.step = 7;
       } catch (error) {
         console.error('Error creating template:', error);
