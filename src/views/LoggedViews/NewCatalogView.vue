@@ -54,7 +54,7 @@ export default {
 
         this.excelHeaders = response.data.fields;
         console.log('Raw headers:', this.excelHeaders);
-        this.form.selected_headers = this.excelHeaders.map(field => ({ name: field }));
+        this.form.selected_headers = this.excelHeaders.map(field => ({ name: field, active: true }));
         console.log('Headers as objects:', this.form.selected_headers);
         this.nextStep();
         console.log(this.form.selected_headers)
@@ -73,7 +73,7 @@ export default {
       formData.append('fields', JSON.stringify(
       this.form.selected_headers.map((fieldObj, index) => ({
         field: fieldObj.name,
-        active: true,
+        active: fieldObj.active,
         order: index
       }))
     ));
@@ -82,7 +82,7 @@ export default {
 
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
       if (!xsrfToken) {
-        alert('CSRF token not found.');
+        alert('Sesión caducada.');
         this.loading = false;
         return;
       }
@@ -166,7 +166,7 @@ export default {
 
           <!-- Step 3: Order Headers -->
           <div v-else-if="step === 3" class="bg-white p-6 rounded shadow">
-            <h3 class="text-lg font-bold mb-4 text-center">Reorder Fields</h3>
+            <h3 class="text-lg font-bold mb-4 text-center">Reorder and select Fields</h3>
             <draggable v-model="form.selected_headers" item-key="name" class="bg-gray-50 p-4 rounded shadow space-y-2">
               <template #item="{ element, index }">
                 <div class="p-3 bg-gray-100 rounded cursor-move flex items-center justify-between">
