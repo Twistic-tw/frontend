@@ -139,13 +139,13 @@ const submitForm = async () => {
     });
     console.log('Axios response:', response);
 
-    console.log("✅ Template created successfully! Response:", response.data);
-    console.log("📌 Submitted with user ID:", userId.value);
+    console.log("Template created successfully! Response:", response.data);
+    console.log("Submitted with user ID:", userId.value);
     step.value = 7;
 
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error('🔴 Axios error details:', {
+      console.error('Axios error details:', {
         message: error.message,
         status: error.response?.status,
         statusText: error.response?.statusText,
@@ -155,7 +155,7 @@ const submitForm = async () => {
         request: error.request,
       });
     } else {
-      console.error('🔴 Unexpected error:', error);
+      console.error('Unexpected error:', error);
     }
 
     alert('Error creating the template. Check the console for more details.');
