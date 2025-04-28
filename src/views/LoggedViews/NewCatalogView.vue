@@ -88,7 +88,8 @@ export default {
         this.loading = false;
         return;
       }
-
+      console.log("Submitted form data:", this.form);
+        console.log("User ID:", this.userId);
       try {
         await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
           headers: {
