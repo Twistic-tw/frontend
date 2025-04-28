@@ -1,151 +1,166 @@
-<script lang="ts">
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import draggable from 'vuedraggable';
 
-export default {
-  components: { draggable },
-  data() {
-    return {
-      step: 1,
-      loading: false,
-      form: {
-        catalog_name: '',
-        excel_file: null,
-        selected_headers: [],
-        message: '',
-      },
-      excelHeaders: [],
-      userId: null,
-    };
-  },
-  methods: {
-    nextStep() {
-      this.step++;
-    },
-    prevStep() {
-      this.step--;
-    },
-    handleFileUpload(event: Event) {
-      const target = event.target as HTMLInputElement;
-      if (target.files && target.files.length > 0) {
-        this.form.excel_file = target.files[0];
-      }
-    },
-    async fetchUserId() {
-      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-      try {
-        const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
-          headers: {
-            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-            'Accept': 'application/json'
-          },
-          withCredentials: true,
-        });
-        this.userId = response.data.user
-      } catch (error) {
-        console.error('Error fetching user ID:', error);
-        this.userId = null;
-      }
-    },
-    async analyzeExcel() {
-      this.loading = true;
-      const formData = new FormData();
-      formData.append('file', this.form.excel_file);
+const step = ref(1);
+const loading = ref(false);
+const excelHeaders = ref<string[]>([]);
+const userId = ref<number | null>(null);
 
-      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-      if (!xsrfToken) {
-        alert('CSRF token not found.');
-        this.loading = false;
-        return;
-      }
+// Formulario reactivo
+const form = ref({
+  catalog_name: '',
+  excel_file: null as File | null,
+  selected_headers: [] as { name: string, active: boolean }[],
+  message: '',
+});
 
-      try {
-        const response = await axios.post('https://api-catalogos.twistic.app/api/Import', formData, {
-          headers: {
-            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-            'Accept': 'application/json'
-          },
-          withCredentials: true
-        });
+// Cambiar paso
+const nextStep = () => step.value++;
+const prevStep = () => step.value--;
 
-        this.excelHeaders = response.data.fields;
-        this.form.selected_headers = this.excelHeaders.map(field => ({ name: field, active: false }));
-        this.nextStep();
-      } catch (error) {
-        console.error('Error analyzing file:', error);
-        alert('Error analyzing the file.');
-      } finally {
-        this.loading = false;
-      }
-    },
-    async submitForm() {
-      this.loading = true;
-
-      await this.fetchUserId();
-      if (!this.userId) {
-        alert('Failed to retrieve user ID.');
-        this.loading = false;
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append('file', this.form.excel_file);
-      formData.append('template_name', this.form.catalog_name);
-      formData.append('id_user', this.userId);
-      formData.append('fields', JSON.stringify(
-        this.form.selected_headers
-          .filter(fieldObj => fieldObj.active)
-          .map((fieldObj, index) => ({
-            field: fieldObj.name,
-            active: true,
-            order: index
-          }))
-      ));
-      formData.append('message', this.form.message);
-
-      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-      if (!xsrfToken) {
-        alert('Session expired.');
-        this.loading = false;
-        return;
-      }
-
-      try {
-        await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
-          headers: {
-            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-            'Accept': 'application/json'
-          },
-          withCredentials: true
-        });
-        console.log("Submitted with user ID:", this.userId);
-        this.step = 7;
-      } catch (error) {
-        console.error('Error creating template:', error);
-        alert('Error creating the template.');
-      } finally {
-        this.loading = false;
-      }
-    },
-    resetForm() {
-      this.form = {
-        catalog_name: '',
-        excel_file: null,
-        selected_headers: [],
-        message: '',
-      };
-      this.excelHeaders = [];
-      this.step = 1;
-    },
-    goToDashboard() {
-      this.$router.push('/dashboard');
-    }
-  },
-  async mounted() {
-    await this.fetchUserId();
+// Subir archivo
+const handleFileUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files && target.files.length > 0) {
+    form.value.excel_file = target.files[0];
   }
 };
+
+// Obtener token XSRF
+const getXsrfToken = (): string | null => {
+  return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null;
+};
+
+// Obtener usuario autenticado
+const fetchUserId = async () => {
+  const xsrfToken = getXsrfToken();
+  if (!xsrfToken) return null;
+
+  try {
+    const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        'Accept': 'application/json',
+      },
+      withCredentials: true,
+    });
+    userId.value = response.data.user;
+  } catch (error) {
+    console.error('Error fetching user ID:', error);
+    userId.value = null;
+  }
+};
+
+// Analizar Excel
+const analyzeExcel = async () => {
+  loading.value = true;
+
+  const xsrfToken = getXsrfToken();
+  if (!xsrfToken || !form.value.excel_file) {
+    alert('CSRF token or file missing.');
+    loading.value = false;
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', form.value.excel_file);
+
+  try {
+    const response = await axios.post('https://api-catalogos.twistic.app/api/Import', formData, {
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        'Accept': 'application/json'
+      },
+      withCredentials: true
+    });
+
+    excelHeaders.value = response.data.fields;
+    form.value.selected_headers = excelHeaders.value.map(field => ({ name: field, active: false }));
+    nextStep();
+  } catch (error) {
+    console.error('Error analyzing the file:', error);
+    alert('Error analyzing the file.');
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Enviar Formulario
+const submitForm = async () => {
+  loading.value = true;
+
+  if (!userId.value) {
+    await fetchUserId();
+    if (!userId.value) {
+      alert('User ID could not be fetched.');
+      loading.value = false;
+      return;
+    }
+  }
+
+  const xsrfToken = getXsrfToken();
+  if (!xsrfToken || !form.value.excel_file) {
+    alert('Session expired or file missing.');
+    loading.value = false;
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', form.value.excel_file);
+  formData.append('template_name', form.value.catalog_name);
+  formData.append('id_user', String(userId.value));
+  formData.append('fields', JSON.stringify(
+    form.value.selected_headers
+      .filter(fieldObj => fieldObj.active)
+      .map((fieldObj, index) => ({
+        field: fieldObj.name,
+        active: true,
+        order: index
+      }))
+  ));
+  formData.append('message', form.value.message);
+
+  try {
+    await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        'Accept': 'application/json'
+      },
+      withCredentials: true
+    });
+    console.log("Submitted with user ID:", userId.value);
+    step.value = 7;
+  } catch (error) {
+    console.error('Error creating template:', error);
+    alert('Error creating the template.');
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Reiniciar formulario
+const resetForm = () => {
+  form.value = {
+    catalog_name: '',
+    excel_file: null,
+    selected_headers: [],
+    message: '',
+  };
+  excelHeaders.value = [];
+  step.value = 1;
+};
+
+// Redirigir
+const goToDashboard = () => {
+  window.location.href = '/dashboard'; // o router push si usas Vue Router
+};
+
+// Obtener usuario al cargar
+onMounted(fetchUserId);
 </script>
+
 
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center">
