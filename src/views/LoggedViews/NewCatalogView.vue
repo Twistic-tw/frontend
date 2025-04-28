@@ -111,7 +111,7 @@ export default {
       }
 
       try {
-        await axios.post('https://api-catalogos.twistic.app/api/NewTemplate', formData, {
+        await axios.post('https://api-catalogos.twistic.app/api/newTemplate', formData, {
           headers: {
             'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
             'Accept': 'application/json'
