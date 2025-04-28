@@ -133,8 +133,16 @@ const submitForm = async () => {
     console.log("Submitted with user ID:", userId.value);
     step.value = 7;
   } catch (error) {
-    console.error('Error creating template:', error);
-    alert('Error creating the template.');
+  if (axios.isAxiosError(error)) {
+    console.error(' Axios error creating template:', {
+      message: error.message,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data,
+      headers: error.response?.headers,
+      config: error.config,
+      request: error.request,
+    });
   } finally {
     loading.value = false;
   }
