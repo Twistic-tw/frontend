@@ -54,7 +54,7 @@ export default {
 
         this.excelHeaders = response.data.fields;
         console.log('Raw headers:', this.excelHeaders);
-        this.form.selected_headers = this.excelHeaders.map(field => ({ name: field, active: true }));
+        this.form.selected_headers = this.excelHeaders.map(field => ({ name: field, active: false }));
         console.log('Headers as objects:', this.form.selected_headers);
         this.nextStep();
         console.log(this.form.selected_headers)
