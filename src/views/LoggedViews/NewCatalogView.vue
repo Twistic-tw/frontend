@@ -41,7 +41,7 @@ export default {
           },
           withCredentials: true,
         });
-        this.userId = response.data.id;
+        this.userId = response.data.user
         console.log("Fetched user ID:", this.userId);
       } catch (error) {
         console.error('Error fetching user ID:', error);
