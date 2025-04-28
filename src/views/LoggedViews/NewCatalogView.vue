@@ -29,8 +29,20 @@ export default {
       this.step--;
     },
     async fetchUserId() {
+
+      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+      if (!xsrfToken) {
+        alert('CSRF token not found.');
+        this.loading = false;
+        return;
+      }
+
       try {
         const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
+          headers: {
+            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            'Accept': 'application/json'
+          },
           withCredentials: true
         });
         this.userId = response.data.id;
