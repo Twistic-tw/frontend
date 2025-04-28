@@ -45,7 +45,7 @@ export function useUserListManagement() {
 
   const fetchIdiomas = async () => {
     try {
-      const response = await axios.get('https://api-catalogos.twistic.app/api/Languages', {
+      const response = await axios.get('https://api-catalogos.twistic.app/api/languages', {
         withCredentials: true,
       });
       idiomasDisponibles.value = response.data;
@@ -72,7 +72,7 @@ export function useUserListManagement() {
   const submitCreateUser = async () => {
     try {
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-      if (!xsrfToken) { alert('Token CSRF no encontrado'); return; }
+      if (!xsrfToken) { alert('Sessión caducada'); return; }
 
       await axios.post('https://api-catalogos.twistic.app/api/users', newUser.value, {
         withCredentials: true,
