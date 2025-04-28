@@ -2,9 +2,8 @@
 import axios from 'axios';
 import draggable from 'vuedraggable';
 
-
 export default {
-  components: { draggable},
+  components: { draggable },
   data() {
     return {
       step: 1,
@@ -31,6 +30,10 @@ export default {
         this.form.excel_file = target.files[0];
       }
     },
+    getUserId() {
+      const match = document.cookie.match(/id_user=([^;]+)/);
+      return match ? match[1] : null;
+    },
     async analyzeExcel() {
       this.loading = true;
       const formData = new FormData();
@@ -53,11 +56,8 @@ export default {
         });
 
         this.excelHeaders = response.data.fields;
-        console.log('Raw headers:', this.excelHeaders);
         this.form.selected_headers = this.excelHeaders.map(field => ({ name: field, active: false }));
-        console.log('Headers as objects:', this.form.selected_headers);
         this.nextStep();
-        console.log(this.form.selected_headers)
       } catch (error) {
         console.error('Error analyzing file:', error);
         alert('Error analyzing the file.');
@@ -70,16 +70,16 @@ export default {
       const formData = new FormData();
       formData.append('file', this.form.excel_file);
       formData.append('template_name', this.form.catalog_name);
+      formData.append('id_user', this.getUserId());
       formData.append('fields', JSON.stringify(
-      this.form.selected_headers
-        .filter(fieldObj => fieldObj.active) // Solo los activos
-        .map((fieldObj, index) => ({
-          field: fieldObj.name,
-          active: true,
-          order: index
-        }))
-    ));
-
+        this.form.selected_headers
+          .filter(fieldObj => fieldObj.active)
+          .map((fieldObj, index) => ({
+            field: fieldObj.name,
+            active: true,
+            order: index
+          }))
+      ));
       formData.append('message', this.form.message);
 
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
@@ -122,7 +122,6 @@ export default {
   },
 };
 </script>
-
 
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center">
