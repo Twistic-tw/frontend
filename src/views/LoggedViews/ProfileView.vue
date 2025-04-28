@@ -36,16 +36,16 @@ export default defineComponent({
           }
         })
 
-        user.value = response.data.user // CORREGIDO AQUÍ
+        user.value = response.data.user
       } catch (err: unknown) {
         if (axios.isAxiosError(err) && err.response) {
-          console.error('🔸 Status:', err.response.status);
-          console.error('🔸 Mensaje:', err.response.data.message || 'Sin mensaje');
-          console.error('🔸 Data completa:', err.response.data);
+          console.error('Status:', err.response.status);
+          console.error('Mensaje:', err.response.data.message || 'Sin mensaje');
+          console.error('Data completa:', err.response.data);
         } else if (err instanceof Error) {
-          console.error('🔸 Error JS:', err.message);
+          console.error('Error JS:', err.message);
         } else {
-          console.error('🔸 Error desconocido');
+          console.error('Error desconocido');
         }
         error.value = true
       } finally {

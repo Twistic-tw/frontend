@@ -15,7 +15,7 @@ export default {
         message: '',
       },
       excelHeaders: [],
-      userId: null, // Aquí guardamos el id_user
+      userId: null,
     };
   },
   methods: {
@@ -32,10 +32,14 @@ export default {
       }
     },
     async fetchUserId() {
+      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
       try {
         const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
+          headers: {
+            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            'Accept': 'application/json'
+          },
           withCredentials: true,
-          headers: { 'Accept': 'application/json' }
         });
         this.userId = response.data.id;
         console.log("Fetched user ID:", this.userId);
@@ -78,7 +82,7 @@ export default {
     async submitForm() {
       this.loading = true;
 
-      await this.fetchUserId(); // Nos aseguramos de tener el userId
+      await this.fetchUserId();
       if (!this.userId) {
         alert('Failed to retrieve user ID.');
         this.loading = false;
@@ -139,7 +143,7 @@ export default {
     }
   },
   async mounted() {
-    await this.fetchUserId(); // Obtener userId al cargar
+    await this.fetchUserId();
   }
 };
 </script>
