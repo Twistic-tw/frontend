@@ -193,7 +193,7 @@ export default {
             </div>
           </div>
 
-          <!-- Step 5: Request Message -->
+          <!-- Step 4: Request Message -->
           <div v-if="step === 4">
             <h2 class="text-3xl font-bold mb-4 flex items-center">
               <svg class="w-6 h-6 mr-2 text-pink-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -206,7 +206,7 @@ export default {
             </div>
           </div>
 
-          <!-- Step 6: Review Summary -->
+          <!-- Step 5: Review Summary -->
           <div v-else-if="step === 5">
             <h2 class="text-3xl font-bold mb-4 flex items-center">
               <svg class="w-6 h-6 mr-2 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"></path></svg>
@@ -229,7 +229,7 @@ export default {
             </div>
           </div>
 
-          <!-- Step 7: Confirmation -->
+          <!-- Step 6: Confirmation -->
           <div v-else-if="step === 6">
             <h2 class="text-3xl font-bold mb-4 text-green-600">Notification Created!</h2>
             <p class="mb-6">Your request has been created successfully. We will review it shortly, and you will be able to create your catalog.</p>
