@@ -164,13 +164,17 @@ export default {
             </div>
           </div>
 
-          <div v-if="step === 3" class="bg-white p-6 rounded shadow">
+          <!-- Step 3: Order Headers -->
+          <div v-else-if="step === 3" class="bg-white p-6 rounded shadow">
             <h3 class="text-lg font-bold mb-4 text-center">Reorder Fields</h3>
             <draggable v-model="form.selected_headers" item-key="name" class="bg-gray-50 p-4 rounded shadow space-y-2">
               <template #item="{ element, index }">
-                <div class="p-3 bg-gray-100 rounded cursor-move flex items-center">
-                  <span class="font-semibold text-gray-700 mr-2">{{ index + 1 }}.</span>
-                  <span class="text-gray-900">{{ element.name }}</span>
+                <div class="p-3 bg-gray-100 rounded cursor-move flex items-center justify-between">
+                  <div class="flex items-center">
+                    <span class="font-semibold text-gray-700 mr-2">{{ index + 1 }}.</span>
+                    <span class="text-gray-900">{{ element.name }}</span>
+                  </div>
+                  <input type="checkbox" v-model="element.active" class="form-checkbox h-5 w-5 text-blue-600">
                 </div>
               </template>
             </draggable>
@@ -180,25 +184,8 @@ export default {
             </div>
           </div>
 
-          <!-- Step 4: Order Headers -->
-          <div v-else-if="step === 4">
-            <h2 class="text-3xl font-bold mb-4 flex items-center">
-              <svg class="w-6 h-6 mr-2 text-purple-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
-              Order Headers
-            </h2>
-            <ul>
-              <li v-for="(header, index) in form.selected_headers" :key="index" class="mb-2">
-                {{ index + 1 }}. {{ header.name }}
-              </li>
-            </ul>
-            <div class="flex justify-between mt-6">
-              <button @click="prevStep" class="bg-gray-400 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-500 transition">Back</button>
-              <button @click="nextStep" class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition">Next</button>
-            </div>
-          </div>
-
           <!-- Step 5: Request Message -->
-          <div v-else-if="step === 5">
+          <div v-if="step === 4">
             <h2 class="text-3xl font-bold mb-4 flex items-center">
               <svg class="w-6 h-6 mr-2 text-pink-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
               Request Message
@@ -211,7 +198,7 @@ export default {
           </div>
 
           <!-- Step 6: Review Summary -->
-          <div v-else-if="step === 6">
+          <div v-else-if="step === 5">
             <h2 class="text-3xl font-bold mb-4 flex items-center">
               <svg class="w-6 h-6 mr-2 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"></path></svg>
               Review Summary
@@ -233,7 +220,7 @@ export default {
           </div>
 
           <!-- Step 7: Confirmation -->
-          <div v-else-if="step === 7">
+          <div v-else-if="step === 6">
             <h2 class="text-3xl font-bold mb-4 text-green-600">Notification Created!</h2>
             <p class="mb-6">Your request has been created successfully. We will review it shortly, and you will be able to create your catalog.</p>
             <div class="flex justify-center space-x-4">
