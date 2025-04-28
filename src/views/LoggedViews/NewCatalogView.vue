@@ -143,8 +143,6 @@ const submitForm = async () => {
       config: error.config,
       request: error.request,
     });
-  } finally {
-    loading.value = false;
   }
 };
 
