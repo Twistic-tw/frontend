@@ -123,28 +123,39 @@ const submitForm = async () => {
   formData.append('message', form.value.message);
 
   try {
-    await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
+    const response = await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
         'Accept': 'application/json'
       },
       withCredentials: true
     });
-    console.log("Submitted with user ID:", userId.value);
+
+    console.log("✅ Template created successfully! Response:", response.data);
+    console.log("📌 Submitted with user ID:", userId.value);
     step.value = 7;
+
   } catch (error) {
-  if (axios.isAxiosError(error)) {
-    console.error(' Axios error creating template:', {
-      message: error.message,
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      headers: error.response?.headers,
-      config: error.config,
-      request: error.request,
-    });
+    if (axios.isAxiosError(error)) {
+      console.error('🔴 Axios error details:', {
+        message: error.message,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        headers: error.response?.headers,
+        config: error.config,
+        request: error.request,
+      });
+    } else {
+      console.error('🔴 Unexpected error:', error);
+    }
+
+    alert('Error creating the template. Check the console for more details.');
+  } finally {
+    loading.value = false;
   }
 };
+
 
 // Reiniciar formulario
 const resetForm = () => {
