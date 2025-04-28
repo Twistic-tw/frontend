@@ -22,7 +22,7 @@ export function useUserListManagement() {
   const nuevaPassword = ref('');
 
   const showCreateModal = ref(false);
-  const newUser = ref({ nombre: '', email: '', cargo: '', password: '' , idioma: '' });
+  const newUser = ref({ nombre: '', email: '', cargo: '', password: '', idioma: '' });
 
   // Obtener usuarios
   const fetchUsers = async () => {
@@ -49,9 +49,9 @@ export function useUserListManagement() {
         withCredentials: true,
       });
       idiomasDisponibles.value = response.data;
-      console.log('Idiomas disponibles:', idiomasDisponibles.value);
+      console.log('Available languages:', idiomasDisponibles.value);
     } catch (err) {
-      console.error('Error al cargar idiomas:', err);
+      console.error('Error loading languages:', err);
     }
   };
 
@@ -66,13 +66,13 @@ export function useUserListManagement() {
   const openCreateModal = () => { showCreateModal.value = true; };
   const closeCreateModal = () => {
     showCreateModal.value = false;
-    newUser.value = { nombre: '', email: '', cargo: '', password: '' , idioma: '' };
+    newUser.value = { nombre: '', email: '', cargo: '', password: '', idioma: '' };
   };
 
   const submitCreateUser = async () => {
     try {
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-      if (!xsrfToken) { alert('Sessión caducada'); return; }
+      if (!xsrfToken) { alert('Session expired.'); return; }
 
       await axios.post('https://api-catalogos.twistic.app/api/users', newUser.value, {
         withCredentials: true,
@@ -86,7 +86,7 @@ export function useUserListManagement() {
       closeCreateModal();
       alert('User created successfully.');
     } catch (err) {
-      //console.error('Error al crear usuario:', err);
+      //console.error('Error creating user:', err);
       alert('Error creating user.');
     }
   };
@@ -103,7 +103,7 @@ export function useUserListManagement() {
 
     try {
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-     // if (!xsrfToken) { alert('Token CSRF no encontrado'); return; }
+      // if (!xsrfToken) { alert('CSRF token not found'); return; }
 
       const payload: { nombre: string; cargo: string; email: string; password?: string } = {
         nombre: usuarioSeleccionado.value.nombre,
@@ -134,10 +134,10 @@ export function useUserListManagement() {
 
   // Eliminar usuario
   const deleteUser = async (id: number) => {
-    if (confirm('¿Are you sure you want to delete this user??')) {
+    if (confirm('Are you sure you want to delete this user?')) {
       try {
         const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-        //if (!xsrfToken) { alert('Token CSRF no encontrado'); return; }
+        //if (!xsrfToken) { alert('CSRF token not found'); return; }
 
         await axios.delete(`https://api-catalogos.twistic.app/api/users/${id}`, {
           withCredentials: true,
@@ -148,7 +148,7 @@ export function useUserListManagement() {
         });
 
         users.value = users.value.filter(user => user.id !== id);
-        alert('Successfully deleted user.');
+        alert('User deleted successfully.');
       } catch (err) {
         alert('Error deleting user.');
       }
