@@ -5,13 +5,10 @@ import draggable from 'vuedraggable';
 export default {
   components: { draggable },
   data() {
-    const match = document.cookie.match(/id_user=([^;]+)/);
-    const userId = match ? match[1] : null;
-
     return {
       step: 1,
       loading: false,
-      userId: userId,
+      userId: null, // Aquí guardaremos el id_user después
       form: {
         catalog_name: '',
         excel_file: null,
@@ -21,12 +18,27 @@ export default {
       excelHeaders: [],
     };
   },
+  mounted() {
+    this.fetchUserId(); // Obtener el id_user al montar
+  },
   methods: {
     nextStep() {
       this.step++;
     },
     prevStep() {
       this.step--;
+    },
+    async fetchUserId() {
+      try {
+        const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
+          withCredentials: true
+        });
+        this.userId = response.data.id;
+        console.log('Fetched user ID:', this.userId);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        alert('Could not fetch user data.');
+      }
     },
     handleFileUpload(event: Event) {
       const target = event.target as HTMLInputElement;
@@ -70,7 +82,7 @@ export default {
       const formData = new FormData();
       formData.append('file', this.form.excel_file);
       formData.append('template_name', this.form.catalog_name);
-      formData.append('id_user', this.userId);
+      formData.append('id_user', this.userId); // Aquí usamos el ID obtenido de /user
       formData.append('fields', JSON.stringify(
         this.form.selected_headers
           .filter(fieldObj => fieldObj.active)
@@ -88,8 +100,7 @@ export default {
         this.loading = false;
         return;
       }
-      console.log("Submitted form data:", this.form);
-        console.log("User ID:", this.userId);
+
       try {
         await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
           headers: {
@@ -98,7 +109,7 @@ export default {
           },
           withCredentials: true
         });
-        console.log("Submitted form data:", this.form);
+        console.log(formData);
         console.log("User ID:", this.userId);
         this.step = 7;
       } catch (error) {
@@ -124,6 +135,7 @@ export default {
   },
 };
 </script>
+
 
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center">
