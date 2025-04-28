@@ -1,10 +1,10 @@
 <script lang="ts">
 import axios from 'axios';
-import { VueDraggableNext } from 'vue-draggable-next';
+import draggable from 'vuedraggable';
 
 
 export default {
-  components: { draggable: VueDraggableNext },
+  components: { draggable},
   data() {
     return {
       step: 1,
@@ -166,7 +166,7 @@ export default {
 
           <div v-if="step === 3" class="bg-white p-6 rounded shadow">
             <h3 class="text-lg font-bold mb-4 text-center">Reorder Fields</h3>
-            <draggable :list="form.selected_headers" item-key="name" class="bg-gray-50 p-4 rounded shadow space-y-2" animation="200">
+            <draggable v-model="form.selected_headers" item-key="name" class="bg-gray-50 p-4 rounded shadow space-y-2">
               <template #item="{ element, index }">
                 <div class="p-3 bg-gray-100 rounded cursor-move flex items-center">
                   <span class="font-semibold text-gray-700 mr-2">{{ index + 1 }}.</span>
