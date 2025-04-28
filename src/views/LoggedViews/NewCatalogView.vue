@@ -123,13 +123,6 @@ const submitForm = async () => {
   formData.append('message', form.value.message);
 
   try {
-    console.log('Submitting with:', {
-  userId: userId.value,
-  catalog_name: form.value.catalog_name,
-  fields: form.value.selected_headers,
-  file: form.value.excel_file
-});
-
     const response = await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
@@ -137,28 +130,10 @@ const submitForm = async () => {
       },
       withCredentials: true
     });
-    console.log('Axios response:', response);
-
-    console.log("Template created successfully! Response:", response.data);
-    console.log("Submitted with user ID:", userId.value);
     step.value = 7;
 
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error('Axios error details:', {
-        message: error.message,
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        headers: error.response?.headers,
-        config: error.config,
-        request: error.request,
-      });
-    } else {
-      console.error('Unexpected error:', error);
-    }
-
-    alert('Error creating the template. Check the console for more details.');
+    alert('Error creating the template. Contact support.', .error);
   } finally {
     loading.value = false;
   }
