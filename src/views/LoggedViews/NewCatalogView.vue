@@ -8,7 +8,6 @@ export default {
     return {
       step: 1,
       loading: false,
-      userId: null, // Aquí guardaremos el id_user después
       form: {
         catalog_name: '',
         excel_file: null,
@@ -16,10 +15,8 @@ export default {
         message: '',
       },
       excelHeaders: [],
+      userId: null, // Aquí guardamos el id_user
     };
-  },
-  mounted() {
-    this.fetchUserId(); // Obtener el id_user al montar
   },
   methods: {
     nextStep() {
@@ -28,34 +25,23 @@ export default {
     prevStep() {
       this.step--;
     },
-    async fetchUserId() {
-
-      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-      if (!xsrfToken) {
-        alert('CSRF token not found.');
-        this.loading = false;
-        return;
-      }
-
-      try {
-        const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
-          headers: {
-            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-            'Accept': 'application/json'
-          },
-          withCredentials: true
-        });
-        this.userId = response.data.id;
-        console.log('Fetched user ID:', this.userId);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        alert('Could not fetch user data.');
-      }
-    },
     handleFileUpload(event: Event) {
       const target = event.target as HTMLInputElement;
       if (target.files && target.files.length > 0) {
         this.form.excel_file = target.files[0];
+      }
+    },
+    async fetchUserId() {
+      try {
+        const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
+          withCredentials: true,
+          headers: { 'Accept': 'application/json' }
+        });
+        this.userId = response.data.id;
+        console.log("Fetched user ID:", this.userId);
+      } catch (error) {
+        console.error('Error fetching user ID:', error);
+        this.userId = null;
       }
     },
     async analyzeExcel() {
@@ -91,10 +77,18 @@ export default {
     },
     async submitForm() {
       this.loading = true;
+
+      await this.fetchUserId(); // Nos aseguramos de tener el userId
+      if (!this.userId) {
+        alert('Failed to retrieve user ID.');
+        this.loading = false;
+        return;
+      }
+
       const formData = new FormData();
       formData.append('file', this.form.excel_file);
       formData.append('template_name', this.form.catalog_name);
-      formData.append('id_user', this.userId); // Aquí usamos el ID obtenido de /user
+      formData.append('id_user', this.userId);
       formData.append('fields', JSON.stringify(
         this.form.selected_headers
           .filter(fieldObj => fieldObj.active)
@@ -121,8 +115,7 @@ export default {
           },
           withCredentials: true
         });
-        console.log(formData);
-        console.log("User ID:", this.userId);
+        console.log("Submitted with user ID:", this.userId);
         this.step = 7;
       } catch (error) {
         console.error('Error creating template:', error);
@@ -145,9 +138,11 @@ export default {
       this.$router.push('/dashboard');
     }
   },
+  async mounted() {
+    await this.fetchUserId(); // Obtener userId al cargar
+  }
 };
 </script>
-
 
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center">
