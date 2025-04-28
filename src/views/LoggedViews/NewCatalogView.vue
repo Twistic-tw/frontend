@@ -71,11 +71,13 @@ export default {
       formData.append('file', this.form.excel_file);
       formData.append('template_name', this.form.catalog_name);
       formData.append('fields', JSON.stringify(
-      this.form.selected_headers.map((fieldObj, index) => ({
-        field: fieldObj.name,
-        active: fieldObj.active,
-        order: index
-      }))
+      this.form.selected_headers
+        .filter(fieldObj => fieldObj.active) // Solo los activos
+        .map((fieldObj, index) => ({
+          field: fieldObj.name,
+          active: true,
+          order: index
+        }))
     ));
 
       formData.append('message', this.form.message);
@@ -216,7 +218,8 @@ export default {
               <p><strong>Catalog Name:</strong> {{ form.catalog_name }}</p>
               <p><strong>Selected Headers:</strong></p>
               <ul class="list-disc list-inside ml-4">
-                <li v-for="header in form.selected_headers" :key="header.name">{{ header.name }}</li>
+                <li v-for="header in form.selected_headers.filter(h => h.active)" :key="header.name">
+                  {{ header.name }}</li>
               </ul>
               <p class="mt-2"><strong>Message:</strong> {{ form.message }}</p>
             </div>
