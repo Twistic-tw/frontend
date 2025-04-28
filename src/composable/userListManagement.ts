@@ -86,7 +86,6 @@ export function useUserListManagement() {
       closeCreateModal();
       alert('User created successfully.');
     } catch (err) {
-      //console.error('Error creating user:', err);
       alert('Error creating user.');
     }
   };
@@ -103,7 +102,6 @@ export function useUserListManagement() {
 
     try {
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-      // if (!xsrfToken) { alert('CSRF token not found'); return; }
 
       const payload: { nombre: string; cargo: string; email: string; password?: string } = {
         nombre: usuarioSeleccionado.value.nombre,
@@ -137,7 +135,6 @@ export function useUserListManagement() {
     if (confirm('Are you sure you want to delete this user?')) {
       try {
         const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-        //if (!xsrfToken) { alert('CSRF token not found'); return; }
 
         await axios.delete(`https://api-catalogos.twistic.app/api/users/${id}`, {
           withCredentials: true,
