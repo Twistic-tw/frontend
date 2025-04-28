@@ -32,7 +32,6 @@ export default {
     },
     getUserId() {
       const match = document.cookie.match(/id_user=([^;]+)/);
-      console.log("User ID:", this.getUserId());
       return match ? match[1] : null;
     },
     async analyzeExcel() {
@@ -98,7 +97,8 @@ export default {
           },
           withCredentials: true
         });
-
+        console.log(formData)
+        console.log("User ID:", this.getUserId());
         this.step = 7;
       } catch (error) {
         console.error('Error creating template:', error);
