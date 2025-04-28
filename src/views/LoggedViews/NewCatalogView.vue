@@ -1,9 +1,10 @@
 <script lang="ts">
 import axios from 'axios';
-import draggable from 'vuedraggable';
+import { VueDraggableNext } from 'vue-draggable-next';
+
 
 export default {
-  components: { draggable },
+  components: { draggable: VueDraggableNext },
   data() {
     return {
       step: 1,
@@ -220,7 +221,7 @@ export default {
               <p><strong>Catalog Name:</strong> {{ form.catalog_name }}</p>
               <p><strong>Selected Headers:</strong></p>
               <ul class="list-disc list-inside ml-4">
-                <li v-for="header in form.selected_headers" :key="header">{{ header }}</li>
+                <li v-for="header in form.selected_headers" :key="header.name">{{ header.name }}</li>
               </ul>
               <p class="mt-2"><strong>Message:</strong> {{ form.message }}</p>
             </div>
