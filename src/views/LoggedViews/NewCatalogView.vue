@@ -253,11 +253,11 @@ export default {
 }
 .fade-slide-enter-from {
   opacity: 0;
-  transform: translateX(50px);
+  transform: translateX(30px);
 }
 .fade-slide-leave-to {
   opacity: 0;
-  transform: translateX(-50px);
+  transform: translateX(-30px);
 }
 .loader {
   border-top-color: #3498db;
