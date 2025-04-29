@@ -28,7 +28,7 @@ export default defineComponent({
       try {
         const xsrfToken = getCookie('XSRF-TOKEN')
 
-        const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
+        const response = await axios.get('https://api-catalogos.twistic.app/api/User', {
           withCredentials: true,
           headers: {
             'X-XSRF-TOKEN': xsrfToken,
