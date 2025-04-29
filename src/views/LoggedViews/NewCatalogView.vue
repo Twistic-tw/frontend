@@ -68,7 +68,7 @@ const analyzeExcel = async () => {
   formData.append('file', form.value.excel_file);
 
   try {
-    const response = await axios.post('https://api-catalogos.twistic.app/api/ExcelScan', formData, {
+    const response = await axios.post('https://api-catalogos.twistic.app/api/excelscan', formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
         'Accept': 'application/json'
