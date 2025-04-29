@@ -15,7 +15,7 @@ onMounted(async () => {
 // Cargar usuarios
 async function cargarUsuarios() {
   try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/users', {
+    const res = await axios.get('https://api-catalogos.twistic.app/api/Users', {
       withCredentials: true
     })
     usuarios.value = res.data
