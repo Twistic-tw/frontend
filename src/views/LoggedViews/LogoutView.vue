@@ -14,7 +14,7 @@ function getCookie(name) {
 
 onMounted(async () => {
   try {
-    await axios.post('https://api-catalogos.twistic.app/api/CloseSession', {}, {
+    await axios.post('https://api-catalogos.twistic.app/api/closesession', {}, {
       withCredentials: true,
       headers: {
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
