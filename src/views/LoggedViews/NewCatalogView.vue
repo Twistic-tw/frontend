@@ -139,8 +139,8 @@ const submitForm = async () => {
     });
     if (response.status === 200) {
       console.log('Template created successfully:', response.data);
+      step.value = 6;
     }
-    step.value = 6;
 
   } catch (error) {
     alert('Error creating the template. Contact support.');
