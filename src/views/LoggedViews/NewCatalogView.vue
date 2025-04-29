@@ -33,6 +33,23 @@ const getXsrfToken = (): string | null => {
   return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null;
 };
 
+// Verificar ruta de prueba
+try {
+  const xsrfToken = getXsrfToken();
+    const response = axios.post('https://api-catalogos.twistic.app/api/prueba', {
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        'Accept': 'application/json'
+      },
+      withCredentials: true
+    });
+
+    console.log('Response:', response);
+    nextStep();
+  } catch (error) {
+    console.error('No accedió a la ruta', error);
+  }
+
 // Obtener usuario autenticado
 const fetchUserId = async () => {
   const xsrfToken = getXsrfToken();
