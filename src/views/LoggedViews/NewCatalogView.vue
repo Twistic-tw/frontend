@@ -36,7 +36,7 @@ const getXsrfToken = (): string | null => {
 // Verificar ruta de prueba
 try {
   const xsrfToken = getXsrfToken();
-    const response = axios.post('https://api-catalogos.twistic.app/api/prueba', {
+    const response = axios.get('https://api-catalogos.twistic.app/api/prueba', {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
         'Accept': 'application/json'
