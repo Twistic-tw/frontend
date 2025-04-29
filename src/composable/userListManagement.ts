@@ -27,7 +27,7 @@ export function useUserListManagement() {
   // Obtener usuarios
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('https://api-catalogos.twistic.app/api/users', {
+      const response = await axios.get('https://api-catalogos.twistic.app/api/Users', {
         withCredentials: true,
         headers: { Accept: 'application/json' }
       });
@@ -45,7 +45,7 @@ export function useUserListManagement() {
 
   const fetchIdiomas = async () => {
     try {
-      const response = await axios.get('https://api-catalogos.twistic.app/api/ShowLanguages', {
+      const response = await axios.get('https://api-catalogos.twistic.app/api/showlanguages', {
         withCredentials: true,
       });
       idiomasDisponibles.value = response.data;
@@ -74,7 +74,7 @@ export function useUserListManagement() {
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
       if (!xsrfToken) { alert('Session expired.'); return; }
 
-      await axios.post('https://api-catalogos.twistic.app/api/users', newUser.value, {
+      await axios.post('https://api-catalogos.twistic.app/api/Users', newUser.value, {
         withCredentials: true,
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
@@ -113,7 +113,7 @@ export function useUserListManagement() {
         payload.password = nuevaPassword.value;
       }
 
-      await axios.put(`https://api-catalogos.twistic.app/api/users/${usuarioSeleccionado.value.id}`, payload, {
+      await axios.put(`https://api-catalogos.twistic.app/api/Users/${usuarioSeleccionado.value.id}`, payload, {
         withCredentials: true,
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
@@ -136,7 +136,7 @@ export function useUserListManagement() {
       try {
         const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
 
-        await axios.delete(`https://api-catalogos.twistic.app/api/users/${id}`, {
+        await axios.delete(`https://api-catalogos.twistic.app/api/Users/${id}`, {
           withCredentials: true,
           headers: {
             'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
