@@ -46,7 +46,7 @@ const fetchUserId = async () => {
       },
       withCredentials: true,
     });
-    userId.value = response.data.user;
+    userId.value = response.data.user.id;
   } catch (error) {
     console.error('Error fetching user ID:', error);
     userId.value = null;
