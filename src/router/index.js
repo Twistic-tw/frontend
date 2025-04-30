@@ -46,6 +46,12 @@ const router = createRouter({
       meta: { title: 'Templates' , requiereNavAdmin: true}
     },
     {
+      path: '/newTemplate',
+      name: 'newTemplate',
+      component: () => import('../views/AdminViews/AllTemplatesView.vue'),
+      meta: { title: 'Templates' , requiereNavAdmin: true}
+    },
+    {
       path: '/fields',
       name: 'fields',
       component: () => import('../views/AdminViews/AllFieldsView.vue'),
