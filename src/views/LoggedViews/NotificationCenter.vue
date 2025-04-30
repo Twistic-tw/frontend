@@ -9,6 +9,7 @@ interface Notification {
   id_user: number
   message: string
   status: string
+  created_at: string
 }
 
 export default defineComponent({
@@ -42,13 +43,26 @@ export default defineComponent({
       }
     }
 
+    const formatDate = (dateStr: string): string => {
+    const date = new Date(dateStr)
+      return date.toLocaleString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    }
+
+
     onMounted(fetchNotifications)
 
     return {
       notifications,
       loading,
       error,
-      parseFields
+      parseFields,
+      formatDate
     }
   }
 })
@@ -88,6 +102,10 @@ export default defineComponent({
 
         <p class="text-[#334155] dark:text-white mb-1">
           <strong>User ID:</strong> {{ noti.id_user }}
+        </p>
+
+        <p class="text-[#334155] dark:text-white mb-1">
+          <strong>Created date:</strong> {{ formatDate(noti.created_at) }}
         </p>
 
         <p class="text-[#334155] dark:text-white mb-1">
