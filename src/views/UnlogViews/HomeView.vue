@@ -17,18 +17,18 @@ import { RouterLink } from 'vue-router'
     <!-- Block 2: How It Works -->
     <section class="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-10 text-center animate-fadeInUp delay-100">
       <div class="flex flex-col items-center">
-        <img src="/images/step1.png" alt="Upload Excel" class="w-20 h-20 mb-4" />
+        <img src="/public/start.png" alt="Upload Excel" class="w-20 h-20 mb-4" />
         <h3 class="text-xl font-semibold text-indigo-600 mb-2">1. Upload your Excel</h3>
         <p class="text-slate-600">Import your data and let the app do the work for you.</p>
       </div>
       <div class="flex flex-col items-center">
-        <img src="/images/step2.png" alt="Select Fields" class="w-20 h-20 mb-4" />
+        <img src="/public/field.png" alt="Select Fields" class="w-20 h-20 mb-4" />
         <h3 class="text-xl font-semibold text-indigo-600 mb-2">2. Select and organize fields</h3>
         <p class="text-slate-600">Choose which fields to display and customize their order.</p>
       </div>
       <div class="flex flex-col items-center">
-        <img src="/images/step3.png" alt="Generate PDF" class="w-20 h-20 mb-4" />
-        <h3 class="text-xl font-semibold text-indigo-600 mb-2">3. Download your custom PDF</h3>
+        <img src="/public/ready.png" alt="Generate PDF" class="w-20 h-20 mb-4" />
+        <h3 class="text-xl font-semibold text-indigo-600 mb-2">3. Create your custom PDF</h3>
         <p class="text-slate-600">Add styles and branding, then export your catalog in seconds.</p>
       </div>
     </section>
