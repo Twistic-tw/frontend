@@ -20,7 +20,7 @@ import { RouterLink } from 'vue-router'
     <section class="max-w-3xl mx-auto animate-fadeInUp delay-100 space-y-12 px-4">
       <div class="flex flex-col items-center text-center space-y-4">
         <img src="/public/start.png" alt="Upload Excel" class="rounded-xl shadow-lg" />
-        <h3 class="text-2xl font-semibold text-indigo-600">1. Upload your Excel</h3>
+        <h3 class="text-2xl font-semibold text-slate-800">1. Upload your Excel</h3>
         <p class="text-slate-600 max-w-md">
           Import your spreadsheet and let the platform guide you through every step.
         </p>
@@ -28,7 +28,7 @@ import { RouterLink } from 'vue-router'
 
       <div class="flex flex-col items-center text-center space-y-4">
         <img src="/public/fields.png" alt="Select Fields" class="rounded-xl shadow-lg" />
-        <h3 class="text-2xl font-semibold text-indigo-600">2. Select and organize fields</h3>
+        <h3 class="text-2xl font-semibold text-slate-800">2. Select and organize fields</h3>
         <p class="text-slate-600 max-w-md">
           Choose the fields to display, drag them to reorder, and keep everything clean and clear.
         </p>
@@ -36,7 +36,7 @@ import { RouterLink } from 'vue-router'
 
       <div class="flex flex-col items-center text-center space-y-4">
         <img src="/public/ready.png" alt="Generate PDF" class="rounded-xl shadow-lg" />
-        <h3 class="text-2xl font-semibold text-indigo-600">3. Generate your PDF</h3>
+        <h3 class="text-2xl font-semibold text-slate-800">3. Generate your PDF</h3>
         <p class="text-slate-600 max-w-md">
           Apply colors, upload images, and download your customized catalogue in seconds.
         </p>
@@ -46,15 +46,15 @@ import { RouterLink } from 'vue-router'
     <!-- Benefits -->
     <section class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto animate-fadeInUp delay-200">
       <div class="bg-white p-6 rounded-2xl shadow-lg text-center transition hover:shadow-2xl">
-        <h2 class="text-xl font-bold text-indigo-600 mb-2">Fast & Smart</h2>
+        <h2 class="text-xl font-bold text-slate-800 mb-2">Fast & Smart</h2>
         <p class="text-slate-600">No complex steps. Just upload, customize, and download.</p>
       </div>
       <div class="bg-white p-6 rounded-2xl shadow-lg text-center transition hover:shadow-2xl">
-        <h2 class="text-xl font-bold text-indigo-600 mb-2">Live Notifications</h2>
+        <h2 class="text-xl font-bold text-slate-800 mb-2">Live Notifications</h2>
         <p class="text-slate-600">Track your requests in real-time with admin updates.</p>
       </div>
       <div class="bg-white p-6 rounded-2xl shadow-lg text-center transition hover:shadow-2xl">
-        <h2 class="text-xl font-bold text-indigo-600 mb-2">Brand-Ready Templates</h2>
+        <h2 class="text-xl font-bold text-slate-800 mb-2">Brand-Ready Templates</h2>
         <p class="text-slate-600">Stay consistent with your branding across catalogues.</p>
       </div>
     </section>
