@@ -19,17 +19,17 @@ import { RouterLink } from 'vue-router'
     <!-- How It Works -->
     <section class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12 text-center animate-fadeInUp delay-100">
       <div class="transition transform hover:scale-[1.03] duration-300">
-        <img src="/public/start.png" alt="Upload Excel" class="w-24 h-24 mb-4 mx-auto rounded-xl shadow-md" />
+        <img src="/public/start.png" alt="Upload Excel" class="w-40 h-26 mb-4 mx-auto rounded-xl shadow-md" />
         <h3 class="text-xl font-semibold text-indigo-600 mb-2">Upload Excel</h3>
         <p class="text-slate-600">Import your spreadsheet and begin your journey.</p>
       </div>
       <div class="transition transform hover:scale-[1.03] duration-300">
-        <img src="/public/fields.png" alt="Select Fields" class="w-24 h-24 mb-4 mx-auto rounded-xl shadow-md" />
+        <img src="/public/fields.png" alt="Select Fields" class="w-40 h-26 mb-4 mx-auto rounded-xl shadow-md" />
         <h3 class="text-xl font-semibold text-indigo-600 mb-2">Select Fields</h3>
         <p class="text-slate-600">Choose and sort what you want to showcase.</p>
       </div>
       <div class="transition transform hover:scale-[1.03] duration-300">
-        <img src="/public/ready.png" alt="Generate PDF" class="w-24 h-24 mb-4 mx-auto rounded-xl shadow-md" />
+        <img src="/public/ready.png" alt="Generate PDF" class="w-40 h-26 mb-4 mx-auto rounded-xl shadow-md" />
         <h3 class="text-xl font-semibold text-indigo-600 mb-2">Generate PDF</h3>
         <p class="text-slate-600">Style it and export. Your catalogue, your way.</p>
       </div>
