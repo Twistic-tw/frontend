@@ -49,9 +49,9 @@ const {
           <input v-model="newUser.email" type="email" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
         </div>
 
-        <!-- Campo de Role -->
+        <!-- Campo de Position -->
         <div class="mb-3">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Role</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Position</label>
           <input v-model="newUser.cargo" type="text" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" />
         </div>
 
