@@ -78,10 +78,10 @@ import { RouterLink } from 'vue-router'
     <section class="text-center animate-fadeInUp delay-300">
       <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-6">Ready to get started?</h2>
       <RouterLink
-        to="/signup"
+        to="/contact"
         class="inline-block px-6 py-3 text-lg font-medium text-white bg-indigo-600 rounded-xl shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-all duration-300"
       >
-        Start Now
+        Contact us!
       </RouterLink>
     </section>
   </div>
