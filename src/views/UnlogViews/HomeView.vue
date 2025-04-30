@@ -22,7 +22,7 @@ import { RouterLink } from 'vue-router'
         <p class="text-slate-600">Import your data and let the app do the work for you.</p>
       </div>
       <div class="flex flex-col items-center">
-        <img src="/public/field.png" alt="Select Fields" class="w-20 h-20 mb-4" />
+        <img src="/public/fields.png" alt="Select Fields" class="w-20 h-20 mb-4" />
         <h3 class="text-xl font-semibold text-indigo-600 mb-2">2. Select and organize fields</h3>
         <p class="text-slate-600">Choose which fields to display and customize their order.</p>
       </div>
