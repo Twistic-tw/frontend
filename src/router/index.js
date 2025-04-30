@@ -16,6 +16,12 @@ const router = createRouter({
       meta: { title: 'Logout' }
     },
     {
+      path: '/contact',
+      name: 'contact',
+      component: () => import('../views/LoggedViews/ContactView.vue'),
+      meta: { title: 'Contact' }
+    },
+    {
       path: '/',
       name: 'home',
       component: () => import('../views/UnlogViews/HomeView.vue'),
