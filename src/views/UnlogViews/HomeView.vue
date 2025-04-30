@@ -16,30 +16,45 @@ import { RouterLink } from 'vue-router'
       </p>
     </section>
 
-    <!-- How It Works - Vertical layout -->
-    <section class="max-w-3xl mx-auto animate-fadeInUp delay-100 space-y-12 px-4">
-      <div class="flex flex-col items-center text-center space-y-4">
-        <img src="/public/start.png" alt="Upload Excel" class="rounded-xl shadow-lg" />
-        <h3 class="text-2xl font-semibold text-slate-800">1. Upload your Excel</h3>
-        <p class="text-slate-600 max-w-md">
-          Import your spreadsheet and let the platform guide you through every step.
-        </p>
+    <!-- How It Works - Horizontal layout with text left and image right -->
+    <section class="max-w-6xl mx-auto animate-fadeInUp delay-100 space-y-20 px-4">
+      <!-- Step 1 -->
+      <div class="flex flex-col-reverse md:flex-row items-center gap-10">
+        <div class="md:w-1/2 text-center md:text-left">
+          <h3 class="text-2xl font-semibold text-slate-800 mb-3">1. Upload your Excel</h3>
+          <p class="text-slate-600 text-base leading-relaxed">
+            Import your spreadsheet and let our smart engine analyze and extract all the important fields. The process is smooth, guided, and beginner-friendly.
+          </p>
+        </div>
+        <div class="md:w-1/2">
+          <img src="/public/start.png" alt="Upload Excel" class="rounded-xl shadow-lg w-full" />
+        </div>
       </div>
 
-      <div class="flex flex-col items-center text-center space-y-4">
-        <img src="/public/fields.png" alt="Select Fields" class="rounded-xl shadow-lg" />
-        <h3 class="text-2xl font-semibold text-slate-800">2. Select and organize fields</h3>
-        <p class="text-slate-600 max-w-md">
-          Choose the fields to display, drag them to reorder, and keep everything clean and clear.
-        </p>
+      <!-- Step 2 -->
+      <div class="flex flex-col-reverse md:flex-row items-center gap-10">
+        <div class="md:w-1/2 text-center md:text-left">
+          <h3 class="text-2xl font-semibold text-slate-800 mb-3">2. Select and organize fields</h3>
+          <p class="text-slate-600 text-base leading-relaxed">
+            Choose which fields to keep, rename them if needed, and reorder with a simple drag-and-drop system. Your data, your rules.
+          </p>
+        </div>
+        <div class="md:w-1/2">
+          <img src="/public/fields.png" alt="Select Fields" class="rounded-xl shadow-lg w-full" />
+        </div>
       </div>
 
-      <div class="flex flex-col items-center text-center space-y-4">
-        <img src="/public/ready.png" alt="Generate PDF" class="rounded-xl shadow-lg" />
-        <h3 class="text-2xl font-semibold text-slate-800">3. Generate your PDF</h3>
-        <p class="text-slate-600 max-w-md">
-          Apply colors, upload images, and download your customized catalogue in seconds.
-        </p>
+      <!-- Step 3 -->
+      <div class="flex flex-col-reverse md:flex-row items-center gap-10">
+        <div class="md:w-1/2 text-center md:text-left">
+          <h3 class="text-2xl font-semibold text-slate-800 mb-3">3. Generate your PDF</h3>
+          <p class="text-slate-600 text-base leading-relaxed">
+            Add your logo, colors, images, and more. Download your ready-to-share catalogue as a polished, professional PDF.
+          </p>
+        </div>
+        <div class="md:w-1/2">
+          <img src="/public/ready.png" alt="Generate PDF" class="rounded-xl shadow-lg w-full" />
+        </div>
       </div>
     </section>
 
