@@ -34,9 +34,19 @@ export default defineComponent({
       }
     }
 
+    // Obtener token XSRF
+    const getXsrfToken = (): string | null => {
+      return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null;
+    };
+
     const approveNotification = async (id: number) => {
       try {
+        const xsrfToken = getXsrfToken();
         await axios.post(`https://api-catalogos.twistic.app/api/ReadNotification/${id}`, {}, {
+          headers: {
+            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            'Accept': 'application/json'
+          },
           withCredentials: true
         });
         notifications.value = notifications.value.map(n =>
