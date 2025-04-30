@@ -16,22 +16,30 @@ import { RouterLink } from 'vue-router'
       </p>
     </section>
 
-    <!-- How It Works -->
-    <section class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12 text-center animate-fadeInUp delay-100">
-      <div class="transition transform hover:scale-[1.03] duration-300">
-        <img src="/public/start.png" alt="Upload Excel" class="w-40 h-26 mb-4 mx-auto rounded-xl shadow-md" />
-        <h3 class="text-xl font-semibold text-indigo-600 mb-2">Upload Excel</h3>
-        <p class="text-slate-600">Import your spreadsheet and begin your journey.</p>
+    <!-- How It Works - Vertical layout -->
+    <section class="max-w-3xl mx-auto animate-fadeInUp delay-100 space-y-12 px-4">
+      <div class="flex flex-col items-center text-center space-y-4">
+        <img src="/public/start.png" alt="Upload Excel" class="w-24 h-24 rounded-xl shadow-lg" />
+        <h3 class="text-2xl font-semibold text-indigo-600">1. Upload your Excel</h3>
+        <p class="text-slate-600 max-w-md">
+          Import your spreadsheet and let the platform guide you through every step.
+        </p>
       </div>
-      <div class="transition transform hover:scale-[1.03] duration-300">
-        <img src="/public/fields.png" alt="Select Fields" class="w-40 h-26 mb-4 mx-auto rounded-xl shadow-md" />
-        <h3 class="text-xl font-semibold text-indigo-600 mb-2">Select Fields</h3>
-        <p class="text-slate-600">Choose and sort what you want to showcase.</p>
+
+      <div class="flex flex-col items-center text-center space-y-4">
+        <img src="/public/fields.png" alt="Select Fields" class="w-24 h-24 rounded-xl shadow-lg" />
+        <h3 class="text-2xl font-semibold text-indigo-600">2. Select and organize fields</h3>
+        <p class="text-slate-600 max-w-md">
+          Choose the fields to display, drag them to reorder, and keep everything clean and clear.
+        </p>
       </div>
-      <div class="transition transform hover:scale-[1.03] duration-300">
-        <img src="/public/ready.png" alt="Generate PDF" class="w-40 h-26 mb-4 mx-auto rounded-xl shadow-md" />
-        <h3 class="text-xl font-semibold text-indigo-600 mb-2">Generate PDF</h3>
-        <p class="text-slate-600">Style it and export. Your catalogue, your way.</p>
+
+      <div class="flex flex-col items-center text-center space-y-4">
+        <img src="/public/ready.png" alt="Generate PDF" class="w-24 h-24 rounded-xl shadow-lg" />
+        <h3 class="text-2xl font-semibold text-indigo-600">3. Generate your PDF</h3>
+        <p class="text-slate-600 max-w-md">
+          Apply colors, upload images, and download your customized catalogue in seconds.
+        </p>
       </div>
     </section>
 
