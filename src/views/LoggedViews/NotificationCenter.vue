@@ -3,6 +3,7 @@ import { defineComponent, ref, onMounted } from 'vue'
 import axios from 'axios'
 
 interface Notification {
+  id: number
   catalog_name: string
   file_path: string
   fields_order: string | null
@@ -33,6 +34,21 @@ export default defineComponent({
       }
     }
 
+    const approveNotification = async (id: number) => {
+      try {
+        await axios.post(`https://api-catalogos.twistic.app/api/ReadNotification/${id}`, {}, {
+          withCredentials: true
+        });
+        notifications.value = notifications.value.map(n =>
+          n.id === id ? { ...n, status: 'approve' } : n
+        );
+      } catch (error) {
+        console.error('Error approving notification:', error);
+        alert('Error approving notification.');
+      }
+    };
+
+
     const parseFields = (jsonStr: string | null): string => {
       try {
         if (!jsonStr) return '-'
@@ -62,7 +78,8 @@ export default defineComponent({
       loading,
       error,
       parseFields,
-      formatDate
+      formatDate,
+      approveNotification
     }
   }
 })
@@ -121,6 +138,14 @@ export default defineComponent({
         >
           {{ noti.status }}
         </h2>
+        <button
+          v-if="noti.status === 'Pending'"
+          @click="approveNotification(noti.id)"
+          class="mt-3 px-4 py-2 text-white bg-green-600 hover:bg-green-700 rounded shadow"
+        >
+         Approve
+        </button>
+
       </div>
     </div>
 
