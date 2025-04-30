@@ -19,7 +19,7 @@ import { RouterLink } from 'vue-router'
     <!-- How It Works - Vertical layout -->
     <section class="max-w-3xl mx-auto animate-fadeInUp delay-100 space-y-12 px-4">
       <div class="flex flex-col items-center text-center space-y-4">
-        <img src="/public/start.png" alt="Upload Excel" class="w-24 h-24 rounded-xl shadow-lg" />
+        <img src="/public/start.png" alt="Upload Excel" class="rounded-xl shadow-lg" />
         <h3 class="text-2xl font-semibold text-indigo-600">1. Upload your Excel</h3>
         <p class="text-slate-600 max-w-md">
           Import your spreadsheet and let the platform guide you through every step.
@@ -27,7 +27,7 @@ import { RouterLink } from 'vue-router'
       </div>
 
       <div class="flex flex-col items-center text-center space-y-4">
-        <img src="/public/fields.png" alt="Select Fields" class="w-24 h-24 rounded-xl shadow-lg" />
+        <img src="/public/fields.png" alt="Select Fields" class="rounded-xl shadow-lg" />
         <h3 class="text-2xl font-semibold text-indigo-600">2. Select and organize fields</h3>
         <p class="text-slate-600 max-w-md">
           Choose the fields to display, drag them to reorder, and keep everything clean and clear.
@@ -35,7 +35,7 @@ import { RouterLink } from 'vue-router'
       </div>
 
       <div class="flex flex-col items-center text-center space-y-4">
-        <img src="/public/ready.png" alt="Generate PDF" class="w-24 h-24 rounded-xl shadow-lg" />
+        <img src="/public/ready.png" alt="Generate PDF" class="rounded-xl shadow-lg" />
         <h3 class="text-2xl font-semibold text-indigo-600">3. Generate your PDF</h3>
         <p class="text-slate-600 max-w-md">
           Apply colors, upload images, and download your customized catalogue in seconds.
