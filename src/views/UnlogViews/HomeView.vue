@@ -12,8 +12,7 @@ import { RouterLink } from 'vue-router'
         Welcome to <span class="text-indigo-600">TWISTIC</span> Catalogues
       </h1>
       <p class="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-        Build beautiful catalogues from your data, in just minutes.
-      </p>
+        Build beautiful pdf catalogues from your spreadsheet      </p>
     </section>
 
     <!-- How It Works - Horizontal layout with text left and image right -->
@@ -36,7 +35,7 @@ import { RouterLink } from 'vue-router'
         <div class="md:w-1/2 text-center md:text-left">
           <h3 class="text-2xl font-semibold text-slate-800 mb-3">2. Select and organize fields</h3>
           <p class="text-slate-600 text-base leading-relaxed">
-            Choose which fields to keep, rename them if needed, and reorder with a simple drag-and-drop system. Your data, your rules.
+            Choose which fields to keep, select which one you want to display and reorder with a simple drag-and-drop system. Your data, your rules.
           </p>
         </div>
         <div class="md:w-1/2">
@@ -49,7 +48,7 @@ import { RouterLink } from 'vue-router'
         <div class="md:w-1/2 text-center md:text-left">
           <h3 class="text-2xl font-semibold text-slate-800 mb-3">3. Generate your PDF</h3>
           <p class="text-slate-600 text-base leading-relaxed">
-            Add your logo, colors, images, and more. Download your ready-to-share catalogue as a polished, professional PDF.
+            Add your logo, colors and images. Download your ready-to-share pdf catalogue as a polished, professional PDF.
           </p>
         </div>
         <div class="md:w-1/2">
