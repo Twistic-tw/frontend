@@ -69,7 +69,7 @@ const {
         <!-- Campo de Rol -->
         <div class="mb-3">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Role</label>
-          <select v-model="newUser.role" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+          <select v-model="newUser.rol" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
             <option value="" disabled>Select a role</option>
             <option value="ROLE_ADMINISTRATOR">Administrator</option>
             <option value="ROLE_USER">User</option>
