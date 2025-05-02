@@ -54,7 +54,7 @@ const router = createRouter({
     {
       path: '/newTemplate',
       name: 'newTemplate',
-      component: () => import('../views/AdminViews/NewTemplateView.vue'),
+      component: () => import('../views/LoggedViews/NewTemplateView.vue'),
       meta: { title: 'New Template' , requiereNavAdmin: true}
     },
     {
