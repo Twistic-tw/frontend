@@ -133,7 +133,7 @@ const {
               <input v-model="usuarioSeleccionado.nombre" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
             </div>
             <div class="mb-4">
-              <label class="block text-gray-700 dark:text-gray-200 mb-1">Role</label>
+              <label class="block text-gray-700 dark:text-gray-200 mb-1">Position</label>
               <input v-model="usuarioSeleccionado.cargo" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
             </div>
             <div class="mb-4">
