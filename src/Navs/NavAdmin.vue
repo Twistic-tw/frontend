@@ -3,6 +3,8 @@ import { RouterLink, useRoute } from 'vue-router'
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import '../styles.css'
 
+// Adquiirir el rol del usuario
+const role = sessionStorage.getItem('userRole')
 // Título de la ruta
 const title = ref(document.title)
 const route = useRoute()
@@ -114,6 +116,7 @@ onBeforeUnmount(() => {
 
       <RouterLink
         to="/templates"
+         v-if="role && (role === 'admin')"
         @click="closeNav"
         class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900"
         active-class="bg-slate-800"
@@ -124,6 +127,7 @@ onBeforeUnmount(() => {
 
       <RouterLink
         to="/fields"
+         v-if="role && (role === 'admin')"
         @click="closeNav"
         class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900"
         active-class="bg-slate-800"
@@ -144,6 +148,7 @@ onBeforeUnmount(() => {
 
       <RouterLink
         to="/users"
+         v-if="role && (role === 'admin')"
         @click="closeNav"
         class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900"
         active-class="bg-slate-800"

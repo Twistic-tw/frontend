@@ -5,6 +5,7 @@ import axios from 'axios'
 const usuarios = ref([])
 const catalogos = ref([])
 const usuarioSeleccionado = ref('')
+const role = sessionStorage.getItem('userRole');
 
 // Cargar usuarios al iniciar
 onMounted(async () => {
@@ -58,7 +59,7 @@ watch(usuarioSeleccionado, () => {
     <div class="mb-6 max-w-md mx-auto">
 
       <!-- Filtrar por usuario -->
-      <select
+      <select v-if="role && (role === 'admin')"
         v-model="usuarioSeleccionado"
         placeholder="Select user"
         class="w-full px-4 py-2 rounded-lg bg-white border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
