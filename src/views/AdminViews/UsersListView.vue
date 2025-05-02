@@ -2,7 +2,7 @@
 import { useUserListManagement } from '../../composable/userListManagement';
 
 const {
-  error, searchQuery, filteredUsers,
+  error, errors, searchQuery, filteredUsers,
   deleteUser, editUser, mostrarModal, usuarioSeleccionado,
   nuevaPassword, guardarCambios,
   openCreateModal, showCreateModal, submitCreateUser, newUser, closeCreateModal,
@@ -47,6 +47,7 @@ const {
         <div class="mb-3">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
           <input v-model="newUser.email" type="email" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
+          <p v-if="errors.email" class="text-red-500 text-sm mt-1">{{ errors.email[0] }}</p>
         </div>
 
         <!-- Campo de Position -->
