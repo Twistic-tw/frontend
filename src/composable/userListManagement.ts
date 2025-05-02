@@ -50,7 +50,6 @@ export function useUserListManagement() {
         withCredentials: true,
       });
       idiomasDisponibles.value = response.data;
-      console.log('Available languages:', idiomasDisponibles.value);
     } catch (err) {
       console.error('Error loading languages:', err);
     }
