@@ -88,6 +88,7 @@ export function useUserListManagement() {
       alert('User created successfully.');
     } catch (err) {
       alert('Error creating user.');
+      console.error('Error creating user:', err);
     }
   };
 
