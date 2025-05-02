@@ -8,7 +8,7 @@ interface User {
   email: string;
   cargo: string;
   idioma: string;
-  role: string;
+  rol: string;
 }
 
 export function useUserListManagement() {
@@ -23,7 +23,7 @@ export function useUserListManagement() {
   const nuevaPassword = ref('');
 
   const showCreateModal = ref(false);
-  const newUser = ref({ nombre: '', email: '', cargo: '', password: '', idioma: '' , role: '' });
+  const newUser = ref({ nombre: '', email: '', cargo: '', password: '', idioma: '' , rol: '' });
 
   // Obtener usuarios
   const fetchUsers = async () => {
@@ -67,7 +67,7 @@ export function useUserListManagement() {
   const openCreateModal = () => { showCreateModal.value = true; };
   const closeCreateModal = () => {
     showCreateModal.value = false;
-    newUser.value = { nombre: '', email: '', cargo: '', password: '', idioma: '' , role: '' };
+    newUser.value = { nombre: '', email: '', cargo: '', password: '', idioma: '' , rol: '' };
   };
 
   const submitCreateUser = async () => {
