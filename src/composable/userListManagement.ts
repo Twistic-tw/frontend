@@ -11,6 +11,9 @@ interface User {
   rol: string;
 }
 
+// Variable para guardar errores
+const errors = ref<Record<string, string[]>>({});
+
 export function useUserListManagement() {
   const users = ref<User[]>([]);
   const loading = ref(true);
@@ -65,6 +68,7 @@ export function useUserListManagement() {
   // Crear usuario
   const openCreateModal = () => { showCreateModal.value = true; };
   const closeCreateModal = () => {
+    errors.value = {};
     showCreateModal.value = false;
     newUser.value = { nombre: '', email: '', cargo: '', password: '', idioma: '' , rol: '' };
   };
@@ -86,6 +90,11 @@ export function useUserListManagement() {
       closeCreateModal();
       alert('User created successfully.');
     } catch (err) {
+      if (err.response?.status === 422) {
+        errors.value = err.response.data.errors;
+      } else {
+        alert("There´s an error.");
+      }
       alert('Error creating user.');
       console.error('Error creating user:', err);
     }
@@ -159,7 +168,7 @@ export function useUserListManagement() {
   });
 
   return {
-    users, loading, error, searchQuery, filteredUsers,
+    users, loading, error, errors, searchQuery, filteredUsers,
     deleteUser, editUser, mostrarModal, usuarioSeleccionado,
     nuevaPassword, guardarCambios,
     openCreateModal, showCreateModal, submitCreateUser, newUser, closeCreateModal,
