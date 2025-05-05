@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
 
 interface Notification {
   catalog_name: string;
@@ -9,7 +8,6 @@ interface Notification {
   id_user: number;
 }
 
-const router = useRouter();
 const userId = ref<number>(0);
 const approvedTemplates = ref<Notification[]>([]);
 const loading = ref(true);
@@ -59,10 +57,6 @@ onMounted(async () => {
   await fetchApprovedTemplates();
 });
 
-// Redirigir a personalizar PDF
-const selectTemplate = (templateName: string) => {
-  router.push(`/customize-pdf/${templateName}`);
-};
 </script>
 
 <template>
@@ -76,21 +70,25 @@ const selectTemplate = (templateName: string) => {
       No approved templates available.
     </div>
 
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <RouterLink
         v-for="template in approvedTemplates"
         :key="template.catalog_name"
-        class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-lg transition"
+        :to="`/customizePdf/${template.catalog_name}`"
+        class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800"
       >
-        <h2 class="text-xl font-semibold text-indigo-600 mb-2">{{ template.catalog_name }}</h2>
-        <p class="text-sm text-gray-500 mb-4">Status: <span class="font-medium text-yellow-500">{{ template.status }}</span></p>
+        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">{{ template.catalog_name }}</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-300 mb-2">
+          Status: <span class="font-medium text-yellow-500">{{ template.status }}</span>
+        </p>
+        <p class="text-sm text-gray-500 dark:text-gray-300 mb-4">Click to customize your PDF.</p>
         <button
-          @click="selectTemplate(template.catalog_name)"
-          class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+          class="mt-2 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]"
         >
           Customize PDF
         </button>
-      </div>
+      </RouterLink>
     </div>
   </div>
 </template>
+
