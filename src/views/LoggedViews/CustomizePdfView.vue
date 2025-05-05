@@ -27,15 +27,9 @@ const getXsrfToken = (): string | null => {
   return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null;
 };
 
-const xsrfToken = getXsrfToken();
-
 const fetchTemplate = async () => {
   try {
     const res = await axios.get(`https://api-catalogos.twistic.app/api/Templates/${templateId}/data`, {
-      headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          'Accept': 'application/json'
-        },
       withCredentials: true
     });
     templateName.value = res.data.template.catalog_name;
