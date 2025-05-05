@@ -138,7 +138,22 @@ const submitForm = async () => {
       withCredentials: true
     });
     if (response.status === 200) {
-      console.log('Template created successfully:', response.data);
+      await axios.post('https://api-catalogos.twistic.app/api/SendNotification', {
+      catalog_name: form.value.catalog_name,
+      file_path: form.value.excel_file,
+      fields_order: form.value.selected_headers
+        .filter(field => field.active)
+        .map(field => field.name),
+      message: form.value.message || 'Solicitud de catálogo'
+    }, {
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        'Accept': 'application/json'
+      },
+      withCredentials: true
+    });
+
+      // Pasar al paso de confirmación
       step.value = 6;
     }
 
