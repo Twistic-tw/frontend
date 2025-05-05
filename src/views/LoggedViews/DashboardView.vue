@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 
 interface Notification {
@@ -13,22 +13,31 @@ interface Notification {
 
 const role = sessionStorage.getItem('userRole');
 const userName = sessionStorage.getItem('userName');
+const userId = Number(sessionStorage.getItem('userId'));
 
-const notifications = ref<Notification[]>([]);
+const allNotifications = ref<Notification[]>([]);
 const error = ref(false);
 const loading = ref(true);
+
+// Notificaciones filtradas dinámicamente según rol
+const notifications = computed(() =>
+  role === 'admin'
+    ? allNotifications.value
+    : allNotifications.value.filter(n => n.id_user === userId)
+);
+
+// Contador para el bloque "Create Catalogs" (solo "In Progress")
 const inProgressCount = computed(() =>
   notifications.value.filter(n => n.status === 'In Progress').length
 );
 
+// Carga inicial de notificacionesº
 const fetchNotifications = async () => {
   try {
     const res = await axios.get('https://api-catalogos.twistic.app/api/ShowNotifications', {
       withCredentials: true
     });
-    notifications.value = res.data.notifications || [];
-    const userId = sessionStorage.getItem('userId');
-    notifications.value = notifications.value.filter(notification => notification.id_user === Number(userId));
+    allNotifications.value = res.data.notifications || [];
   } catch (err) {
     console.error('Error al obtener notificaciones:', err);
     error.value = true;
@@ -65,8 +74,14 @@ onMounted(fetchNotifications);
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white">Create Catalogs</h2>
           <span
-            v-if="inProgressCount > 0"
-            class="bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-1 rounded-full ml-2"
+            v-if="notifications.length && role === 'admin'"
+            class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full ml-2 animate-bounce"
+          >
+            {{ notifications.length }}
+          </span>
+          <span
+            v-if="inProgressCount > 0 && role !== 'admin'"
+            class="bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-1 rounded-full ml-2 animate-bounce"
           >
             {{ inProgressCount }}
           </span>
