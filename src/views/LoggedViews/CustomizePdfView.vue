@@ -32,7 +32,8 @@ const fetchTemplate = async () => {
     const res = await axios.get(`https://api-catalogos.twistic.app/api/Templates/${templateId}/data`, {
       withCredentials: true
     });
-    templateName.value = res.data.template.catalog_name;
+    const template = res.data;
+    templateName.value = template.template_name;
     fields.value = res.data.fields.map((f: string) => ({ name: f, active: true }));
   } catch (err) {
     console.error('Error fetching template data:', err);
