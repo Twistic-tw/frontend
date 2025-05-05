@@ -134,7 +134,8 @@ const submitForm = async () => {
     });
 
     if (response.status === 200) {
-      console.log('ruta: ', filePath.value);
+      const filePath = response.data.file_path;
+      console.log('ruta: ', filePath);
       // Enviar la notificación
       await axios.post('https://api-catalogos.twistic.app/api/SendNotification', {
         catalog_name: form.value.catalog_name,
