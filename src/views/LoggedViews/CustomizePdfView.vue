@@ -11,6 +11,7 @@ const templateName = ref('');
 const fields = ref<{ name: string; active: boolean }[]>([]);
 const loading = ref(true);
 const error = ref(false);
+const excelPath = ref(''); // ✅ Ruta del Excel
 
 const colors = ref({
   background: '#ffffff',
@@ -39,14 +40,18 @@ const fetchTemplate = async () => {
       withCredentials: true
     });
 
-    // ✅ Corrección: el template viene como res.data.template
-    templateName.value = res.data.template.name;
+    if (res.data.template) {
+      templateName.value = res.data.template.name;
+      excelPath.value = res.data.excel_path; // ✅ Guardamos la ruta del Excel
 
-    // ✅ Corrección: los campos son strings planos
-    fields.value = (res.data.fields || []).map((f: string) => ({
-      name: f,
-      active: true
-    }));
+      // Los campos ya vienen en orden
+      fields.value = (res.data.fields || []).map((f: string) => ({
+        name: f,
+        active: true
+      }));
+    } else {
+      error.value = true;
+    }
   } catch (err) {
     console.error('Error fetching template data:', err);
     error.value = true;
@@ -66,6 +71,7 @@ const generatePdf = async () => {
   formData.append('template_id', templateId);
   formData.append('fields', JSON.stringify(activeFields));
   formData.append('colors', JSON.stringify(colors.value));
+  formData.append('excel_path', excelPath.value);
 
   if (images.value.cover) formData.append('cover', images.value.cover);
   if (images.value.middle) formData.append('middle', images.value.middle);
@@ -87,7 +93,6 @@ const generatePdf = async () => {
   }
 };
 
-// Vista previa reactiva
 watch([fields, colors], () => {
   preview.value.fields = fields.value.filter(f => f.active).map(f => f.name);
   preview.value.background = colors.value.background;
@@ -96,6 +101,7 @@ watch([fields, colors], () => {
 
 onMounted(fetchTemplate);
 </script>
+
 
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 transition-all duration-500 ease-in-out">
