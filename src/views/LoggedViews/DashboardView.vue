@@ -31,7 +31,7 @@ const inProgressCount = computed(() =>
   notifications.value.filter(n => n.status === 'In Progress').length
 );
 
-// Carga inicial de notificacionesº
+// Carga inicial de notificaciones
 const fetchNotifications = async () => {
   try {
     const res = await axios.get('https://api-catalogos.twistic.app/api/ShowNotifications', {
