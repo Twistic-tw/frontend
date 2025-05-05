@@ -33,6 +33,8 @@ const fetchTemplate = async () => {
 
     const excelUrl = res.data.excel_path;
     const blob = await (await fetch(excelUrl)).blob();
+    const text = await blob.text();
+    console.log('📄 Excel preview:', text.slice(0, 200));
     const buffer = await blob.arrayBuffer();
 
     const workbook = XLSX.read(buffer, { type: 'array' });
