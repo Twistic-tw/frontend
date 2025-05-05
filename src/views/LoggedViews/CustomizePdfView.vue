@@ -39,9 +39,12 @@ const fetchTemplate = async () => {
       withCredentials: true
     });
 
-    templateName.value = res.data.template_name;
-    fields.value = (res.data.fields || []).map((f: { field: string }) => ({
-      name: f.field,
+    // ✅ Corrección: el template viene como res.data.template
+    templateName.value = res.data.template.name;
+
+    // ✅ Corrección: los campos son strings planos
+    fields.value = (res.data.fields || []).map((f: string) => ({
+      name: f,
       active: true
     }));
   } catch (err) {
@@ -84,6 +87,7 @@ const generatePdf = async () => {
   }
 };
 
+// Vista previa reactiva
 watch([fields, colors], () => {
   preview.value.fields = fields.value.filter(f => f.active).map(f => f.name);
   preview.value.background = colors.value.background;
