@@ -7,6 +7,7 @@ const step = ref(1);
 const loading = ref(false);
 const excelHeaders = ref<string[]>([]);
 const userId = ref<number | null>(null);
+const filePath = ref<string>('');
 
 // Formulario reactivo
 const form = ref({
@@ -77,6 +78,7 @@ const analyzeExcel = async () => {
     });
 
     excelHeaders.value = response.data.fields;
+    filePath.value = response.data.file_path; // Guarda la ruta del archivo procesado
     form.value.selected_headers = excelHeaders.value.map(field => ({ name: field, active: false }));
     nextStep();
   } catch (error) {
@@ -123,13 +125,6 @@ const submitForm = async () => {
   formData.append('message', form.value.message);
 
   try {
-    console.log('Submitting with:', {
-  userId: userId.value,
-  catalog_name: form.value.catalog_name,
-  fields: form.value.selected_headers,
-  file: form.value.excel_file
-});
-
     const response = await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
@@ -137,23 +132,24 @@ const submitForm = async () => {
       },
       withCredentials: true
     });
-    if (response.status === 200) {
-      await axios.post('https://api-catalogos.twistic.app/api/SendNotification', {
-      catalog_name: form.value.catalog_name,
-      file_path: form.value.excel_file,
-      fields_order: form.value.selected_headers
-        .filter(field => field.active)
-        .map(field => field.name),
-      message: form.value.message || 'Solicitud de catálogo'
-    }, {
-      headers: {
-        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-        'Accept': 'application/json'
-      },
-      withCredentials: true
-    });
 
-      // Pasar al paso de confirmación
+    if (response.status === 200) {
+      // Enviar la notificación
+      await axios.post('https://api-catalogos.twistic.app/api/SendNotification', {
+        catalog_name: form.value.catalog_name,
+        file_path: filePath.value,
+        fields_order: form.value.selected_headers
+          .filter(field => field.active)
+          .map(field => field.name),
+        message: form.value.message || 'Solicitud de catálogo'
+      }, {
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'Accept': 'application/json'
+        },
+        withCredentials: true
+      });
+
       step.value = 6;
     }
 
@@ -165,7 +161,6 @@ const submitForm = async () => {
   }
 };
 
-
 // Reiniciar formulario
 const resetForm = () => {
   form.value = {
@@ -175,18 +170,17 @@ const resetForm = () => {
     message: '',
   };
   excelHeaders.value = [];
+  filePath.value = '';
   step.value = 1;
 };
 
 // Redirigir
 const goToDashboard = () => {
-  window.location.href = '/dashboard'; // o router push si usas Vue Router
+  window.location.href = '/dashboard';
 };
 
-// Obtener usuario al cargar
 onMounted(fetchUserId);
 </script>
-
 
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center">
