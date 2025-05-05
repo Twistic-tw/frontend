@@ -67,7 +67,7 @@ async function eliminarCampo(id) {
     </div>
 
     <div v-if="fields.length === 0" class="text-center text-gray-500 mt-8">
-      No hay campos disponibles
+      No fields available.
     </div>
   </div>
 </template>
