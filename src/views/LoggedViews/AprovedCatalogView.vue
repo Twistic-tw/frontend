@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 interface Notification {
-  id: number; // Asegúrate de incluir el campo id
+  id: number;
   catalog_name: string;
   status: string;
   id_user: number;
