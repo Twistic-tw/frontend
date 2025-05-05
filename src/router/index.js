@@ -70,8 +70,8 @@ const router = createRouter({
       meta: { title: 'Create Catalog' , requiereNavAdmin: true}
     },
     {
-      path: '/CatalogList',
-      name: 'CatalogList',
+      path: '/catalogList',
+      name: 'catalogList',
       component: () => import('../views/LoggedViews/AprovedCatalogView.vue'),
       meta: { title: 'Aproved Catalogs' , requiereNavAdmin: true}
     },
@@ -80,6 +80,12 @@ const router = createRouter({
       name: 'catalogs',
       component: () => import('../views/LoggedViews/AllCataloguesView.vue'),
       meta: { title: 'Catalogs List' , requiereNavAdmin: true}
+    },
+    {
+      path: '/customizePdf/:id',
+      name: 'customizePdf',
+      component: () => import('../views/LoggedViews/CustomizePdfView.vue'),
+      meta: { title: 'Customize PDF' , requiereNavAdmin: true}
     },
     {
       path: '/users',
