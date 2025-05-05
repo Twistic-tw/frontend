@@ -13,23 +13,47 @@ interface Notification {
 
 const role = sessionStorage.getItem('userRole');
 const userName = sessionStorage.getItem('userName');
-const userId = Number(sessionStorage.getItem('userId'));
+const userId = ref<number>(0);
 
 const allNotifications = ref<Notification[]>([]);
 const error = ref(false);
 const loading = ref(true);
 
 // Notificaciones filtradas dinámicamente según rol
-const notifications = computed(() =>
-  role === 'admin'
-    ? allNotifications.value
-    : allNotifications.value.filter(n => n.id_user === userId)
-);
+const notifications = computed(() => {
+  if (role === 'admin') return allNotifications.value;
+  return allNotifications.value.filter(n => n.id_user === userId.value);
+});
 
 // Contador para el bloque "Create Catalogs" (solo "In Progress")
 const inProgressCount = computed(() =>
   notifications.value.filter(n => n.status === 'In Progress').length
 );
+
+// Obtener token XSRF
+const getXsrfToken = (): string | null => {
+  return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null;
+};
+
+// Obtener usuario autenticado
+const fetchUserId = async () => {
+  const xsrfToken = getXsrfToken();
+  if (!xsrfToken) return;
+
+  try {
+    const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        'Accept': 'application/json',
+      },
+      withCredentials: true,
+    });
+    userId.value = response.data.user.id;
+  } catch (error) {
+    console.error('Error fetching user ID:', error);
+    userId.value = 0;
+  }
+};
 
 // Carga inicial de notificaciones
 const fetchNotifications = async () => {
@@ -46,16 +70,17 @@ const fetchNotifications = async () => {
   }
 };
 
+// Al montar el componente
 onMounted(async () => {
+  await fetchUserId();
   await fetchNotifications();
 
   console.log('🧪 Rol:', role);
-  console.log('🧪 userId:', userId);
+  console.log('🧪 userId:', userId.value);
   console.log('🧪 allNotifications:', allNotifications.value);
-  console.log('🧪 notifications (filtradas):', notifications.value);
+  console.log('🧪 notifications filtradas:', notifications.value);
   console.log('🧪 In Progress count:', inProgressCount.value);
 });
-
 </script>
 
 <template>
