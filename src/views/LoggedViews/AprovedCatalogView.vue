@@ -66,7 +66,7 @@ const selectTemplate = (templateName: string) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-100 to-white p-6">
+  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3">
     <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-800 mb-6 text-center">Select a Template to Create Your PDF</h1>
 
     <div v-if="loading" class="text-center text-gray-600">Loading templates...</div>
