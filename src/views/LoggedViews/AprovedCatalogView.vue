@@ -74,7 +74,7 @@ onMounted(async () => {
       <RouterLink
         v-for="template in approvedTemplates"
         :key="template.id"
-        :to="`/customize-pdf/${template.id}`"
+        :to="`/customizePdf/${template.id}`"
         class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800"
       >
         <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">{{ template.catalog_name }}</h2>
