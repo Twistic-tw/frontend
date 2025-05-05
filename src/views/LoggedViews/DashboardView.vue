@@ -109,7 +109,7 @@ onMounted(async () => {
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white">Create Catalogs</h2>
           <span
             v-if="inProgressCount > 0"
-            class="bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-1 rounded-full ml-2"
+            class="bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-1 rounded-full ml-2 animate-bounce"
           >
             {{ inProgressCount }}
           </span>
