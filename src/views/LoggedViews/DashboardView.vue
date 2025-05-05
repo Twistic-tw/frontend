@@ -1,12 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
-import { computed } from 'vue';
-
-const inProgressCount = computed(() =>
-  notifications.value.filter(n => n.status === 'In Progress').length
-);
-
 
 interface Notification {
   catalog_name: string;
@@ -23,6 +17,9 @@ const userName = sessionStorage.getItem('userName');
 const notifications = ref<Notification[]>([]);
 const error = ref(false);
 const loading = ref(true);
+const inProgressCount = computed(() =>
+  notifications.value.filter(n => n.status === 'In Progress').length
+);
 
 const fetchNotifications = async () => {
   try {
@@ -30,7 +27,6 @@ const fetchNotifications = async () => {
       withCredentials: true
     });
     notifications.value = res.data.notifications || [];
-    // Mostrar notificaciones por id_user
     const userId = sessionStorage.getItem('userId');
     notifications.value = notifications.value.filter(notification => notification.id_user === Number(userId));
   } catch (err) {
@@ -43,7 +39,6 @@ const fetchNotifications = async () => {
 
 onMounted(fetchNotifications);
 </script>
-
 
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3">
