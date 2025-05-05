@@ -74,14 +74,8 @@ onMounted(fetchNotifications);
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white">Create Catalogs</h2>
           <span
-            v-if="notifications.length && role === 'admin'"
-            class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full ml-2 animate-bounce"
-          >
-            {{ notifications.length }}
-          </span>
-          <span
-            v-if="inProgressCount > 0 && role !== 'admin'"
-            class="bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-1 rounded-full ml-2 animate-bounce"
+            v-if="inProgressCount > 0"
+            class="bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-1 rounded-full ml-2"
           >
             {{ inProgressCount }}
           </span>
@@ -125,11 +119,11 @@ onMounted(fetchNotifications);
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white">Manage Notifications</h2>
           <!-- Contador de notificaciones con animación -->
           <span
-            v-if="notifications.length"
-            class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full ml-2 animate-bounce"
-          >
-            {{ notifications.length }}
-          </span>
+          v-if="notifications.length && role === 'admin'"
+          class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full ml-2 animate-bounce"
+        >
+          {{ notifications.length }}
+        </span>
         </div>
         <p class="text-gray-500 dark:text-gray-300">Manage notifications for your catalogs.</p>
         <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
