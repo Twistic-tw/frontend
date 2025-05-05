@@ -5,13 +5,12 @@ import axios from 'axios';
 import draggable from 'vuedraggable';
 
 const route = useRoute();
-const templateId = route.params.id as string;
+const notificationId = route.params.id as string;
 
 const templateName = ref('');
 const fields = ref<{ name: string; active: boolean }[]>([]);
 const loading = ref(true);
 const error = ref(false);
-const excelPath = ref(''); // ✅ Ruta del Excel
 
 const colors = ref({
   background: '#ffffff',
@@ -36,22 +35,15 @@ const getXsrfToken = (): string | null => {
 
 const fetchTemplate = async () => {
   try {
-    const res = await axios.get(`https://api-catalogos.twistic.app/api/Templates/${templateId}/data`, {
+    const res = await axios.get(`https://api-catalogos.twistic.app/api/Templates/${notificationId}/data`, {
       withCredentials: true
     });
 
-    if (res.data.template) {
-      templateName.value = res.data.template.name;
-      excelPath.value = res.data.excel_path; // ✅ Guardamos la ruta del Excel
-
-      // Los campos ya vienen en orden
-      fields.value = (res.data.fields || []).map((f: string) => ({
-        name: f,
-        active: true
-      }));
-    } else {
-      error.value = true;
-    }
+    templateName.value = res.data.template.name;
+    fields.value = (res.data.fields || []).map((f: string) => ({
+      name: f,
+      active: true
+    }));
   } catch (err) {
     console.error('Error fetching template data:', err);
     error.value = true;
@@ -68,10 +60,9 @@ const handleImageUpload = (event: Event, type: 'cover' | 'middle' | 'end') => {
 const generatePdf = async () => {
   const activeFields = fields.value.filter(f => f.active).map(f => f.name);
   const formData = new FormData();
-  formData.append('template_id', templateId);
+  formData.append('notification_id', notificationId);
   formData.append('fields', JSON.stringify(activeFields));
   formData.append('colors', JSON.stringify(colors.value));
-  formData.append('excel_path', excelPath.value);
 
   if (images.value.cover) formData.append('cover', images.value.cover);
   if (images.value.middle) formData.append('middle', images.value.middle);
@@ -101,7 +92,6 @@ watch([fields, colors], () => {
 
 onMounted(fetchTemplate);
 </script>
-
 
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 transition-all duration-500 ease-in-out">
