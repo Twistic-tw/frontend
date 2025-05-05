@@ -98,7 +98,7 @@ onMounted(async () => {
       </RouterLink>
 
       <!-- Create Catalogs Card (admin) -->
-      <RouterLink to="/CatalogList" v-if="role && (role === 'client' || role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
+      <RouterLink to="/catalogList" v-if="role && (role === 'client' || role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white">Create Catalogs</h2>
           <span
