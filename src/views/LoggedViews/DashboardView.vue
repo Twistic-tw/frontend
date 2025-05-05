@@ -46,7 +46,16 @@ const fetchNotifications = async () => {
   }
 };
 
-onMounted(fetchNotifications);
+onMounted(async () => {
+  await fetchNotifications();
+
+  console.log('🧪 Rol:', role);
+  console.log('🧪 userId:', userId);
+  console.log('🧪 allNotifications:', allNotifications.value);
+  console.log('🧪 notifications (filtradas):', notifications.value);
+  console.log('🧪 In Progress count:', inProgressCount.value);
+});
+
 </script>
 
 <template>
