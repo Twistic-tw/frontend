@@ -70,6 +70,12 @@ const router = createRouter({
       meta: { title: 'Create Catalog' , requiereNavAdmin: true}
     },
     {
+      path: '/CatalogList',
+      name: 'CatalogList',
+      component: () => import('../views/LoggedViews/AprovedCatalogView.vue'),
+      meta: { title: 'Aproved Catalogs' , requiereNavAdmin: true}
+    },
+    {
       path: '/catalogs',
       name: 'catalogs',
       component: () => import('../views/LoggedViews/AllCataloguesView.vue'),
