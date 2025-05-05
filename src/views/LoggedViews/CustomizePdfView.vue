@@ -32,9 +32,14 @@ const fetchTemplate = async () => {
     const res = await axios.get(`https://api-catalogos.twistic.app/api/Templates/${templateId}/data`, {
       withCredentials: true
     });
-    const template = res.data;
-    templateName.value = template.template_name;
-    fields.value = res.data.fields.map((f: string) => ({ name: f, active: true }));
+
+    templateName.value = res.data.template_name;
+
+    fields.value = (res.data.fields || []).map((f: { field: string }) => ({
+      name: f.field,
+      active: true
+    }));
+
   } catch (err) {
     console.error('Error fetching template data:', err);
     error.value = true;
@@ -77,6 +82,7 @@ const generatePdf = async () => {
 
 onMounted(fetchTemplate);
 </script>
+
 
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6">
