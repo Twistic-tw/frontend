@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 interface Notification {
-  id: number;
+  id_template: number;
   catalog_name: string;
   status: string;
   id_user: number;
@@ -73,8 +73,8 @@ onMounted(async () => {
     <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       <RouterLink
         v-for="template in approvedTemplates"
-        :key="template.id"
-        :to="`/customizePdf/${template.id}`"
+        :key="template.id_template"
+        :to="`/customizePdf/${template.id_template}`"
         class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800"
       >
         <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">{{ template.catalog_name }}</h2>
