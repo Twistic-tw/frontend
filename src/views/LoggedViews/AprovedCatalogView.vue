@@ -40,7 +40,7 @@ const fetchUserId = async () => {
 // Obtener las plantillas aprobadas (In Progress)
 const fetchApprovedTemplates = async () => {
   try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/approved', {
+    const res = await axios.get('https://api-catalogos.twistic.app/api/aprovedNotifications', {
       withCredentials: true
     });
     approvedTemplates.value = res.data.notifications;
