@@ -40,13 +40,12 @@ const fetchUserId = async () => {
 // Obtener las plantillas aprobadas (In Progress)
 const fetchApprovedTemplates = async () => {
   try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/ShowNotifications', {
+    const res = await axios.get('https://api-catalogos.twistic.app/api/approved', {
       withCredentials: true
     });
-    const all = res.data.notifications as Notification[];
-    approvedTemplates.value = all.filter(n => n.status === 'In Progress' && n.id_user === userId.value);
+    approvedTemplates.value = res.data.notifications;
   } catch (err) {
-    console.error('Error fetching templates:', err);
+    console.error('Error fetching approved notifications:', err);
     error.value = true;
   } finally {
     loading.value = false;
