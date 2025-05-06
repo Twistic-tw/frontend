@@ -37,7 +37,6 @@ const getXsrfToken = (): string | null => {
 // Obtener usuario autenticado
 const fetchUserId = async () => {
   const xsrfToken = getXsrfToken();
-  if (!xsrfToken) return null;
 
   try {
     const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
@@ -125,6 +124,7 @@ const submitForm = async () => {
   formData.append('message', form.value.message);
 
   try {
+    const xsrfToken = getXsrfToken();
     const response = await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
