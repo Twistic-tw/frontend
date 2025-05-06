@@ -43,7 +43,7 @@ async function eliminarPlantilla(id) {
         alert('Token CSRF no encontrado, recarga la página.');
         return;
       }
-      await axios.delete(`https://api-catalogos.twistic.app/api/templates/${id}`, {
+      await axios.delete(`https://api-catalogos.twistic.app/api/DeleteTemplate/${id}`, {
         withCredentials: true,
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
