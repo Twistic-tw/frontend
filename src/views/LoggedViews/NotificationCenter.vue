@@ -20,6 +20,7 @@ export default defineComponent({
     const loading = ref(true)
     const error = ref(false)
 
+    // Obtiene las notificaciones
     const fetchNotifications = async () => {
       try {
         const res = await axios.get('https://api-catalogos.twistic.app/api/ShowNotifications', {
@@ -38,7 +39,9 @@ export default defineComponent({
     const getXsrfToken = (): string | null => {
       return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null;
     };
-
+    // Aprueba una notificación, el status cambia a "approve"
+    // y se envía una solicitud POST a la API
+    // para marcarla como "In Progress"
     const approveNotification = async (id: number) => {
       try {
         const xsrfToken = getXsrfToken();
@@ -58,7 +61,9 @@ export default defineComponent({
       }
     };
 
-
+    // Analiza el campo fields_order y devuelve una cadena
+    // con los nombres de los campos separados por comas
+    // Si fields_order es null, devuelve '-'
     const parseFields = (jsonStr: string | null): string => {
       try {
         if (!jsonStr) return '-'
@@ -69,6 +74,7 @@ export default defineComponent({
       }
     }
 
+    // Formatea la fecha en el formato 'DD/MM/YYYY HH:mm'
     const formatDate = (dateStr: string): string => {
     const date = new Date(dateStr)
       return date.toLocaleString('en-GB', {
