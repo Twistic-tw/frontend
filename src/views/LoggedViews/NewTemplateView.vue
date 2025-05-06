@@ -78,7 +78,7 @@ const analyzeExcel = async () => {
 
     excelHeaders.value = response.data.fields;
     filePath.value = response.data.file_path;
-    form.value.selected_headers = excelHeaders.value.map(field => ({ name: field, active: false }));
+    form.value.selected_headers = excelHeaders.value.map(field => ({ name: field.trim(), active: true }));
     nextStep();
   } catch (error) {
     console.error('Error analyzing the file:', error);
