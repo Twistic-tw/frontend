@@ -2,7 +2,9 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import draggable from 'vuedraggable';
+import { useToast } from 'vue-toastification';
 
+const toast = useToast();
 const step = ref(1);
 const loading = ref(false);
 const excelHeaders = ref<string[]>([]);
@@ -59,7 +61,7 @@ const analyzeExcel = async () => {
 
   const xsrfToken = getXsrfToken();
   if (!xsrfToken || !form.value.excel_file) {
-    alert('CSRF token or file missing.');
+    toast.error('CSRF token or file missing.');
     loading.value = false;
     return;
   }
@@ -82,7 +84,7 @@ const analyzeExcel = async () => {
     nextStep();
   } catch (error) {
     console.error('Error analyzing the file:', error);
-    alert('Error analyzing the file.');
+    toast.error('Error analyzing the file.');
   } finally {
     loading.value = false;
   }
@@ -95,7 +97,7 @@ const submitForm = async () => {
   if (!userId.value) {
     await fetchUserId();
     if (!userId.value) {
-      alert('User ID could not be fetched.');
+      toast.error('User ID could not be fetched.');
       loading.value = false;
       return;
     }
@@ -103,7 +105,7 @@ const submitForm = async () => {
 
   const xsrfToken = getXsrfToken();
   if (!xsrfToken || !form.value.excel_file) {
-    alert('Session expired or file missing.');
+    toast.error('Session expired or file missing.');
     loading.value = false;
     return;
   }
@@ -127,19 +129,19 @@ const submitForm = async () => {
 
   const archivo = formData.get('file') as File | null;
   if (archivo) {
-  console.log('📦 Archivo adjuntado a la petición:');
+  console.log('rchivo adjuntado a la petición:');
   console.log(`Nombre: ${archivo.name}`);
   console.log(`Tamaño: ${archivo.size} bytes`);
   console.log(`Tipo: ${archivo.type}`);
 
-  alert(
+  toast.error(
     `Se adjuntó el archivo correctamente:\n` +
     `📄 Nombre: ${archivo.name}\n` +
     `📦 Tamaño: ${archivo.size} bytes\n` +
     `📑 Tipo: ${archivo.type}`
   );
 } else {
-  alert('⚠️ El archivo no se adjuntó a la petición.');
+  toast.error('El archivo no se adjuntó a la petición.');
 }
 
   try {
