@@ -140,23 +140,31 @@ const submitForm = async () => {
       step.value = 6;
     }
   } catch (error: unknown) {
-    if (
-      typeof error === 'object' &&
-      error !== null &&
-      'response' in error &&
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      typeof (error as any).response === 'object' &&
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      'data' in (error as any).response
-    ) {
-      const errData = (error as { response: { data: { error?: string } } }).response.data;
-      console.error('Error del servidor:', errData);
-      alert(errData.error || 'Error al crear la plantilla o notificación.');
-    } else {
-      console.error('Error desconocido:', error);
-      alert('Error desconocido al crear la plantilla.');
-    }
+  if (
+    typeof error === 'object' &&
+    error !== null &&
+    'response' in error &&
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    typeof (error as any).response === 'object'
+  ) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const errResponse = (error as any).response;
+    console.error('Error del servidor:', errResponse.data);
+
+    // Mostrar todos los detalles útiles si están disponibles
+    const details = errResponse.data;
+
+    alert(
+      details?.error +
+      '\n\nRuta esperada: ' + (details?.expected_path || 'N/A') +
+      '\n¿Directorio escribible?: ' + (details?.directory_writable ? 'Sí' : 'No') +
+      '\nEspacio libre: ' + (details?.disk_free_space_mb?.toFixed(2) || 'N/A') + ' MB'
+    );
+  } else {
+    console.error('Error desconocido:', error);
+    alert('Error desconocido al crear la plantilla.');
   }
+}
  finally {
     loading.value = false;
   }
