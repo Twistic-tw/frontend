@@ -113,7 +113,7 @@ const submitForm = async () => {
   formData.append('file', form.value.excel_file);
   formData.append('template_name', form.value.catalog_name);
   formData.append('id_user', String(userId.value));
-  formData.append('message', form.value.message);
+  formData.append('message', form.value.message || 'Solicitud de creación de plantilla');
 
   // Añadir los campos seleccionados como JSON
   const selectedFields = form.value.selected_headers
@@ -135,7 +135,7 @@ const submitForm = async () => {
     });
 
     if (response.status === 200) {
-      console.log('✅ Respuesta del backend:', response.data);
+      console.log('Respuesta del backend:', response.data);
       alert(response.data.message || 'Plantilla y notificación creadas correctamente');
       step.value = 6;
     }
