@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import { useToast } from 'vue-toastification';
 
+const toast = useToast();
 const fields = ref([])
 
 onMounted(async () => {
@@ -9,22 +11,23 @@ onMounted(async () => {
     const res = await axios.get('https://api-catalogos.twistic.app/api/ViewFields')
     fields.value = res.data
   } catch (error) {
-    console.error('Error al cargar los campos:', error)
+    console.error('Error loading fields:', error)
     fields.value = []
   }
 })
 
-// Eliminar campo
+// Delete field
 async function eliminarCampo(id) {
-  if (confirm('¿Estás seguro de que quieres eliminar este campo?')) {
+  if (confirm('Are you sure you want to delete this field?')) {
     try {
-      // Obtener token CSRF de la cookie
+      // Get CSRF token from cookie
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
 
       if (!xsrfToken) {
-        alert('Token CSRF no encontrado, recarga la página.');
+        toast.error('CSRF token not found. Please reload the page.');
         return;
       }
+
       await axios.delete(`https://api-catalogos.twistic.app/api/DeleteField/${id}`, {
         withCredentials: true,
         headers: {
@@ -32,16 +35,19 @@ async function eliminarCampo(id) {
           'Accept': 'application/json'
         }
       })
-      // Eliminar del array localmente
+
+      // Remove from local array
       fields.value = fields.value.filter(field => field.id !== id)
-      alert('Campo eliminado correctamente.')
+      toast.success('Field deleted successfully.')
+
     } catch (error) {
-      console.error('Error al eliminar el campo:', error)
-      alert('Hubo un error al eliminar el campo.')
+      console.error('Error deleting field:', error)
+      toast.error('An error occurred while deleting the field.')
     }
   }
 }
 </script>
+
 
 <template>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
