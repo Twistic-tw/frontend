@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useUserListManagement } from '../../composable/userListManagement';
+import BackButton from '@/components/BackButton.vue';
 
 const {
   error, searchQuery, filteredUsers,
@@ -153,7 +154,12 @@ const {
         </div>
       </div>
     </transition>
-
+    <!-- Botón Volver -->
+    <div class="mt-12">
+      <BackButton
+        class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
+      />
+    </div>
   </div>
 </template>
 <style scoped>

@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import axios from 'axios'
+import BackButton from '@/components/BackButton.vue';
 
 interface User {
   active_catalogos: number
@@ -110,6 +111,12 @@ export default defineComponent({
 
     <div v-if="error" class="text-center text-red-500 mt-6">
       An error occurred while loading user data.
+    </div>
+    <!-- Botón Volver -->
+    <div class="mt-12">
+      <BackButton
+        class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
+      />
     </div>
   </div>
 </template>
