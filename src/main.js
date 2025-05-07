@@ -1,13 +1,15 @@
-/* import './assets/main.css' */
-
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import axios from 'axios';
 import PrimeVue from 'primevue/config';
-import { abilitiesPlugin } from '@casl/vue'
-import defineUserAbility from './abilities/abilities';
+import App from './App.vue';
+import router from './router';
 
-// Título de la página
+// Toastification
+import Toast, { POSITION } from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
+
+// Título dinámico
 let title = 'Twistic';
 router.afterEach((to) => {
   if (to.meta.title) {
@@ -18,16 +20,29 @@ router.afterEach((to) => {
   }
 });
 
+// Axios config
 axios.defaults.withCredentials = true;
 
-import App from './App.vue'
-import router from './router'
+// Opciones de notificación
+const options = {
+  position: POSITION.BOTTOM_LEFT,
+  timeout: 6000,
+  closeOnClick: true,
+  pauseOnFocusLoss: true,
+  pauseOnHover: true,
+  draggable: true,
+  draggablePercent: 0.6,
+  showCloseButtonOnHover: false,
+  hideProgressBar: false,
+  closeButton: 'button',
+  icon: true,
+  rtl: false,
+};
 
-const app = createApp(App)
-
-app.use(createPinia())
-app.use(router)
+// Crear app
+const app = createApp(App);
+app.use(createPinia());
+app.use(router);
 app.use(PrimeVue);
-
-
-app.mount('#app')
+app.use(Toast, options);
+app.mount('#app');
