@@ -105,7 +105,7 @@ async function eliminarPlantilla(id) {
     </div>
     <!-- Botón Volver -->
     <div class="mt-12">
-      <BackButton class="fixed bottom-6 left-6 bg-violet-600 text-white px-4 py-2 rounded-lg shadow hover:bg-violet-700 transition" />
+      <BackButton class="fixed bottom-6 left-6 bg-violet-600 text-gray-800 px-4 py-2 rounded-lg shadow hover:bg-violet-700 transition" />
     </div>
   </div>
 </template>
