@@ -125,6 +125,23 @@ const submitForm = async () => {
     }));
   formData.append('fields', JSON.stringify(selectedFields));
 
+  const archivo = formData.get('file') as File | null;
+  if (archivo) {
+  console.log('📦 Archivo adjuntado a la petición:');
+  console.log(`Nombre: ${archivo.name}`);
+  console.log(`Tamaño: ${archivo.size} bytes`);
+  console.log(`Tipo: ${archivo.type}`);
+
+  alert(
+    `Se adjuntó el archivo correctamente:\n` +
+    `📄 Nombre: ${archivo.name}\n` +
+    `📦 Tamaño: ${archivo.size} bytes\n` +
+    `📑 Tipo: ${archivo.type}`
+  );
+} else {
+  alert('⚠️ El archivo no se adjuntó a la petición.');
+}
+
   try {
     const response = await axios.post('https://api-catalogos.twistic.app/api/CreateTemplateWithNotification', formData, {
       headers: {
