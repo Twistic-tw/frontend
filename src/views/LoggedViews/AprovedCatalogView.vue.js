@@ -62,7 +62,7 @@ const __VLS_ctx = {};
 let __VLS_components;
 let __VLS_directives;
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3" }));
-__VLS_asFunctionalElement(__VLS_intrinsicElements.h1, __VLS_intrinsicElements.h1)(Object.assign({ class: "text-3xl font-bold text-gray-800 dark:text-gray-800 mb-6 text-center" }));
+__VLS_asFunctionalElement(__VLS_intrinsicElements.h1, __VLS_intrinsicElements.h1)(Object.assign({ class: "text-3xl font-bold text-gray-800 mb-6 text-center" }));
 if (__VLS_ctx.loading) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "text-center text-gray-600" }));
 }
@@ -99,7 +99,6 @@ else {
 /** @type {__VLS_StyleScopedClasses['text-3xl']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-gray-800']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-gray-800']} */ ;
 /** @type {__VLS_StyleScopedClasses['mb-6']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-center']} */ ;

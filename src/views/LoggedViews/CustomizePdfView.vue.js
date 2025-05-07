@@ -107,7 +107,7 @@ let __VLS_directives;
 // CSS variable injection 
 // CSS variable injection end 
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "min-h-screen bg-gradient-to-b from-gray-100 to-white p-6" }));
-__VLS_asFunctionalElement(__VLS_intrinsicElements.h1, __VLS_intrinsicElements.h1)(Object.assign({ class: "text-3xl font-bold text-center text-indigo-700 mb-8" }));
+__VLS_asFunctionalElement(__VLS_intrinsicElements.h1, __VLS_intrinsicElements.h1)(Object.assign({ class: "text-3xl font-bold text-gray-800 mb-6 text-center" }));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)(Object.assign({ class: "text-indigo-900" }));
 (__VLS_ctx.templateName);
 if (__VLS_ctx.loading) {
@@ -181,9 +181,9 @@ else {
 /** @type {__VLS_StyleScopedClasses['p-6']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-3xl']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-gray-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['mb-6']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-center']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-indigo-700']} */ ;
-/** @type {__VLS_StyleScopedClasses['mb-8']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-indigo-900']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-gray-600']} */ ;

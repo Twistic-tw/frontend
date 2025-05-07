@@ -40,8 +40,6 @@ const getXsrfToken = () => {
 // Obtener usuario autenticado
 const fetchUserId = () => __awaiter(void 0, void 0, void 0, function* () {
     const xsrfToken = getXsrfToken();
-    if (!xsrfToken)
-        return null;
     try {
         const response = yield axios.get('https://api-catalogos.twistic.app/api/user', {
             headers: {
@@ -78,7 +76,7 @@ const analyzeExcel = () => __awaiter(void 0, void 0, void 0, function* () {
         });
         excelHeaders.value = response.data.fields;
         filePath.value = response.data.file_path;
-        form.value.selected_headers = excelHeaders.value.map(field => ({ name: field, active: false }));
+        form.value.selected_headers = excelHeaders.value.map(field => ({ name: field.trim(), active: true }));
         nextStep();
     }
     catch (error) {
@@ -91,6 +89,7 @@ const analyzeExcel = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 // Enviar Formulario
 const submitForm = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     loading.value = true;
     if (!userId.value) {
         yield fetchUserId();
@@ -106,50 +105,69 @@ const submitForm = () => __awaiter(void 0, void 0, void 0, function* () {
         loading.value = false;
         return;
     }
+    // Formar el formulario
     const formData = new FormData();
     formData.append('file', form.value.excel_file);
     formData.append('template_name', form.value.catalog_name);
     formData.append('id_user', String(userId.value));
-    formData.append('fields', JSON.stringify(form.value.selected_headers
-        .filter(fieldObj => fieldObj.active)
-        .map((fieldObj, index) => ({
-        field: fieldObj.name,
+    formData.append('message', form.value.message || 'Solicitud de creación de plantilla');
+    // Añadir los campos seleccionados como JSON
+    const selectedFields = form.value.selected_headers
+        .filter(field => field.active)
+        .map((field, index) => ({
+        field: field.name,
         active: true,
         order: index
-    }))));
-    formData.append('message', form.value.message);
+    }));
+    formData.append('fields', JSON.stringify(selectedFields));
+    const archivo = formData.get('file');
+    if (archivo) {
+        console.log('📦 Archivo adjuntado a la petición:');
+        console.log(`Nombre: ${archivo.name}`);
+        console.log(`Tamaño: ${archivo.size} bytes`);
+        console.log(`Tipo: ${archivo.type}`);
+        alert(`Se adjuntó el archivo correctamente:\n` +
+            `📄 Nombre: ${archivo.name}\n` +
+            `📦 Tamaño: ${archivo.size} bytes\n` +
+            `📑 Tipo: ${archivo.type}`);
+    }
+    else {
+        alert('⚠️ El archivo no se adjuntó a la petición.');
+    }
     try {
-        const response = yield axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
+        const response = yield axios.post('https://api-catalogos.twistic.app/api/CreateTemplateWithNotification', formData, {
             headers: {
                 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-                'Accept': 'application/json'
+                'Accept': 'application/json',
             },
-            withCredentials: true
+            withCredentials: true,
         });
         if (response.status === 200) {
-            // Guardar la ruta del archivo procesado
-            const filePathFromBackend = response.data.file_path;
-            // Enviar la notificación
-            yield axios.post('https://api-catalogos.twistic.app/api/SendNotification', {
-                catalog_name: form.value.catalog_name,
-                file_path: filePathFromBackend,
-                fields_order: form.value.selected_headers
-                    .filter(field => field.active)
-                    .map(field => field.name),
-                message: form.value.message || 'Solicitud de catálogo'
-            }, {
-                headers: {
-                    'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-                    'Accept': 'application/json'
-                },
-                withCredentials: true
-            });
+            console.log('Respuesta del backend:', response.data);
+            alert(response.data.message || 'Plantilla y notificación creadas correctamente');
             step.value = 6;
         }
     }
     catch (error) {
-        alert('Error creating the template. Contact support.');
-        console.error('Error creating the template:', error);
+        if (typeof error === 'object' &&
+            error !== null &&
+            'response' in error &&
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            typeof error.response === 'object') {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const errResponse = error.response;
+            console.error('Error del servidor:', errResponse.data);
+            // Mostrar todos los detalles útiles si están disponibles
+            const details = errResponse.data;
+            alert((details === null || details === void 0 ? void 0 : details.error) +
+                '\n\nRuta esperada: ' + ((details === null || details === void 0 ? void 0 : details.expected_path) || 'N/A') +
+                '\n¿Directorio escribible?: ' + ((details === null || details === void 0 ? void 0 : details.directory_writable) ? 'Sí' : 'No') +
+                '\nEspacio libre: ' + (((_a = details === null || details === void 0 ? void 0 : details.disk_free_space_mb) === null || _a === void 0 ? void 0 : _a.toFixed(2)) || 'N/A') + ' MB');
+        }
+        else {
+            console.error('Error desconocido:', error);
+            alert('Error desconocido al crear la plantilla.');
+        }
     }
     finally {
         loading.value = false;
