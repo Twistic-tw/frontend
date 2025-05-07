@@ -112,11 +112,18 @@ router.beforeEach(async (to, from, next) => {
 
   try {
     const res = await fetch('https://api-catalogos.twistic.app/api/user', {
-      credentials: 'include'
+      credentials: 'include',
     });
-    isLoggedIn = res.ok;
+
+    if (res.ok) {
+      isLoggedIn = true;
+    } else {
+      // Silenciar error 500 y similares
+      console.warn(`Error al verificar autenticación: ${res.status} ${res.statusText}`);
+    }
   } catch (error) {
-    // Intencionalmente vacío, sin manejo de errores
+    // Silenciar cualquier excepción de red u otro tipo
+    console.warn('Excepción al verificar autenticación (probablemente el backend está caído o sin sesión)');
   }
 
   if (requiresAuth && !isLoggedIn) {
