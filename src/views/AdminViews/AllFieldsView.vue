@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useToast } from 'vue-toastification';
+import BackButton from '@/components/BackButton.vue';
 
 const toast = useToast();
 const fields = ref([])
@@ -74,6 +75,12 @@ async function eliminarCampo(id) {
 
     <div v-if="fields.length === 0" class="text-center text-gray-500 mt-8">
       No fields available.
+    </div>
+    <!-- Botón Volver -->
+    <div class="mt-12">
+      <BackButton
+        class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
+    />
     </div>
   </div>
 </template>

@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 import draggable from 'vuedraggable';
 import * as XLSX from 'xlsx';
+import BackButton from '@/components/BackButton.vue';
 
 const route = useRoute();
 const templateId = route.params.id as string;
@@ -170,6 +171,12 @@ onMounted(fetchTemplate);
         class="bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition mx-auto block">
         Generate PDF
       </button>
+    </div>
+    <!-- Botón Volver -->
+    <div class="mt-12">
+      <BackButton
+        class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
+      />
     </div>
   </div>
 </template>
