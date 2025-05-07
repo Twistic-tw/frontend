@@ -1,46 +1,48 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import { useToast } from 'vue-toastification';
 
+const toast = useToast();
 const usuarios = ref([])
 const plantillas = ref([])
 
 onMounted(async () => {
-  await cargarUsuarios()
-  await cargarPlantillas()
+  await loadUsers()
+  await loadTemplates()
 })
 
-// Función para cargar los usuarios
-async function cargarUsuarios() {
+// Function to load users
+async function loadUsers() {
   try {
     const res = await axios.get('https://api-catalogos.twistic.app/api/Users', {
       withCredentials: true
     })
     usuarios.value = res.data
   } catch (error) {
-    console.error('Error al cargar usuarios:', error)
+    console.error('Error loading users:', error)
   }
 }
 
-// Función para cargar las plantillas
-async function cargarPlantillas() {
+// Function to load templates
+async function loadTemplates() {
   try {
     const res = await axios.get('https://api-catalogos.twistic.app/api/ViewTemplates', {
       withCredentials: true
     })
     plantillas.value = res.data
   } catch (error) {
-    console.error('Error al cargar plantillas:', error)
+    console.error('Error loading templates:', error)
   }
 }
 
-// Eliminar plantilla
+// Delete template
 async function eliminarPlantilla(id) {
   if (confirm('Are you sure you want to delete this template?')) {
     try {
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
       if (!xsrfToken) {
-        alert('Token CSRF no encontrado, recarga la página.');
+        toast.error('CSRF token not found. Please reload the page.');
         return;
       }
       await axios.delete(`https://api-catalogos.twistic.app/api/DeleteTemplate/${id}`, {
@@ -51,10 +53,10 @@ async function eliminarPlantilla(id) {
         }
       })
       plantillas.value = plantillas.value.filter(p => p.id !== id)
-      alert('Template successfully deleted.')
+      toast.success('Template successfully deleted.')
     } catch (error) {
-      console.error('Error al eliminar la plantilla:', error)
-      alert('There was an error deleting the template.')
+      console.error('Error deleting template:', error)
+      toast.error('There was an error deleting the template.')
     }
   }
 }
