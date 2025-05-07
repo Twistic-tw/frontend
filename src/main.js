@@ -25,7 +25,7 @@ axios.defaults.withCredentials = true;
 
 // Opciones de notificación
 const options = {
-  position: POSITION.BOTTOM_LEFT,
+  position: POSITION.BOTTOM_RIGHT,
   timeout: 6000,
   closeOnClick: true,
   pauseOnFocusLoss: true,
