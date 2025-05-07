@@ -64,10 +64,13 @@ async function eliminarPlantilla(id) {
 </script>
 
 <template>
-  <!-- Encabezado con botón volver atrás -->
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
-    <BackButton />
-    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Templates</h2>
+
+    <!-- Contenedor flex para título y botón -->
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-3xl font-bold text-gray-800">Available Templates</h2>
+      <BackButton />
+    </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
@@ -88,9 +91,10 @@ async function eliminarPlantilla(id) {
         <div>
           <h4 class="text-sm font-semibold text-gray-700 dark:text-white mb-2">Fields:</h4>
           <ul class="list-disc list-inside text-gray-600 dark:text-white">
-            <li v-for="field in plantilla.fields " :key="field.id">{{ field.field }}</li>
+            <li v-for="field in plantilla.fields" :key="field.id">{{ field.field }}</li>
           </ul>
         </div>
+
         <!-- Botón Eliminar -->
         <button
           @click="eliminarPlantilla(plantilla.id)"
@@ -106,4 +110,5 @@ async function eliminarPlantilla(id) {
     </div>
   </div>
 </template>
+
 
