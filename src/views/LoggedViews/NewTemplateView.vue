@@ -108,57 +108,56 @@ const submitForm = async () => {
     return;
   }
 
+  // Formar el formulario
   const formData = new FormData();
   formData.append('file', form.value.excel_file);
   formData.append('template_name', form.value.catalog_name);
   formData.append('id_user', String(userId.value));
-  formData.append('fields', JSON.stringify(
-    form.value.selected_headers
-      .filter(fieldObj => fieldObj.active)
-      .map((fieldObj, index) => ({
-        field: fieldObj.name,
-        active: true,
-        order: index
-      }))
-  ));
   formData.append('message', form.value.message);
 
+  // Añadir los campos seleccionados como JSON
+  const selectedFields = form.value.selected_headers
+    .filter(field => field.active)
+    .map((field, index) => ({
+      field: field.name,
+      active: true,
+      order: index
+    }));
+  formData.append('fields', JSON.stringify(selectedFields));
+
   try {
-    const xsrfToken = getXsrfToken();
-    const response = await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
+    const response = await axios.post('https://api-catalogos.twistic.app/api/CreateTemplateWithNotification', formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-        'Accept': 'application/json'
+        'Accept': 'application/json',
       },
-      withCredentials: true
+      withCredentials: true,
     });
 
     if (response.status === 200) {
-      // Guardar la ruta del archivo procesado
-      const filePathFromBackend = response.data.file_path;
-      // Enviar la notificación
-      await axios.post('https://api-catalogos.twistic.app/api/SendNotification', {
-        catalog_name: form.value.catalog_name,
-        file_path: filePathFromBackend,
-        fields_order: form.value.selected_headers
-          .filter(field => field.active)
-          .map(field => field.name),
-        message: form.value.message || 'Solicitud de catálogo'
-      }, {
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          'Accept': 'application/json'
-        },
-        withCredentials: true
-      });
-
+      console.log('✅ Respuesta del backend:', response.data);
+      alert(response.data.message || 'Plantilla y notificación creadas correctamente');
       step.value = 6;
     }
-
-  } catch (error) {
-    alert('Error creating the template. Contact support.');
-    console.error('Error creating the template:', error);
-  } finally {
+  } catch (error: unknown) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'response' in error &&
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      typeof (error as any).response === 'object' &&
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      'data' in (error as any).response
+    ) {
+      const errData = (error as { response: { data: { error?: string } } }).response.data;
+      console.error('Error del servidor:', errData);
+      alert(errData.error || 'Error al crear la plantilla o notificación.');
+    } else {
+      console.error('Error desconocido:', error);
+      alert('Error desconocido al crear la plantilla.');
+    }
+  }
+ finally {
     loading.value = false;
   }
 };

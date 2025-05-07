@@ -104,7 +104,7 @@ onMounted(fetchTemplate);
 
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6">
-    <h1 class="text-3xl font-bold text-center text-indigo-700 mb-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
       Customize PDF for <span class="text-indigo-900">{{ templateName }}</span>
     </h1>
 
