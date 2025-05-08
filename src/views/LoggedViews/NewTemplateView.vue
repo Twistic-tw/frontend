@@ -136,14 +136,9 @@ const submitForm = async () => {
       },
       withCredentials: true,
     });
+    console.log('Respuesta del backend:', response.data);
 
     if (response.status === 200) {
-      console.log('Respuesta del backend:', response.data);
-      const verif = response.data.verificaciones;
-      console.log('Verificaciones:', verif);
-
-      if (verif?.dir_guardar) toast.success(verif.dir_guardar);
-      if (verif?.archivo_verificado) toast.success(verif.archivo_verificado);
       step.value = 6;
     }
   } catch (error: unknown) {
