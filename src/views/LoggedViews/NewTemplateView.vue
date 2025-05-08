@@ -139,8 +139,8 @@ const submitForm = async () => {
     });
     console.log('Respuesta del backend:', response.data);
     console.log('Verificaciones:', response.data.verificaciones);
-  console.log('Ruta absoluta:', response.data.path);
-  console.log('Resultado de guardado:', response.data.excel);
+    console.log('Excel:', response.data.excel);
+    console.log('Path:', response.data.path);
 
 
     if (response.status === 200) {
