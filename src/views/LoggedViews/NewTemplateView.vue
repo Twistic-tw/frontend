@@ -71,6 +71,14 @@ const analyzeExcel = async () => {
   formData.append('file', form.value.excel_file);
 
   try {
+    const responseExcel = await axios.post('https://api-catalogos.twistic.app/api/upload-excel', {
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        'Accept': 'application/json'
+      },
+      withCredentials: true
+    });
+    console.log('Respuesta de la subida del excel:', responseExcel.data);
     const response = await axios.post('https://api-catalogos.twistic.app/api/excelscan', formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
