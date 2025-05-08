@@ -138,6 +138,10 @@ const submitForm = async () => {
       withCredentials: true,
     });
     console.log('Respuesta del backend:', response.data);
+    console.log('Verificaciones:', response.data.verificaciones);
+  console.log('Ruta absoluta:', response.data.path);
+  console.log('Resultado de guardado:', response.data.excel);
+
 
     if (response.status === 200) {
       step.value = 6;
