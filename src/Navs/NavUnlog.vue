@@ -11,7 +11,7 @@ import '../styles.css'
             </div>
         </nav>
         <router-link to="/" class="flex items-center space-x-2">
-          <img src="/public/TW_LOGO_NEGRO_Mesa_de_trabajo_1.png" alt="Twistic Logo" class="h-8 w-auto" />
+          <img src="/public/TW_LOGO_NEGRO_Mesa_de_trabajo_1.png" alt="Twistic Logo" class="h-[6.5rem] w-auto" />
         </router-link>
     </div>
 </template>
