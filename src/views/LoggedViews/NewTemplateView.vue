@@ -159,6 +159,7 @@ const submitForm = async () => {
       alert(response.data.message || 'Plantilla y notificación creadas correctamente');
       const verif = response.data.verificaciones;
       console.log('Verificaciones:', verif);
+      console.log('Archivo:', response.data.file)
 
       if (verif?.dir_guardar) toast.success(verif.dir_guardar);
       if (verif?.archivo_verificado) toast.success(verif.archivo_verificado);
