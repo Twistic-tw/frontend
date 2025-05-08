@@ -84,17 +84,7 @@ const analyzeExcel = async () => {
   filePath.value = response.data.file_path;
   form.value.selected_headers = excelHeaders.value.map(field => ({ name: field.trim(), active: true }));
 
-  // Segunda petición: subida de Excel
-  const uploadResponse = await axios.post(`${import.meta.env.VITE_URL}/upload-excel`, formData, {
-    headers: {
-      'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-      'Accept': 'application/json'
-    },
-    withCredentials: true
-  });
 
-  console.log('Respuesta de upload-excel:', uploadResponse.data);
-  toast.success('Archivo subido correctamente.');
 
   nextStep();
 } catch (error) {
