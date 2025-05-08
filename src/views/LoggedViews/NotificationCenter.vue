@@ -27,7 +27,7 @@ export default defineComponent({
     // Obtiene las notificaciones
     const fetchNotifications = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/ShowNotifications`, {
+        const res = await axios.get(`${import.meta.env.VITE_URL}/ShowNotifications`, {
           withCredentials: true
         })
         notifications.value = res.data.notifications
@@ -49,7 +49,7 @@ export default defineComponent({
     const approveNotification = async (id: number) => {
       try {
         const xsrfToken = getXsrfToken();
-        await axios.post(`${import.meta.env.VITE_API_URL}/api/ReadNotification/${id}`, {}, {
+        await axios.post(`${import.meta.env.VITE_URL}/ReadNotification/${id}`, {}, {
           headers: {
             'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
             'Accept': 'application/json'
