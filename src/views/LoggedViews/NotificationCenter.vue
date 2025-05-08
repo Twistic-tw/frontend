@@ -57,8 +57,9 @@ export default defineComponent({
           withCredentials: true
         });
         notifications.value = notifications.value.map(n =>
-          n.id === id ? { ...n, status: 'approve' } : n
+          n.id === id ? { ...n, status: 'Approved' } : n
         );
+        await fetchNotifications();
       } catch (error) {
         console.error('Error approving notification:', error);
         alert('Error approving notification.');
