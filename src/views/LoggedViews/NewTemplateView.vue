@@ -71,32 +71,39 @@ const analyzeExcel = async () => {
   formData.append('file', form.value.excel_file);
 
   try {
-    const responseExcel = await axios.post('https://api-catalogos.twistic.app/api/upload-excel', {
-      headers: {
-        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-        'Accept': 'application/json'
-      },
-      withCredentials: true
-    });
-    console.log('Respuesta de la subida del excel:', responseExcel.data);
-    const response = await axios.post('https://api-catalogos.twistic.app/api/excelscan', formData, {
-      headers: {
-        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-        'Accept': 'application/json'
-      },
-      withCredentials: true
-    });
+  // Primera petición: análisis del archivo
+  const response = await axios.post(`${import.meta.env.VITE_URL}/excelscan`, formData, {
+    headers: {
+      'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+      'Accept': 'application/json'
+    },
+    withCredentials: true
+  });
 
-    excelHeaders.value = response.data.fields;
-    filePath.value = response.data.file_path;
-    form.value.selected_headers = excelHeaders.value.map(field => ({ name: field.trim(), active: true }));
-    nextStep();
-  } catch (error) {
-    console.error('Error analyzing the file:', error);
-    toast.error('Error analyzing the file.');
-  } finally {
-    loading.value = false;
-  }
+  excelHeaders.value = response.data.fields;
+  filePath.value = response.data.file_path;
+  form.value.selected_headers = excelHeaders.value.map(field => ({ name: field.trim(), active: true }));
+
+  // Segunda petición: subida de Excel
+  const uploadResponse = await axios.post(`${import.meta.env.VITE_URL}/upload-excel`, formData, {
+    headers: {
+      'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+      'Accept': 'application/json'
+    },
+    withCredentials: true
+  });
+
+  console.log('Respuesta de upload-excel:', uploadResponse.data);
+  toast.success('Archivo subido correctamente.');
+
+  nextStep();
+} catch (error) {
+  console.error('Error analyzing or uploading the file:', error);
+  toast.error('Error analizando o subiendo el archivo.');
+} finally {
+  loading.value = false;
+}
+
 };
 
 // Enviar Formulario
@@ -138,7 +145,7 @@ const submitForm = async () => {
 
   try {
     console.log('Enviando datos al backend:', formData);
-    const response = await axios.post('https://api-catalogos.twistic.app/api/CreateTemplateWithNotification', formData, {
+    const response = await axios.post(`${import.meta.env.VITE_URL}/CreateTemplateWithNotification`, formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
         'Accept': 'application/json',
