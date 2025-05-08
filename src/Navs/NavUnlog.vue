@@ -10,9 +10,9 @@ import '../styles.css'
                 <RouterLink to="/login" class="mx-2 px-10 py-2 text-center text-lg font-semibold tracking-tight rounded-2xl transition duration-200 ease-in-out text-white hover:bg-slate-800" active-class="bg-slate-900">Login</RouterLink>
             </div>
         </nav>
-            <RouterLink to="/" class="peer bg-white dark:bg-neutral-950 w-[200px] h-[60px] rounded-tr-3xl flex text-4xl items-center justify-center transition-all duration-200 ease-in-out fixed top-0">
-                <p class="text-neutral-950 dark:text-white ">TWISTIC</p>
-            </RouterLink>
+        <router-link to="/" class="flex items-center space-x-2">
+          <img src="/public/TW_LOGO_NEGRO_Mesa_de_trabajo_1.png" alt="Twistic Logo" class="h-8 w-auto" />
+        </router-link>
     </div>
 </template>
 
