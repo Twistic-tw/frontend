@@ -158,7 +158,7 @@ const submitForm = async () => {
       console.log('Respuesta del backend:', response.data);
       alert(response.data.message || 'Plantilla y notificación creadas correctamente');
       const verif = response.data.verificaciones;
-      console.log('Verificaciones:', response.data);
+      console.log('Verificaciones:', verif);
 
       if (verif?.dir_guardar) toast.success(verif.dir_guardar);
       if (verif?.archivo_verificado) toast.success(verif.archivo_verificado);
