@@ -139,7 +139,6 @@ const submitForm = async () => {
 
     if (response.status === 200) {
       console.log('Respuesta del backend:', response.data);
-      alert(response.data.message || 'Plantilla y notificación creadas correctamente');
       const verif = response.data.verificaciones;
       console.log('Verificaciones:', verif);
 
