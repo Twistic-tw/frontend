@@ -129,6 +129,7 @@ const submitForm = async () => {
   formData.append('fields', JSON.stringify(selectedFields));
 
   try {
+    console.log('Enviando datos al backend:', formData);
     const response = await axios.post('https://api-catalogos.twistic.app/api/CreateTemplateWithNotification', formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
@@ -142,30 +143,13 @@ const submitForm = async () => {
       step.value = 6;
     }
   } catch (error: unknown) {
-  if (
-    typeof error === 'object' &&
-    error !== null &&
-    'response' in error &&
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    typeof (error as any).response === 'object'
-  ) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const errResponse = (error as any).response;
-    console.error('Error del servidor:', errResponse.data);
-
-    // Mostrar todos los detalles útiles si están disponibles
-    const details = errResponse.data;
-
-    alert(
-      details?.error +
-      '\n\nRuta esperada: ' + (details?.expected_path || 'N/A') +
-      '\n¿Directorio escribible?: ' + (details?.directory_writable ? 'Sí' : 'No') +
-      '\nEspacio libre: ' + (details?.disk_free_space_mb?.toFixed(2) || 'N/A') + ' MB'
-    );
-  } else {
-    console.error('Error desconocido:', error);
-    alert('Error desconocido al crear la plantilla.');
-  }
+    if (axios.isAxiosError(error)) {
+      console.error('Error:', error.response?.data);
+      toast.error('Error creating the template.');
+    } else {
+      console.error('Unexpected error:', error);
+      toast.error('An unexpected error occurred.');
+    }
 }
  finally {
     loading.value = false;
