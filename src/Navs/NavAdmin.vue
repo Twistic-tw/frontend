@@ -56,7 +56,7 @@ onBeforeUnmount(() => {
     <nav class="flex h-17 items-center bg-gradient-to-l from-neutral-950 to-slate-800 w-full fixed top-0 px-5 z-50">
       <div class="flex items-center flex-1 justify-start">
         <router-link to="dashboard" class="flex items-center space-x-2">
-          <img src="/public/TW_LOGO_BLANCOy_gris.png" alt="Twistic Logo" class="h-8 w-auto" />
+          <img src="/public/TW_LOGO_BLANCOy_gris.png" alt="Twistic Logo" class="h-[6.5rem] w-auto" />
           <span class="text-white font-bold text-xl"> | {{ title }}</span>
         </router-link>
 
