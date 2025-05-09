@@ -91,18 +91,16 @@ const generatePdf = async () => {
 
     // Generar PDF local con jsPDF + autoTable
     const doc = new jsPDF();
-    const head = [filteredData.value[0] as string[]];
-    const body = filteredData.value.slice(1) as string[][];
-
     doc.autoTable({
-      head,
-      body,
+      head: [filteredData.value[0] as string[]],
+      body: filteredData.value.slice(1) as string[][],
       styles: {
         fillColor: colors.value.background,
         textColor: colors.value.text,
       },
       margin: { top: 20 },
     });
+
 
     doc.save(`${templateName.value}_preview.pdf`);
     alert('✅ PDF successfully generated');
