@@ -5,7 +5,6 @@ import axios from 'axios';
 import draggable from 'vuedraggable';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
 import BackButton from '@/components/BackButton.vue';
 
 const route = useRoute();
