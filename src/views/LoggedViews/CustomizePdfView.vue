@@ -65,7 +65,7 @@ const generatePdf = async () => {
     .from(content)
     .set({
       margin: 10,
-      filename: `${templateName.value}_catalogo.pdf`,
+      filename: `${templateName.value}_catalog.pdf`,
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     })
@@ -78,15 +78,15 @@ onMounted(fetchTemplate);
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6">
     <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
-      Personaliza tu Catálogo <span class="text-indigo-900">{{ templateName }}</span>
+      Customize Your Catalog <span class="text-indigo-900">{{ templateName }}</span>
     </h1>
 
-    <div v-if="loading" class="text-center text-gray-600">Cargando plantilla...</div>
-    <div v-else-if="error" class="text-center text-red-500">Error al cargar los datos.</div>
+    <div v-if="loading" class="text-center text-gray-600">Loading template...</div>
+    <div v-else-if="error" class="text-center text-red-500">Error loading data.</div>
 
     <div v-else class="space-y-8">
       <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Campos activos</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Active Fields</h2>
         <draggable v-model="fields" item-key="name" class="space-y-2">
           <template #item="{ element }">
             <div class="flex justify-between items-center bg-white border rounded shadow p-3">
@@ -98,53 +98,46 @@ onMounted(fetchTemplate);
       </div>
 
       <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Colores</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Colors</h2>
         <div class="flex flex-wrap gap-6">
-          <label>Fondo <input type="color" v-model="colors.background" class="w-10 h-10" /></label>
-          <label>Texto <input type="color" v-model="colors.text" class="w-10 h-10" /></label>
-          <label>Título <input type="color" v-model="colors.title" class="w-10 h-10" /></label>
+          <label>Background <input type="color" v-model="colors.background" class="w-10 h-10" /></label>
+          <label>Text <input type="color" v-model="colors.text" class="w-10 h-10" /></label>
+          <label>Title <input type="color" v-model="colors.title" class="w-10 h-10" /></label>
         </div>
       </div>
 
       <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Imágenes de portada</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Cover Images</h2>
+        <label class="block mb-2 text-sm font-medium text-gray-700">Main Cover</label>
         <input type="file" @change="e => handleImageUpload(e, 'cover')" class="file-input" />
+        <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Second Cover (optional)</label>
         <input type="file" @change="e => handleImageUpload(e, 'second')" class="file-input" />
       </div>
 
       <div id="pdf-content" class="bg-white rounded shadow p-6">
         <section v-if="images.cover" class="mb-4">
-          <img v-if="coverUrl" :src="coverUrl" alt="Portada" class="w-full h-auto mb-4 rounded" />
+          <img v-if="coverUrl" :src="coverUrl" alt="Cover Image" class="w-full h-auto mb-4 rounded" />
         </section>
 
         <section v-if="images.second" class="mb-4">
-          <img v-if="secondUrl" :src="secondUrl" alt="Segunda portada" class="w-full h-auto mb-4 rounded" />
+          <img v-if="secondUrl" :src="secondUrl" alt="Second Cover Image" class="w-full h-auto mb-4 rounded" />
         </section>
 
         <section>
-          <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Catálogo</h2>
-          <table class="min-w-full text-sm border border-gray-300" :style="{ backgroundColor: colors.background, color: colors.text }">
-            <thead>
-              <tr>
-                <th v-for="(header, hi) in tableData[0]" :key="'th-' + hi" class="border px-4 py-2 bg-gray-100 text-left">
-                  {{ header }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(row, ri) in tableData.slice(1)" :key="'tr-' + ri">
-                <td v-for="(cell, ci) in row" :key="'td-' + ci" class="border px-4 py-1">
-                  {{ cell }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Catalog Preview</h2>
+          <ul class="space-y-4">
+            <li v-for="(row, ri) in tableData.slice(1)" :key="'row-' + ri" class="p-4 border rounded bg-gray-50">
+              <div v-for="(cell, ci) in row" :key="'cell-' + ci" class="text-sm">
+                <strong class="text-gray-700">{{ tableData[0][ci] }}:</strong> {{ cell }}
+              </div>
+            </li>
+          </ul>
         </section>
       </div>
 
       <button @click="generatePdf"
         class="bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition mx-auto block">
-        Generar PDF
+        Generate PDF
       </button>
     </div>
 
