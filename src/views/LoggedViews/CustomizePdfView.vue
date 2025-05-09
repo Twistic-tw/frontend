@@ -16,7 +16,7 @@ const fields = ref<{ name: string; active: boolean }[]>([]);
 const loading = ref(true);
 const error = ref(false);
 
-const colors = ref({ background: '#ffffff', text: '#000000', title: '#1f2937' });
+const colors = ref({ background: '#ffffff', text: '#000000', title: '#1f2937', header: '#4f46e5', rowAlternate: '#f9fafb' });
 const images = ref({ cover: null as File | null, second: null as File | null });
 const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '');
 const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '');
@@ -80,6 +80,7 @@ onMounted(fetchTemplate);
     <div v-else-if="error" class="text-center text-red-500">Error loading data.</div>
 
     <div v-else class="space-y-8">
+      <!-- Fields -->
       <div>
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Active Fields</h2>
         <draggable v-model="fields" item-key="name" class="space-y-2">
@@ -92,23 +93,34 @@ onMounted(fetchTemplate);
         </draggable>
       </div>
 
+      <!-- Colors -->
       <div>
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Colors</h2>
         <div class="flex flex-wrap gap-6">
           <label>Background <input type="color" v-model="colors.background" class="w-10 h-10" /></label>
           <label>Text <input type="color" v-model="colors.text" class="w-10 h-10" /></label>
           <label>Title <input type="color" v-model="colors.title" class="w-10 h-10" /></label>
+          <label>Header <input type="color" v-model="colors.header" class="w-10 h-10" /></label>
+          <label>Alternate Row <input type="color" v-model="colors.rowAlternate" class="w-10 h-10" /></label>
         </div>
       </div>
 
+      <!-- Cover Images -->
       <div>
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Cover Images</h2>
         <label class="block mb-2 text-sm font-medium text-gray-700">Main Cover</label>
         <input type="file" @change="e => handleImageUpload(e, 'cover')" class="file-input" />
         <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Second Cover (optional)</label>
         <input type="file" @change="e => handleImageUpload(e, 'second')" class="file-input" />
+
+        <!-- Generate PDF Button -->
+        <button @click="generatePdf"
+          class="mt-6 bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition">
+          Generate PDF
+        </button>
       </div>
 
+      <!-- Preview -->
       <div id="pdf-content" class="bg-white rounded shadow p-6">
         <section v-if="images.cover" class="mb-4">
           <img v-if="coverUrl" :src="coverUrl" alt="Cover Image" class="w-full h-auto mb-4 rounded" />
@@ -118,49 +130,52 @@ onMounted(fetchTemplate);
           <img v-if="secondUrl" :src="secondUrl" alt="Second Cover Image" class="w-full h-auto mb-4 rounded" />
         </section>
 
+        <!-- Simulated Table -->
         <section>
-  <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Catalog Preview</h2>
+          <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Catalog Preview</h2>
+          <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
+            <!-- Header -->
+            <div
+              class="grid text-white font-medium"
+              :style="{
+                backgroundColor: colors.header,
+                gridTemplateColumns: `repeat(${activeFieldNames.length}, minmax(0, 1fr))`
+              }"
+            >
+              <div
+                v-for="(key, i) in activeFieldNames"
+                :key="'header-' + i"
+                class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
+              >
+                {{ key }}
+              </div>
+            </div>
 
-  <div class="w-full text-sm border rounded overflow-auto">
-    <!-- Headers -->
-    <div
-      class="grid font-semibold bg-gray-100 text-gray-800 border-b"
-      :style="{ gridTemplateColumns: `repeat(${activeFieldNames.length}, minmax(0, 1fr))` }"
-    >
-      <div
-        v-for="(key, i) in activeFieldNames"
-        :key="'header-' + i"
-        class="px-3 py-2 border-r last:border-r-0"
-      >
-        {{ key }}
+            <!-- Rows -->
+            <div
+              v-for="(row, ri) in excelData"
+              :key="'row-' + ri"
+              class="grid"
+              :style="{
+                gridTemplateColumns: `repeat(${activeFieldNames.length}, minmax(0, 1fr))`,
+                backgroundColor: ri % 2 === 0 ? colors.background : colors.rowAlternate,
+                color: colors.text
+              }"
+            >
+              <div
+                v-for="(key, i) in activeFieldNames"
+                :key="'cell-' + ri + '-' + i"
+                class="px-4 py-2 border-r border-gray-200 last:border-r-0"
+              >
+                {{ row[key] }}
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
 
-    <!-- Rows -->
-    <div
-      v-for="(row, ri) in excelData"
-      :key="'row-' + ri"
-      class="grid border-b"
-      :style="{ gridTemplateColumns: `repeat(${activeFieldNames.length}, minmax(0, 1fr))`, backgroundColor: colors.background, color: colors.text }"
-    >
-      <div
-        v-for="(key, i) in activeFieldNames"
-        :key="'cell-' + ri + '-' + i"
-        class="px-3 py-2 border-r last:border-r-0"
-      >
-        {{ row[key] }}
-      </div>
-    </div>
-  </div>
-</section>
-      </div>
-
-      <button @click="generatePdf"
-        class="bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition mx-auto block">
-        Generate PDF
-      </button>
-    </div>
-
+    <!-- Back Button -->
     <div class="mt-12">
       <BackButton
         class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
@@ -168,6 +183,7 @@ onMounted(fetchTemplate);
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .file-input {
