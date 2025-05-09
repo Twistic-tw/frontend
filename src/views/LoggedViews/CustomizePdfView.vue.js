@@ -31,12 +31,13 @@ const fetchTemplate = () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield axios.get(`${import.meta.env.VITE_URL}/Templates/${templateId}/data`, {
             withCredentials: true
         });
-        console.log('📄 Template data:', res.data);
         templateName.value = res.data.template.name;
         fields.value = (res.data.fields || []).map((f) => ({ name: f, active: true }));
         const excelUrl = res.data.excel_path;
         const blob = yield (yield fetch(excelUrl)).blob();
         const text = yield blob.text();
+        console.log('📄 Template data:', res.data);
+        console.log('📄 Excel path:', res.data.excel_path);
         console.log('📄 Excel preview:', text.slice(0, 200));
         const buffer = yield blob.arrayBuffer();
         const workbook = XLSX.read(buffer, { type: 'array' });
