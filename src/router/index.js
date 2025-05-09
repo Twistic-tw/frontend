@@ -111,7 +111,7 @@ router.beforeEach(async (to, from, next) => {
   let isLoggedIn = false;
 
   try {
-    const res = await fetch(`${import.meta.env.VITE_URL}/api/user`, {
+    const res = await fetch(`${import.meta.env.VITE_URL}/user`, {
       credentials: 'include',
     });
 
