@@ -5,7 +5,7 @@ import axios from 'axios';
 import draggable from 'vuedraggable';
 import * as XLSX from 'xlsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+// @ts-ignore
 import html2pdf from 'html2pdf.js';
 import BackButton from '@/components/BackButton.vue';
 
