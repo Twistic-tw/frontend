@@ -5,6 +5,9 @@ import axios from 'axios';
 import draggable from 'vuedraggable';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import autoTable from 'jspdf-autotable';
 import BackButton from '@/components/BackButton.vue';
 
 const route = useRoute();
@@ -88,9 +91,9 @@ const generatePdf = async () => {
       withCredentials: true
     });
 
-    // Generar PDF local con jsPDF + autoTable
     const doc = new jsPDF();
-    doc.autoTable({
+
+    autoTable(doc, {
       head: [filteredData.value[0] as string[]],
       body: filteredData.value.slice(1) as string[][],
       styles: {
@@ -99,7 +102,6 @@ const generatePdf = async () => {
       },
       margin: { top: 20 },
     });
-
 
     doc.save(`${templateName.value}_preview.pdf`);
     alert('✅ PDF successfully generated');
@@ -113,6 +115,7 @@ const generatePdf = async () => {
 watch(fields, updateFilteredData, { deep: true });
 onMounted(fetchTemplate);
 </script>
+
 
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6">
