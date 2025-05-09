@@ -43,7 +43,11 @@ const fetchTemplate = async () => {
     const workbook = XLSX.read(buffer, { type: 'array' });
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
     console.log('🧾 Sheet:', sheet);
-    tableData.value = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+    tableData.value = XLSX.utils.sheet_to_json(sheet, {
+      header: 1,
+      defval: '' // ← rellena celdas vacías con ''
+    });
+
   } catch (err) {
     console.error('❌ Error loading data:', err);
     alert('Error: ' + err.message);
