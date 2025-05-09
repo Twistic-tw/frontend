@@ -5,7 +5,7 @@ import axios from 'axios';
 import draggable from 'vuedraggable';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import 'jspdf-autotable';
 import BackButton from '@/components/BackButton.vue';
 
 const route = useRoute();
@@ -94,7 +94,7 @@ const generatePdf = async () => {
     const head = [filteredData.value[0] as string[]];
     const body = filteredData.value.slice(1) as string[][];
 
-    autoTable(doc, {
+    doc.autoTable({
       head,
       body,
       styles: {
@@ -102,7 +102,6 @@ const generatePdf = async () => {
         textColor: colors.value.text,
       },
       margin: { top: 20 },
-      theme: 'striped',
     });
 
     doc.save(`${templateName.value}_preview.pdf`);
@@ -113,10 +112,10 @@ const generatePdf = async () => {
   }
 };
 
+// Lógica reactiva
 watch(fields, updateFilteredData, { deep: true });
 onMounted(fetchTemplate);
 </script>
-
 
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6">
