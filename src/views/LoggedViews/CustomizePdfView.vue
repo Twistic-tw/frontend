@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import draggable from 'vuedraggable';
+import * as XLSX from 'xlsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import html2pdf from 'html2pdf.js';
@@ -21,6 +22,8 @@ const images = ref({ cover: null as File | null, second: null as File | null });
 const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '');
 const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '');
 
+const tableData = ref<unknown[][]>([]);
+
 const fetchTemplate = async () => {
   try {
     const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
@@ -33,6 +36,14 @@ const fetchTemplate = async () => {
     });
     templateName.value = res.data.template.name;
     fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }));
+
+    const excelUrl = res.data.excel_path;
+    const blob = await (await fetch(excelUrl, { credentials: 'include' })).blob();
+    const buffer = await blob.arrayBuffer();
+
+    const workbook = XLSX.read(buffer, { type: 'array' });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    tableData.value = XLSX.utils.sheet_to_json(sheet, { header: 1 });
   } catch (err) {
     console.error('Error loading data:', err);
     error.value = true;
@@ -111,8 +122,23 @@ onMounted(fetchTemplate);
         </section>
 
         <section>
-          <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Contenido personalizado</h2>
-          <p class="text-gray-700 text-sm">Aquí se mostrará el contenido del catálogo por categoría, subcategoría u otros bloques organizativos en el futuro.</p>
+          <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Catálogo</h2>
+          <table class="min-w-full text-sm border border-gray-300" :style="{ backgroundColor: colors.background, color: colors.text }">
+            <thead>
+              <tr>
+                <th v-for="(header, hi) in tableData[0]" :key="'th-' + hi" class="border px-4 py-2 bg-gray-100 text-left">
+                  {{ header }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, ri) in tableData.slice(1)" :key="'tr-' + ri">
+                <td v-for="(cell, ci) in row" :key="'td-' + ci" class="border px-4 py-1">
+                  {{ cell }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </section>
       </div>
 
