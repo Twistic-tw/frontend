@@ -10,6 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import draggable from 'vuedraggable';
+import { useToast } from 'vue-toastification';
+import BackButton from '@/components/BackButton.vue';
+const toast = useToast();
 const step = ref(1);
 const loading = ref(false);
 const excelHeaders = ref([]);
@@ -41,7 +44,7 @@ const getXsrfToken = () => {
 const fetchUserId = () => __awaiter(void 0, void 0, void 0, function* () {
     const xsrfToken = getXsrfToken();
     try {
-        const response = yield axios.get('https://api-catalogos.twistic.app/api/user', {
+        const response = yield axios.get(`${import.meta.env.VITE_URL}/user`, {
             headers: {
                 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
                 'Accept': 'application/json',
@@ -60,14 +63,15 @@ const analyzeExcel = () => __awaiter(void 0, void 0, void 0, function* () {
     loading.value = true;
     const xsrfToken = getXsrfToken();
     if (!xsrfToken || !form.value.excel_file) {
-        alert('CSRF token or file missing.');
+        toast.error('CSRF token or file missing.');
         loading.value = false;
         return;
     }
     const formData = new FormData();
     formData.append('file', form.value.excel_file);
     try {
-        const response = yield axios.post('https://api-catalogos.twistic.app/api/excelscan', formData, {
+        // Primera petición: análisis del archivo
+        const response = yield axios.post(`${import.meta.env.VITE_URL}/excelscan`, formData, {
             headers: {
                 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
                 'Accept': 'application/json'
@@ -80,8 +84,8 @@ const analyzeExcel = () => __awaiter(void 0, void 0, void 0, function* () {
         nextStep();
     }
     catch (error) {
-        console.error('Error analyzing the file:', error);
-        alert('Error analyzing the file.');
+        console.error('Error analyzing or uploading the file:', error);
+        toast.error('Error analizando o subiendo el archivo.');
     }
     finally {
         loading.value = false;
@@ -94,14 +98,14 @@ const submitForm = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!userId.value) {
         yield fetchUserId();
         if (!userId.value) {
-            alert('User ID could not be fetched.');
+            toast.error('User ID could not be fetched.');
             loading.value = false;
             return;
         }
     }
     const xsrfToken = getXsrfToken();
     if (!xsrfToken || !form.value.excel_file) {
-        alert('Session expired or file missing.');
+        toast.error('Session expired or file missing.');
         loading.value = false;
         return;
     }
@@ -120,53 +124,31 @@ const submitForm = () => __awaiter(void 0, void 0, void 0, function* () {
         order: index
     }));
     formData.append('fields', JSON.stringify(selectedFields));
-    const archivo = formData.get('file');
-    if (archivo) {
-        console.log('📦 Archivo adjuntado a la petición:');
-        console.log(`Nombre: ${archivo.name}`);
-        console.log(`Tamaño: ${archivo.size} bytes`);
-        console.log(`Tipo: ${archivo.type}`);
-        alert(`Se adjuntó el archivo correctamente:\n` +
-            `📄 Nombre: ${archivo.name}\n` +
-            `📦 Tamaño: ${archivo.size} bytes\n` +
-            `📑 Tipo: ${archivo.type}`);
-    }
-    else {
-        alert('⚠️ El archivo no se adjuntó a la petición.');
-    }
     try {
-        const response = yield axios.post('https://api-catalogos.twistic.app/api/CreateTemplateWithNotification', formData, {
+        console.log('Enviando datos al backend:', formData);
+        const response = yield axios.post(`${import.meta.env.VITE_URL}/CreateTemplateWithNotification`, formData, {
             headers: {
                 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
                 'Accept': 'application/json',
             },
             withCredentials: true,
         });
+        console.log('Respuesta del backend:', response.data);
+        console.log('Verificaciones:', response.data.verificaciones);
+        console.log('Excel:', response.data.excel);
+        console.log('Path:', response.data.path);
         if (response.status === 200) {
-            console.log('Respuesta del backend:', response.data);
-            alert(response.data.message || 'Plantilla y notificación creadas correctamente');
             step.value = 6;
         }
     }
     catch (error) {
-        if (typeof error === 'object' &&
-            error !== null &&
-            'response' in error &&
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            typeof error.response === 'object') {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const errResponse = error.response;
-            console.error('Error del servidor:', errResponse.data);
-            // Mostrar todos los detalles útiles si están disponibles
-            const details = errResponse.data;
-            alert((details === null || details === void 0 ? void 0 : details.error) +
-                '\n\nRuta esperada: ' + ((details === null || details === void 0 ? void 0 : details.expected_path) || 'N/A') +
-                '\n¿Directorio escribible?: ' + ((details === null || details === void 0 ? void 0 : details.directory_writable) ? 'Sí' : 'No') +
-                '\nEspacio libre: ' + (((_a = details === null || details === void 0 ? void 0 : details.disk_free_space_mb) === null || _a === void 0 ? void 0 : _a.toFixed(2)) || 'N/A') + ' MB');
+        if (axios.isAxiosError(error)) {
+            console.error('Error:', (_a = error.response) === null || _a === void 0 ? void 0 : _a.data);
+            toast.error('Error creating the template.');
         }
         else {
-            console.error('Error desconocido:', error);
-            alert('Error desconocido al crear la plantilla.');
+            console.error('Unexpected error:', error);
+            toast.error('An unexpected error occurred.');
         }
     }
     finally {
@@ -323,6 +305,11 @@ if (__VLS_ctx.loading) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-20 w-20" }));
 }
 var __VLS_3;
+__VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "mt-12" }));
+/** @type {[typeof BackButton, ]} */ ;
+// @ts-ignore
+const __VLS_8 = __VLS_asFunctionalComponent(BackButton, new BackButton(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" })));
+const __VLS_9 = __VLS_8(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" }), ...__VLS_functionalComponentArgsRest(__VLS_8));
 /** @type {__VLS_StyleScopedClasses['min-h-screen']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-gradient-to-br']} */ ;
 /** @type {__VLS_StyleScopedClasses['from-blue-100']} */ ;
@@ -556,11 +543,26 @@ var __VLS_3;
 /** @type {__VLS_StyleScopedClasses['border-gray-200']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-20']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-20']} */ ;
+/** @type {__VLS_StyleScopedClasses['mt-12']} */ ;
+/** @type {__VLS_StyleScopedClasses['fixed']} */ ;
+/** @type {__VLS_StyleScopedClasses['bottom-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['left-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-gray-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['shadow']} */ ;
+/** @type {__VLS_StyleScopedClasses['transition-all']} */ ;
+/** @type {__VLS_StyleScopedClasses['duration-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['ease-in-out']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:px-6']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {
         return {
             draggable: draggable,
+            BackButton: BackButton,
             step: step,
             loading: loading,
             form: form,

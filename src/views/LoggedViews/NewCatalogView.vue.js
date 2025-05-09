@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import draggable from 'vuedraggable';
+import BackButton from '@/components/BackButton.vue';
 const step = ref(1);
 const loading = ref(false);
 const excelHeaders = ref([]);
@@ -42,7 +43,7 @@ const fetchUserId = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!xsrfToken)
         return null;
     try {
-        const response = yield axios.get('https://api-catalogos.twistic.app/api/user', {
+        const response = yield axios.get(`${import.meta.env.VITE_URL}/user`, {
             headers: {
                 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
                 'Accept': 'application/json',
@@ -68,7 +69,7 @@ const analyzeExcel = () => __awaiter(void 0, void 0, void 0, function* () {
     const formData = new FormData();
     formData.append('file', form.value.excel_file);
     try {
-        const response = yield axios.post('https://api-catalogos.twistic.app/api/excelscan', formData, {
+        const response = yield axios.post(`${import.meta.env.VITE_URL}/excelscan`, formData, {
             headers: {
                 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
                 'Accept': 'application/json'
@@ -123,7 +124,7 @@ const submitForm = () => __awaiter(void 0, void 0, void 0, function* () {
             fields: form.value.selected_headers,
             file: form.value.excel_file
         });
-        const response = yield axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
+        const response = yield axios.post(`${import.meta.env.VITE_URL}/CreateTemplate`, formData, {
             headers: {
                 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
                 'Accept': 'application/json'
@@ -293,6 +294,11 @@ if (__VLS_ctx.loading) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-20 w-20" }));
 }
 var __VLS_3;
+__VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "mt-12" }));
+/** @type {[typeof BackButton, ]} */ ;
+// @ts-ignore
+const __VLS_8 = __VLS_asFunctionalComponent(BackButton, new BackButton(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" })));
+const __VLS_9 = __VLS_8(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" }), ...__VLS_functionalComponentArgsRest(__VLS_8));
 /** @type {__VLS_StyleScopedClasses['min-h-screen']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-gradient-to-br']} */ ;
 /** @type {__VLS_StyleScopedClasses['from-blue-100']} */ ;
@@ -526,11 +532,26 @@ var __VLS_3;
 /** @type {__VLS_StyleScopedClasses['border-gray-200']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-20']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-20']} */ ;
+/** @type {__VLS_StyleScopedClasses['mt-12']} */ ;
+/** @type {__VLS_StyleScopedClasses['fixed']} */ ;
+/** @type {__VLS_StyleScopedClasses['bottom-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['left-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-gray-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['shadow']} */ ;
+/** @type {__VLS_StyleScopedClasses['transition-all']} */ ;
+/** @type {__VLS_StyleScopedClasses['duration-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['ease-in-out']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:px-6']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {
         return {
             draggable: draggable,
+            BackButton: BackButton,
             step: step,
             loading: loading,
             form: form,

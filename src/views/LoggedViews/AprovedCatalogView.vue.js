@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import BackButton from '@/components/BackButton.vue';
 const userId = ref(0);
 const approvedTemplates = ref([]);
 const loading = ref(true);
@@ -22,7 +23,7 @@ const getXsrfToken = () => {
 const fetchUserId = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const xsrfToken = getXsrfToken();
-        const res = yield axios.get('https://api-catalogos.twistic.app/api/user', {
+        const res = yield axios.get(`${import.meta.env.VITE_URL}/user`, {
             headers: {
                 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
                 'Accept': 'application/json',
@@ -39,7 +40,7 @@ const fetchUserId = () => __awaiter(void 0, void 0, void 0, function* () {
 // Obtener las plantillas aprobadas (In Progress)
 const fetchApprovedTemplates = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const res = yield axios.get('https://api-catalogos.twistic.app/api/aprovedNotifications', {
+        const res = yield axios.get(`${import.meta.env.VITE_URL}/aprovedNotifications`, {
             withCredentials: true
         });
         approvedTemplates.value = res.data.notifications;
@@ -90,6 +91,11 @@ else {
         var __VLS_3;
     }
 }
+__VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "mt-12" }));
+/** @type {[typeof BackButton, ]} */ ;
+// @ts-ignore
+const __VLS_4 = __VLS_asFunctionalComponent(BackButton, new BackButton(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" })));
+const __VLS_5 = __VLS_4(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" }), ...__VLS_functionalComponentArgsRest(__VLS_4));
 /** @type {__VLS_StyleScopedClasses['min-h-screen']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-gradient-to-b']} */ ;
 /** @type {__VLS_StyleScopedClasses['from-gray-100']} */ ;
@@ -144,10 +150,25 @@ else {
 /** @type {__VLS_StyleScopedClasses['hover:-translate-y-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:scale-105']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:bg-[#3a2ac9]']} */ ;
+/** @type {__VLS_StyleScopedClasses['mt-12']} */ ;
+/** @type {__VLS_StyleScopedClasses['fixed']} */ ;
+/** @type {__VLS_StyleScopedClasses['bottom-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['left-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-gray-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['shadow']} */ ;
+/** @type {__VLS_StyleScopedClasses['transition-all']} */ ;
+/** @type {__VLS_StyleScopedClasses['duration-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['ease-in-out']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:px-6']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {
         return {
+            BackButton: BackButton,
             approvedTemplates: approvedTemplates,
             loading: loading,
             error: error,

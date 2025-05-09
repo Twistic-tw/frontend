@@ -26,7 +26,7 @@ export default defineComponent({
         const fetchUser = () => __awaiter(this, void 0, void 0, function* () {
             try {
                 const xsrfToken = getCookie('XSRF-TOKEN');
-                const response = yield axios.get('https://api-catalogos.twistic.app/api/user', {
+                const response = yield axios.get(`${import.meta.env.VITE_URL}/user`, {
                     withCredentials: true,
                     headers: {
                         'X-XSRF-TOKEN': xsrfToken,
@@ -105,6 +105,12 @@ else {
 if (__VLS_ctx.error) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "text-center text-red-500 mt-6" }));
 }
+__VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "mt-12" }));
+const __VLS_0 = {}.BackButton;
+/** @type {[typeof __VLS_components.BackButton, ]} */ ;
+// @ts-ignore
+const __VLS_1 = __VLS_asFunctionalComponent(__VLS_0, new __VLS_0(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" })));
+const __VLS_2 = __VLS_1(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" }), ...__VLS_functionalComponentArgsRest(__VLS_1));
 /** @type {__VLS_StyleScopedClasses['min-h-screen']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-gradient-to-b']} */ ;
 /** @type {__VLS_StyleScopedClasses['from-gray-100']} */ ;
@@ -179,5 +185,19 @@ if (__VLS_ctx.error) {
 /** @type {__VLS_StyleScopedClasses['text-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-red-500']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['mt-12']} */ ;
+/** @type {__VLS_StyleScopedClasses['fixed']} */ ;
+/** @type {__VLS_StyleScopedClasses['bottom-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['left-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-gray-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['shadow']} */ ;
+/** @type {__VLS_StyleScopedClasses['transition-all']} */ ;
+/** @type {__VLS_StyleScopedClasses['duration-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['ease-in-out']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:px-6']} */ ;
 var __VLS_dollars;
 let __VLS_self;

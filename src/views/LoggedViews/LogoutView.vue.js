@@ -17,7 +17,7 @@ function getCookie(name) {
 }
 onMounted(() => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield axios.post('https://api-catalogos.twistic.app/api/closesession', {}, {
+        yield axios.post(`${import.meta.env.VITE_URL}/closesession`, {}, {
             withCredentials: true,
             headers: {
                 'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')

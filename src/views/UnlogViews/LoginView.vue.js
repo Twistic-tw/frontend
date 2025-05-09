@@ -25,7 +25,7 @@ const logUser = () => __awaiter(void 0, void 0, void 0, function* () {
     loading.value = true;
     try {
         // Paso 1: Pedir cookies iniciales (XSRF-TOKEN y laravel_session)
-        yield axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', {
+        yield axios.get(`http://${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
             withCredentials: true
         });
         // Paso 2: Obtener el token CSRF actual desde las cookies
@@ -34,7 +34,7 @@ const logUser = () => __awaiter(void 0, void 0, void 0, function* () {
             throw new Error('No se encontró el token CSRF');
         }
         // Paso 3: Hacer login y dejar que el navegador actualice la laravel_session
-        const response = yield axios.post('https://api-catalogos.twistic.app/api/loginProcess', {
+        const response = yield axios.post(`${import.meta.env.VITE_URL}/loginProcess`, {
             email: email.value,
             password: password.value
         }, {

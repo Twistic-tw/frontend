@@ -1,4 +1,5 @@
 import { useUserListManagement } from '../../composable/userListManagement';
+import BackButton from '@/components/BackButton.vue';
 const { error, searchQuery, filteredUsers, deleteUser, editUser, mostrarModal, usuarioSeleccionado, nuevaPassword, guardarCambios, openCreateModal, showCreateModal, submitCreateUser, newUser, closeCreateModal, idiomasDisponibles } = useUserListManagement();
 debugger; /* PartiallyEnd: #3632/scriptSetup.vue */
 const __VLS_ctx = {};
@@ -143,6 +144,11 @@ if (__VLS_ctx.mostrarModal) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElements.button)(Object.assign({ type: "submit" }, { class: "px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" }));
 }
 var __VLS_7;
+__VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "mt-12" }));
+/** @type {[typeof BackButton, ]} */ ;
+// @ts-ignore
+const __VLS_8 = __VLS_asFunctionalComponent(BackButton, new BackButton(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" })));
+const __VLS_9 = __VLS_8(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" }), ...__VLS_functionalComponentArgsRest(__VLS_8));
 /** @type {__VLS_StyleScopedClasses['min-h-screen']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-gradient-to-b']} */ ;
 /** @type {__VLS_StyleScopedClasses['from-gray-100']} */ ;
@@ -450,10 +456,25 @@ var __VLS_7;
 /** @type {__VLS_StyleScopedClasses['text-white']} */ ;
 /** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:bg-blue-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['mt-12']} */ ;
+/** @type {__VLS_StyleScopedClasses['fixed']} */ ;
+/** @type {__VLS_StyleScopedClasses['bottom-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['left-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-gray-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['shadow']} */ ;
+/** @type {__VLS_StyleScopedClasses['transition-all']} */ ;
+/** @type {__VLS_StyleScopedClasses['duration-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['ease-in-out']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:px-6']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {
         return {
+            BackButton: BackButton,
             error: error,
             searchQuery: searchQuery,
             filteredUsers: filteredUsers,

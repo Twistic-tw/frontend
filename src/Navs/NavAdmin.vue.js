@@ -44,134 +44,140 @@ let __VLS_directives;
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "flex h-auto" }));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.nav, __VLS_intrinsicElements.nav)(Object.assign({ class: "flex h-17 items-center bg-gradient-to-l from-neutral-950 to-slate-800 w-full fixed top-0 px-5 z-50" }));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "flex items-center flex-1 justify-start" }));
-__VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)(Object.assign({ class: "text-white font-bold text-xl" }));
-(__VLS_ctx.title);
+const __VLS_0 = {}.RouterLink;
+/** @type {[typeof __VLS_components.RouterLink, typeof __VLS_components.routerLink, typeof __VLS_components.RouterLink, typeof __VLS_components.routerLink, ]} */ ;
+// @ts-ignore
+const __VLS_1 = __VLS_asFunctionalComponent(__VLS_0, new __VLS_0(Object.assign({ to: "dashboard" }, { class: "flex items-center space-x-2" })));
+const __VLS_2 = __VLS_1(Object.assign({ to: "dashboard" }, { class: "flex items-center space-x-2" }), ...__VLS_functionalComponentArgsRest(__VLS_1));
+__VLS_3.slots.default;
+__VLS_asFunctionalElement(__VLS_intrinsicElements.img)(Object.assign({ src: "/public/TW_LOGO_BLANCOy_gris.png", alt: "Twistic Logo" }, { class: "h-[6.5rem] w-auto" }));
+var __VLS_3;
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ onClick: (__VLS_ctx.ToggleNav) }, { class: "size-12 mr-4 rounded-tl-2xl rounded-br-2xl overflow-hidden border-2 border-indigo-500 hover:border-cyan-400 transition-all duration-300 ease-in-out shadow-lg hover:shadow-indigo-500/50 cursor-pointer" }));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.img)(Object.assign({ src: "/avatar.png", alt: "Avatar" }, { class: "w-full h-full object-cover" }));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "w-46 bg-neutral-950 rounded-b-2xl fixed right-0 mt-[68px] flex flex-col overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] z-50" }, { class: ({ 'max-h-[600px]': __VLS_ctx.navExpanded, 'max-h-0': !__VLS_ctx.navExpanded }) }));
-const __VLS_0 = {}.RouterLink;
+const __VLS_4 = {}.RouterLink;
 /** @type {[typeof __VLS_components.RouterLink, typeof __VLS_components.RouterLink, ]} */ ;
 // @ts-ignore
-const __VLS_1 = __VLS_asFunctionalComponent(__VLS_0, new __VLS_0(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/dashboard" }), { class: "transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
-const __VLS_2 = __VLS_1(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/dashboard" }), { class: "transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_1));
-let __VLS_4;
-let __VLS_5;
-let __VLS_6;
-const __VLS_7 = {
+const __VLS_5 = __VLS_asFunctionalComponent(__VLS_4, new __VLS_4(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/dashboard" }), { class: "transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
+const __VLS_6 = __VLS_5(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/dashboard" }), { class: "transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_5));
+let __VLS_8;
+let __VLS_9;
+let __VLS_10;
+const __VLS_11 = {
     onClick: (__VLS_ctx.closeNav)
 };
-__VLS_3.slots.default;
-var __VLS_3;
-const __VLS_8 = {}.RouterLink;
+__VLS_7.slots.default;
+var __VLS_7;
+const __VLS_12 = {}.RouterLink;
 /** @type {[typeof __VLS_components.RouterLink, typeof __VLS_components.RouterLink, ]} */ ;
 // @ts-ignore
-const __VLS_9 = __VLS_asFunctionalComponent(__VLS_8, new __VLS_8(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/profile" }), { class: "transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
-const __VLS_10 = __VLS_9(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/profile" }), { class: "transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_9));
-let __VLS_12;
-let __VLS_13;
-let __VLS_14;
-const __VLS_15 = {
+const __VLS_13 = __VLS_asFunctionalComponent(__VLS_12, new __VLS_12(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/profile" }), { class: "transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
+const __VLS_14 = __VLS_13(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/profile" }), { class: "transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_13));
+let __VLS_16;
+let __VLS_17;
+let __VLS_18;
+const __VLS_19 = {
     onClick: (__VLS_ctx.closeNav)
 };
-__VLS_11.slots.default;
-var __VLS_11;
-const __VLS_16 = {}.RouterLink;
+__VLS_15.slots.default;
+var __VLS_15;
+const __VLS_20 = {}.RouterLink;
 /** @type {[typeof __VLS_components.RouterLink, typeof __VLS_components.RouterLink, ]} */ ;
 // @ts-ignore
-const __VLS_17 = __VLS_asFunctionalComponent(__VLS_16, new __VLS_16(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/newCatalog" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
-const __VLS_18 = __VLS_17(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/newCatalog" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_17));
-let __VLS_20;
-let __VLS_21;
-let __VLS_22;
-const __VLS_23 = {
+const __VLS_21 = __VLS_asFunctionalComponent(__VLS_20, new __VLS_20(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/newCatalog" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
+const __VLS_22 = __VLS_21(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/newCatalog" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_21));
+let __VLS_24;
+let __VLS_25;
+let __VLS_26;
+const __VLS_27 = {
     onClick: (__VLS_ctx.closeNav)
 };
-__VLS_19.slots.default;
-var __VLS_19;
-const __VLS_24 = {}.RouterLink;
+__VLS_23.slots.default;
+var __VLS_23;
+const __VLS_28 = {}.RouterLink;
 /** @type {[typeof __VLS_components.RouterLink, typeof __VLS_components.RouterLink, ]} */ ;
 // @ts-ignore
-const __VLS_25 = __VLS_asFunctionalComponent(__VLS_24, new __VLS_24(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/catalogs" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
-const __VLS_26 = __VLS_25(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/catalogs" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_25));
-let __VLS_28;
-let __VLS_29;
-let __VLS_30;
-const __VLS_31 = {
+const __VLS_29 = __VLS_asFunctionalComponent(__VLS_28, new __VLS_28(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/catalogs" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
+const __VLS_30 = __VLS_29(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/catalogs" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_29));
+let __VLS_32;
+let __VLS_33;
+let __VLS_34;
+const __VLS_35 = {
     onClick: (__VLS_ctx.closeNav)
 };
-__VLS_27.slots.default;
-var __VLS_27;
+__VLS_31.slots.default;
+var __VLS_31;
 if (__VLS_ctx.role && (__VLS_ctx.role === 'admin')) {
-    const __VLS_32 = {}.RouterLink;
+    const __VLS_36 = {}.RouterLink;
     /** @type {[typeof __VLS_components.RouterLink, typeof __VLS_components.RouterLink, ]} */ ;
     // @ts-ignore
-    const __VLS_33 = __VLS_asFunctionalComponent(__VLS_32, new __VLS_32(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/templates" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
-    const __VLS_34 = __VLS_33(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/templates" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_33));
-    let __VLS_36;
-    let __VLS_37;
-    let __VLS_38;
-    const __VLS_39 = {
+    const __VLS_37 = __VLS_asFunctionalComponent(__VLS_36, new __VLS_36(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/templates" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
+    const __VLS_38 = __VLS_37(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/templates" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_37));
+    let __VLS_40;
+    let __VLS_41;
+    let __VLS_42;
+    const __VLS_43 = {
         onClick: (__VLS_ctx.closeNav)
     };
-    __VLS_35.slots.default;
-    var __VLS_35;
+    __VLS_39.slots.default;
+    var __VLS_39;
 }
 if (__VLS_ctx.role && (__VLS_ctx.role === 'admin')) {
-    const __VLS_40 = {}.RouterLink;
+    const __VLS_44 = {}.RouterLink;
     /** @type {[typeof __VLS_components.RouterLink, typeof __VLS_components.RouterLink, ]} */ ;
     // @ts-ignore
-    const __VLS_41 = __VLS_asFunctionalComponent(__VLS_40, new __VLS_40(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/fields" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
-    const __VLS_42 = __VLS_41(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/fields" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_41));
-    let __VLS_44;
-    let __VLS_45;
-    let __VLS_46;
-    const __VLS_47 = {
+    const __VLS_45 = __VLS_asFunctionalComponent(__VLS_44, new __VLS_44(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/fields" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
+    const __VLS_46 = __VLS_45(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/fields" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_45));
+    let __VLS_48;
+    let __VLS_49;
+    let __VLS_50;
+    const __VLS_51 = {
         onClick: (__VLS_ctx.closeNav)
     };
-    __VLS_43.slots.default;
-    var __VLS_43;
+    __VLS_47.slots.default;
+    var __VLS_47;
 }
-const __VLS_48 = {}.RouterLink;
+const __VLS_52 = {}.RouterLink;
 /** @type {[typeof __VLS_components.RouterLink, typeof __VLS_components.RouterLink, ]} */ ;
 // @ts-ignore
-const __VLS_49 = __VLS_asFunctionalComponent(__VLS_48, new __VLS_48(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/notifications" }), { class: "transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
-const __VLS_50 = __VLS_49(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/notifications" }), { class: "transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_49));
-let __VLS_52;
-let __VLS_53;
-let __VLS_54;
-const __VLS_55 = {
+const __VLS_53 = __VLS_asFunctionalComponent(__VLS_52, new __VLS_52(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/notifications" }), { class: "transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
+const __VLS_54 = __VLS_53(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/notifications" }), { class: "transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_53));
+let __VLS_56;
+let __VLS_57;
+let __VLS_58;
+const __VLS_59 = {
     onClick: (__VLS_ctx.closeNav)
 };
-__VLS_51.slots.default;
-var __VLS_51;
+__VLS_55.slots.default;
+var __VLS_55;
 if (__VLS_ctx.role && (__VLS_ctx.role === 'admin')) {
-    const __VLS_56 = {}.RouterLink;
+    const __VLS_60 = {}.RouterLink;
     /** @type {[typeof __VLS_components.RouterLink, typeof __VLS_components.RouterLink, ]} */ ;
     // @ts-ignore
-    const __VLS_57 = __VLS_asFunctionalComponent(__VLS_56, new __VLS_56(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/users" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
-    const __VLS_58 = __VLS_57(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/users" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_57));
-    let __VLS_60;
-    let __VLS_61;
-    let __VLS_62;
-    const __VLS_63 = {
+    const __VLS_61 = __VLS_asFunctionalComponent(__VLS_60, new __VLS_60(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/users" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
+    const __VLS_62 = __VLS_61(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/users" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_61));
+    let __VLS_64;
+    let __VLS_65;
+    let __VLS_66;
+    const __VLS_67 = {
         onClick: (__VLS_ctx.closeNav)
     };
-    __VLS_59.slots.default;
-    var __VLS_59;
+    __VLS_63.slots.default;
+    var __VLS_63;
 }
-const __VLS_64 = {}.RouterLink;
+const __VLS_68 = {}.RouterLink;
 /** @type {[typeof __VLS_components.RouterLink, typeof __VLS_components.RouterLink, ]} */ ;
 // @ts-ignore
-const __VLS_65 = __VLS_asFunctionalComponent(__VLS_64, new __VLS_64(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/logout" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
-const __VLS_66 = __VLS_65(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/logout" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_65));
-let __VLS_68;
-let __VLS_69;
-let __VLS_70;
-const __VLS_71 = {
+const __VLS_69 = __VLS_asFunctionalComponent(__VLS_68, new __VLS_68(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/logout" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) })));
+const __VLS_70 = __VLS_69(Object.assign(Object.assign(Object.assign(Object.assign({ 'onClick': {} }, { to: "/logout" }), { class: "rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" }), { activeClass: "bg-slate-800" }), { class: ({ 'opacity-100 translate-y-0': __VLS_ctx.navExpanded, 'opacity-0 -translate-y-2 pointer-events-none': !__VLS_ctx.navExpanded }) }), ...__VLS_functionalComponentArgsRest(__VLS_69));
+let __VLS_72;
+let __VLS_73;
+let __VLS_74;
+const __VLS_75 = {
     onClick: (__VLS_ctx.closeNav)
 };
-__VLS_67.slots.default;
-var __VLS_67;
+__VLS_71.slots.default;
+var __VLS_71;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
@@ -189,9 +195,11 @@ var __VLS_67;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-start']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-white']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-xl']} */ ;
+/** @type {__VLS_StyleScopedClasses['flex']} */ ;
+/** @type {__VLS_StyleScopedClasses['items-center']} */ ;
+/** @type {__VLS_StyleScopedClasses['space-x-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['h-[6.5rem]']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['size-12']} */ ;
 /** @type {__VLS_StyleScopedClasses['mr-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['rounded-tl-2xl']} */ ;
@@ -359,7 +367,6 @@ const __VLS_self = (await import('vue')).defineComponent({
         return {
             RouterLink: RouterLink,
             role: role,
-            title: title,
             navExpanded: navExpanded,
             ToggleNav: ToggleNav,
             closeNav: closeNav,

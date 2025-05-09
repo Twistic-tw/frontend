@@ -9,43 +9,46 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { useToast } from 'vue-toastification';
+import BackButton from '@/components/BackButton.vue';
+const toast = useToast();
 const fields = ref([]);
 onMounted(() => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const res = yield axios.get('https://api-catalogos.twistic.app/api/ViewFields');
+        const res = yield axios.get(`${import.meta.env.VITE_URL}/ViewFields`);
         fields.value = res.data;
     }
     catch (error) {
-        console.error('Error al cargar los campos:', error);
+        console.error('Error loading fields:', error);
         fields.value = [];
     }
 }));
-// Eliminar campo
+// Delete field
 function eliminarCampo(id) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
-        if (confirm('¿Estás seguro de que quieres eliminar este campo?')) {
+        if (confirm('Are you sure you want to delete this field?')) {
             try {
-                // Obtener token CSRF de la cookie
+                // Get CSRF token from cookie
                 const xsrfToken = (_a = document.cookie.match(/XSRF-TOKEN=([^;]+)/)) === null || _a === void 0 ? void 0 : _a[1];
                 if (!xsrfToken) {
-                    alert('Token CSRF no encontrado, recarga la página.');
+                    toast.error('CSRF token not found. Please reload the page.');
                     return;
                 }
-                yield axios.delete(`https://api-catalogos.twistic.app/api/DeleteField/${id}`, {
+                yield axios.delete(`${import.meta.env.VITE_URL}/DeleteField/${id}`, {
                     withCredentials: true,
                     headers: {
                         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
                         'Accept': 'application/json'
                     }
                 });
-                // Eliminar del array localmente
+                // Remove from local array
                 fields.value = fields.value.filter(field => field.id !== id);
-                alert('Campo eliminado correctamente.');
+                toast.success('Field deleted successfully.');
             }
             catch (error) {
-                console.error('Error al eliminar el campo:', error);
-                alert('Hubo un error al eliminar el campo.');
+                console.error('Error deleting field:', error);
+                toast.error('An error occurred while deleting the field.');
             }
         }
     });
@@ -75,6 +78,11 @@ for (const [field] of __VLS_getVForSourceType((__VLS_ctx.fields))) {
 if (__VLS_ctx.fields.length === 0) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "text-center text-gray-500 mt-8" }));
 }
+__VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "mt-12" }));
+/** @type {[typeof BackButton, ]} */ ;
+// @ts-ignore
+const __VLS_0 = __VLS_asFunctionalComponent(BackButton, new BackButton(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" })));
+const __VLS_1 = __VLS_0(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" }), ...__VLS_functionalComponentArgsRest(__VLS_0));
 /** @type {__VLS_StyleScopedClasses['p-6']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-gradient-to-b']} */ ;
 /** @type {__VLS_StyleScopedClasses['from-gray-100']} */ ;
@@ -129,10 +137,25 @@ if (__VLS_ctx.fields.length === 0) {
 /** @type {__VLS_StyleScopedClasses['text-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-gray-500']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-8']} */ ;
+/** @type {__VLS_StyleScopedClasses['mt-12']} */ ;
+/** @type {__VLS_StyleScopedClasses['fixed']} */ ;
+/** @type {__VLS_StyleScopedClasses['bottom-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['left-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-gray-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['shadow']} */ ;
+/** @type {__VLS_StyleScopedClasses['transition-all']} */ ;
+/** @type {__VLS_StyleScopedClasses['duration-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['ease-in-out']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:px-6']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {
         return {
+            BackButton: BackButton,
             fields: fields,
             eliminarCampo: eliminarCampo,
         };

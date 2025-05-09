@@ -12,6 +12,7 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 import draggable from 'vuedraggable';
 import * as XLSX from 'xlsx';
+import BackButton from '@/components/BackButton.vue';
 const route = useRoute();
 const templateId = route.params.id;
 const templateName = ref('');
@@ -27,9 +28,10 @@ const getXsrfToken = () => { var _a; return ((_a = document.cookie.match(/XSRF-T
 // Fetch template and load Excel
 const fetchTemplate = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const res = yield axios.get(`https://api-catalogos.twistic.app/api/Templates/${templateId}/data`, {
+        const res = yield axios.get(`${import.meta.env.VITE_URL}/Templates/${templateId}/data`, {
             withCredentials: true
         });
+        console.log('📄 Template data:', res.data);
         templateName.value = res.data.template.name;
         fields.value = (res.data.fields || []).map((f) => ({ name: f, active: true }));
         const excelUrl = res.data.excel_path;
@@ -84,7 +86,7 @@ const generatePdf = () => __awaiter(void 0, void 0, void 0, function* () {
         formData.append('end', images.value.end);
     try {
         const xsrf = getXsrfToken();
-        yield axios.post('https://api-catalogos.twistic.app/api/Pdf', formData, {
+        yield axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
             headers: {
                 'X-XSRF-TOKEN': decodeURIComponent(xsrf),
                 'Accept': 'application/json'
@@ -174,6 +176,11 @@ else {
     }
     __VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElements.button)(Object.assign({ onClick: (__VLS_ctx.generatePdf) }, { class: "bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition mx-auto block" }));
 }
+__VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "mt-12" }));
+/** @type {[typeof BackButton, ]} */ ;
+// @ts-ignore
+const __VLS_4 = __VLS_asFunctionalComponent(BackButton, new BackButton(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" })));
+const __VLS_5 = __VLS_4(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" }), ...__VLS_functionalComponentArgsRest(__VLS_4));
 /** @type {__VLS_StyleScopedClasses['min-h-screen']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-gradient-to-b']} */ ;
 /** @type {__VLS_StyleScopedClasses['from-gray-100']} */ ;
@@ -253,11 +260,26 @@ else {
 /** @type {__VLS_StyleScopedClasses['transition']} */ ;
 /** @type {__VLS_StyleScopedClasses['mx-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['block']} */ ;
+/** @type {__VLS_StyleScopedClasses['mt-12']} */ ;
+/** @type {__VLS_StyleScopedClasses['fixed']} */ ;
+/** @type {__VLS_StyleScopedClasses['bottom-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['left-6']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-gray-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['shadow']} */ ;
+/** @type {__VLS_StyleScopedClasses['transition-all']} */ ;
+/** @type {__VLS_StyleScopedClasses['duration-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['ease-in-out']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:px-6']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {
         return {
             draggable: draggable,
+            BackButton: BackButton,
             templateName: templateName,
             fields: fields,
             loading: loading,
