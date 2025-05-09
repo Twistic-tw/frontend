@@ -163,7 +163,7 @@ onMounted(fetchTemplate);
       <div class="bg-white rounded shadow p-4">
         <h2 class="text-lg font-bold text-gray-700 mb-2">Excel Preview</h2>
         <div class="overflow-auto max-h-[400px]">
-          <table id="excel-table" class="w-full border-collapse text-sm" :style="{ backgroundColor: colors.background, color: colors.text }">
+          <table class="w-full border-collapse text-sm" :style="{ backgroundColor: colors.background, color: colors.text }">
             <thead class="bg-gray-100 sticky top-0">
               <tr>
                 <th v-for="(h, i) in filteredData[0]" :key="i" class="border px-3 py-2">{{ h }}</th>
