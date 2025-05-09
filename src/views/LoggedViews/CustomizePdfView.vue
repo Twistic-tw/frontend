@@ -29,13 +29,14 @@ const fetchTemplate = async () => {
       withCredentials: true
     });
 
-    console.log('📄 Template data:', res.data);
     templateName.value = res.data.template.name;
     fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }));
 
     const excelUrl = res.data.excel_path;
     const blob = await (await fetch(excelUrl)).blob();
     const text = await blob.text();
+    console.log('📄 Template data:', res.data);
+    console.log('📄 Excel path:', res.data.excel_path);
     console.log('📄 Excel preview:', text.slice(0, 200));
     const buffer = await blob.arrayBuffer();
 
