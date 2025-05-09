@@ -30,7 +30,7 @@ const logUser = async () => {
     }
 
     // Paso 3: Hacer login y dejar que el navegador actualice la laravel_session
-    const response = await axios.post(`https://api-catalogos.twistic.app/api/loginProcess`,
+    const response = await axios.post(`${import.meta.env.VITE_URL}/loginProcess`,
       {
         email: email.value,
         password: password.value
