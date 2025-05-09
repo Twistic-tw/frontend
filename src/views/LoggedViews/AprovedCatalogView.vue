@@ -45,7 +45,6 @@ const fetchApprovedTemplates = async () => {
       withCredentials: true
     });
     approvedTemplates.value = res.data.notifications;
-    console.log('Approved templates:', approvedTemplates.value);
   } catch (err) {
     console.error('Error fetching approved notifications:', err);
     error.value = true;
