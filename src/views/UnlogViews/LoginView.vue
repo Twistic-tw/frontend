@@ -19,7 +19,7 @@ const logUser = async () => {
 
   try {
     // Paso 1: Pedir cookies iniciales (XSRF-TOKEN y laravel_session)
-    await axios.get('https://api-catalogos.twistic.app/sanctum/csrf-cookie', {
+    await axios.get(`http://${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
       withCredentials: true
     });
 
@@ -30,7 +30,7 @@ const logUser = async () => {
     }
 
     // Paso 3: Hacer login y dejar que el navegador actualice la laravel_session
-    const response = await axios.post('https://api-catalogos.twistic.app/api/loginProcess',
+    const response = await axios.post(`${import.meta.env.VITE_URL}/loginProcess`,
       {
         email: email.value,
         password: password.value

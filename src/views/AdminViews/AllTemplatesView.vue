@@ -16,7 +16,7 @@ onMounted(async () => {
 // Function to load users
 async function loadUsers() {
   try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/Users', {
+    const res = await axios.get(`${import.meta.env.VITE_URL}/Users`, {
       withCredentials: true
     })
     usuarios.value = res.data
@@ -28,7 +28,7 @@ async function loadUsers() {
 // Function to load templates
 async function loadTemplates() {
   try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/ViewTemplates', {
+    const res = await axios.get(`${import.meta.env.VITE_URL}/ViewTemplates`, {
       withCredentials: true
     })
     plantillas.value = res.data
@@ -46,7 +46,7 @@ async function eliminarPlantilla(id) {
         toast.error('CSRF token not found. Please reload the page.');
         return;
       }
-      await axios.delete(`https://api-catalogos.twistic.app/api/DeleteTemplate/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_URL}/DeleteTemplate/${id}`, {
         withCredentials: true,
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),

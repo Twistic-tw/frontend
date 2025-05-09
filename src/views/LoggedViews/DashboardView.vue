@@ -41,7 +41,7 @@ const fetchUserId = async () => {
   if (!xsrfToken) return;
 
   try {
-    const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
+    const response = await axios.get(`${import.meta.env.VITE_URL}/user`, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
         'Accept': 'application/json',
@@ -58,7 +58,7 @@ const fetchUserId = async () => {
 // Carga inicial de notificaciones
 const fetchNotifications = async () => {
   try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/ShowNotifications', {
+    const res = await axios.get(`${import.meta.env.VITE_URL}/ShowNotifications`, {
       withCredentials: true
     });
     allNotifications.value = res.data.notifications || [];

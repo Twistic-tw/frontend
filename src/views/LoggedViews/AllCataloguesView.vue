@@ -17,7 +17,7 @@ onMounted(async () => {
 // Cargar usuarios
 async function cargarUsuarios() {
   try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/Users', {
+    const res = await axios.get(`${import.meta.env.VITE_URL}/Users`, {
       withCredentials: true
     })
     usuarios.value = res.data
@@ -29,7 +29,7 @@ async function cargarUsuarios() {
 // Cargar catálogos (todos o filtrados por usuario)
 async function cargarCatalogos() {
   try {
-    let url = 'https://api-catalogos.twistic.app/api/ShowCatalogs'
+    let url = `${import.meta.env.VITE_URL}/ShowCatalogs`
 
     if (usuarioSeleccionado.value) {
       url += `?id_user=${usuarioSeleccionado.value}`

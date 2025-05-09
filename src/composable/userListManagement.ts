@@ -28,7 +28,7 @@ export function useUserListManagement() {
   // Obtener usuarios
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('https://api-catalogos.twistic.app/api/Users', {
+      const response = await axios.get(`${import.meta.env.VITE_URL}/Users`, {
         withCredentials: true,
         headers: { Accept: 'application/json' }
       });
@@ -46,7 +46,7 @@ export function useUserListManagement() {
 
   const fetchIdiomas = async () => {
     try {
-      const response = await axios.get('https://api-catalogos.twistic.app/api/showlanguages', {
+      const response = await axios.get(`${import.meta.env.VITE_URL}/showlanguages`, {
         withCredentials: true,
       });
       idiomasDisponibles.value = response.data;
@@ -74,7 +74,7 @@ export function useUserListManagement() {
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
       if (!xsrfToken) { alert('Session expired.'); return; }
 
-      await axios.post('https://api-catalogos.twistic.app/api/Users', newUser.value, {
+      await axios.post(`${import.meta.env.VITE_URL}/Users`, newUser.value, {
         withCredentials: true,
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),

@@ -9,7 +9,7 @@ const fields = ref([])
 
 onMounted(async () => {
   try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/ViewFields')
+    const res = await axios.get(`${import.meta.env.VITE_URL}/ViewFields`)
     fields.value = res.data
   } catch (error) {
     console.error('Error loading fields:', error)
@@ -29,7 +29,7 @@ async function eliminarCampo(id) {
         return;
       }
 
-      await axios.delete(`https://api-catalogos.twistic.app/api/DeleteField/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_URL}/DeleteField/${id}`, {
         withCredentials: true,
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),

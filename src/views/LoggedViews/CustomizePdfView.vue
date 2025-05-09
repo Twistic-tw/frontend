@@ -25,10 +25,11 @@ const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || n
 // Fetch template and load Excel
 const fetchTemplate = async () => {
   try {
-    const res = await axios.get(`https://api-catalogos.twistic.app/api/Templates/${templateId}/data`, {
+    const res = await axios.get(`${import.meta.env.VITE_URL}/Templates/${templateId}/data`, {
       withCredentials: true
     });
 
+    console.log('📄 Template data:', res.data);
     templateName.value = res.data.template.name;
     fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }));
 
@@ -85,7 +86,7 @@ const generatePdf = async () => {
 
   try {
     const xsrf = getXsrfToken();
-    await axios.post('https://api-catalogos.twistic.app/api/Pdf', formData, {
+    await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrf!),
         'Accept': 'application/json'

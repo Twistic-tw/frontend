@@ -24,7 +24,7 @@ const getXsrfToken = (): string | null => {
 const fetchUserId = async () => {
   try {
     const xsrfToken = getXsrfToken();
-    const res = await axios.get('https://api-catalogos.twistic.app/api/user', {
+    const res = await axios.get(`${import.meta.env.VITE_URL}/user`, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
         'Accept': 'application/json',
@@ -41,7 +41,7 @@ const fetchUserId = async () => {
 // Obtener las plantillas aprobadas (In Progress)
 const fetchApprovedTemplates = async () => {
   try {
-    const res = await axios.get('https://api-catalogos.twistic.app/api/aprovedNotifications', {
+    const res = await axios.get(`${import.meta.env.VITE_URL}/aprovedNotifications`, {
       withCredentials: true
     });
     approvedTemplates.value = res.data.notifications;
