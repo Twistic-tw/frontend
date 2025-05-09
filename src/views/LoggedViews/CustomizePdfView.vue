@@ -4,6 +4,8 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 import draggable from 'vuedraggable';
 import * as XLSX from 'xlsx';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import BackButton from '@/components/BackButton.vue';
 
 const route = useRoute();
@@ -19,10 +21,8 @@ const images = ref({ cover: null, middle: null, end: null });
 const tableData = ref<unknown[][]>([]);
 const filteredData = ref<unknown[][]>([]);
 
-// CSRF
 const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null;
 
-// Fetch template and load Excel
 const fetchTemplate = async () => {
   try {
     const res = await axios.get(`${import.meta.env.VITE_URL}/Templates/${templateId}/data`, {
@@ -34,7 +34,7 @@ const fetchTemplate = async () => {
     fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }));
 
     const excelUrl = res.data.excel_path;
-    const blob = await (await fetch(excelUrl)).blob();
+    const blob = await (await fetch(excelUrl, { credentials: 'include' })).blob();
     const buffer = await blob.arrayBuffer();
 
     const workbook = XLSX.read(buffer, { type: 'array' });
@@ -50,7 +50,6 @@ const fetchTemplate = async () => {
   }
 };
 
-// Filter table based on active fields
 const updateFilteredData = () => {
   if (tableData.value.length === 0) return;
 
@@ -65,13 +64,11 @@ const updateFilteredData = () => {
   ];
 };
 
-// Image upload
 const handleImageUpload = (e: Event, type: 'cover' | 'middle' | 'end') => {
   const file = (e.target as HTMLInputElement).files?.[0] || null;
   images.value[type] = file;
 };
 
-// Submit PDF
 const generatePdf = async () => {
   const activeFields = fields.value.filter(f => f.active).map(f => f.name);
   const formData = new FormData();
@@ -91,6 +88,24 @@ const generatePdf = async () => {
       },
       withCredentials: true
     });
+
+    // Generar PDF local con jsPDF + autoTable
+    const doc = new jsPDF();
+    const head = [filteredData.value[0] as string[]];
+    const body = filteredData.value.slice(1) as string[][];
+
+    autoTable(doc, {
+      head,
+      body,
+      styles: {
+        fillColor: colors.value.background,
+        textColor: colors.value.text,
+      },
+      margin: { top: 20 },
+      theme: 'striped',
+    });
+
+    doc.save(`${templateName.value}_preview.pdf`);
     alert('✅ PDF successfully generated');
   } catch (err) {
     console.error('Error generating PDF:', err);
@@ -101,6 +116,7 @@ const generatePdf = async () => {
 watch(fields, updateFilteredData, { deep: true });
 onMounted(fetchTemplate);
 </script>
+
 
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6">
@@ -150,7 +166,7 @@ onMounted(fetchTemplate);
       <div class="bg-white rounded shadow p-4">
         <h2 class="text-lg font-bold text-gray-700 mb-2">Excel Preview</h2>
         <div class="overflow-auto max-h-[400px]">
-          <table class="w-full border-collapse text-sm" :style="{ backgroundColor: colors.background, color: colors.text }">
+          <table id="excel-table" class="w-full border-collapse text-sm" :style="{ backgroundColor: colors.background, color: colors.text }">
             <thead class="bg-gray-100 sticky top-0">
               <tr>
                 <th v-for="(h, i) in filteredData[0]" :key="i" class="border px-3 py-2">{{ h }}</th>
