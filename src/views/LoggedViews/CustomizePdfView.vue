@@ -111,11 +111,9 @@ const generatePdf = async () => {
   }
 };
 
-// Lógica reactiva
 watch(fields, updateFilteredData, { deep: true });
 onMounted(fetchTemplate);
 </script>
-
 
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6">
@@ -127,7 +125,6 @@ onMounted(fetchTemplate);
     <div v-else-if="error" class="text-center text-red-500">Failed to load data.</div>
 
     <div v-else class="space-y-10">
-      <!-- Fields -->
       <div>
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Active Fields</h2>
         <draggable v-model="fields" item-key="name" class="space-y-2">
@@ -140,7 +137,6 @@ onMounted(fetchTemplate);
         </draggable>
       </div>
 
-      <!-- Colors -->
       <div>
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Colors</h2>
         <div class="flex gap-6">
@@ -153,7 +149,6 @@ onMounted(fetchTemplate);
         </div>
       </div>
 
-      <!-- Images -->
       <div>
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Images (optional)</h2>
         <input type="file" @change="e => handleImageUpload(e, 'cover')" class="file-input" />
@@ -161,32 +156,42 @@ onMounted(fetchTemplate);
         <input type="file" @change="e => handleImageUpload(e, 'end')" class="file-input" />
       </div>
 
-      <!-- Preview -->
       <div class="bg-white rounded shadow p-4">
         <h2 class="text-lg font-bold text-gray-700 mb-2">Excel Preview</h2>
         <div class="overflow-auto max-h-[400px]">
-          <table class="w-full border-collapse text-sm" :style="{ backgroundColor: colors.background, color: colors.text }">
-            <thead class="bg-gray-100 sticky top-0">
-              <tr>
-                <th v-for="(h, i) in filteredData[0]" :key="i" class="border px-3 py-2">{{ h }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(row, ri) in filteredData.slice(1)" :key="ri">
-                <td v-for="(cell, ci) in row" :key="ci" class="border px-3 py-1">{{ cell }}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="space-y-1 text-sm" :style="{ backgroundColor: colors.background, color: colors.text }">
+            <div class="flex font-bold bg-gray-100 sticky top-0 border">
+              <div
+                v-for="(h, i) in filteredData[0]"
+                :key="'header-' + i"
+                class="flex-1 px-3 py-2 border"
+              >
+                {{ h }}
+              </div>
+            </div>
+            <div
+              v-for="(row, ri) in filteredData.slice(1)"
+              :key="'row-' + ri"
+              class="flex border-t"
+            >
+              <div
+                v-for="(cell, ci) in row"
+                :key="'cell-' + ci"
+                class="flex-1 px-3 py-1 border"
+              >
+                {{ cell }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Button -->
       <button @click="generatePdf"
         class="bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition mx-auto block">
         Generate PDF
       </button>
     </div>
-    <!-- Botón Volver -->
+
     <div class="mt-12">
       <BackButton
         class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
