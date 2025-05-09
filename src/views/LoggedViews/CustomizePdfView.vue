@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import draggable from 'vuedraggable';
 import * as XLSX from 'xlsx';
-import jsPDF from 'jspdf';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import autoTable from 'jspdf-autotable';
+// @ts-expect-error
+import html2pdf from 'html2pdf.js';
 import BackButton from '@/components/BackButton.vue';
 
 const route = useRoute();
@@ -18,20 +17,25 @@ const fields = ref<{ name: string; active: boolean }[]>([]);
 const loading = ref(true);
 const error = ref(false);
 
-const colors = ref({ background: '#ffffff', text: '#000000' });
-const images = ref({ cover: null, middle: null, end: null });
+const colors = ref({ background: '#ffffff', text: '#000000', title: '#1f2937' });
+const images = ref({ cover: null as File | null, second: null as File | null });
+const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '');
+const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '');
+
 const tableData = ref<unknown[][]>([]);
 const filteredData = ref<unknown[][]>([]);
 
-const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null;
-
 const fetchTemplate = async () => {
   try {
+    const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
     const res = await axios.get(`${import.meta.env.VITE_URL}/Templates/${templateId}/data`, {
-      withCredentials: true
-    });
 
-    console.log('📄 Template data:', res.data);
+      withCredentials: true,
+      headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'Accept': 'application/json'
+        }
+    });
     templateName.value = res.data.template.name;
     fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }));
 
@@ -66,67 +70,41 @@ const updateFilteredData = () => {
   ];
 };
 
-const handleImageUpload = (e: Event, type: 'cover' | 'middle' | 'end') => {
+const handleImageUpload = (e: Event, type: 'cover' | 'second') => {
   const file = (e.target as HTMLInputElement).files?.[0] || null;
   images.value[type] = file;
 };
 
 const generatePdf = async () => {
-  const activeFields = fields.value.filter(f => f.active).map(f => f.name);
-  const formData = new FormData();
-  formData.append('template_id', templateId);
-  formData.append('fields', JSON.stringify(activeFields));
-  formData.append('colors', JSON.stringify(colors.value));
-  if (images.value.cover) formData.append('cover', images.value.cover);
-  if (images.value.middle) formData.append('middle', images.value.middle);
-  if (images.value.end) formData.append('end', images.value.end);
+  const content = document.getElementById('pdf-content');
+  if (!content) return;
 
-  try {
-    const xsrf = getXsrfToken();
-    await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
-      headers: {
-        'X-XSRF-TOKEN': decodeURIComponent(xsrf!),
-        'Accept': 'application/json'
-      },
-      withCredentials: true
-    });
-
-    const doc = new jsPDF();
-
-    autoTable(doc, {
-      head: [filteredData.value[0] as string[]],
-      body: filteredData.value.slice(1) as string[][],
-      styles: {
-        fillColor: colors.value.background,
-        textColor: colors.value.text,
-      },
-      margin: { top: 20 },
-    });
-
-    doc.save(`${templateName.value}_preview.pdf`);
-    alert('✅ PDF successfully generated');
-  } catch (err) {
-    console.error('Error generating PDF:', err);
-    alert('Error generating PDF');
-  }
+  html2pdf()
+    .from(content)
+    .set({
+      margin: 10,
+      filename: `${templateName.value}_catalogo.pdf`,
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    })
+    .save();
 };
 
-watch(fields, updateFilteredData, { deep: true });
 onMounted(fetchTemplate);
 </script>
 
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6">
     <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
-      Customize PDF for <span class="text-indigo-900">{{ templateName }}</span>
+      Personaliza tu Catálogo <span class="text-indigo-900">{{ templateName }}</span>
     </h1>
 
-    <div v-if="loading" class="text-center text-gray-600">Loading template...</div>
-    <div v-else-if="error" class="text-center text-red-500">Failed to load data.</div>
+    <div v-if="loading" class="text-center text-gray-600">Cargando plantilla...</div>
+    <div v-else-if="error" class="text-center text-red-500">Error al cargar los datos.</div>
 
-    <div v-else class="space-y-10">
+    <div v-else class="space-y-8">
       <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Active Fields</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Campos activos</h2>
         <draggable v-model="fields" item-key="name" class="space-y-2">
           <template #item="{ element }">
             <div class="flex justify-between items-center bg-white border rounded shadow p-3">
@@ -138,29 +116,33 @@ onMounted(fetchTemplate);
       </div>
 
       <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Colors</h2>
-        <div class="flex gap-6">
-          <label>
-            Background <input type="color" v-model="colors.background" class="w-10 h-10" />
-          </label>
-          <label>
-            Text <input type="color" v-model="colors.text" class="w-10 h-10" />
-          </label>
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Colores</h2>
+        <div class="flex flex-wrap gap-6">
+          <label>Fondo <input type="color" v-model="colors.background" class="w-10 h-10" /></label>
+          <label>Texto <input type="color" v-model="colors.text" class="w-10 h-10" /></label>
+          <label>Título <input type="color" v-model="colors.title" class="w-10 h-10" /></label>
         </div>
       </div>
 
       <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Images (optional)</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Imágenes de portada</h2>
         <input type="file" @change="e => handleImageUpload(e, 'cover')" class="file-input" />
-        <input type="file" @change="e => handleImageUpload(e, 'middle')" class="file-input" />
-        <input type="file" @change="e => handleImageUpload(e, 'end')" class="file-input" />
+        <input type="file" @change="e => handleImageUpload(e, 'second')" class="file-input" />
       </div>
 
-      <div class="bg-white rounded shadow p-4">
-        <h2 class="text-lg font-bold text-gray-700 mb-2">Excel Preview</h2>
-        <div class="overflow-auto max-h-[400px]">
-          <div class="space-y-1 text-sm" :style="{ backgroundColor: colors.background, color: colors.text }">
-            <div class="flex font-bold bg-gray-100 sticky top-0 border">
+      <div id="pdf-content" class="bg-white rounded shadow p-6">
+        <section v-if="images.cover" class="mb-4">
+          <img v-if="coverUrl" :src="coverUrl" alt="Portada" class="w-full h-auto mb-4 rounded" />
+        </section>
+
+        <section v-if="images.second" class="mb-4">
+          <img v-if="secondUrl" :src="secondUrl" alt="Segunda portada" class="w-full h-auto mb-4 rounded" />
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Catálogo</h2>
+          <div class="space-y-2 text-sm" :style="{ backgroundColor: colors.background, color: colors.text }">
+            <div class="flex font-semibold bg-gray-100 sticky top-0 border">
               <div
                 v-for="(h, i) in filteredData[0]"
                 :key="'header-' + i"
@@ -183,12 +165,12 @@ onMounted(fetchTemplate);
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
 
       <button @click="generatePdf"
         class="bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition mx-auto block">
-        Generate PDF
+        Generar PDF
       </button>
     </div>
 
