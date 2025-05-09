@@ -25,7 +25,7 @@ const logUser = () => __awaiter(void 0, void 0, void 0, function* () {
     loading.value = true;
     try {
         // Paso 1: Pedir cookies iniciales (XSRF-TOKEN y laravel_session)
-        yield axios.get(`http://${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
+        yield axios.get(`${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
             withCredentials: true
         });
         // Paso 2: Obtener el token CSRF actual desde las cookies

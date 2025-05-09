@@ -12,6 +12,10 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 import draggable from 'vuedraggable';
 import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import autoTable from 'jspdf-autotable';
 import BackButton from '@/components/BackButton.vue';
 const route = useRoute();
 const templateId = route.params.id;
@@ -23,22 +27,17 @@ const colors = ref({ background: '#ffffff', text: '#000000' });
 const images = ref({ cover: null, middle: null, end: null });
 const tableData = ref([]);
 const filteredData = ref([]);
-// CSRF
 const getXsrfToken = () => { var _a; return ((_a = document.cookie.match(/XSRF-TOKEN=([^;]+)/)) === null || _a === void 0 ? void 0 : _a[1]) || null; };
-// Fetch template and load Excel
 const fetchTemplate = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const res = yield axios.get(`${import.meta.env.VITE_URL}/Templates/${templateId}/data`, {
             withCredentials: true
         });
+        console.log('📄 Template data:', res.data);
         templateName.value = res.data.template.name;
         fields.value = (res.data.fields || []).map((f) => ({ name: f, active: true }));
         const excelUrl = res.data.excel_path;
-        const blob = yield (yield fetch(excelUrl)).blob();
-        const text = yield blob.text();
-        console.log('📄 Template data:', res.data);
-        console.log('📄 Excel path:', res.data.excel_path);
-        console.log('📄 Excel preview:', text.slice(0, 200));
+        const blob = yield (yield fetch(excelUrl, { credentials: 'include' })).blob();
         const buffer = yield blob.arrayBuffer();
         const workbook = XLSX.read(buffer, { type: 'array' });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -53,7 +52,6 @@ const fetchTemplate = () => __awaiter(void 0, void 0, void 0, function* () {
         loading.value = false;
     }
 });
-// Filter table based on active fields
 const updateFilteredData = () => {
     if (tableData.value.length === 0)
         return;
@@ -66,13 +64,11 @@ const updateFilteredData = () => {
         ...rows.map(row => indexes.map(i => row[i]))
     ];
 };
-// Image upload
 const handleImageUpload = (e, type) => {
     var _a;
     const file = ((_a = e.target.files) === null || _a === void 0 ? void 0 : _a[0]) || null;
     images.value[type] = file;
 };
-// Submit PDF
 const generatePdf = () => __awaiter(void 0, void 0, void 0, function* () {
     const activeFields = fields.value.filter(f => f.active).map(f => f.name);
     const formData = new FormData();
@@ -94,6 +90,17 @@ const generatePdf = () => __awaiter(void 0, void 0, void 0, function* () {
             },
             withCredentials: true
         });
+        const doc = new jsPDF();
+        autoTable(doc, {
+            head: [filteredData.value[0]],
+            body: filteredData.value.slice(1),
+            styles: {
+                fillColor: colors.value.background,
+                textColor: colors.value.text,
+            },
+            margin: { top: 20 },
+        });
+        doc.save(`${templateName.value}_preview.pdf`);
         alert('✅ PDF successfully generated');
     }
     catch (err) {
@@ -158,20 +165,16 @@ else {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "bg-white rounded shadow p-4" }));
     __VLS_asFunctionalElement(__VLS_intrinsicElements.h2, __VLS_intrinsicElements.h2)(Object.assign({ class: "text-lg font-bold text-gray-700 mb-2" }));
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "overflow-auto max-h-[400px]" }));
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.table, __VLS_intrinsicElements.table)(Object.assign({ class: "w-full border-collapse text-sm" }, { style: ({ backgroundColor: __VLS_ctx.colors.background, color: __VLS_ctx.colors.text }) }));
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.thead, __VLS_intrinsicElements.thead)(Object.assign({ class: "bg-gray-100 sticky top-0" }));
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.tr, __VLS_intrinsicElements.tr)({});
+    __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "space-y-1 text-sm" }, { style: ({ backgroundColor: __VLS_ctx.colors.background, color: __VLS_ctx.colors.text }) }));
+    __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ class: "flex font-bold bg-gray-100 sticky top-0 border" }));
     for (const [h, i] of __VLS_getVForSourceType((__VLS_ctx.filteredData[0]))) {
-        __VLS_asFunctionalElement(__VLS_intrinsicElements.th, __VLS_intrinsicElements.th)(Object.assign({ key: (i) }, { class: "border px-3 py-2" }));
+        __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ key: ('header-' + i) }, { class: "flex-1 px-3 py-2 border" }));
         (h);
     }
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.tbody, __VLS_intrinsicElements.tbody)({});
     for (const [row, ri] of __VLS_getVForSourceType((__VLS_ctx.filteredData.slice(1)))) {
-        __VLS_asFunctionalElement(__VLS_intrinsicElements.tr, __VLS_intrinsicElements.tr)({
-            key: (ri),
-        });
+        __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ key: ('row-' + ri) }, { class: "flex border-t" }));
         for (const [cell, ci] of __VLS_getVForSourceType((row))) {
-            __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)(Object.assign({ key: (ci) }, { class: "border px-3 py-1" }));
+            __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)(Object.assign({ key: ('cell-' + ci) }, { class: "flex-1 px-3 py-1 border" }));
             (cell);
         }
     }
@@ -238,18 +241,24 @@ const __VLS_5 = __VLS_4(Object.assign({ class: "fixed bottom-6 left-6 bg-gray-80
 /** @type {__VLS_StyleScopedClasses['mb-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['overflow-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['max-h-[400px]']} */ ;
-/** @type {__VLS_StyleScopedClasses['w-full']} */ ;
-/** @type {__VLS_StyleScopedClasses['border-collapse']} */ ;
+/** @type {__VLS_StyleScopedClasses['space-y-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
+/** @type {__VLS_StyleScopedClasses['flex']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-gray-100']} */ ;
 /** @type {__VLS_StyleScopedClasses['sticky']} */ ;
 /** @type {__VLS_StyleScopedClasses['top-0']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['flex-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['flex']} */ ;
+/** @type {__VLS_StyleScopedClasses['border-t']} */ ;
+/** @type {__VLS_StyleScopedClasses['flex-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-1']} */ ;
+/** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-indigo-600']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-white']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-6']} */ ;
