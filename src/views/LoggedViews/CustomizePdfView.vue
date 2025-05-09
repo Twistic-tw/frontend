@@ -29,6 +29,7 @@ const fetchTemplate = async () => {
       withCredentials: true
     });
 
+    console.log('📄 Template data:', res.data);
     templateName.value = res.data.template.name;
     fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }));
 
