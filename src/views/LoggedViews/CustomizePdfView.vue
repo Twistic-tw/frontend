@@ -117,22 +117,34 @@ onMounted(fetchTemplate);
 
         <section>
           <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Catalog Preview</h2>
-          <ul class="space-y-4">
-            <li
-              v-for="(row, ri) in excelData"
-              :key="'row-' + ri"
-              class="p-4 border rounded bg-gray-50"
-              :style="{ backgroundColor: colors.background, color: colors.text }"
-            >
-              <div
-                v-for="(value, key) in row"
-                :key="key"
-                class="text-sm"
-              >
-                <strong class="text-gray-700">{{ key }}:</strong> {{ value }}
-              </div>
-            </li>
-          </ul>
+          <div class="w-full text-sm border rounded overflow-hidden">
+  <!-- Headers -->
+  <div class="flex font-semibold bg-gray-100 text-gray-800 border-b">
+    <div
+      v-for="(key, i) in Object.keys(excelData[0] || {})"
+      :key="'header-' + i"
+      class="flex-1 px-3 py-2 border-r last:border-r-0"
+    >
+      {{ key }}
+    </div>
+  </div>
+
+  <!-- Rows -->
+  <div
+    v-for="(row, ri) in excelData"
+    :key="'row-' + ri"
+    class="flex border-b"
+    :style="{ backgroundColor: colors.background, color: colors.text }"
+  >
+    <div
+      v-for="(value, key, i) in row"
+      :key="'cell-' + ri + '-' + i"
+      class="flex-1 px-3 py-2 border-r last:border-r-0"
+    >
+      {{ value }}
+    </div>
+  </div>
+</div>
         </section>
       </div>
 
