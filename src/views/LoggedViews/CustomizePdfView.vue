@@ -16,12 +16,36 @@ const fields = ref<{ name: string; active: boolean }[]>([]);
 const loading = ref(true);
 const error = ref(false);
 
-const colors = ref({ background: '#ffffff', text: '#000000', title: '#1f2937', header: '#4f46e5', rowAlternate: '#f9fafb' });
-const images = ref({ cover: null as File | null, second: null as File | null });
+const colors = ref({
+  background: '#ffffff',
+  text: '#000000',
+  title: '#1f2937',
+  header: '#4f46e5',
+  rowAlternate: '#f9fafb'
+});
+
+const titleSettings = ref<{
+  size: string;
+  align: 'left' | 'center' | 'right';
+  font: string;
+}>({
+  size: '2rem',
+  align: 'center',
+  font: 'Arial'
+});
+
+const images = ref({
+  cover: null as File | null,
+  second: null as File | null,
+  footer: null as File | null
+});
+
 const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '');
 const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '');
+const footerUrl = computed(() => images.value.footer ? URL.createObjectURL(images.value.footer) : '');
 
 const excelData = ref<Record<string, string>[]>([]);
+
 const activeFieldNames = computed(() =>
   fields.value.filter(f => f.active).map(f => f.name)
 );
@@ -47,7 +71,7 @@ const fetchTemplate = async () => {
   }
 };
 
-const handleImageUpload = (e: Event, type: 'cover' | 'second') => {
+const handleImageUpload = (e: Event, type: 'cover' | 'second' | 'footer') => {
   const file = (e.target as HTMLInputElement).files?.[0] || null;
   images.value[type] = file;
 };
@@ -105,13 +129,41 @@ onMounted(fetchTemplate);
         </div>
       </div>
 
-      <!-- Cover Images -->
+      <!-- Title Settings -->
       <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Cover Images</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Title Style</h2>
+        <div class="flex flex-wrap gap-6 items-center">
+          <label>Font Size
+            <input type="range" min="1" max="4" step="0.1" v-model="titleSettings.size" class="w-40" />
+          </label>
+          <label>Alignment
+            <select v-model="titleSettings.align" class="border rounded px-2 py-1">
+              <option value="left">Left</option>
+              <option value="center">Center</option>
+              <option value="right">Right</option>
+            </select>
+          </label>
+          <label>Font Family
+            <select v-model="titleSettings.font" class="border rounded px-2 py-1">
+              <option value="Arial">Arial</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Times New Roman">Times New Roman</option>
+              <option value="Courier New">Courier New</option>
+              <option value="Tahoma">Tahoma</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <!-- Images -->
+      <div>
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
         <label class="block mb-2 text-sm font-medium text-gray-700">Main Cover</label>
         <input type="file" @change="e => handleImageUpload(e, 'cover')" class="file-input" />
         <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Second Cover (optional)</label>
         <input type="file" @change="e => handleImageUpload(e, 'second')" class="file-input" />
+        <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Footer Image (optional)</label>
+        <input type="file" @change="e => handleImageUpload(e, 'footer')" class="file-input" />
 
         <!-- Generate PDF Button -->
         <button @click="generatePdf"
@@ -122,6 +174,21 @@ onMounted(fetchTemplate);
 
       <!-- Preview -->
       <div id="pdf-content" class="bg-white rounded shadow p-6">
+        <!-- Title Page -->
+        <section class="mb-10 text-center border-b pb-6">
+          <h1
+          class="font-bold"
+          :style="{
+            color: colors.title,
+            fontSize: titleSettings.size,
+            textAlign: titleSettings.align,
+            fontFamily: titleSettings.font
+          }">
+            {{ templateName }} Catalog
+          </h1>
+        </section>
+
+        <!-- Cover Images -->
         <section v-if="images.cover" class="mb-4">
           <img v-if="coverUrl" :src="coverUrl" alt="Cover Image" class="w-full h-auto mb-4 rounded" />
         </section>
@@ -172,6 +239,11 @@ onMounted(fetchTemplate);
             </div>
           </div>
         </section>
+
+        <!-- Footer Image -->
+        <section v-if="images.footer" class="mt-10">
+          <img :src="footerUrl" alt="Footer Image" class="w-full h-auto rounded" />
+        </section>
       </div>
     </div>
 
@@ -183,7 +255,6 @@ onMounted(fetchTemplate);
     </div>
   </div>
 </template>
-
 
 <style scoped>
 .file-input {
