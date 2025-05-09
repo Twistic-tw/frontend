@@ -6,7 +6,6 @@ import draggable from 'vuedraggable';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import html2pdf from 'html2pdf.js';
-import * as XLSX from 'xlsx';
 import BackButton from '@/components/BackButton.vue';
 
 const route = useRoute();
@@ -22,7 +21,7 @@ const images = ref({ cover: null as File | null, second: null as File | null });
 const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '');
 const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '');
 
-const tableData = ref<unknown[][]>([]);
+const excelData = ref<Record<string, string>[]>([]);
 
 const fetchTemplate = async () => {
   try {
@@ -36,22 +35,9 @@ const fetchTemplate = async () => {
     });
     templateName.value = res.data.template.name;
     fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }));
-
-    const excelUrl = res.data.excel_path;
-    const blob = await (await fetch(excelUrl, { credentials: 'include' })).blob();
-    const buffer = await blob.arrayBuffer();
-    const workbook = XLSX.read(buffer, { type: 'array' });
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    console.log('🧾 Sheet:', sheet);
-    tableData.value = XLSX.utils.sheet_to_json(sheet, {
-      header: 1,
-      defval: '' // ← rellena celdas vacías con ''
-    });
-
+    excelData.value = res.data.excel_data || [];
   } catch (err) {
-    console.error('❌ Error loading data:', err);
-    alert('Error: ' + err.message);
-    error.value = true;
+    console.error('Error loading data:', err);
     error.value = true;
   } finally {
     loading.value = false;
@@ -133,13 +119,17 @@ onMounted(fetchTemplate);
           <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Catalog Preview</h2>
           <ul class="space-y-4">
             <li
-              v-for="(row, ri) in tableData.slice(1)"
+              v-for="(row, ri) in excelData"
               :key="'row-' + ri"
               class="p-4 border rounded bg-gray-50"
               :style="{ backgroundColor: colors.background, color: colors.text }"
             >
-              <div v-for="(cell, ci) in row" :key="'cell-' + ci" class="text-sm">
-                <strong class="text-gray-700">{{ tableData[0][ci] }}:</strong> {{ cell }}
+              <div
+                v-for="(value, key) in row"
+                :key="key"
+                class="text-sm"
+              >
+                <strong class="text-gray-700">{{ key }}:</strong> {{ value }}
               </div>
             </li>
           </ul>
