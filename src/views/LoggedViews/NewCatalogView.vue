@@ -40,7 +40,7 @@ const fetchUserId = async () => {
   if (!xsrfToken) return null;
 
   try {
-    const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
+    const response = await axios.get(`${import.meta.env.VITE_URL}/user`, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
         'Accept': 'application/json',
@@ -69,7 +69,7 @@ const analyzeExcel = async () => {
   formData.append('file', form.value.excel_file);
 
   try {
-    const response = await axios.post('https://api-catalogos.twistic.app/api/excelscan', formData, {
+    const response = await axios.post(`${import.meta.env.VITE_URL}/excelscan`, formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
         'Accept': 'application/json'
@@ -131,7 +131,7 @@ const submitForm = async () => {
   file: form.value.excel_file
 });
 
-    const response = await axios.post('https://api-catalogos.twistic.app/api/CreateTemplate', formData, {
+    const response = await axios.post(`${import.meta.env.VITE_URL}/CreateTemplate`, formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
         'Accept': 'application/json'

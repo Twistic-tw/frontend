@@ -42,7 +42,7 @@ const fetchUserId = async () => {
   const xsrfToken = getXsrfToken();
 
   try {
-    const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
+    const response = await axios.get(`${import.meta.env.VITE_URL}/user`, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
         'Accept': 'application/json',

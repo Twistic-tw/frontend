@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import axios from 'axios'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import BackButton from '@/components/BackButton.vue';
 
 interface User {
@@ -29,7 +30,7 @@ export default defineComponent({
       try {
         const xsrfToken = getCookie('XSRF-TOKEN')
 
-        const response = await axios.get('https://api-catalogos.twistic.app/api/user', {
+        const response = await axios.get(`${import.meta.env.VITE_URL}/user`, {
           withCredentials: true,
           headers: {
             'X-XSRF-TOKEN': xsrfToken,
