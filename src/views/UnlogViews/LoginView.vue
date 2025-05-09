@@ -19,7 +19,7 @@ const logUser = async () => {
 
   try {
     // Paso 1: Pedir cookies iniciales (XSRF-TOKEN y laravel_session)
-    await axios.get(`${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
+    await axios.get(`http://${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
       withCredentials: true
     });
 
