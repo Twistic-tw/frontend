@@ -22,6 +22,9 @@ const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.
 const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '');
 
 const excelData = ref<Record<string, string>[]>([]);
+const activeFieldNames = computed(() =>
+  fields.value.filter(f => f.active).map(f => f.name)
+);
 
 const fetchTemplate = async () => {
   try {
@@ -116,36 +119,40 @@ onMounted(fetchTemplate);
         </section>
 
         <section>
-          <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Catalog Preview</h2>
-          <div class="w-full text-sm border rounded overflow-hidden">
-  <!-- Headers -->
-  <div class="flex font-semibold bg-gray-100 text-gray-800 border-b">
-    <div
-      v-for="(key, i) in Object.keys(excelData[0] || {})"
-      :key="'header-' + i"
-      class="flex-1 px-3 py-2 border-r last:border-r-0"
-    >
-      {{ key }}
-    </div>
-  </div>
+  <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Catalog Preview</h2>
 
-  <!-- Rows -->
-  <div
-    v-for="(row, ri) in excelData"
-    :key="'row-' + ri"
-    class="flex border-b"
-    :style="{ backgroundColor: colors.background, color: colors.text }"
-  >
+  <div class="w-full text-sm border rounded overflow-auto">
+    <!-- Headers -->
     <div
-      v-for="(value, key, i) in row"
-      :key="'cell-' + ri + '-' + i"
-      class="flex-1 px-3 py-2 border-r last:border-r-0"
+      class="grid font-semibold bg-gray-100 text-gray-800 border-b"
+      :style="{ gridTemplateColumns: `repeat(${activeFieldNames.length}, minmax(0, 1fr))` }"
     >
-      {{ value }}
+      <div
+        v-for="(key, i) in activeFieldNames"
+        :key="'header-' + i"
+        class="px-3 py-2 border-r last:border-r-0"
+      >
+        {{ key }}
+      </div>
+    </div>
+
+    <!-- Rows -->
+    <div
+      v-for="(row, ri) in excelData"
+      :key="'row-' + ri"
+      class="grid border-b"
+      :style="{ gridTemplateColumns: `repeat(${activeFieldNames.length}, minmax(0, 1fr))`, backgroundColor: colors.background, color: colors.text }"
+    >
+      <div
+        v-for="(key, i) in activeFieldNames"
+        :key="'cell-' + ri + '-' + i"
+        class="px-3 py-2 border-r last:border-r-0"
+      >
+        {{ row[key] }}
+      </div>
     </div>
   </div>
-</div>
-        </section>
+</section>
       </div>
 
       <button @click="generatePdf"
