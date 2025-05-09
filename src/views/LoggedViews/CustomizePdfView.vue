@@ -3,7 +3,6 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import draggable from 'vuedraggable';
-import * as XLSX from 'xlsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import html2pdf from 'html2pdf.js';
@@ -22,52 +21,24 @@ const images = ref({ cover: null as File | null, second: null as File | null });
 const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '');
 const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '');
 
-const tableData = ref<unknown[][]>([]);
-const filteredData = ref<unknown[][]>([]);
-
 const fetchTemplate = async () => {
   try {
     const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
     const res = await axios.get(`${import.meta.env.VITE_URL}/Templates/${templateId}/data`, {
-
       withCredentials: true,
       headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          'Accept': 'application/json'
-        }
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        'Accept': 'application/json'
+      }
     });
     templateName.value = res.data.template.name;
     fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }));
-
-    const excelUrl = res.data.excel_path;
-    const blob = await (await fetch(excelUrl, { credentials: 'include' })).blob();
-    const buffer = await blob.arrayBuffer();
-
-    const workbook = XLSX.read(buffer, { type: 'array' });
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    tableData.value = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-    updateFilteredData();
   } catch (err) {
     console.error('Error loading data:', err);
     error.value = true;
   } finally {
     loading.value = false;
   }
-};
-
-const updateFilteredData = () => {
-  if (tableData.value.length === 0) return;
-
-  const headers = tableData.value[0] as string[];
-  const rows = tableData.value.slice(1);
-  const actives = fields.value.filter(f => f.active).map(f => f.name);
-
-  const indexes = headers.map((h, i) => actives.includes(h) ? i : -1).filter(i => i !== -1);
-  filteredData.value = [
-    indexes.map(i => headers[i]),
-    ...rows.map(row => indexes.map(i => row[i]))
-  ];
 };
 
 const handleImageUpload = (e: Event, type: 'cover' | 'second') => {
@@ -140,31 +111,8 @@ onMounted(fetchTemplate);
         </section>
 
         <section>
-          <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Catálogo</h2>
-          <div class="space-y-2 text-sm" :style="{ backgroundColor: colors.background, color: colors.text }">
-            <div class="flex font-semibold bg-gray-100 sticky top-0 border">
-              <div
-                v-for="(h, i) in filteredData[0]"
-                :key="'header-' + i"
-                class="flex-1 px-3 py-2 border"
-              >
-                {{ h }}
-              </div>
-            </div>
-            <div
-              v-for="(row, ri) in filteredData.slice(1)"
-              :key="'row-' + ri"
-              class="flex border-t"
-            >
-              <div
-                v-for="(cell, ci) in row"
-                :key="'cell-' + ci"
-                class="flex-1 px-3 py-1 border"
-              >
-                {{ cell }}
-              </div>
-            </div>
-          </div>
+          <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Contenido personalizado</h2>
+          <p class="text-gray-700 text-sm">Aquí se mostrará el contenido del catálogo por categoría, subcategoría u otros bloques organizativos en el futuro.</p>
         </section>
       </div>
 
