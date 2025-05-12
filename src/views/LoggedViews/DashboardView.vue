@@ -145,13 +145,24 @@ onMounted(async () => {
       </RouterLink>
 
       <!-- Template Operations Card (admin) -->
-      <RouterLink to="/templates" v-if="role && (role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
-        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Template Operations</h2>
-        <p class="text-gray-500 dark:text-gray-300">Create or delete templates for your catalogs.</p>
-        <button class="mt-4 inline-block bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
-          Manage Templates
-        </button>
+      <RouterLink
+        to="/templates"
+        v-if="role && (role === 'admin')"
+        class="flex items-center justify-between p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800"
+      >
+        <!-- Contenido textual -->
+        <div class="flex-1 pr-4">
+          <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">Template Operations</h2>
+          <p class="text-gray-500 dark:text-gray-300 mb-4">Create or delete templates for your catalogs.</p>
+          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
+            Manage Templates
+          </button>
+        </div>
+
+        <!-- Imagen del icono -->
+        <img src="/public/templateOperations.png" alt="Template Operations" class="w-24 h-24 object-contain">
       </RouterLink>
+
 
       <!-- Fields Operations Card (admin) -->
       <RouterLink to="/fields" v-if="role && (role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
