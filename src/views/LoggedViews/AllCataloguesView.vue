@@ -60,16 +60,17 @@ watch(usuarioSeleccionado, () => {
     <div class="mb-6 max-w-md mx-auto">
 
       <!-- Filtrar por usuario -->
-      <select v-if="role && (role === 'admin')"
-        v-model="usuarioSeleccionado"
-        placeholder="Select user"
-        class="w-full px-4 py-2 rounded-lg bg-white border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-      >
-        <option value="">Select user</option>
-        <option v-for="user in usuarios" :key="user.id" :value="user.id">
-          {{ user.nombre }}
-        </option>
-      </select>
+      <Transition name="fade-scale">
+        <select v-if="role && (role === 'admin')"
+                v-model="usuarioSeleccionado"
+                class="w-full px-4 py-2 rounded-lg bg-white border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <option value="">Select user</option>
+          <option v-for="user in usuarios" :key="user.id" :value="user.id">
+            {{ user.nombre }}
+          </option>
+        </select>
+      </Transition>
     </div>
 
     <!-- Lista de catálogos -->
@@ -95,3 +96,27 @@ watch(usuarioSeleccionado, () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.fade-scale-enter-active,
+.fade-scale-leave-active {
+  transition: all 0.3s ease;
+}
+.fade-scale-enter-from {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.fade-scale-enter-to {
+  opacity: 1;
+  transform: scale(1);
+}
+.fade-scale-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+.fade-scale-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+</style>
