@@ -89,13 +89,24 @@ onMounted(async () => {
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
       <!-- Create Template Card (client and admin) -->
-      <RouterLink to="/newTemplate" v-if="role && (role === 'client' || role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
-        <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Create Template</h2>
-        <p class="text-gray-500 dark:text-gray-300">Create template for your catalog.</p>
-        <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
-          Create Template
-        </button>
+      <RouterLink
+        to="/newTemplate"
+        v-if="role && (role === 'client' || role === 'admin')"
+        class="flex items-center justify-between p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800"
+      >
+        <!-- Contenedor de texto -->
+        <div class="flex-1 pr-4">
+          <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">Create Template</h2>
+          <p class="text-gray-500 dark:text-gray-300 mb-4">Create template for your catalog.</p>
+          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
+            Create Template
+          </button>
+        </div>
+
+        <!-- Imagen a la derecha -->
+        <img src="/public/createTemplate.png" alt="Create Template" class="w-24 h-24 object-contain">
       </RouterLink>
+
 
       <!-- Create Catalogs Card (admin) -->
       <RouterLink to="/catalogList" v-if="role && (role === 'client' || role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
@@ -109,7 +120,7 @@ onMounted(async () => {
           </span>
         </div>
         <p class="text-gray-500 dark:text-gray-300">Create pdf catalogs for your products.</p>
-        <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
+        <button class="mt-4 inline-block bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
           Create Pdf Catalog
         </button>
       </RouterLink>
@@ -127,7 +138,7 @@ onMounted(async () => {
       <RouterLink to="/templates" v-if="role && (role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
         <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Template Operations</h2>
         <p class="text-gray-500 dark:text-gray-300">Create or delete templates for your catalogs.</p>
-        <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
+        <button class="mt-4 inline-block bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
           Manage Templates
         </button>
       </RouterLink>
@@ -136,7 +147,7 @@ onMounted(async () => {
       <RouterLink to="/fields" v-if="role && (role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
         <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">Fields Operations</h2>
         <p class="text-gray-500 dark:text-gray-300">Create or delete fields for your templates.</p>
-        <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
+        <button class="mt-4 inline-block bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
           Manage Fields
         </button>
       </RouterLink>
@@ -154,7 +165,7 @@ onMounted(async () => {
         </span>
         </div>
         <p class="text-gray-500 dark:text-gray-300">Manage notifications for your catalogs.</p>
-        <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
+        <button class="mt-4 inline-block bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
           Manage Notifications
         </button>
       </RouterLink>
@@ -163,7 +174,7 @@ onMounted(async () => {
       <RouterLink to="users" v-if="role && (role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
         <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">User Operations</h2>
         <p class="text-gray-500 dark:text-gray-300">Create, modify or delete users for the platform.</p>
-        <button class="mt-4 inline-block bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
+        <button class="mt-4 inline-block bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
           Manage Users
         </button>
       </RouterLink>
