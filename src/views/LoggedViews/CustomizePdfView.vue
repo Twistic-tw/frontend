@@ -159,35 +159,10 @@ onMounted(fetchTemplate);
       </div>
 
       <!-- Editor y Preview en grid -->
-      <div class="grid md:grid-cols-2 gap-6">
-
-        <!-- Images -->
-        <div>
-          <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
-
-          <label class="block mb-2 text-sm font-medium text-gray-700">Cover Image (shown once)</label>
-          <input type="file" @change="(e) => handleImageUpload(e, 'cover')" class="file-input" />
-
-          <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Second Cover (optional)</label>
-          <input type="file" @change="(e) => handleImageUpload(e, 'second')" class="file-input" />
-
-          <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Header Image (repeated on every page)</label>
-          <input type="file" @change="(e) => handleImageUpload(e, 'header')" class="file-input" />
-
-          <label class="block mt-2 mb-2 text-sm font-medium text-gray-700">Header Height (px)</label>
-          <input type="number" v-model="headerHeight" class="file-input" />
-
-          <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Footer Image (optional)</label>
-          <input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input" />
-
-          <button @click="generatePdf"
-            class="mt-6 bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition">
-            Generate PDF
-          </button>
-        </div>
+      <div class="grid md:grid-cols-3 gap-6">
 
         <!-- Estilos -->
-        <div>
+        <div class="md:col-span-1">
           <h2 class="text-xl font-semibold text-gray-800 mb-3">Customize Style</h2>
           <div class="space-y-4">
             <div>
@@ -226,16 +201,36 @@ onMounted(fetchTemplate);
               <label class="block text-sm font-medium text-gray-700 mb-1">Field Font</label>
               <input type="text" v-model="titleSettings.fieldFont" class="w-full p-2 border rounded" />
             </div>
-          </div>
 
-          <button @click="generatePdf"
-            class="mt-6 w-full bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition">
-            Generate PDF
-          </button>
+            <button @click="generatePdf"
+              class="w-full bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition">
+              Generate PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- Images -->
+        <div class="md:col-span-1">
+          <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
+
+          <label class="block mb-2 text-sm font-medium text-gray-700">Cover Image (shown once)</label>
+          <input type="file" @change="(e) => handleImageUpload(e, 'cover')" class="file-input" />
+
+          <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Second Cover (optional)</label>
+          <input type="file" @change="(e) => handleImageUpload(e, 'second')" class="file-input" />
+
+          <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Header Image (repeated on every page)</label>
+          <input type="file" @change="(e) => handleImageUpload(e, 'header')" class="file-input" />
+
+          <label class="block mt-2 mb-2 text-sm font-medium text-gray-700">Header Height (px)</label>
+          <input type="number" v-model="headerHeight" class="file-input" />
+
+          <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Footer Image (optional)</label>
+          <input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input" />
         </div>
 
         <!-- Preview -->
-        <div>
+        <div class="md:col-span-1">
           <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
           <div
             id="pdf-content"
