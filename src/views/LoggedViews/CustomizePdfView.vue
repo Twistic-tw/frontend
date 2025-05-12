@@ -235,12 +235,12 @@ onMounted(fetchTemplate);
               :key="'page-' + index"
               class="a4-page"
             >
-              <div v-if="index === 0 && images.cover" class="mb-4">
-                <img :src="coverUrl" alt="Cover Image" class="w-full h-auto mb-2 rounded" />
+              <div v-if="index === 0 && images.cover" class="a4-image full-a4">
+                <img :src="coverUrl" alt="Cover Image" class="a4-image-content no-radius" />
               </div>
 
-              <div v-if="images.header" class="mb-4">
-                <img :src="headerUrl" alt="Header Image" :style="{ height: headerHeight + 'px' }" class="w-full object-cover rounded" />
+              <div v-if="images.header" class="mb-4 px-8">
+                <img :src="headerUrl" alt="Header Image" :style="{ height: headerHeight + 'px' }" class="w-full object-cover rounded-b-lg" />
               </div>
 
               <div v-if="index === 0 && images.second" class="mb-4">
@@ -248,7 +248,6 @@ onMounted(fetchTemplate);
               </div>
 
               <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
-                <!-- Header -->
                 <div class="grid font-medium" :style="headerStyle">
                   <div v-for="(key, i) in activeFieldNames" :key="'header-' + i"
                        class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0">
@@ -256,7 +255,6 @@ onMounted(fetchTemplate);
                   </div>
                 </div>
 
-                <!-- Rows -->
                 <div v-for="(row, ri) in chunk" :key="'row-' + index + '-' + ri" class="grid" :style="rowStyle(ri)">
                   <div v-for="(key, i) in activeFieldNames" :key="'cell-' + index + '-' + ri + '-' + i"
                        class="px-4 py-2 border-r border-gray-200 last:border-r-0">
@@ -265,8 +263,8 @@ onMounted(fetchTemplate);
                 </div>
               </div>
 
-              <div v-if="index === paginatedRows.length - 1 && images.footer" class="mt-4">
-                <img :src="footerUrl" alt="Footer Image" class="w-full h-auto rounded" />
+              <div v-if="index === paginatedRows.length - 1 && images.footer" class="a4-image full-a4">
+                <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
               </div>
             </div>
           </div>
@@ -300,5 +298,24 @@ onMounted(fetchTemplate);
   padding: 2rem;
   page-break-after: always;
   overflow: hidden;
+}
+
+.a4-image.full-a4 {
+  width: 794px;
+  height: 1123px;
+  overflow: hidden;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.a4-image-content {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.no-radius {
+  border-radius: 0;
 }
 </style>
