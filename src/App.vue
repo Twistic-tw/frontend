@@ -20,7 +20,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:from-neutral-950 dark:to-slate-900">
+  <div class="min-h-screen flex flex-col bg-gradient-to-b from-gray-100 to-white">
 
     <header>
       <NavAdmin v-if="route.meta.requiereNavAdmin" />
