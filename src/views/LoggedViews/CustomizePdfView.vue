@@ -167,27 +167,27 @@ onMounted(fetchTemplate);
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">PDF Background Color</label>
-              <input type="color" v-model="colors.background" class="w-full h-10 border rounded" />
+              <input type="color" v-model="colors.background" class="w-32 h-8 border rounded" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Alternate Row Color</label>
-              <input type="color" v-model="colors.rowAlternate" class="w-full h-10 border rounded" />
+              <input type="color" v-model="colors.rowAlternate" class="w-32 h-8 border rounded" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Header Background</label>
-              <input type="color" v-model="colors.header" class="w-full h-10 border rounded" />
+              <input type="color" v-model="colors.header" class="w-32 h-8 border rounded" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Header Text Color</label>
-              <input type="color" v-model="colors.headerText" class="w-full h-10 border rounded" />
+              <input type="color" v-model="colors.headerText" class="w-32 h-8 border rounded" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Title Color</label>
-              <input type="color" v-model="colors.title" class="w-full h-10 border rounded" />
+              <input type="color" v-model="colors.title" class="w-32 h-8 border rounded" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Text Color</label>
-              <input type="color" v-model="colors.text" class="w-full h-10 border rounded" />
+              <input type="color" v-model="colors.text" class="w-32 h-8 border rounded" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Title Font Size</label>
@@ -214,19 +214,19 @@ onMounted(fetchTemplate);
           <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
 
           <label class="block mb-2 text-sm font-medium text-gray-700">Cover Image (shown once)</label>
-          <input type="file" @change="(e) => handleImageUpload(e, 'cover')" class="file-input" />
+          <input type="file" @change="(e) => handleImageUpload(e, 'cover')" class="file-input w-64" />
 
           <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Second Cover (optional)</label>
-          <input type="file" @change="(e) => handleImageUpload(e, 'second')" class="file-input" />
+          <input type="file" @change="(e) => handleImageUpload(e, 'second')" class="file-input w-64" />
 
           <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Header Image (repeated on every page)</label>
-          <input type="file" @change="(e) => handleImageUpload(e, 'header')" class="file-input" />
+          <input type="file" @change="(e) => handleImageUpload(e, 'header')" class="file-input w-64" />
 
           <label class="block mt-2 mb-2 text-sm font-medium text-gray-700">Header Height (px)</label>
-          <input type="number" v-model="headerHeight" class="file-input" />
+          <input type="number" v-model="headerHeight" class="file-input w-64" />
 
           <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Footer Image (optional)</label>
-          <input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input" />
+          <input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input w-64" />
         </div>
 
         <!-- Preview -->
