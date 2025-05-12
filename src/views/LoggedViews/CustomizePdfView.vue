@@ -62,14 +62,6 @@ const secondUrl = computed(() => images.value.second ? URL.createObjectURL(image
 const footerUrl = computed(() => images.value.footer ? URL.createObjectURL(images.value.footer) : '');
 
 const excelData = ref<Record<string, string>[]>([]);
-const rowsPerPage = 25;
-const paginatedRows = computed(() => {
-  const chunks = [];
-  for (let i = 0; i < excelData.value.length; i += rowsPerPage) {
-    chunks.push(excelData.value.slice(i, i + rowsPerPage));
-  }
-  return chunks;
-});
 
 const activeFieldNames = computed(() =>
   fields.value.filter(f => f.active).map(f => f.name)
@@ -88,6 +80,15 @@ const rowStyle = (ri: number): Record<string, string> => ({
   fontFamily: titleSettings.value.fieldFont,
   fontSize: titleSettings.value.fieldSize,
   textAlign: titleSettings.value.fieldAlign
+});
+
+const rowsPerPage = 25;
+const paginatedRows = computed(() => {
+  const chunks = [];
+  for (let i = 0; i < excelData.value.length; i += rowsPerPage) {
+    chunks.push(excelData.value.slice(i, i + rowsPerPage));
+  }
+  return chunks;
 });
 
 const fetchTemplate = async () => {
@@ -120,15 +121,16 @@ const generatePdf = async () => {
   const content = document.getElementById('pdf-content');
   if (!content) return;
 
-  html2pdf()
-    .from(content)
-    .set({
-      margin: 10,
-      filename: `${templateName.value}_catalog.pdf`,
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    })
-    .save();
+  const opt = {
+    margin:       0,
+    filename:     `${templateName.value}_catalog.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'px', format: 'a4', orientation: 'portrait' },
+    pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+  };
+
+  await html2pdf().set(opt).from(content).save();
 };
 
 onMounted(fetchTemplate);
