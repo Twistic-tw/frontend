@@ -66,14 +66,15 @@ const excelData = ref<Record<string, string>[]>([]);
 const activeFieldNames = computed(() =>
   fields.value.filter(f => f.active).map(f => f.name)
 );
-
-// 🧠 ESTILOS COMPUTADOS TIPADOS
+/*
+// ESTILOS COMPUTADOS TIPADOS
 const titleStyle = computed<Record<string, string>>(() => ({
   color: colors.value.title,
   fontSize: titleSettings.value.size,
   textAlign: titleSettings.value.align,
   fontFamily: titleSettings.value.font
 }));
+*/
 
 const headerStyle = computed<Record<string, string>>(() => ({
   backgroundColor: colors.value.header,
@@ -157,89 +158,127 @@ onMounted(fetchTemplate);
         </draggable>
       </div>
 
-      <!-- Images -->
-      <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
-        <label class="block mb-2 text-sm font-medium text-gray-700">Cover Image (shown once)</label>
-        <input type="file" @change="e => handleImageUpload(e, 'cover')" class="file-input" />
-        <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Second Cover (optional)</label>
-        <input type="file" @change="e => handleImageUpload(e, 'second')" class="file-input" />
-        <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Header Image (repeated on every page)</label>
-        <input type="file" @change="e => handleImageUpload(e, 'header')" class="file-input" />
-        <label class="block mt-2 mb-2 text-sm font-medium text-gray-700">Header Height (px)</label>
-        <input type="number" v-model="headerHeight" class="file-input" />
-        <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Footer Image (optional)</label>
-        <input type="file" @change="e => handleImageUpload(e, 'footer')" class="file-input" />
-      </div>
+      <!-- Editor y Preview en grid -->
+      <div class="grid md:grid-cols-2 gap-6">
 
-      <!-- Styles -->
-      <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Styles</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div><label class="block mb-1 font-medium">PDF Background</label><input type="color" v-model="colors.background" class="w-full h-10 p-1 border rounded" /></div>
-          <div><label class="block mb-1 font-medium">Alternate Row Background</label><input type="color" v-model="colors.rowAlternate" class="w-full h-10 p-1 border rounded" /></div>
-          <div><label class="block mb-1 font-medium">Header Background</label><input type="color" v-model="colors.header" class="w-full h-10 p-1 border rounded" /></div>
-          <div><label class="block mb-1 font-medium">Header Text Color</label><input type="color" v-model="colors.headerText" class="w-full h-10 p-1 border rounded" /></div>
-          <div><label class="block mb-1 font-medium">Title Color</label><input type="color" v-model="colors.title" class="w-full h-10 p-1 border rounded" /></div>
-          <div><label class="block mb-1 font-medium">Text Color</label><input type="color" v-model="colors.text" class="w-full h-10 p-1 border rounded" /></div>
-          <div><label class="block mb-1 font-medium">Title Font Size</label><input type="text" v-model="titleSettings.size" class="w-full border p-2 rounded" /></div>
-          <div><label class="block mb-1 font-medium">Field Font Size</label><input type="text" v-model="titleSettings.fieldSize" class="w-full border p-2 rounded" /></div>
-          <div><label class="block mb-1 font-medium">Field Font</label><input type="text" v-model="titleSettings.fieldFont" class="w-full border p-2 rounded" /></div>
+        <!-- Images -->
+        <div>
+          <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
+
+          <label class="block mb-2 text-sm font-medium text-gray-700">Cover Image (shown once)</label>
+          <input type="file" @change="(e) => handleImageUpload(e, 'cover')" class="file-input" />
+
+          <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Second Cover (optional)</label>
+          <input type="file" @change="(e) => handleImageUpload(e, 'second')" class="file-input" />
+
+          <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Header Image (repeated on every page)</label>
+          <input type="file" @change="(e) => handleImageUpload(e, 'header')" class="file-input" />
+
+          <label class="block mt-2 mb-2 text-sm font-medium text-gray-700">Header Height (px)</label>
+          <input type="number" v-model="headerHeight" class="file-input" />
+
+          <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Footer Image (optional)</label>
+          <input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input" />
+
+          <button @click="generatePdf"
+            class="mt-6 bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition">
+            Generate PDF
+          </button>
         </div>
-      </div>
 
-      <button @click="generatePdf"
-          class="mt-6 bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition">
-          Generate PDF
-        </button>
-
-      <!-- Preview -->
-      <div class="mt-10">
-        <div
-          id="pdf-content"
-          class="mx-auto rounded shadow border overflow-auto bg-white"
-          :style="{
-            width: windowWidth < 850 ? '100%' : '794px',
-            height: '1123px',
-            padding: '2rem'
-          }"
-        >
-          <div v-if="images.cover" class="mb-4">
-            <img :src="coverUrl" alt="Cover Image" class="w-full h-auto mb-2 rounded" />
-          </div>
-
-          <div v-if="images.header" class="mb-4">
-            <img :src="headerUrl" alt="Header Image" :style="{ height: headerHeight + 'px' }" class="w-full object-cover rounded" />
-          </div>
-
-          <h1 class="font-bold mb-6" :style="titleStyle">
-            {{ templateName }} Catalog
-          </h1>
-
-          <div v-if="images.second" class="mb-4">
-            <img :src="secondUrl" alt="Second Cover" class="w-full h-auto rounded" />
-          </div>
-
-          <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
-            <!-- Header -->
-            <div class="grid font-medium" :style="headerStyle">
-              <div v-for="(key, i) in activeFieldNames" :key="'header-' + i"
-                   class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0">
-                {{ key }}
-              </div>
+        <!-- Estilos -->
+        <div>
+          <h2 class="text-xl font-semibold text-gray-800 mb-3">Customize Style</h2>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">PDF Background Color</label>
+              <input type="color" v-model="colors.background" class="w-full h-10 border rounded" />
             </div>
-
-            <!-- Rows -->
-            <div v-for="(row, ri) in excelData" :key="'row-' + ri" class="grid" :style="rowStyle(ri)">
-              <div v-for="(key, i) in activeFieldNames" :key="'cell-' + ri + '-' + i"
-                   class="px-4 py-2 border-r border-gray-200 last:border-r-0">
-                {{ row[key] }}
-              </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Alternate Row Color</label>
+              <input type="color" v-model="colors.rowAlternate" class="w-full h-10 border rounded" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Header Background</label>
+              <input type="color" v-model="colors.header" class="w-full h-10 border rounded" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Header Text Color</label>
+              <input type="color" v-model="colors.headerText" class="w-full h-10 border rounded" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Title Color</label>
+              <input type="color" v-model="colors.title" class="w-full h-10 border rounded" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Text Color</label>
+              <input type="color" v-model="colors.text" class="w-full h-10 border rounded" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Title Font Size</label>
+              <input type="text" v-model="titleSettings.size" class="w-full p-2 border rounded" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Field Font Size</label>
+              <input type="text" v-model="titleSettings.fieldSize" class="w-full p-2 border rounded" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Field Font</label>
+              <input type="text" v-model="titleSettings.fieldFont" class="w-full p-2 border rounded" />
             </div>
           </div>
 
-          <div v-if="images.footer" class="mt-4">
-            <img :src="footerUrl" alt="Footer Image" class="w-full h-auto rounded" />
+          <button @click="generatePdf"
+            class="mt-6 w-full bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition">
+            Generate PDF
+          </button>
+        </div>
+
+        <!-- Preview -->
+        <div>
+          <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
+          <div
+            id="pdf-content"
+            class="rounded shadow border overflow-auto bg-white"
+            :style="{
+              width: '100%',
+              height: '1123px',
+              padding: '2rem'
+            }"
+          >
+            <div v-if="images.cover" class="mb-4">
+              <img :src="coverUrl" alt="Cover Image" class="w-full h-auto mb-2 rounded" />
+            </div>
+
+            <div v-if="images.header" class="mb-4">
+              <img :src="headerUrl" alt="Header Image" :style="{ height: headerHeight + 'px' }" class="w-full object-cover rounded" />
+            </div>
+
+            <div v-if="images.second" class="mb-4">
+              <img :src="secondUrl" alt="Second Cover" class="w-full h-auto rounded" />
+            </div>
+
+            <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
+              <!-- Header -->
+              <div class="grid font-medium" :style="headerStyle">
+                <div v-for="(key, i) in activeFieldNames" :key="'header-' + i"
+                     class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0">
+                  {{ key }}
+                </div>
+              </div>
+
+              <!-- Rows -->
+              <div v-for="(row, ri) in excelData" :key="'row-' + ri" class="grid" :style="rowStyle(ri)">
+                <div v-for="(key, i) in activeFieldNames" :key="'cell-' + ri + '-' + i"
+                     class="px-4 py-2 border-r border-gray-200 last:border-r-0">
+                  {{ row[key] }}
+                </div>
+              </div>
+            </div>
+
+            <div v-if="images.footer" class="mt-4">
+              <img :src="footerUrl" alt="Footer Image" class="w-full h-auto rounded" />
+            </div>
           </div>
         </div>
       </div>
@@ -250,3 +289,16 @@ onMounted(fetchTemplate);
     </div>
   </div>
 </template>
+
+<style scoped>
+.file-input {
+  display: block;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 400px;
+}
+</style>
+
