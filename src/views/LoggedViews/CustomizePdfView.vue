@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import draggable from 'vuedraggable';
@@ -16,23 +16,37 @@ const fields = ref<{ name: string; active: boolean }[]>([]);
 const loading = ref(true);
 const error = ref(false);
 const headerHeight = ref(100);
+const windowWidth = ref(window.innerWidth);
+
+const updateWindowWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+  window.addEventListener('resize', updateWindowWidth);
+  updateWindowWidth();
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateWindowWidth);
+});
 
 const colors = ref({
   background: '#ffffff',
+  rowAlternate: '#f9fafb',
   text: '#000000',
   title: '#1f2937',
   header: '#4f46e5',
-  rowAlternate: '#f9fafb'
+  headerText: '#ffffff'
 });
 
-const titleSettings = ref<{
-  size: string;
-  align: 'left' | 'center' | 'right';
-  font: string;
-}>({
+const titleSettings = ref({
   size: '2rem',
-  align: 'center',
-  font: 'Arial'
+  align: 'center' as 'left' | 'center' | 'right',
+  font: 'Arial',
+  fieldFont: 'Arial',
+  fieldSize: '1rem',
+  fieldAlign: 'left' as 'left' | 'center' | 'right'
 });
 
 const images = ref({
@@ -52,6 +66,29 @@ const excelData = ref<Record<string, string>[]>([]);
 const activeFieldNames = computed(() =>
   fields.value.filter(f => f.active).map(f => f.name)
 );
+
+// 🧠 ESTILOS COMPUTADOS TIPADOS
+const titleStyle = computed<Record<string, string>>(() => ({
+  color: colors.value.title,
+  fontSize: titleSettings.value.size,
+  textAlign: titleSettings.value.align,
+  fontFamily: titleSettings.value.font
+}));
+
+const headerStyle = computed<Record<string, string>>(() => ({
+  backgroundColor: colors.value.header,
+  color: colors.value.headerText,
+  gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`
+}));
+
+const rowStyle = (ri: number): Record<string, string> => ({
+  gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`,
+  backgroundColor: ri % 2 === 0 ? colors.value.background : colors.value.rowAlternate,
+  color: colors.value.text,
+  fontFamily: titleSettings.value.fieldFont,
+  fontSize: titleSettings.value.fieldSize,
+  textAlign: titleSettings.value.fieldAlign
+});
 
 const fetchTemplate = async () => {
   try {
@@ -140,100 +177,76 @@ onMounted(fetchTemplate);
         </button>
       </div>
 
+      <!-- Styles -->
+      <div>
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Styles</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div><label class="block mb-1 font-medium">PDF Background</label><input type="color" v-model="colors.background" class="w-full h-10 p-1 border rounded" /></div>
+          <div><label class="block mb-1 font-medium">Alternate Row Background</label><input type="color" v-model="colors.rowAlternate" class="w-full h-10 p-1 border rounded" /></div>
+          <div><label class="block mb-1 font-medium">Header Background</label><input type="color" v-model="colors.header" class="w-full h-10 p-1 border rounded" /></div>
+          <div><label class="block mb-1 font-medium">Header Text Color</label><input type="color" v-model="colors.headerText" class="w-full h-10 p-1 border rounded" /></div>
+          <div><label class="block mb-1 font-medium">Title Color</label><input type="color" v-model="colors.title" class="w-full h-10 p-1 border rounded" /></div>
+          <div><label class="block mb-1 font-medium">Text Color</label><input type="color" v-model="colors.text" class="w-full h-10 p-1 border rounded" /></div>
+          <div><label class="block mb-1 font-medium">Title Font Size</label><input type="text" v-model="titleSettings.size" class="w-full border p-2 rounded" /></div>
+          <div><label class="block mb-1 font-medium">Field Font Size</label><input type="text" v-model="titleSettings.fieldSize" class="w-full border p-2 rounded" /></div>
+          <div><label class="block mb-1 font-medium">Field Font</label><input type="text" v-model="titleSettings.fieldFont" class="w-full border p-2 rounded" /></div>
+        </div>
+      </div>
+
       <!-- Preview -->
-      <div id="pdf-content" class="mx-auto rounded shadow border overflow-auto bg-white" style="width: 794px; height: 1123px; padding: 2rem;">
-        <!-- Cover Image -->
-        <div v-if="images.cover" class="mb-4">
-          <img :src="coverUrl" alt="Cover Image" class="w-full h-auto mb-2 rounded" />
-        </div>
-
-        <!-- Header Image -->
-        <div v-if="images.header" class="mb-4">
-          <img :src="headerUrl" alt="Header Image" :style="{ height: headerHeight + 'px' }" class="w-full object-cover rounded" />
-        </div>
-
-        <!-- Título de plantilla -->
-        <h1
-          class="font-bold mb-6"
+      <div class="mt-10">
+        <div
+          id="pdf-content"
+          class="mx-auto rounded shadow border overflow-auto bg-white"
           :style="{
-            color: colors.title,
-            fontSize: titleSettings.size,
-            textAlign: titleSettings.align,
-            fontFamily: titleSettings.font
+            width: windowWidth < 850 ? '100%' : '794px',
+            height: '1123px',
+            padding: '2rem'
           }"
         >
-          {{ templateName }} Catalog
-        </h1>
+          <div v-if="images.cover" class="mb-4">
+            <img :src="coverUrl" alt="Cover Image" class="w-full h-auto mb-2 rounded" />
+          </div>
 
-        <!-- Imagen segunda portada -->
-        <div v-if="images.second" class="mb-4">
-          <img :src="secondUrl" alt="Second Cover" class="w-full h-auto rounded" />
-        </div>
+          <div v-if="images.header" class="mb-4">
+            <img :src="headerUrl" alt="Header Image" :style="{ height: headerHeight + 'px' }" class="w-full object-cover rounded" />
+          </div>
 
-        <!-- Contenido tipo tabla -->
-        <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
-          <!-- Headers -->
-          <div
-            class="grid text-white font-medium"
-            :style="{
-              backgroundColor: colors.header,
-              gridTemplateColumns: `repeat(${activeFieldNames.length}, minmax(0, 1fr))`
-            }"
-          >
-            <div
-              v-for="(key, i) in activeFieldNames"
-              :key="'header-' + i"
-              class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
-            >
-              {{ key }}
+          <h1 class="font-bold mb-6" :style="titleStyle">
+            {{ templateName }} Catalog
+          </h1>
+
+          <div v-if="images.second" class="mb-4">
+            <img :src="secondUrl" alt="Second Cover" class="w-full h-auto rounded" />
+          </div>
+
+          <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
+            <!-- Header -->
+            <div class="grid font-medium" :style="headerStyle">
+              <div v-for="(key, i) in activeFieldNames" :key="'header-' + i"
+                   class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0">
+                {{ key }}
+              </div>
+            </div>
+
+            <!-- Rows -->
+            <div v-for="(row, ri) in excelData" :key="'row-' + ri" class="grid" :style="rowStyle(ri)">
+              <div v-for="(key, i) in activeFieldNames" :key="'cell-' + ri + '-' + i"
+                   class="px-4 py-2 border-r border-gray-200 last:border-r-0">
+                {{ row[key] }}
+              </div>
             </div>
           </div>
 
-          <!-- Rows -->
-          <div
-            v-for="(row, ri) in excelData"
-            :key="'row-' + ri"
-            class="grid"
-            :style="{
-              gridTemplateColumns: `repeat(${activeFieldNames.length}, minmax(0, 1fr))`,
-              backgroundColor: ri % 2 === 0 ? colors.background : colors.rowAlternate,
-              color: colors.text
-            }"
-          >
-            <div
-              v-for="(key, i) in activeFieldNames"
-              :key="'cell-' + ri + '-' + i"
-              class="px-4 py-2 border-r border-gray-200 last:border-r-0"
-            >
-              {{ row[key] }}
-            </div>
+          <div v-if="images.footer" class="mt-4">
+            <img :src="footerUrl" alt="Footer Image" class="w-full h-auto rounded" />
           </div>
-        </div>
-
-        <!-- Footer -->
-        <div v-if="images.footer" class="mt-4">
-          <img :src="footerUrl" alt="Footer Image" class="w-full h-auto rounded" />
         </div>
       </div>
     </div>
 
     <div class="mt-12">
-      <BackButton
-        class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
-      />
+      <BackButton class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" />
     </div>
   </div>
 </template>
-
-<style scoped>
-.file-input {
-  display: block;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  width: 100%;
-  max-width: 400px;
-}
-</style>
-
