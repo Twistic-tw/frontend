@@ -62,19 +62,18 @@ const secondUrl = computed(() => images.value.second ? URL.createObjectURL(image
 const footerUrl = computed(() => images.value.footer ? URL.createObjectURL(images.value.footer) : '');
 
 const excelData = ref<Record<string, string>[]>([]);
+const rowsPerPage = 25;
+const paginatedRows = computed(() => {
+  const chunks = [];
+  for (let i = 0; i < excelData.value.length; i += rowsPerPage) {
+    chunks.push(excelData.value.slice(i, i + rowsPerPage));
+  }
+  return chunks;
+});
 
 const activeFieldNames = computed(() =>
   fields.value.filter(f => f.active).map(f => f.name)
 );
-/*
-// ESTILOS COMPUTADOS TIPADOS
-const titleStyle = computed<Record<string, string>>(() => ({
-  color: colors.value.title,
-  fontSize: titleSettings.value.size,
-  textAlign: titleSettings.value.align,
-  fontFamily: titleSettings.value.font
-}));
-*/
 
 const headerStyle = computed<Record<string, string>>(() => ({
   backgroundColor: colors.value.header,
@@ -230,48 +229,45 @@ onMounted(fetchTemplate);
         <!-- Preview -->
         <div class="w-full md:w-[50%]">
           <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
-          <div
-            id="pdf-content"
-            class="rounded shadow border overflow-y-auto bg-white"
-            :style="{
-              width: '100%',
-              height: '1123px',
-              maxHeight: '1123px',
-              padding: '2rem'
-            }"
-          >
-            <div v-if="images.cover" class="mb-4">
-              <img :src="coverUrl" alt="Cover Image" class="w-full h-auto mb-2 rounded" />
-            </div>
+          <div id="pdf-content" class="overflow-y-auto" style="height: 1123px;">
+            <div
+              v-for="(chunk, index) in paginatedRows"
+              :key="'page-' + index"
+              class="a4-page"
+            >
+              <div v-if="index === 0 && images.cover" class="mb-4">
+                <img :src="coverUrl" alt="Cover Image" class="w-full h-auto mb-2 rounded" />
+              </div>
 
-            <div v-if="images.header" class="mb-4">
-              <img :src="headerUrl" alt="Header Image" :style="{ height: headerHeight + 'px' }" class="w-full object-cover rounded" />
-            </div>
+              <div v-if="images.header" class="mb-4">
+                <img :src="headerUrl" alt="Header Image" :style="{ height: headerHeight + 'px' }" class="w-full object-cover rounded" />
+              </div>
 
-            <div v-if="images.second" class="mb-4">
-              <img :src="secondUrl" alt="Second Cover" class="w-full h-auto rounded" />
-            </div>
+              <div v-if="index === 0 && images.second" class="mb-4">
+                <img :src="secondUrl" alt="Second Cover" class="w-full h-auto rounded" />
+              </div>
 
-            <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
-              <!-- Header -->
-              <div class="grid font-medium" :style="headerStyle">
-                <div v-for="(key, i) in activeFieldNames" :key="'header-' + i"
-                     class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0">
-                  {{ key }}
+              <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
+                <!-- Header -->
+                <div class="grid font-medium" :style="headerStyle">
+                  <div v-for="(key, i) in activeFieldNames" :key="'header-' + i"
+                       class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0">
+                    {{ key }}
+                  </div>
+                </div>
+
+                <!-- Rows -->
+                <div v-for="(row, ri) in chunk" :key="'row-' + index + '-' + ri" class="grid" :style="rowStyle(ri)">
+                  <div v-for="(key, i) in activeFieldNames" :key="'cell-' + index + '-' + ri + '-' + i"
+                       class="px-4 py-2 border-r border-gray-200 last:border-r-0">
+                    {{ row[key] }}
+                  </div>
                 </div>
               </div>
 
-              <!-- Rows -->
-              <div v-for="(row, ri) in excelData" :key="'row-' + ri" class="grid" :style="rowStyle(ri)">
-                <div v-for="(key, i) in activeFieldNames" :key="'cell-' + ri + '-' + i"
-                     class="px-4 py-2 border-r border-gray-200 last:border-r-0">
-                  {{ row[key] }}
-                </div>
+              <div v-if="index === paginatedRows.length - 1 && images.footer" class="mt-4">
+                <img :src="footerUrl" alt="Footer Image" class="w-full h-auto rounded" />
               </div>
-            </div>
-
-            <div v-if="images.footer" class="mt-4">
-              <img :src="footerUrl" alt="Footer Image" class="w-full h-auto rounded" />
             </div>
           </div>
         </div>
@@ -294,5 +290,15 @@ onMounted(fetchTemplate);
   width: 100%;
   max-width: 400px;
 }
-</style>
 
+.a4-page {
+  width: 794px;
+  height: 1123px;
+  background-color: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin: 0 auto 2rem;
+  padding: 2rem;
+  page-break-after: always;
+  overflow: hidden;
+}
+</style>
