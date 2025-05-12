@@ -79,7 +79,7 @@ watch(usuarioSeleccionado, () => {
         :key="catalogo.id"
         class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
-        <h3 class="text-xl font-semibold text-indigo-600 mb-2">{{ catalogo.name }}</h3>
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ catalogo.name }}</h3>
         <p class="text-sm text-gray-500 dark:text-white mb-1">Created by: <span class="font-medium text-gray-700 dark:text-white">{{ catalogo.user_name }}</span></p>
         <p class="text-sm text-gray-500 dark:text-white mb-1">Created date: <span class="font-medium text-gray-700 dark:text-white">{{ new Date(catalogo.created_at).toLocaleDateString() }}</span></p>
       </div>
