@@ -5,7 +5,7 @@ import axios from 'axios';
 import draggable from 'vuedraggable';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import html2pdf from 'html2pdf.js';
+//import html2pdf from 'html2pdf.js';
 import BackButton from '@/components/BackButton.vue';
 
 const route = useRoute();
@@ -116,7 +116,7 @@ const handleImageUpload = (e: Event, type: 'cover' | 'header' | 'second' | 'foot
   const file = (e.target as HTMLInputElement).files?.[0] || null;
   images.value[type] = file;
 };
-
+/*
 const generatePdf = async () => {
   const content = document.getElementById('pdf-content');
   if (!content) return;
@@ -132,8 +132,88 @@ const generatePdf = async () => {
 
   await html2pdf().set(opt).from(content).save();
 };
+*/
 
-onMounted(fetchTemplate);
+// Obtener token XSRF
+const userId = ref<number | null>(null);
+
+// Obtener token XSRF desde cookies
+const getXsrfToken = (): string | null => {
+  return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null;
+};
+
+// Obtener el usuario autenticado desde el backend
+const fetchUserId = async () => {
+  const xsrfToken = getXsrfToken();
+  if (!xsrfToken) return;
+
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_URL}/user`, {
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        'Accept': 'application/json',
+      },
+      withCredentials: true,
+    });
+    userId.value = response.data.id; // Asegúrate de que la propiedad sea .id
+  } catch (error) {
+    console.error('Error al obtener el usuario logueado:', error);
+    userId.value = null;
+  }
+};
+
+const sendToBackend = async () => {
+  if (!userId.value) {
+    console.error('No hay usuario autenticado.');
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+
+    formData.append('id_user', userId.value.toString());
+    formData.append('template_name', templateName.value);
+    formData.append('fields', JSON.stringify(activeFieldNames.value));
+    formData.append('excel_data', JSON.stringify(excelData.value));
+    formData.append('style', JSON.stringify({
+      background: colors.value.background,
+      rowAlternate: colors.value.rowAlternate,
+      text: colors.value.text,
+      title: colors.value.title,
+      header: colors.value.header,
+      headerText: colors.value.headerText,
+      size: titleSettings.value.size,
+      align: titleSettings.value.align,
+      fieldFont: titleSettings.value.fieldFont,
+      fieldSize: titleSettings.value.fieldSize,
+    }));
+
+    if (images.value.cover) formData.append('cover', images.value.cover);
+    if (images.value.footer) formData.append('footer', images.value.footer);
+
+    const res = await axios.post(`${import.meta.env.VITE_URL}/generate-pdf`, formData, {
+      responseType: 'blob'
+    });
+
+    const blob = new Blob([res.data], { type: 'application/pdf' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${templateName.value}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+  } catch (err) {
+    console.error('Error al generar el PDF en el backend:', err);
+  }
+};
+
+
+
+onMounted(() => {
+  fetchTemplate();
+  fetchUserId();
+});
 </script>
 
 <template>
@@ -202,8 +282,9 @@ onMounted(fetchTemplate);
             </div>
           </div>
 
-          <button @click="generatePdf"
-            class="mt-6 w-full bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition">
+          <button
+            @click="sendToBackend"
+            class="mt-2 w-full bg-green-600 text-white px-6 py-3 rounded shadow hover:bg-green-700 hover:scale-105 transition">
             Generate PDF
           </button>
         </div>
