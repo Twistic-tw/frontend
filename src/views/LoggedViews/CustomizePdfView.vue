@@ -34,6 +34,12 @@ const titleSettings = ref<{
   font: 'Arial'
 });
 
+const titleBackground = ref({
+  enabled: true,
+  color: '#ffffff'
+});
+
+
 const images = ref({
   cover: null as File | null,
   second: null as File | null,
@@ -155,6 +161,22 @@ onMounted(fetchTemplate);
         </div>
       </div>
 
+      <div>
+      <h2 class="text-xl font-semibold text-gray-800 mb-3">Title Background</h2>
+      <div class="flex items-center gap-4">
+        <label class="flex items-center gap-2">
+          <input type="checkbox" v-model="titleBackground.enabled" />
+          Enable Background
+        </label>
+        <input
+          type="color"
+          v-model="titleBackground.color"
+          v-if="titleBackground.enabled"
+          class="w-10 h-10 border rounded"
+        />
+      </div>
+    </div>
+
       <!-- Images -->
       <div>
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
@@ -175,10 +197,11 @@ onMounted(fetchTemplate);
       <!-- Preview -->
       <div id="pdf-content" class="bg-white rounded shadow p-6">
         <!-- Title Page -->
-        <section class="text-center mb-4">
-          <h1
-            class="font-bold"
+        <section v-if="images.cover" class="mb-4 relative">
+          <div
+            class="absolute inset-x-0 top-0 z-10 px-4 py-3 text-center font-bold"
             :style="{
+              backgroundColor: titleBackground.enabled ? titleBackground.color : 'transparent',
               color: colors.title,
               fontSize: titleSettings.size,
               textAlign: titleSettings.align,
@@ -186,8 +209,15 @@ onMounted(fetchTemplate);
             }"
           >
             {{ templateName }} Catalog
-          </h1>
+          </div>
+          <img
+            v-if="coverUrl"
+            :src="coverUrl"
+            alt="Cover Image"
+            class="w-full h-auto mb-4 rounded"
+          />
         </section>
+
 
         <!-- Cover Images -->
         <section v-if="images.cover" class="mb-4">
