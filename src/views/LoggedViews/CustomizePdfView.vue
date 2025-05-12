@@ -133,69 +133,80 @@ onMounted(fetchTemplate);
         </button>
       </div>
 
-      <div id="pdf-content" class="bg-white rounded shadow p-6">
-        <section v-if="images.header" class="mb-4">
-          <img v-if="headerUrl" :src="headerUrl" alt="Header Image" class="w-full h-auto mb-4 rounded" />
-        </section>
+      <div
+  id="pdf-content"
+  class="mx-auto rounded shadow border overflow-auto bg-white"
+  style="width: 794px; height: 1123px; padding: 2rem;"
+>
+  <!-- Cabecera -->
+  <div v-if="images.header" class="mb-4">
+    <img v-if="headerUrl" :src="headerUrl" alt="Header Image" class="w-full h-auto mb-2 rounded" />
+  </div>
 
-        <section class="text-center mb-6">
-          <h1 class="font-bold" :style="{
-            color: colors.title,
-            fontSize: titleSettings.size,
-            textAlign: titleSettings.align,
-            fontFamily: titleSettings.font
-          }">
-            {{ templateName }} Catalog
-          </h1>
-        </section>
+  <!-- Título de plantilla -->
+  <h1
+    class="font-bold mb-6"
+    :style="{
+      color: colors.title,
+      fontSize: titleSettings.size,
+      textAlign: titleSettings.align,
+      fontFamily: titleSettings.font
+    }"
+  >
+    {{ templateName }} Catalog
+  </h1>
 
-        <section v-if="images.second" class="mb-4">
-          <img v-if="secondUrl" :src="secondUrl" alt="Second Cover Image" class="w-full h-auto mb-4 rounded" />
-        </section>
+  <!-- Imagen segunda portada -->
+  <div v-if="images.second" class="mb-4">
+    <img :src="secondUrl" alt="Second Cover" class="w-full h-auto rounded" />
+  </div>
 
-        <section>
-          <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
-            <div
-              class="grid text-white font-medium"
-              :style="{
-                backgroundColor: colors.header,
-                gridTemplateColumns: `repeat(${activeFieldNames.length}, minmax(0, 1fr))`
-              }"
-            >
-              <div
-                v-for="(key, i) in activeFieldNames"
-                :key="'header-' + i"
-                class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
-              >
-                {{ key }}
-              </div>
-            </div>
-
-            <div
-              v-for="(row, ri) in excelData"
-              :key="'row-' + ri"
-              class="grid"
-              :style="{
-                gridTemplateColumns: `repeat(${activeFieldNames.length}, minmax(0, 1fr))`,
-                backgroundColor: ri % 2 === 0 ? colors.background : colors.rowAlternate,
-                color: colors.text
-              }"
-            >
-              <div
-                v-for="(key, i) in activeFieldNames"
-                :key="'cell-' + ri + '-' + i"
-                class="px-4 py-2 border-r border-gray-200 last:border-r-0"
-              >
-                {{ row[key] }}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section v-if="images.footer" class="mt-10">
-          <img :src="footerUrl" alt="Footer Image" class="w-full h-auto rounded" />
-        </section>
+  <!-- Contenido tipo tabla -->
+  <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
+    <!-- Headers -->
+    <div
+      class="grid text-white font-medium"
+      :style="{
+        backgroundColor: colors.header,
+        gridTemplateColumns: `repeat(${activeFieldNames.length}, minmax(0, 1fr))`
+      }"
+    >
+      <div
+        v-for="(key, i) in activeFieldNames"
+        :key="'header-' + i"
+        class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
+      >
+        {{ key }}
       </div>
+    </div>
+
+    <!-- Rows -->
+    <div
+      v-for="(row, ri) in excelData"
+      :key="'row-' + ri"
+      class="grid"
+      :style="{
+        gridTemplateColumns: `repeat(${activeFieldNames.length}, minmax(0, 1fr))`,
+        backgroundColor: ri % 2 === 0 ? colors.background : colors.rowAlternate,
+        color: colors.text
+      }"
+    >
+      <div
+        v-for="(key, i) in activeFieldNames"
+        :key="'cell-' + ri + '-' + i"
+        class="px-4 py-2 border-r border-gray-200 last:border-r-0"
+      >
+        {{ row[key] }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div v-if="images.footer" class="mt-4">
+    <img :src="footerUrl" alt="Footer Image" class="w-full h-auto rounded" />
+  </div>
+</div>
+
     </div>
 
     <div class="mt-12">
