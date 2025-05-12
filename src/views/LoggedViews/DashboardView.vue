@@ -213,7 +213,7 @@ onMounted(async () => {
             </span>
           </div>
           <p class="text-gray-500 dark:text-gray-300 mb-4">Manage notifications for your catalogs.</p>
-          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
+          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transition dark:bg-gray-800">
             Manage Notifications
           </button>
         </div>
@@ -233,7 +233,7 @@ onMounted(async () => {
         <div class="flex-1 pr-4">
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">User Operations</h2>
           <p class="text-gray-500 dark:text-gray-300 mb-4">Create, modify or delete users for the platform.</p>
-          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
+          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transition dark:bg-gray-800">
             Manage Users
           </button>
         </div>
