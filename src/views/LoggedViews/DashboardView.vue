@@ -141,7 +141,7 @@ onMounted(async () => {
         </div>
 
         <!-- Imagen -->
-        <img src="/public/createCatalog.png" alt="View Catalogs" class="w-24 h-24 object-contain">
+        <img src="/public/viewCatalog.png" alt="View Catalogs" class="w-24 h-24 object-contain">
       </RouterLink>
 
       <!-- Template Operations Card (admin) -->
