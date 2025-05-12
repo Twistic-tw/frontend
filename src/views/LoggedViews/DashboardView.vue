@@ -109,21 +109,32 @@ onMounted(async () => {
 
 
       <!-- Create Catalogs Card (admin) -->
-      <RouterLink to="/catalogList" v-if="role && (role === 'client' || role === 'admin')" class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-semibold text-gray-700 dark:text-white">Create Catalogs</h2>
-          <span
-            v-if="inProgressCount > 0"
-            class="bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-1 rounded-full ml-2 animate-bounce"
-          >
-            {{ inProgressCount }}
-          </span>
+      <RouterLink
+        to="/catalogList"
+        v-if="role && (role === 'client' || role === 'admin')"
+        class="flex items-center justify-between p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800"
+      >
+        <!-- Contenido izquierdo: texto y contador -->
+        <div class="flex-1 pr-4">
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-xl font-semibold text-gray-700 dark:text-white">Create Catalogs</h2>
+            <span
+              v-if="inProgressCount > 0"
+              class="bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-1 rounded-full ml-2 animate-bounce"
+            >
+              {{ inProgressCount }}
+            </span>
+          </div>
+          <p class="text-gray-500 dark:text-gray-300 mb-4">Create pdf catalogs for your products.</p>
+          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
+            Create Pdf Catalog
+          </button>
         </div>
-        <p class="text-gray-500 dark:text-gray-300">Create pdf catalogs for your products.</p>
-        <button class="mt-4 inline-block bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#3a2ac9]">
-          Create Pdf Catalog
-        </button>
+
+        <!-- Imagen derecha -->
+        <img src="/public/createCatalog.png" alt="Create Catalogs" class="w-24 h-24 object-contain">
       </RouterLink>
+
 
       <!-- View Catalogs Card (client and admin) -->
       <RouterLink
