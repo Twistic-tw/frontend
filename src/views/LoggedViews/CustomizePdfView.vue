@@ -39,7 +39,6 @@ const titleBackground = ref({
   color: '#ffffff'
 });
 
-
 const images = ref({
   cover: null as File | null,
   second: null as File | null,
@@ -101,7 +100,7 @@ onMounted(fetchTemplate);
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6  mt-4">
+  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-4">
     <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
       Customize {{ templateName }} Catalog
     </h1>
@@ -161,21 +160,22 @@ onMounted(fetchTemplate);
         </div>
       </div>
 
+      <!-- Title Background -->
       <div>
-      <h2 class="text-xl font-semibold text-gray-800 mb-3">Title Background</h2>
-      <div class="flex items-center gap-4">
-        <label class="flex items-center gap-2">
-          <input type="checkbox" v-model="titleBackground.enabled" />
-          Enable Background
-        </label>
-        <input
-          type="color"
-          v-model="titleBackground.color"
-          v-if="titleBackground.enabled"
-          class="w-10 h-10 border rounded"
-        />
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Title Background</h2>
+        <div class="flex items-center gap-4">
+          <label class="flex items-center gap-2">
+            <input type="checkbox" v-model="titleBackground.enabled" />
+            Enable Background
+          </label>
+          <input
+            type="color"
+            v-model="titleBackground.color"
+            v-if="titleBackground.enabled"
+            class="w-10 h-10 border rounded"
+          />
+        </div>
       </div>
-    </div>
 
       <!-- Images -->
       <div>
@@ -218,12 +218,7 @@ onMounted(fetchTemplate);
           />
         </section>
 
-
-        <!-- Cover Images -->
-        <section v-if="images.cover" class="mb-4">
-          <img v-if="coverUrl" :src="coverUrl" alt="Cover Image" class="w-full h-auto mb-4 rounded" />
-        </section>
-
+        <!-- Second Cover Image -->
         <section v-if="images.second" class="mb-4">
           <img v-if="secondUrl" :src="secondUrl" alt="Second Cover Image" class="w-full h-auto mb-4 rounded" />
         </section>
