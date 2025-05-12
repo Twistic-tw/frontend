@@ -83,7 +83,7 @@ const logUser = async () => {
 </script>
 
 <template>
-  <div class="flex-1 mt-[60px] flex flex-col justify-center px-4 py-8 sm:px-6 lg:px-8 bg-gradient-to-r from-gray-100 to-white">
+  <div class="flex-1 mt-[60px] flex flex-col justify-center px-4 py-8 sm:px-6 lg:px-8">
     <div class="max-w-md w-full mx-auto p-6 sm:p-10 bg-white rounded-3xl shadow-lg dark:bg-gray-700">
       <div class="text-center">
         <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-indigo-50">Log into your account</h2>
