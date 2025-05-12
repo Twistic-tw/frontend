@@ -95,9 +95,9 @@ onMounted(fetchTemplate);
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6">
+  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6  mt-4">
     <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
-      Customize Your Catalog <span class="text-indigo-900">{{ templateName }}</span>
+      Customize {{ templateName }} Catalog
     </h1>
 
     <div v-if="loading" class="text-center text-gray-600">Loading template...</div>
