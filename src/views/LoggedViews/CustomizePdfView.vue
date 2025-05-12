@@ -175,15 +175,16 @@ onMounted(fetchTemplate);
       <!-- Preview -->
       <div id="pdf-content" class="bg-white rounded shadow p-6">
         <!-- Title Page -->
-        <section class="mb-10 text-center border-b pb-6">
+        <section class="text-center mb-4">
           <h1
-          class="font-bold"
-          :style="{
-            color: colors.title,
-            fontSize: titleSettings.size,
-            textAlign: titleSettings.align,
-            fontFamily: titleSettings.font
-          }">
+            class="font-bold"
+            :style="{
+              color: colors.title,
+              fontSize: titleSettings.size,
+              textAlign: titleSettings.align,
+              fontFamily: titleSettings.font
+            }"
+          >
             {{ templateName }} Catalog
           </h1>
         </section>
@@ -199,7 +200,6 @@ onMounted(fetchTemplate);
 
         <!-- Simulated Table -->
         <section>
-          <h2 class="text-2xl font-bold mb-4" :style="{ color: colors.title }">Catalog Preview</h2>
           <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
             <!-- Header -->
             <div
