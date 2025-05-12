@@ -98,7 +98,7 @@ onMounted(async () => {
         <div class="flex-1 pr-4">
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">Create Template</h2>
           <p class="text-gray-500 dark:text-gray-300 mb-4">Create template for your catalog.</p>
-          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transition-all duration-300 ease-in-out hover:px-6">
+          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8">
             Create Template
           </button>
         </div>
@@ -116,7 +116,7 @@ onMounted(async () => {
       >
         <!-- Contenido izquierdo: texto y contador -->
         <div class="flex-1 pr-4">
-          <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center mb-2">
             <h2 class="text-xl font-semibold text-gray-700 dark:text-white">Create Catalogs</h2>
             <span
               v-if="inProgressCount > 0"
@@ -126,7 +126,7 @@ onMounted(async () => {
             </span>
           </div>
           <p class="text-gray-500 dark:text-gray-300 mb-4">Create pdf catalogs for your products.</p>
-          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transition-all duration-300 ease-in-out hover:px-6">
+          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8">
             Create Pdf Catalog
           </button>
         </div>
@@ -146,7 +146,7 @@ onMounted(async () => {
         <div class="flex-1 pr-4">
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">View Catalogs</h2>
           <p class="text-gray-500 dark:text-gray-300 mb-4">View all active catalogs on the platform.</p>
-          <button class="bg-[#4f39f6] text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transition-all duration-300 ease-in-out hover:px-6">
+          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8">
             View Catalogs
           </button>
         </div>
@@ -165,7 +165,7 @@ onMounted(async () => {
         <div class="flex-1 pr-4">
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">Template Operations</h2>
           <p class="text-gray-500 dark:text-gray-300 mb-4">Create or delete templates for your catalogs.</p>
-          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transition-all duration-300 ease-in-out hover:px-6">
+          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8">
             Manage Templates
           </button>
         </div>
@@ -185,7 +185,7 @@ onMounted(async () => {
         <div class="flex-1 pr-4">
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">Fields Operations</h2>
           <p class="text-gray-500 dark:text-gray-300 mb-4">Create or delete fields for your templates.</p>
-          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-6">
+          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8">
             Manage Fields
           </button>
         </div>
@@ -203,7 +203,7 @@ onMounted(async () => {
       >
         <!-- Contenido textual + contador -->
         <div class="flex-1 pr-4">
-          <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center mb-2">
             <h2 class="text-xl font-semibold text-gray-700 dark:text-white">Manage Notifications</h2>
             <span
               v-if="notifications.length && role === 'admin'"
@@ -213,7 +213,7 @@ onMounted(async () => {
             </span>
           </div>
           <p class="text-gray-500 dark:text-gray-300 mb-4">Manage notifications for your catalogs.</p>
-          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transition dark:bg-gray-800">
+          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8">
             Manage Notifications
           </button>
         </div>
@@ -233,7 +233,7 @@ onMounted(async () => {
         <div class="flex-1 pr-4">
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">User Operations</h2>
           <p class="text-gray-500 dark:text-gray-300 mb-4">Create, modify or delete users for the platform.</p>
-          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transition dark:bg-gray-800">
+          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8">
             Manage Users
           </button>
         </div>
