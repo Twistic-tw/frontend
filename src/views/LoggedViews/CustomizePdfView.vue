@@ -97,6 +97,7 @@ const generatePdf = async () => {
 onMounted(fetchTemplate);
 </script>
 
+
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-4">
     <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
