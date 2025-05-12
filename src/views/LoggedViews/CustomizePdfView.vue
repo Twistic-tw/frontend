@@ -97,7 +97,6 @@ const generatePdf = async () => {
 onMounted(fetchTemplate);
 </script>
 
-
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-4">
     <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
@@ -142,18 +141,15 @@ onMounted(fetchTemplate);
       </div>
 
       <!-- Preview -->
-      <div id="pdf-content" class="mx-auto rounded shadow border overflow-auto bg-white" style="width: 794px; height: 1123px; padding: 2rem;">
-        <!-- Cover Image -->
+      <div id="pdf-content" class="mx-auto rounded shadow border overflow-auto bg-white" style="width: 794px; min-height: 1123px; padding: 2rem;">
         <div v-if="images.cover" class="mb-4">
           <img :src="coverUrl" alt="Cover Image" class="w-full h-auto mb-2 rounded" />
         </div>
 
-        <!-- Header Image -->
         <div v-if="images.header" class="mb-4">
           <img :src="headerUrl" alt="Header Image" :style="{ height: headerHeight + 'px' }" class="w-full object-cover rounded" />
         </div>
 
-        <!-- Título de plantilla -->
         <h1
           class="font-bold mb-6"
           :style="{
@@ -166,14 +162,11 @@ onMounted(fetchTemplate);
           {{ templateName }} Catalog
         </h1>
 
-        <!-- Imagen segunda portada -->
         <div v-if="images.second" class="mb-4">
           <img :src="secondUrl" alt="Second Cover" class="w-full h-auto rounded" />
         </div>
 
-        <!-- Contenido tipo tabla -->
         <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
-          <!-- Headers -->
           <div
             class="grid text-white font-medium"
             :style="{
@@ -190,7 +183,6 @@ onMounted(fetchTemplate);
             </div>
           </div>
 
-          <!-- Rows -->
           <div
             v-for="(row, ri) in excelData"
             :key="'row-' + ri"
@@ -211,7 +203,6 @@ onMounted(fetchTemplate);
           </div>
         </div>
 
-        <!-- Footer -->
         <div v-if="images.footer" class="mt-4">
           <img :src="footerUrl" alt="Footer Image" class="w-full h-auto rounded" />
         </div>
@@ -237,4 +228,3 @@ onMounted(fetchTemplate);
   max-width: 400px;
 }
 </style>
-
