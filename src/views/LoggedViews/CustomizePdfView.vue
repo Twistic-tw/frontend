@@ -136,7 +136,7 @@ onMounted(fetchTemplate);
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-4">
+  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-4 overflow-y-auto">
     <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
       Customize {{ templateName }} Catalog
     </h1>
@@ -159,10 +159,10 @@ onMounted(fetchTemplate);
       </div>
 
       <!-- Editor y Preview en grid -->
-      <div class="grid md:grid-cols-3 gap-6">
+      <div class="flex flex-col md:flex-row gap-6">
 
         <!-- Estilos -->
-        <div class="md:col-span-1">
+        <div class="w-full md:w-[20%]">
           <h2 class="text-xl font-semibold text-gray-800 mb-3">Customize Style</h2>
           <div class="space-y-4">
             <div>
@@ -190,27 +190,25 @@ onMounted(fetchTemplate);
               <input type="color" v-model="colors.text" class="w-32 h-8 border rounded" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Title Font Size</label>
-              <input type="text" v-model="titleSettings.size" class="w-full p-2 border rounded" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Field Font Size</label>
-              <input type="text" v-model="titleSettings.fieldSize" class="w-full p-2 border rounded" />
-            </div>
-            <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Field Font</label>
-              <input type="text" v-model="titleSettings.fieldFont" class="w-full p-2 border rounded" />
+              <select v-model="titleSettings.fieldFont" class="w-full p-2 border rounded">
+                <option value="Arial">Arial</option>
+                <option value="Helvetica">Helvetica</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Courier New">Courier New</option>
+              </select>
             </div>
-
-            <button @click="generatePdf"
-              class="w-full bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition">
-              Generate PDF
-            </button>
           </div>
+
+          <button @click="generatePdf"
+            class="mt-6 w-full bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition">
+            Generate PDF
+          </button>
         </div>
 
         <!-- Images -->
-        <div class="md:col-span-1">
+        <div class="w-full md:w-[30%]">
           <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
 
           <label class="block mb-2 text-sm font-medium text-gray-700">Cover Image (shown once)</label>
@@ -230,14 +228,15 @@ onMounted(fetchTemplate);
         </div>
 
         <!-- Preview -->
-        <div class="md:col-span-1">
+        <div class="w-full md:w-[50%]">
           <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
           <div
             id="pdf-content"
-            class="rounded shadow border overflow-auto bg-white"
+            class="rounded shadow border overflow-y-auto bg-white"
             :style="{
               width: '100%',
               height: '1123px',
+              maxHeight: '1123px',
               padding: '2rem'
             }"
           >
