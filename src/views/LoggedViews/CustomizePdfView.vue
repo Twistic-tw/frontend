@@ -34,18 +34,13 @@ const titleSettings = ref<{
   font: 'Arial'
 });
 
-const titleBackground = ref({
-  enabled: true,
-  color: '#ffffff'
-});
-
 const images = ref({
-  cover: null as File | null,
+  header: null as File | null,
   second: null as File | null,
   footer: null as File | null
 });
 
-const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '');
+const headerUrl = computed(() => images.value.header ? URL.createObjectURL(images.value.header) : '');
 const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '');
 const footerUrl = computed(() => images.value.footer ? URL.createObjectURL(images.value.footer) : '');
 
@@ -76,7 +71,7 @@ const fetchTemplate = async () => {
   }
 };
 
-const handleImageUpload = (e: Event, type: 'cover' | 'second' | 'footer') => {
+const handleImageUpload = (e: Event, type: 'header' | 'second' | 'footer') => {
   const file = (e.target as HTMLInputElement).files?.[0] || null;
   images.value[type] = file;
 };
@@ -122,111 +117,44 @@ onMounted(fetchTemplate);
         </draggable>
       </div>
 
-      <!-- Colors -->
-      <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Colors</h2>
-        <div class="flex flex-wrap gap-6">
-          <label>Background <input type="color" v-model="colors.background" class="w-10 h-10" /></label>
-          <label>Text <input type="color" v-model="colors.text" class="w-10 h-10" /></label>
-          <label>Title <input type="color" v-model="colors.title" class="w-10 h-10" /></label>
-          <label>Header <input type="color" v-model="colors.header" class="w-10 h-10" /></label>
-          <label>Alternate Row <input type="color" v-model="colors.rowAlternate" class="w-10 h-10" /></label>
-        </div>
-      </div>
-
-      <!-- Title Settings -->
-      <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Title Style</h2>
-        <div class="flex flex-wrap gap-6 items-center">
-          <label>Font Size
-            <input type="range" min="1" max="4" step="0.1" v-model="titleSettings.size" class="w-40" />
-          </label>
-          <label>Alignment
-            <select v-model="titleSettings.align" class="border rounded px-2 py-1">
-              <option value="left">Left</option>
-              <option value="center">Center</option>
-              <option value="right">Right</option>
-            </select>
-          </label>
-          <label>Font Family
-            <select v-model="titleSettings.font" class="border rounded px-2 py-1">
-              <option value="Arial">Arial</option>
-              <option value="Georgia">Georgia</option>
-              <option value="Times New Roman">Times New Roman</option>
-              <option value="Courier New">Courier New</option>
-              <option value="Tahoma">Tahoma</option>
-            </select>
-          </label>
-        </div>
-      </div>
-
-      <!-- Title Background -->
-      <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Title Background</h2>
-        <div class="flex items-center gap-4">
-          <label class="flex items-center gap-2">
-            <input type="checkbox" v-model="titleBackground.enabled" />
-            Enable Background
-          </label>
-          <input
-            type="color"
-            v-model="titleBackground.color"
-            v-if="titleBackground.enabled"
-            class="w-10 h-10 border rounded"
-          />
-        </div>
-      </div>
-
       <!-- Images -->
       <div>
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
-        <label class="block mb-2 text-sm font-medium text-gray-700">Main Cover</label>
-        <input type="file" @change="e => handleImageUpload(e, 'cover')" class="file-input" />
+        <label class="block mb-2 text-sm font-medium text-gray-700">Header Image (on every page)</label>
+        <input type="file" @change="e => handleImageUpload(e, 'header')" class="file-input" />
         <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Second Cover (optional)</label>
         <input type="file" @change="e => handleImageUpload(e, 'second')" class="file-input" />
         <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Footer Image (optional)</label>
         <input type="file" @change="e => handleImageUpload(e, 'footer')" class="file-input" />
 
-        <!-- Generate PDF Button -->
         <button @click="generatePdf"
           class="mt-6 bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition">
           Generate PDF
         </button>
       </div>
 
-      <!-- Preview -->
       <div id="pdf-content" class="bg-white rounded shadow p-6">
-        <!-- Title Page -->
-        <section v-if="images.cover" class="mb-4 relative">
-          <div
-            class="absolute inset-x-0 top-0 z-10 px-4 py-3 text-center font-bold"
-            :style="{
-              backgroundColor: titleBackground.enabled ? titleBackground.color : 'transparent',
-              color: colors.title,
-              fontSize: titleSettings.size,
-              textAlign: titleSettings.align,
-              fontFamily: titleSettings.font
-            }"
-          >
-            {{ templateName }} Catalog
-          </div>
-          <img
-            v-if="coverUrl"
-            :src="coverUrl"
-            alt="Cover Image"
-            class="w-full h-auto mb-4 rounded"
-          />
+        <section v-if="images.header" class="mb-4">
+          <img v-if="headerUrl" :src="headerUrl" alt="Header Image" class="w-full h-auto mb-4 rounded" />
         </section>
 
-        <!-- Second Cover Image -->
+        <section class="text-center mb-6">
+          <h1 class="font-bold" :style="{
+            color: colors.title,
+            fontSize: titleSettings.size,
+            textAlign: titleSettings.align,
+            fontFamily: titleSettings.font
+          }">
+            {{ templateName }} Catalog
+          </h1>
+        </section>
+
         <section v-if="images.second" class="mb-4">
           <img v-if="secondUrl" :src="secondUrl" alt="Second Cover Image" class="w-full h-auto mb-4 rounded" />
         </section>
 
-        <!-- Simulated Table -->
         <section>
           <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
-            <!-- Header -->
             <div
               class="grid text-white font-medium"
               :style="{
@@ -243,7 +171,6 @@ onMounted(fetchTemplate);
               </div>
             </div>
 
-            <!-- Rows -->
             <div
               v-for="(row, ri) in excelData"
               :key="'row-' + ri"
@@ -265,14 +192,12 @@ onMounted(fetchTemplate);
           </div>
         </section>
 
-        <!-- Footer Image -->
         <section v-if="images.footer" class="mt-10">
           <img :src="footerUrl" alt="Footer Image" class="w-full h-auto rounded" />
         </section>
       </div>
     </div>
 
-    <!-- Back Button -->
     <div class="mt-12">
       <BackButton
         class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
