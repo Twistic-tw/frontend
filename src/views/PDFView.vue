@@ -1,32 +1,95 @@
-<script setup lang="ts">
-  import '../styles.css'
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ $template_name }} Catalog</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: {{ $style['fieldFont'] ?? 'Arial' }};
+      font-size: {{ $style['fieldSize'] ?? '14px' }};
+      color: {{ $style['text'] ?? '#000000' }};
+    }
 
-</script>
+    .page {
+      width: 794px;
+      height: 1123px;
+      padding: 40px;
+      background-color: {{ $style['background'] ?? '#ffffff' }};
+      page-break-after: always;
+    }
 
-<template>
-  <div class="flex flex-1 mt-[96px] ml-[104px] px-6 py-12 lg:px-8 dark:bg-gray-800">
-    <form class="flex items-start" action="submit">
-        <div class="text-center mx-3"> 
-            <h2>Primer color</h2>
-            <input  type="color" id="colorInput1" value="#ff0000">
-            <p>HEX:</p> 
-            <input class="text-center" type="text" value="#ff0000">
-        </div>
-        <div class="text-center mx-3"> 
-            <h2>Segundo color</h2>
-            <input  type="color" id="colorInput2" value="#ff0000">
-            <p>HEX:</p> 
-            <input class="text-center" type="text" value="#ff0000">
-        </div>
-        <div class="text-center mx-3"> 
-            <h2>Sube tu logo</h2>
-            <input  type="file" id="logofile" accept=".png, .jpge, .svg, .jpg" class="file:bg-slate-300 file:p-1 file:cursor-pointer text-sm text-gray-900 cursor-pointer bg-white border-solid border-2 border-slate-300 rounded-sm ">
-        </div>
-        <div class="text-center mx-3">
-            <h2>Sube el excel</h2>
-            <input type="file" id="excelfile" accept=".xls, .xlsx" class="file:bg-slate-300 file:p-1 file:cursor-pointer text-sm text-gray-900 cursor-pointer bg-white border-solid border-2 border-slate-300 rounded-sm ">
-        </div>
-        <input class="bg-slate-400 p-1 px-3 my-3 rounded-sm" type="submit">
-    </form>
+    .title {
+      text-align: {{ $style['align'] ?? 'center' }};
+      font-size: {{ $style['size'] ?? '24px' }};
+      color: {{ $style['title'] ?? '#1f2937' }};
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .header {
+      background-color: {{ $style['header'] ?? '#4f46e5' }};
+      color: {{ $style['headerText'] ?? '#ffffff' }};
+    }
+
+    .header td {
+      padding: 8px;
+      font-weight: bold;
+      border: 1px solid #ccc;
+    }
+
+    .row:nth-child(even) {
+      background-color: {{ $style['rowAlternate'] ?? '#f9fafb' }};
+    }
+
+    .row td {
+      padding: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .full-image {
+      width: 794px;
+      height: 1123px;
+      object-fit: cover;
+      display: block;
+      page-break-after: always;
+    }
+  </style>
+</head>
+<body>
+
+  @if (!empty($images['cover']) && file_exists($images['cover']))
+    <img src="{{ $images['cover'] }}" class="full-image">
+  @endif
+
+  <div class="page">
+    <div class="title">{{ $template_name }} Catalog</div>
+
+    <table class="table">
+      <tr class="header">
+        @foreach ($fields as $field)
+          <td>{{ $field }}</td>
+        @endforeach
+      </tr>
+
+      @foreach ($data as $row)
+        <tr class="row">
+          @foreach ($fields as $field)
+            <td>{{ $row[$field] ?? '' }}</td>
+          @endforeach
+        </tr>
+      @endforeach
+    </table>
   </div>
-</template>
+
+  @if (!empty($images['footer']) && file_exists($images['footer']))
+    <img src="{{ $images['footer'] }}" class="full-image">
+  @endif
+
+</body>
+</html>
