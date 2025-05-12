@@ -170,11 +170,6 @@ onMounted(fetchTemplate);
         <input type="number" v-model="headerHeight" class="file-input" />
         <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Footer Image (optional)</label>
         <input type="file" @change="e => handleImageUpload(e, 'footer')" class="file-input" />
-
-        <button @click="generatePdf"
-          class="mt-6 bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition">
-          Generate PDF
-        </button>
       </div>
 
       <!-- Styles -->
@@ -192,6 +187,11 @@ onMounted(fetchTemplate);
           <div><label class="block mb-1 font-medium">Field Font</label><input type="text" v-model="titleSettings.fieldFont" class="w-full border p-2 rounded" /></div>
         </div>
       </div>
+
+      <button @click="generatePdf"
+          class="mt-6 bg-indigo-600 text-white px-6 py-3 rounded shadow hover:bg-indigo-700 hover:scale-105 transition">
+          Generate PDF
+        </button>
 
       <!-- Preview -->
       <div class="mt-10">
