@@ -108,7 +108,7 @@ onBeforeUnmount(() => {
       </RouterLink>
 
       <RouterLink
-        to="/catalogs"
+        to="/catalogList"
         @click="closeNav"
         class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900"
         active-class="bg-slate-800"
