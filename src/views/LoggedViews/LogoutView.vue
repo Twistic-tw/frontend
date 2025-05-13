@@ -23,19 +23,28 @@ onMounted(async () => {
 
     sessionStorage.clear();
     localStorage.clear();
+
+    // Elimina cookies
     document.cookie.split(";").forEach(c => {
       document.cookie = c
         .replace(/^ +/, "")
         .replace(/=.*/, `=;expires=${new Date(0).toUTCString()};path=/`);
     });
 
+    // Limpiar configuración global de axios
+    delete axios.defaults.headers.common['Authorization'];
+    delete axios.defaults.baseURL;
+
     await router.push('/');
-    window.location.reload();
+    // Solo si es absolutamente necesario
+    // window.location.reload();
+
   } catch (error) {
     console.error('Error al cerrar sesión', error.response ? error.response.data : error);
     await router.push('/');
   }
 });
+
 </script>
 
 <template>
