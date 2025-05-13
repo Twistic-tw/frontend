@@ -127,7 +127,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (requiresAuth && !isLoggedIn) {
-    next('https://api-catalogos.twistic.app');
+    next('/login');
   } else {
     next();
   }
