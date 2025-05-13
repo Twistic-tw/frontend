@@ -19,16 +19,14 @@ const allNotifications = ref<Notification[]>([]);
 const error = ref(false);
 const loading = ref(true);
 
-// Notificaciones filtradas dinámicamente según rol
-const notifications = computed(() => {
-  if (role === 'admin') return allNotifications.value;
-  return allNotifications.value.filter(n => n.id_user === userId.value);
-});
-
-// Contador para el bloque "Create Catalogs" (solo "In Progress")
-const inProgressCount = computed(() =>
-  notifications.value.filter(n => n.status === 'In Progress').length
+const pendingCount = computed(() =>
+  allNotifications.value.filter(n => n.status === 'Pending' && (role === 'admin' || n.id_user === userId.value)).length
 );
+
+const inProgressCount = computed(() =>
+  allNotifications.value.filter(n => n.status === 'In Progress' && (role === 'admin' || n.id_user === userId.value)).length
+);
+
 
 // Obtener token XSRF
 const getXsrfToken = (): string | null => {
@@ -61,10 +59,9 @@ const fetchNotifications = async () => {
     const res = await axios.get(`${import.meta.env.VITE_URL}/ShowNotifications`, {
       withCredentials: true
     });
-    // Filtramos solo las notificaciones con status 'Pending'
-    allNotifications.value = (res.data.notifications || []).filter(
-      (n: { status: string }) => n.status === 'Pending'
-    );
+
+    allNotifications.value = res.data.notifications || [];
+
   } catch (err) {
     console.error('Error al obtener notificaciones:', err);
     error.value = true;
@@ -72,6 +69,7 @@ const fetchNotifications = async () => {
     loading.value = false;
   }
 };
+
 
 // Al montar el componente
 onMounted(async () => {
@@ -209,10 +207,10 @@ onMounted(async () => {
           <div class="flex items-center mb-2">
             <h2 class="text-xl font-semibold text-gray-700 dark:text-white">Manage Notifications</h2>
             <span
-              v-if="notifications.length && role === 'admin'"
+              v-if="pendingCount > 0"
               class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full ml-2 animate-bounce"
             >
-              {{ notifications.length }}
+              {{ pendingCount }}
             </span>
           </div>
           <p class="text-gray-500 dark:text-gray-300 mb-4">Manage notifications for your catalogs.</p>
