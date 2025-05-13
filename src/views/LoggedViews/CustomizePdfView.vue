@@ -192,7 +192,7 @@ const sendToBackend = async () => {
     if (images.value.cover) formData.append('cover', images.value.cover);
     if (images.value.footer) formData.append('footer', images.value.footer);
 
-    const res = await axios.post(`${import.meta.env.VITE_URL}/generate-pdf`, formData, {
+    const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
       responseType: 'blob'
     });
 
