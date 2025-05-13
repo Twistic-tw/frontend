@@ -106,31 +106,46 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.meta.requiereNavAdmin;
-
-  // Verificar si está logueado
   let isLoggedIn = false;
 
   try {
+    // Asegura nueva cookie XSRF al cargar
+    await fetch(`${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
+      credentials: 'include'
+    });
+
+    // Verifica sesión
     const res = await fetch(`${import.meta.env.VITE_URL}/user`, {
       credentials: 'include',
     });
 
+    // Verifica si la respuesta es exitosa
     if (res.ok) {
+      const userData = await res.json();
       isLoggedIn = true;
+      // Verifica si el correo electrónico de la sesión coincide con el del usuario
+      const sessionEmail = sessionStorage.getItem('userEmail');
+      // Si no coincide, cierra sesión
+      if (sessionEmail && userData.email !== sessionEmail) {
+        sessionStorage.clear();
+        return next({ path: '/login', query: { redirect: to.fullPath } });
+      }
+      // Almacena el correo electrónico del usuario en sessionStorage
+      sessionStorage.setItem('userEmail', userData.email);
     } else {
-      // Silenciar error 500 y similares
-      console.warn(`Error al verificar autenticación: ${res.status} ${res.statusText}`);
+      isLoggedIn = false;
     }
+
   } catch (error) {
-    // Silenciar cualquier excepción de red u otro tipo
-    console.warn('Excepción al verificar autenticación (probablemente el backend está caído o sin sesión)');
+    console.warn('Error al verificar autenticación:', error);
   }
 
   if (requiresAuth && !isLoggedIn) {
-    next('/login');
-  } else {
-    next();
+    return next({ path: '/login', query: { redirect: to.fullPath } });
   }
+
+  return next();
 });
+
 
 export default router
