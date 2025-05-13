@@ -35,9 +35,7 @@ onMounted(async () => {
     delete axios.defaults.headers.common['Authorization'];
     delete axios.defaults.baseURL;
 
-    await router.push('/');
-    // Solo si es absolutamente necesario
-    // window.location.reload();
+    window.location.href = '/';
 
   } catch (error) {
     console.error('Error al cerrar sesión', error.response ? error.response.data : error);
