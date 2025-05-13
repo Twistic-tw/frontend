@@ -30,7 +30,9 @@ export default defineComponent({
         const res = await axios.get(`${import.meta.env.VITE_URL}/ShowNotifications`, {
           withCredentials: true
         })
-        notifications.value = res.data.notifications
+        notifications.value = res.data.notifications.filter(
+          (n: { status: string }) => n.status === 'Pending'
+        );
       } catch (err) {
         console.error(err)
         error.value = true
