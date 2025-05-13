@@ -163,6 +163,24 @@ const fetchUserId = async () => {
   }
 };
 
+// Marcar notificación como completada
+const finishNotification = async () => {
+  try {
+    const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+    await axios.post(`${import.meta.env.VITE_URL}/FinishNotification/${templateId}`, {}, {
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        'Accept': 'application/json',
+      },
+      withCredentials: true,
+    });
+    console.log('Notificación marcada como completada');
+  } catch (err) {
+    console.error('Error al marcar la notificación como completada:', err);
+  }
+};
+
+
 const sendToBackend = async () => {
   if (!userId.value) {
     console.error('No hay usuario autenticado.');
@@ -214,6 +232,8 @@ const sendToBackend = async () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    await finishNotification();
 
   } catch (err) {
     console.error('Error al generar el PDF en el backend:', err);
