@@ -105,38 +105,40 @@ const router = createRouter({
 // Navigation Guard
 
 router.beforeEach(async (to, from, next) => {
+  // Paso 1: Comprobamos si la ruta requiere autenticación
   const requiresAuth = to.meta.requiereNavAdmin;
+
+  // Inicializamos el estado de sesión
   let isLoggedIn = false;
 
   try {
-    // Paso 1: Solicitar nueva cookie CSRF con axios
-    await axios.get(`${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
-      withCredentials: true
+    // Paso 2: Solicitamos nueva cookie CSRF
+    await fetch(`${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
+      credentials: 'include',
     });
 
-    await new Promise(resolve => setTimeout(resolve, 100));
-
-    // Paso 2: Verificar sesión con axios
-    const res = await axios.get(`${import.meta.env.VITE_URL}/user`, {
-      withCredentials: true
+    // Paso 3: Verificamos si el usuario está logueado
+    const res = await fetch(`${import.meta.env.VITE_URL}/user`, {
+      credentials: 'include',
     });
 
-    // Si no lanza error, hay sesión activa
-    isLoggedIn = true;
+    // Si la respuesta es válida, marcamos como logueado
+    if (res.ok) {
+      isLoggedIn = true;
+    } else {
+      console.warn(`Error al verificar autenticación: ${res.status} ${res.statusText}`);
+    }
 
   } catch (error) {
-    if (error.response) {
-      console.warn(`Error al verificar autenticación: ${error.response.status} ${error.response.statusText}`);
-    } else {
-      console.warn('Error de red o backend no disponible');
-    }
+    console.warn('Excepción al verificar autenticación (backend caído o sin sesión)');
   }
 
-  // Paso 3: Si la ruta requiere estar logueado y no hay sesión, redirigimos al login
+  // Paso 4: Si intenta entrar a una ruta protegida sin sesión, lo mandamos al login
   if (requiresAuth && !isLoggedIn) {
     return next('/login');
   }
 
+  // Paso 5: Continuamos con la navegación normal
   return next();
 });
 
