@@ -155,7 +155,8 @@ const fetchUserId = async () => {
       },
       withCredentials: true,
     });
-    userId.value = response.data.id; // Asegúrate de que la propiedad sea .id
+    console.log('Usuario autenticado:', response.data);
+    userId.value = response.data.id;
   } catch (error) {
     console.error('Error al obtener el usuario logueado:', error);
     userId.value = null;
