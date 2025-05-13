@@ -105,45 +105,40 @@ const router = createRouter({
 // Navigation Guard
 
 router.beforeEach(async (to, from, next) => {
+  // Paso 1: Comprobamos si la ruta requiere autenticación
   const requiresAuth = to.meta.requiereNavAdmin;
+
+  // Inicializamos el estado de sesión
   let isLoggedIn = false;
 
   try {
-    // Asegura nueva cookie XSRF al cargar
+    // Paso 2: Solicitamos nueva cookie CSRF, útil cuando se cambia de cuenta
     await fetch(`${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
-      credentials: 'include'
+      credentials: 'include',
     });
 
-    // Verifica sesión
+    // Paso 3: Verificamos si el usuario está logueado
     const res = await fetch(`${import.meta.env.VITE_URL}/user`, {
       credentials: 'include',
     });
 
-    // Verifica si la respuesta es exitosa
+    // Si la respuesta es válida, marcamos como logueado
     if (res.ok) {
-      const userData = await res.json();
       isLoggedIn = true;
-      // Verifica si el correo electrónico de la sesión coincide con el del usuario
-      const sessionEmail = sessionStorage.getItem('userEmail');
-      // Si no coincide, cierra sesión
-      if (sessionEmail && userData.email !== sessionEmail) {
-        sessionStorage.clear();
-        return next({ path: '/login', query: { redirect: to.fullPath } });
-      }
-      // Almacena el correo electrónico del usuario en sessionStorage
-      sessionStorage.setItem('userEmail', userData.email);
     } else {
-      isLoggedIn = false;
+      console.warn(`Error al verificar autenticación: ${res.status} ${res.statusText}`);
     }
 
   } catch (error) {
-    console.warn('Error al verificar autenticación:', error);
+    console.warn('Excepción al verificar autenticación (backend caído o sin sesión)');
   }
 
+  // Paso 4: Si intenta entrar a una ruta protegida sin sesión, lo mandamos al login
   if (requiresAuth && !isLoggedIn) {
-    return next({ path: '/login', query: { redirect: to.fullPath } });
+    return next('/login');
   }
 
+  // Paso 5: Continuamos con la navegación normal
   return next();
 });
 
