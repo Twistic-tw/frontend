@@ -199,7 +199,13 @@ onMounted(fetchUserId);
             </h2>
             <input v-model="form.catalog_name" class="w-full p-3 border rounded-xl" placeholder="e.g. Wine Catalog">
             <div class="flex justify-end mt-6">
-              <button @click="nextStep" class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition">Next</button>
+             <button
+              @click="nextStep"
+              :disabled="!form.catalog_name.trim()"
+              class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                Next
+              </button>
             </div>
           </div>
 
