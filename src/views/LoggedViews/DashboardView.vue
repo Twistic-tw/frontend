@@ -11,6 +11,8 @@ interface Notification {
   status: string;
 }
 
+console.log('DashboardView loaded');
+
 const role = sessionStorage.getItem('userRole');
 const userName = sessionStorage.getItem('userName');
 const userId = ref<number>(0);
