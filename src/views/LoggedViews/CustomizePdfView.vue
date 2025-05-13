@@ -169,6 +169,12 @@ const sendToBackend = async () => {
     return;
   }
 
+  const xsrfToken = getXsrfToken();
+  if (!xsrfToken) {
+    console.error('No se pudo obtener el token CSRF.');
+    return;
+  }
+
   try {
     const formData = new FormData();
 
@@ -193,6 +199,11 @@ const sendToBackend = async () => {
     if (images.value.footer) formData.append('footer', images.value.footer);
 
     const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        'Accept': 'application/json',
+      },
+      withCredentials: true,
       responseType: 'blob'
     });
 
