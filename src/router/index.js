@@ -114,6 +114,8 @@ router.beforeEach(async (to, from, next) => {
       withCredentials: true
     });
 
+    await new Promise(resolve => setTimeout(resolve, 100));
+
     // Paso 2: Verificar sesión con axios
     const res = await axios.get(`${import.meta.env.VITE_URL}/user`, {
       withCredentials: true
