@@ -107,47 +107,30 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.meta.requiereNavAdmin;
 
+  // Verificar si está logueado
   let isLoggedIn = false;
 
   try {
-    // Consultar al backend si hay sesión activa
     const res = await fetch(`${import.meta.env.VITE_URL}/user`, {
       credentials: 'include',
     });
 
     if (res.ok) {
-      const userData = await res.json();
       isLoggedIn = true;
-
-      // Obtener el usuario guardado en sessionStorage
-      const sessionEmail = sessionStorage.getItem('email');
-
-      // Si el email no coincide, significa que la sesión ha cambiado
-      if (sessionEmail && userData.email !== sessionEmail) {
-        console.warn('El usuario ha cambiado. Redirigiendo al login.');
-
-        // Limpiar y redirigir al login
-        sessionStorage.clear();
-        return next({ path: '/login', query: { redirect: to.fullPath } });
-      }
-
-      // Actualizar el email por si entra por primera vez o se ha logueado correctamente
-      sessionStorage.setItem('email', userData.email);
-
     } else {
-      isLoggedIn = false;
+      // Silenciar error 500 y similares
+      console.warn(`Error al verificar autenticación: ${res.status} ${res.statusText}`);
     }
-
   } catch (error) {
-    console.warn('Error al comprobar la sesión:', error);
+    // Silenciar cualquier excepción de red u otro tipo
+    console.warn('Excepción al verificar autenticación (probablemente el backend está caído o sin sesión)');
   }
 
   if (requiresAuth && !isLoggedIn) {
-    return next({ path: '/login', query: { redirect: to.fullPath } });
+    next('/login');
+  } else {
+    next();
   }
-
-  return next();
 });
-
 
 export default router
