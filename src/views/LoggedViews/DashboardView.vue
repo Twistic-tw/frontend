@@ -61,7 +61,10 @@ const fetchNotifications = async () => {
     const res = await axios.get(`${import.meta.env.VITE_URL}/ShowNotifications`, {
       withCredentials: true
     });
-    allNotifications.value = res.data.notifications || [];
+    // Filtramos solo las notificaciones con status 'Pending'
+    allNotifications.value = (res.data.notifications || []).filter(
+      (n: { status: string }) => n.status === 'Pending'
+    );
   } catch (err) {
     console.error('Error al obtener notificaciones:', err);
     error.value = true;
