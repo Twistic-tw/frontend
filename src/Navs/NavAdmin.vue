@@ -141,6 +141,7 @@ onBeforeUnmount(() => {
 
       <RouterLink
         to="/notifications"
+        v-if="role && (role === 'admin')"
         @click="closeNav"
         class="transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900"
         active-class="bg-slate-800"
