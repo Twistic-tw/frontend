@@ -52,21 +52,29 @@
       border: 1px solid #ccc;
     }
 
-    .full-image {
+    .full-image-page {
       width: 794px;
       height: 1123px;
-      object-fit: cover;
-      display: block;
       page-break-after: always;
+    }
+
+    .full-image-page img {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
   </style>
 </head>
 <body>
 
-  @if (!empty($images['cover']) && file_exists($images['cover']))
-    <img src="{{ $images['cover'] }}" class="full-image">
+  {{-- Imagen de portada --}}
+  @if (!empty($images['cover']) && file_exists(public_path($images['cover'])))
+    <div class="full-image-page">
+      <img src="{{ public_path($images['cover']) }}" alt="Cover">
+    </div>
   @endif
 
+  {{-- Página principal con contenido --}}
   <div class="page">
     <div class="title">{{ $template_name }} Catalog</div>
 
@@ -87,8 +95,11 @@
     </table>
   </div>
 
-  @if (!empty($images['footer']) && file_exists($images['footer']))
-    <img src="{{ $images['footer'] }}" class="full-image">
+  {{-- Imagen de pie de página --}}
+  @if (!empty($images['footer']) && file_exists(public_path($images['footer'])))
+    <div class="full-image-page">
+      <img src="{{ public_path($images['footer']) }}" alt="Footer">
+    </div>
   @endif
 
 </body>
