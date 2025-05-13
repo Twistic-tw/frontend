@@ -90,7 +90,7 @@ watch(usuarioSeleccionado, () => {
     </div>
     <div class="mt-12">
       <BackButton
-        class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8"
+        class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
       />
     </div>
   </div>
