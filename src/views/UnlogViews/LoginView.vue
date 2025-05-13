@@ -60,7 +60,6 @@ const logUser = async () => {
       sessionStorage.setItem('userRole', userRole);
       sessionStorage.setItem('userName', response.data.nombre);
       sessionStorage.setItem('userEmail', response.data.email);
-      console.log('Hasta aquí bien');
 
       // Redirigir
       router.push('/dashboard');
