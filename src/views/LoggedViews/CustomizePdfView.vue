@@ -61,7 +61,6 @@ const images = ref({
   header: null as File | null,
   second: null as File | null,
   footer: null as File | null,
-  background: null as File | null
 });
 
 // Previsualización de imágenes cargadas localmente
@@ -69,7 +68,6 @@ const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.
 const headerUrl = computed(() => images.value.header ? URL.createObjectURL(images.value.header) : '');
 const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '');
 const footerUrl = computed(() => images.value.footer ? URL.createObjectURL(images.value.footer) : '');
-const backgroundUrl = computed(() => images.value.background ? URL.createObjectURL(images.value.background) : '');
 
 
 /* -------- VALIDACIÓN Y CARGA DE IMÁGENES -------- */
@@ -244,7 +242,6 @@ const sendToBackend = async () => {
     if (images.value.second) formData.append('second', images.value.second);
     if (images.value.header) formData.append('header', images.value.header);
     if (images.value.footer) formData.append('footer', images.value.footer);
-    if (images.value.background) formData.append('background', images.value.background);
 
     const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
       headers: {
@@ -416,9 +413,7 @@ onMounted(() => {
               v-for="(chunk, index) in paginatedRows"
               :key="'page-' + index"
               class="a4-page"
-            > <div v-if="images.background" class="absolute inset-0 z-0">
-                <img :src="backgroundUrl" alt="Background Image" class="w-full h-full object-cover" />
-              </div>
+            >
               <div v-if="index === 0 && images.cover" class="a4-image full-a4">
                 <img :src="coverUrl" alt="Cover Image" class="a4-image-content no-radius" />
               </div>
