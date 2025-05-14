@@ -60,7 +60,8 @@ const images = ref({
   cover: null as File | null,
   header: null as File | null,
   second: null as File | null,
-  footer: null as File | null
+  footer: null as File | null,
+  background: null as File | null
 });
 
 // Previsualización de imágenes cargadas localmente
@@ -68,6 +69,8 @@ const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.
 const headerUrl = computed(() => images.value.header ? URL.createObjectURL(images.value.header) : '');
 const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '');
 const footerUrl = computed(() => images.value.footer ? URL.createObjectURL(images.value.footer) : '');
+const backgroundUrl = computed(() => images.value.background ? URL.createObjectURL(images.value.background) : '');
+
 
 /* -------- VALIDACIÓN Y CARGA DE IMÁGENES -------- */
 // Verifica tipo y tamaño de archivo antes de guardarlo
@@ -232,12 +235,16 @@ const sendToBackend = async () => {
       align: titleSettings.value.align,
       fieldFont: titleSettings.value.fieldFont,
       fieldSize: titleSettings.value.fieldSize,
+      borderColor: '#000000',
+      borderWidth: '1px',
+      showBorders: true
     }));
 
     if (images.value.cover) formData.append('cover', images.value.cover);
     if (images.value.second) formData.append('second', images.value.second);
     if (images.value.header) formData.append('header', images.value.header);
     if (images.value.footer) formData.append('footer', images.value.footer);
+    if (images.value.background) formData.append('background', images.value.background);
 
     const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
       headers: {
@@ -373,6 +380,8 @@ onMounted(() => {
         <div class="w-full md:w-[30%]">
           <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
 
+
+
           <label class="block mb-2 text-sm font-medium text-gray-700">Cover Image (shown once)</label>
           <input type="file" @change="(e) => handleImageUpload(e, 'cover')" class="file-input w-64" />
 
@@ -403,7 +412,9 @@ onMounted(() => {
               v-for="(chunk, index) in paginatedRows"
               :key="'page-' + index"
               class="a4-page"
-            >
+            > <div v-if="images.background" class="absolute inset-0 z-0">
+                <img :src="backgroundUrl" alt="Background Image" class="w-full h-full object-cover" />
+              </div>
               <div v-if="index === 0 && images.cover" class="a4-image full-a4">
                 <img :src="coverUrl" alt="Cover Image" class="a4-image-content no-radius" />
               </div>
@@ -459,6 +470,7 @@ onMounted(() => {
 }
 
 .a4-page {
+  position: relative;
   width: 794px;
   height: 1123px;
   background-color: white;
@@ -466,6 +478,12 @@ onMounted(() => {
   margin: 0 auto 2rem;
   page-break-after: always;
   overflow: hidden;
+  z-index: 1;
+}
+
+.a4-page > *:not(.absolute) {
+  position: relative;
+  z-index: 10;
 }
 
 .a4-image.full-a4 {
