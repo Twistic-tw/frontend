@@ -18,6 +18,7 @@ const loading = ref(true); // Estado de carga inicial
 const error = ref(false); // Estado de error
 const headerHeight = ref(100); // Altura del encabezado (por si se usa dinámicamente)
 const windowWidth = ref(window.innerWidth); // Ancho de ventana para diseño responsivo
+const generating = ref(false); // Estado de generación del PDF
 
 // Actualizar el ancho de la ventana cuando se redimensiona
 const updateWindowWidth = () => {
@@ -179,7 +180,6 @@ const fetchUserId = async () => {
 };
 
 /* ------------------- MARCAR NOTIFICACIÓN ------------------- */
-// Marca como completada una notificación (relacionado con el template actual)
 const finishNotification = async () => {
   try {
     const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
@@ -209,10 +209,12 @@ const sendToBackend = async () => {
     return;
   }
 
+  generating.value = true; // Activar spinner
+  const toastId = toast.info('Generando PDF, por favor espera...', { timeout: false }); // Mostrar toast persistente
+
   try {
     const formData = new FormData();
 
-    // Datos generales
     formData.append('id_user', userId.value.toString());
     formData.append('template_name', templateName.value);
     formData.append('fields', JSON.stringify(activeFieldNames.value));
@@ -230,21 +232,18 @@ const sendToBackend = async () => {
       fieldSize: titleSettings.value.fieldSize,
     }));
 
-    // Adjuntar imágenes si existen
     if (images.value.cover) formData.append('cover', images.value.cover);
     if (images.value.footer) formData.append('footer', images.value.footer);
 
-    // Enviar al backend para generar el PDF
     const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
         'Accept': 'application/json',
       },
       withCredentials: true,
-      responseType: 'blob' // Esperamos un archivo PDF como blob
+      responseType: 'blob'
     });
 
-    // Descargar automáticamente el PDF generado
     const blob = new Blob([res.data], { type: 'application/pdf' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
@@ -253,15 +252,18 @@ const sendToBackend = async () => {
     link.click();
     document.body.removeChild(link);
 
-    await finishNotification(); // Marcar la notificación como completada
+    await finishNotification();
 
   } catch (err) {
     console.error('Error al generar el PDF en el backend:', err);
+    toast.error('Error al generar el PDF.');
+  } finally {
+    generating.value = false; // Desactivar spinner
+    toast.dismiss(toastId); // Cerrar toast
   }
 };
 
 /* ------------------- INICIO ------------------- */
-// Al montar el componente, obtener la plantilla y el usuario
 onMounted(() => {
   fetchTemplate();
   fetchUserId();
@@ -269,7 +271,20 @@ onMounted(() => {
 </script>
 
 
+
 <template>
+  <!-- Overlay spinner centrado -->
+<div v-if="generating" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+  <div class="text-white text-lg font-semibold flex items-center gap-3">
+    <svg class="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor"
+        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+    </svg>
+    Creating your PDF...
+  </div>
+</div>
+
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-4 overflow-y-auto">
     <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
       Customize {{ templateName }} Catalog
