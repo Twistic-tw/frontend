@@ -74,7 +74,7 @@ const backgroundUrl = computed(() => images.value.background ? URL.createObjectU
 
 /* -------- VALIDACIÓN Y CARGA DE IMÁGENES -------- */
 // Verifica tipo y tamaño de archivo antes de guardarlo
-const handleImageUpload = (e: Event, type: 'cover' | 'header' | 'second' | 'footer') => {
+const handleImageUpload = (e: Event, type: 'cover' | 'header' | 'second' | 'footer' | 'background') => {
   const file = (e.target as HTMLInputElement).files?.[0] || null;
   if (!file) return;
 
@@ -396,6 +396,10 @@ onMounted(() => {
 
           <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Footer Image (optional)</label>
           <input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input w-64" />
+
+          <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Background Image (optional)</label>
+          <input type="file" @change="(e) => handleImageUpload(e, 'background')" class="file-input w-64" />
+
 
           <button
             @click="sendToBackend"
