@@ -8,6 +8,8 @@ interface Notification {
   catalog_name: string;
   status: string;
   id_user: number;
+  created_at: string;
+  updated_at: string;
 }
 
 const userId = ref<number>(0);
@@ -53,6 +55,14 @@ const fetchApprovedTemplates = async () => {
   }
 };
 
+// Formatear fechas
+const formatDate = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+};
+
+
 onMounted(async () => {
   await fetchUserId();
   await fetchApprovedTemplates();
@@ -78,9 +88,13 @@ onMounted(async () => {
         class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800"
       >
         <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-4">{{ template.catalog_name }}</h2>
+        <p class="text-sm text-gray-500 mb-2">Created: {{ formatDate(template.created_at) }}</p>
+        <p class="text-sm text-gray-500 mb-4">Updated: {{ formatDate(template.updated_at) }}</p>
         <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8">
           Customize PDF
         </button>
+        <!-- Imagen -->
+        <img src="/public/viewCatalog.png" alt="View Catalogs" class="w-24 h-24 object-contain">
       </RouterLink>
     </div>
     <div class="mt-12">
