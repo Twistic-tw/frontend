@@ -181,6 +181,7 @@ const fetchUserId = async () => {
 };
 
 /* ------------------- MARCAR NOTIFICACIÓN ------------------- */
+/*
 const finishNotification = async () => {
   try {
     const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
@@ -196,7 +197,7 @@ const finishNotification = async () => {
     console.error('Error al marcar la notificación como completada:', err);
   }
 };
-
+*/
 /* ------------------- ENVÍO AL BACKEND ------------------- */
 const sendToBackend = async () => {
   if (!userId.value) {
@@ -255,7 +256,7 @@ const sendToBackend = async () => {
     link.click();
     document.body.removeChild(link);
 
-    await finishNotification();
+    //await finishNotification();
 
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
