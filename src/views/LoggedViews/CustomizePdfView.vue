@@ -75,11 +75,11 @@ const handleImageUpload = (e: Event, type: 'cover' | 'header' | 'second' | 'foot
   const file = (e.target as HTMLInputElement).files?.[0] || null;
   if (!file) return;
 
-  const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp']; // Tipos permitidos
+  const validTypes = ['image/jpeg', 'image/png', 'image/jpg']; // Tipos permitidos
   const maxSizeMB = 2; // Tamaño máximo
 
   if (!validTypes.includes(file.type)) {
-  toast.error(`"${file.name}" is not a valid image type. Please, use JPG, PNG, or WEBP.`);
+  toast.error(`"${file.name}" is not a valid image type. Please, use JPG or PNG.`);
   (e.target as HTMLInputElement).value = ''; // Limpiar input
   return;
   }
