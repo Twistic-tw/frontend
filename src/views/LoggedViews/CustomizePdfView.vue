@@ -79,16 +79,18 @@ const handleImageUpload = (e: Event, type: 'cover' | 'header' | 'second' | 'foot
   const maxSizeMB = 2; // Tamaño máximo
 
   if (!validTypes.includes(file.type)) {
-    toast.error(`El archivo para "${type}" debe ser una imagen JPG, PNG o WEBP.`);
-    (e.target as HTMLInputElement).value = '';
-    return;
+  toast.error(`"${file.name}" is not a valid image type. Please, use JPG, PNG, or WEBP.`);
+  (e.target as HTMLInputElement).value = ''; // Limpiar input
+  return;
   }
 
   if (file.size > maxSizeMB * 1024 * 1024) {
-    toast.error(`La imagen "${type}" no puede superar los ${maxSizeMB}MB.`);
-    (e.target as HTMLInputElement).value = '';
+    const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+    toast.error(`"${file.name}" weighs ${sizeInMB}MB. Maximum allowed: ${maxSizeMB}MB.`);
+    (e.target as HTMLInputElement).value = ''; // Limpiar input
     return;
   }
+
 
   images.value[type] = file;
 };
@@ -210,7 +212,7 @@ const sendToBackend = async () => {
   }
 
   generating.value = true; // Activar spinner
-  const toastId = toast.info('Generando PDF, por favor espera...', { timeout: false }); // Mostrar toast persistente
+  const toastId = toast.info('Creating your PDF, please wait...', { timeout: false }); // Mostrar toast persistente
 
   try {
     const formData = new FormData();
