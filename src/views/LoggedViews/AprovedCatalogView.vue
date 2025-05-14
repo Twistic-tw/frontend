@@ -90,8 +90,8 @@ onMounted(async () => {
         <!-- Contenido de texto -->
         <div class="flex-1 pr-4">
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">{{ template.catalog_name }}</h2>
-          <p class="text-sm text-gray-500 mb-1">Creado: {{ formatDate(template.created_at) }}</p>
-          <p class="text-sm text-gray-500 mb-4">Actualizado: {{ formatDate(template.updated_at) }}</p>
+          <p class="text-sm text-gray-500 mb-1">Created: {{ formatDate(template.created_at) }}</p>
+          <p class="text-sm text-gray-500 mb-4">Updated: {{ formatDate(template.updated_at) }}</p>
           <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8">
             Customize PDF
           </button>
