@@ -235,6 +235,8 @@ const sendToBackend = async () => {
     }));
 
     if (images.value.cover) formData.append('cover', images.value.cover);
+    if (images.value.second) formData.append('second', images.value.second);
+    if (images.value.header) formData.append('header', images.value.header);
     if (images.value.footer) formData.append('footer', images.value.footer);
 
     const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
