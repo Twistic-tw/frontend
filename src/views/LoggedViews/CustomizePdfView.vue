@@ -362,7 +362,7 @@ onMounted(() => {
                 <img :src="secondUrl" alt="Second Cover" class="w-full h-auto rounded" />
               </div>
 
-              <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm p-8">
+              <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
                 <div class="grid font-medium" :style="headerStyle">
                   <div v-for="(key, i) in activeFieldNames" :key="'header-' + i"
                        class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0">
