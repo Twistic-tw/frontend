@@ -352,10 +352,6 @@ onMounted(() => {
               <input type="color" v-model="colors.headerText" class="w-32 h-8 border rounded" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Title Color</label>
-              <input type="color" v-model="colors.title" class="w-32 h-8 border rounded" />
-            </div>
-            <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Text Color</label>
               <input type="color" v-model="colors.text" class="w-32 h-8 border rounded" />
             </div>
