@@ -173,7 +173,6 @@ const fetchUserId = async () => {
       },
       withCredentials: true,
     });
-    console.log('Usuario autenticado:', response.data);
     userId.value = response.data.user.id;
   } catch (error) {
     console.error('Error al obtener el usuario logueado:', error);
@@ -238,14 +237,6 @@ const sendToBackend = async () => {
     if (images.value.second) formData.append('second', images.value.second);
     if (images.value.header) formData.append('header', images.value.header);
     if (images.value.footer) formData.append('footer', images.value.footer);
-
-    console.log('Archivos enviados:', {
-      cover: images.value.cover,
-      second: images.value.second,
-      header: images.value.header,
-      footer: images.value.footer
-    });
-
 
     const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
       headers: {
