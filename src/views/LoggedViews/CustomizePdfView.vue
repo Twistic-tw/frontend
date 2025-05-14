@@ -1,36 +1,41 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue';
-import { useRoute } from 'vue-router';
-import axios from 'axios';
-import draggable from 'vuedraggable';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-//import html2pdf from 'html2pdf.js';
-import BackButton from '@/components/BackButton.vue';
+/* ------------------- IMPORTACIONES ------------------- */
+import { ref, onMounted, onUnmounted, computed } from 'vue'; // Hooks de Vue
+import { useRoute } from 'vue-router'; // Para acceder a los parámetros de ruta
+import axios from 'axios'; // Para hacer peticiones HTTP
+import draggable from 'vuedraggable'; // Para arrastrar elementos (no usado en este fragmento)
+import BackButton from '@/components/BackButton.vue'; // Componente personalizado
+import { useToast } from 'vue-toastification'; // Para mostrar notificaciones tipo toast
 
-const route = useRoute();
-const templateId = route.params.id as string;
+/* ------------------- VARIABLES ------------------- */
+const route = useRoute(); // Obtenemos la ruta actual
+const templateId = route.params.id as string; // ID de la plantilla desde la URL
+const toast = useToast(); // Instancia del sistema de notificaciones
 
-const templateName = ref('');
-const fields = ref<{ name: string; active: boolean }[]>([]);
-const loading = ref(true);
-const error = ref(false);
-const headerHeight = ref(100);
-const windowWidth = ref(window.innerWidth);
+const templateName = ref(''); // Nombre de la plantilla actual
+const fields = ref<{ name: string; active: boolean }[]>([]); // Campos del Excel con activación
+const loading = ref(true); // Estado de carga inicial
+const error = ref(false); // Estado de error
+const headerHeight = ref(100); // Altura del encabezado (por si se usa dinámicamente)
+const windowWidth = ref(window.innerWidth); // Ancho de ventana para diseño responsivo
 
+// Actualizar el ancho de la ventana cuando se redimensiona
 const updateWindowWidth = () => {
   windowWidth.value = window.innerWidth;
 };
 
+// Registrar el listener al montar el componente
 onMounted(() => {
   window.addEventListener('resize', updateWindowWidth);
   updateWindowWidth();
 });
 
+// Eliminar el listener al desmontar
 onUnmounted(() => {
   window.removeEventListener('resize', updateWindowWidth);
 });
 
+/* ------------------- ESTILOS ------------------- */
 const colors = ref({
   background: '#ffffff',
   rowAlternate: '#f9fafb',
@@ -49,6 +54,7 @@ const titleSettings = ref({
   fieldAlign: 'left' as 'left' | 'center' | 'right'
 });
 
+/* ------------------- IMÁGENES ------------------- */
 const images = ref({
   cover: null as File | null,
   header: null as File | null,
@@ -56,23 +62,52 @@ const images = ref({
   footer: null as File | null
 });
 
+// Previsualización de imágenes cargadas localmente
 const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '');
 const headerUrl = computed(() => images.value.header ? URL.createObjectURL(images.value.header) : '');
 const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '');
 const footerUrl = computed(() => images.value.footer ? URL.createObjectURL(images.value.footer) : '');
 
-const excelData = ref<Record<string, string>[]>([]);
+/* -------- VALIDACIÓN Y CARGA DE IMÁGENES -------- */
+// Verifica tipo y tamaño de archivo antes de guardarlo
+const handleImageUpload = (e: Event, type: 'cover' | 'header' | 'second' | 'footer') => {
+  const file = (e.target as HTMLInputElement).files?.[0] || null;
+  if (!file) return;
 
+  const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp']; // Tipos permitidos
+  const maxSizeMB = 2; // Tamaño máximo
+
+  if (!validTypes.includes(file.type)) {
+    toast.error(`El archivo para "${type}" debe ser una imagen JPG, PNG o WEBP.`);
+    (e.target as HTMLInputElement).value = '';
+    return;
+  }
+
+  if (file.size > maxSizeMB * 1024 * 1024) {
+    toast.error(`La imagen "${type}" no puede superar los ${maxSizeMB}MB.`);
+    (e.target as HTMLInputElement).value = '';
+    return;
+  }
+
+  images.value[type] = file;
+};
+
+/* ------------------- DATOS ------------------- */
+const excelData = ref<Record<string, string>[]>([]); // Datos cargados desde Excel
+
+// Nombres de los campos activos seleccionados
 const activeFieldNames = computed(() =>
   fields.value.filter(f => f.active).map(f => f.name)
 );
 
+// Estilo del encabezado de la tabla
 const headerStyle = computed<Record<string, string>>(() => ({
   backgroundColor: colors.value.header,
   color: colors.value.headerText,
   gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`
 }));
 
+// Estilo dinámico para cada fila (colores alternos)
 const rowStyle = (ri: number): Record<string, string> => ({
   gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`,
   backgroundColor: ri % 2 === 0 ? colors.value.background : colors.value.rowAlternate,
@@ -82,6 +117,7 @@ const rowStyle = (ri: number): Record<string, string> => ({
   textAlign: titleSettings.value.fieldAlign
 });
 
+// Agrupar filas en bloques de 25 (una por página)
 const rowsPerPage = 25;
 const paginatedRows = computed(() => {
   const chunks = [];
@@ -91,6 +127,7 @@ const paginatedRows = computed(() => {
   return chunks;
 });
 
+/* ------------------- CARGAR PLANTILLA ------------------- */
 const fetchTemplate = async () => {
   try {
     const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
@@ -112,37 +149,15 @@ const fetchTemplate = async () => {
   }
 };
 
-const handleImageUpload = (e: Event, type: 'cover' | 'header' | 'second' | 'footer') => {
-  const file = (e.target as HTMLInputElement).files?.[0] || null;
-  images.value[type] = file;
-};
-/*
-const generatePdf = async () => {
-  const content = document.getElementById('pdf-content');
-  if (!content) return;
+/* ------------------- USUARIO ------------------- */
+const userId = ref<number | null>(null); // ID del usuario autenticado
 
-  const opt = {
-    margin:       0,
-    filename:     `${templateName.value}_catalog.pdf`,
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true },
-    jsPDF:        { unit: 'px', format: 'a4', orientation: 'portrait' },
-    pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
-  };
-
-  await html2pdf().set(opt).from(content).save();
-};
-*/
-
-// Obtener token XSRF
-const userId = ref<number | null>(null);
-
-// Obtener token XSRF desde cookies
+// Obtener token XSRF desde las cookies
 const getXsrfToken = (): string | null => {
   return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null;
 };
 
-// Obtener el usuario autenticado desde el backend
+// Obtener usuario actual autenticado desde el backend
 const fetchUserId = async () => {
   const xsrfToken = getXsrfToken();
   if (!xsrfToken) return;
@@ -163,7 +178,8 @@ const fetchUserId = async () => {
   }
 };
 
-// Marcar notificación como completada
+/* ------------------- MARCAR NOTIFICACIÓN ------------------- */
+// Marca como completada una notificación (relacionado con el template actual)
 const finishNotification = async () => {
   try {
     const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
@@ -180,7 +196,7 @@ const finishNotification = async () => {
   }
 };
 
-
+/* ------------------- ENVÍO AL BACKEND ------------------- */
 const sendToBackend = async () => {
   if (!userId.value) {
     console.error('No hay usuario autenticado.');
@@ -196,6 +212,7 @@ const sendToBackend = async () => {
   try {
     const formData = new FormData();
 
+    // Datos generales
     formData.append('id_user', userId.value.toString());
     formData.append('template_name', templateName.value);
     formData.append('fields', JSON.stringify(activeFieldNames.value));
@@ -213,18 +230,21 @@ const sendToBackend = async () => {
       fieldSize: titleSettings.value.fieldSize,
     }));
 
+    // Adjuntar imágenes si existen
     if (images.value.cover) formData.append('cover', images.value.cover);
     if (images.value.footer) formData.append('footer', images.value.footer);
 
+    // Enviar al backend para generar el PDF
     const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
         'Accept': 'application/json',
       },
       withCredentials: true,
-      responseType: 'blob'
+      responseType: 'blob' // Esperamos un archivo PDF como blob
     });
 
+    // Descargar automáticamente el PDF generado
     const blob = new Blob([res.data], { type: 'application/pdf' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
@@ -233,20 +253,21 @@ const sendToBackend = async () => {
     link.click();
     document.body.removeChild(link);
 
-    await finishNotification();
+    await finishNotification(); // Marcar la notificación como completada
 
   } catch (err) {
     console.error('Error al generar el PDF en el backend:', err);
   }
 };
 
-
-
+/* ------------------- INICIO ------------------- */
+// Al montar el componente, obtener la plantilla y el usuario
 onMounted(() => {
   fetchTemplate();
   fetchUserId();
 });
 </script>
+
 
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-4 overflow-y-auto">
