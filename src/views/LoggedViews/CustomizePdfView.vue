@@ -367,11 +367,6 @@ onMounted(() => {
             </div>
           </div>
 
-          <button
-            @click="sendToBackend"
-            class="mt-2 w-full bg-green-600 text-white px-6 py-3 rounded shadow hover:bg-green-700 hover:scale-105 transition">
-            Generate PDF
-          </button>
         </div>
 
         <!-- Images -->
@@ -392,6 +387,12 @@ onMounted(() => {
 
           <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Footer Image (optional)</label>
           <input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input w-64" />
+
+          <button
+            @click="sendToBackend"
+            class="mt-2 w-full bg-green-600 text-white px-6 py-3 rounded shadow hover:bg-green-700 hover:scale-105 transition">
+            Generate PDF
+          </button>
         </div>
 
         <!-- Preview -->
