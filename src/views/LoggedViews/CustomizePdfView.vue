@@ -353,7 +353,11 @@ onMounted(() => {
           <template #item="{ element }">
             <div class="flex justify-between items-center bg-white border rounded shadow p-3">
               <span>{{ element.name }}</span>
-              <input type="checkbox" v-model="element.active" />
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" v-model="element.active" class="sr-only peer" />
+                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-indigo-600 transition-all"></div>
+                <div class="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
+              </label>
             </div>
           </template>
         </draggable>

@@ -240,7 +240,11 @@ onMounted(fetchUserId);
                     <span class="font-semibold text-gray-700 mr-2">{{ index + 1 }}.</span>
                     <span class="text-gray-900">{{ element.name }}</span>
                   </div>
-                  <input type="checkbox" v-model="element.active" class="form-checkbox h-5 w-5 text-blue-600">
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" v-model="element.active" class="sr-only peer" />
+                    <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-200"></div>
+                    <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-200"></div>
+                  </label>
                 </div>
               </template>
             </draggable>
