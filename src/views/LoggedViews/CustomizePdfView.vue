@@ -515,7 +515,7 @@ onMounted(() => {
             </div>
 
             <!-- Tabla -->
-            <div class="w-full text-sm border rounded overflow-auto border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow">
+            <div class="w-full text-sm border rounded overflow-auto border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow" style="max-height: 800px;">
               <div class="grid font-medium" :style="headerStyle">
                 <div
                   v-for="(key, i) in activeFieldNames"
