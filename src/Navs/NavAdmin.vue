@@ -74,7 +74,7 @@ onBeforeUnmount(() => {
     <!-- Menú desplegable -->
     <div
       class="w-46 bg-neutral-950 rounded-b-2xl fixed right-0 mt-[68px] flex flex-col overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] z-50"
-      :class="{ 'max-h-[600px]': navExpanded, 'max-h-0': !navExpanded }"
+      :class="{ 'max-h-[630px]': navExpanded, 'max-h-0': !navExpanded }"
     >
 
       <RouterLink
