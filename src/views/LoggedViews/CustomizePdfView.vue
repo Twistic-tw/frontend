@@ -483,14 +483,23 @@ onMounted(() => {
             </div>
 
             <!-- Cabecera -->
-            <div v-if="images.header" class="mb-4">
+            <div
+              v-if="images.header"
+              class="mb-4"
+              :style="{
+                marginTop: images.cover ? '20px' : '0',
+                height: '120px',
+                overflow: 'hidden'
+              }"
+            >
               <img
                 :src="headerUrl"
                 alt="Header Image"
-                style="height: 120px"
                 class="w-full object-cover rounded-b-lg"
+                :style="{ height: '120px', width: '100%', objectFit: 'cover' }"
               />
             </div>
+
 
             <!-- Segunda portada -->
             <div v-if="index === 0 && images.second" class="mb-4">
