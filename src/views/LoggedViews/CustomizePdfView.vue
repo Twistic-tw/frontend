@@ -448,7 +448,7 @@ onMounted(() => {
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
         <div
           id="pdf-content"
-          class="overflow-y-auto overflow-x-hidden h-[1123px] max-w-full transform scale-[0.75] origin-top-left"
+          class="overflow-y-auto overflow-x-hidden h-[1123px] max-w-full origin-top-left"
         >
 
             <div
