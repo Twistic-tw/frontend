@@ -3,6 +3,7 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue'; // Hooks de Vue
 import { useRoute } from 'vue-router'; // Para acceder a los parámetros de ruta
 import axios from 'axios'; // Para hacer peticiones HTTP
+import type { CSSProperties } from 'vue'; // Para definir tipos de CSS
 import draggable from 'vuedraggable'; // Para arrastrar elementos (no usado en este fragmento)
 import BackButton from '@/components/BackButton.vue'; // Componente personalizado
 import { useToast } from 'vue-toastification'; // Para mostrar notificaciones tipo toast
@@ -19,6 +20,20 @@ const error = ref(false); // Estado de error
 const headerHeight = ref(100); // Altura del encabezado (por si se usa dinámicamente)
 const windowWidth = ref(window.innerWidth); // Ancho de ventana para diseño responsivo
 const generating = ref(false); // Estado de generación del PDF
+const cellStyle = computed(() => ({
+  borderRight: colors.value.showBorders ? '1px solid #ccc' : 'none',
+}));
+const footerStyle = computed<CSSProperties>(() => ({
+  backgroundColor: colors.value.footer,
+  color: colors.value.footerText,
+  textAlign: 'center',
+  fontSize: '12px',
+  padding: '10px 0',
+  position: 'absolute',
+  bottom: '0',
+  left: '0',
+  right: '0',
+}));
 
 // Actualizar el ancho de la ventana cuando se redimensiona
 const updateWindowWidth = () => {
@@ -455,7 +470,7 @@ onMounted(() => {
 
                 <div v-for="(row, ri) in chunk" :key="'row-' + index + '-' + ri" class="grid" :style="rowStyle(ri)">
                   <div v-for="(key, i) in activeFieldNames" :key="'cell-' + index + '-' + ri + '-' + i"
-                       class="px-4 py-2 border-r border-gray-200 last:border-r-0">
+                       class="px-4 py-2 last:border-r-0" :style="cellStyle">
                     {{ row[key] }}
                   </div>
                 </div>
@@ -463,6 +478,10 @@ onMounted(() => {
 
               <div v-if="index === paginatedRows.length - 1 && images.footer" class="a4-image full-a4">
                 <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
+              </div>
+
+              <div class="footer-bar" :style="footerStyle">
+                Page {{ index + 1 }}
               </div>
             </div>
           </div>
