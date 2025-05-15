@@ -445,16 +445,17 @@ onMounted(() => {
 
         <!-- Preview -->
         <div class="w-full md:w-[50%]">
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
-        <div
-          id="pdf-content"
-          class="overflow-y-auto overflow-x-hidden h-[1123px] max-w-full origin-top-left"
-        >
-
+          <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
+          <div
+            id="pdf-content"
+            class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full"
+            style="aspect-ratio: 794/1123; transform: scale(1);"
+          >
             <div
               v-for="(chunk, index) in paginatedRows"
               :key="'page-' + index"
               class="a4-page"
+              style="width: 100%; height: auto; transform-origin: top left;"
             >
               <div v-if="index === 0 && images.cover" class="a4-image full-a4">
                 <img :src="coverUrl" alt="Cover Image" class="a4-image-content no-radius" />
@@ -471,14 +472,14 @@ onMounted(() => {
               <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm">
                 <div class="grid font-medium" :style="headerStyle">
                   <div v-for="(key, i) in activeFieldNames" :key="'header-' + i"
-                       class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0">
+                      class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0">
                     {{ key }}
                   </div>
                 </div>
 
                 <div v-for="(row, ri) in chunk" :key="'row-' + index + '-' + ri" class="grid" :style="rowStyle(ri)">
                   <div v-for="(key, i) in activeFieldNames" :key="'cell-' + index + '-' + ri + '-' + i"
-                       class="px-4 py-2 last:border-r-0" :style="cellStyle">
+                      class="px-4 py-2 last:border-r-0" :style="cellStyle">
                     {{ row[key] }}
                   </div>
                 </div>
@@ -494,6 +495,7 @@ onMounted(() => {
             </div>
           </div>
         </div>
+
       </div>
     </div>
 
