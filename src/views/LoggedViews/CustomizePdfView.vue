@@ -38,12 +38,13 @@ onUnmounted(() => {
 
 /* ------------------- ESTILOS ------------------- */
 const colors = ref({
-  background: '#ffffff',
-  rowAlternate: '#f9fafb',
-  text: '#000000',
-  title: '#1f2937',
-  header: '#4f46e5',
-  headerText: '#ffffff'
+  background: '#ffffff', // Color de fondo del PDF
+  rowPrimary: '#ffffff', // Color de la fila principal
+  rowAlternate: '#f9fafb', // Color de la fila alterna
+  text: '#000000', //
+  title: '#1f2937', //
+  header: '#4f46e5', // Color del encabezado
+  headerText: '#ffffff' // Color del texto del encabezado
 });
 
 const titleSettings = ref({
@@ -114,7 +115,7 @@ const headerStyle = computed<Record<string, string>>(() => ({
 // Estilo dinámico para cada fila (colores alternos)
 const rowStyle = (ri: number): Record<string, string> => ({
   gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`,
-  backgroundColor: ri % 2 === 0 ? colors.value.background : colors.value.rowAlternate,
+  backgroundColor: ri % 2 === 0 ? colors.value.rowPrimary : colors.value.rowAlternate,
   color: colors.value.text,
   fontFamily: titleSettings.value.fieldFont,
   fontSize: titleSettings.value.fieldSize,
@@ -342,6 +343,10 @@ onMounted(() => {
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">PDF Background Color</label>
               <input type="color" v-model="colors.background" class="w-32 h-8 border rounded" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Primary Row Color</label>
+              <input type="color" v-model="colors.rowPrimary" class="w-32 h-8 border rounded" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Alternate Row Color</label>
