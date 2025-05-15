@@ -625,7 +625,7 @@ onMounted(() => {
 }
 
 .a4-image.full-a4 {
-  width: 794px;
+  width: 100%;
   height: 1123px;
   overflow: hidden;
   margin: 0 auto;
