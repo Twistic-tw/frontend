@@ -346,6 +346,40 @@ onMounted(() => {
 
 <template>
   <!-- Overlay spinner centrado -->
+  <div
+    v-if="generating"
+    class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+  >
+    <div class="text-white text-lg font-semibold flex items-center gap-3">
+      <svg
+        class="animate-spin h-6 w-6 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+      </svg>
+      Creating your PDF...
+    </div>
+  </div>
+
+  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-4 overflow-y-auto">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+      Customize {{ templateName }} Catalog
+    </h1>
+
+    <div v-if="loading" class="text-center text-gray-600">Loading template...</div>
+    <div v-else-if="error" class="text-center text-red-500">Error loading data.</div>
+
+    <!-- Overlay spinner centrado -->
   <!-- Editor y Preview en grid -->
 <div class="flex flex-col md:flex-row gap-6 w-full max-w-[1600px] mx-auto px-4">
   <!-- Columna izquierda: Campos, Estilos e Imágenes -->
@@ -558,6 +592,7 @@ onMounted(() => {
       <BackButton
         class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
       />
+    </div>
     </div>
 </template>
 
