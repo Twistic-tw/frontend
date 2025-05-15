@@ -25,19 +25,12 @@ const cellStyle = computed(() => ({
 
 const showBackground = (index: number) => {
   const hasFooter = !!images.value.footer;
-  const hasCover = !!images.value.cover;
-  const hasSecond = !!images.value.second;
   const isLast = index === paginatedRows.value.length - 1;
 
-  // Número de páginas especiales que van antes del contenido real
-  const offset = (hasCover ? 1 : 0) + (hasSecond ? 1 : 0);
-
-  // Si esta página corresponde a una portada o segunda portada
-  if (index < offset) return false;
-
-  // Si es la última página y tiene footer
+  // Solo evita aplicar fondo a la última página si tiene imagen de pie
   if (hasFooter && isLast) return false;
 
+  // Aplica fondo a todas las páginas de datos si hay imagen de fondo
   return !!images.value.background;
 };
 
