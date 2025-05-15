@@ -15,6 +15,7 @@ const toast = useToast(); // Instancia del sistema de notificaciones
 
 const templateName = ref(''); // Nombre de la plantilla actual
 const fields = ref<{ name: string; active: boolean }[]>([]); // Campos del Excel con activación
+const limitedChunk = computed(() => paginatedRows.value[0]?.slice(0, 10) ?? []); // Limitar la vista previa a 10 filas
 const loading = ref(true); // Estado de carga inicial
 const error = ref(false); // Estado de error
 const windowWidth = ref(window.innerWidth); // Ancho de ventana para diseño responsivo
@@ -527,7 +528,7 @@ onMounted(() => {
               </div>
 
               <div
-                v-for="(row, ri) in chunk"
+                v-for="(row, ri)  in limitedChunk"
                 :key="'row-' + index + '-' + ri"
                 class="grid"
                 :style="rowStyle(ri)"
