@@ -345,7 +345,7 @@ onMounted(() => {
         <!-- Estilos -->
         <div class="w-full md:w-[20%]">
           <h2 class="text-xl font-semibold text-gray-800 mb-3">Customize Style</h2>
-          <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">PDF Background Color</label>
               <input type="color" v-model="colors.background" class="w-32 h-8 border rounded" />
