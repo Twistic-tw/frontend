@@ -355,7 +355,7 @@ onMounted(() => {
       </div>
 
       <!-- Editor y Preview en grid -->
-      <div class="flex flex-col md:flex-row gap-6">
+      <div class="flex flex-col md:flex-row gap-6 w-full max-w-[1600px] mx-auto px-4">
 
         <!-- Estilos -->
         <div class="w-full md:w-[20%]">
