@@ -29,11 +29,18 @@ const showBackground = (index: number) => {
   const hasSecond = !!images.value.second;
   const isLast = index === paginatedRows.value.length - 1;
 
-  if ((hasCover || hasSecond) && index === 0) return false;
+  // Número de páginas especiales que van antes del contenido real
+  const offset = (hasCover ? 1 : 0) + (hasSecond ? 1 : 0);
+
+  // Si esta página corresponde a una portada o segunda portada
+  if (index < offset) return false;
+
+  // Si es la última página y tiene footer
   if (hasFooter && isLast) return false;
 
   return !!images.value.background;
 };
+
 const footerStyle = computed<CSSProperties>(() => ({
   backgroundColor: colors.value.footer,
   color: colors.value.footerText,
@@ -496,7 +503,6 @@ onMounted(() => {
               v-if="images.header"
               class="mb-4"
               :style="{
-                marginTop: images.cover ? '20px' : '0',
                 height: '120px',
                 overflow: 'hidden'
               }"
