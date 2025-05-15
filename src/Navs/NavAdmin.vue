@@ -108,7 +108,7 @@ onBeforeUnmount(() => {
       </RouterLink>
 
       <RouterLink
-        to="/newCatalog"
+        to="/catalogList"
         @click="closeNav"
         class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900"
         active-class="bg-slate-800"
@@ -118,7 +118,7 @@ onBeforeUnmount(() => {
       </RouterLink>
 
       <RouterLink
-        to="/catalogList"
+        to="/catalog"
         @click="closeNav"
         class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900"
         active-class="bg-slate-800"
