@@ -26,7 +26,7 @@ const cellStyle = computed(() => ({
 const footerStyle = computed<CSSProperties>(() => ({
   backgroundColor: colors.value.footer,
   color: colors.value.footerText,
-  textAlign: 'center',
+  textAlign: 'right',
   fontSize: '12px',
   padding: '10px 0',
   position: 'absolute',
@@ -445,8 +445,8 @@ onMounted(() => {
 
         <!-- Preview -->
         <div class="w-full md:w-[50%]">
-          <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
-          <div id="pdf-content" class="overflow-y-auto" style="height: 1123px;">
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
+        <div id="pdf-content" class="overflow-hidden transform scale-[0.75] origin-top-left">
             <div
               v-for="(chunk, index) in paginatedRows"
               :key="'page-' + index"
