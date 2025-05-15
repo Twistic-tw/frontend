@@ -249,6 +249,7 @@ const sendToBackend = async () => {
       text: colors.value.text,
       title: colors.value.title,
       header: colors.value.header,
+      headerHeight: headerHeight.value,
       headerText: colors.value.headerText,
       footerColor: colors.value.footer,
       footerTextColor: colors.value.footerText,
