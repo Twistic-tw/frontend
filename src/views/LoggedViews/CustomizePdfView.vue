@@ -378,56 +378,59 @@ onMounted(() => {
         </draggable>
       </div>
 
-      <!-- Estilos -->
+      <!-- Estilos e Imágenes unidos en dos columnas -->
+<div>
+  <h2 class="text-xl font-semibold text-gray-800 mb-3">Customize Style & Images</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Estilos -->
+    <div class="space-y-4">
+      <div><label class="text-sm text-gray-700">PDF Background</label><input type="color" v-model="colors.background" class="w-32 h-8 border rounded" /></div>
+      <div><label class="text-sm text-gray-700">Primary Row</label><input type="color" v-model="colors.rowPrimary" class="w-32 h-8 border rounded" /></div>
+      <div><label class="text-sm text-gray-700">Alternate Row</label><input type="color" v-model="colors.rowAlternate" class="w-32 h-8 border rounded" /></div>
+      <div><label class="text-sm text-gray-700">Header Background</label><input type="color" v-model="colors.header" class="w-32 h-8 border rounded" /></div>
+      <div><label class="text-sm text-gray-700">Header Text</label><input type="color" v-model="colors.headerText" class="w-32 h-8 border rounded" /></div>
+      <div><label class="text-sm text-gray-700">Text</label><input type="color" v-model="colors.text" class="w-32 h-8 border rounded" /></div>
+      <div><label class="text-sm text-gray-700">Footer Background</label><input type="color" v-model="colors.footer" class="w-32 h-8 border rounded" /></div>
+      <div><label class="text-sm text-gray-700">Footer Text</label><input type="color" v-model="colors.footerText" class="w-32 h-8 border rounded" /></div>
       <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Customize Style</h2>
-        <div class="grid grid-cols-2 gap-4">
-          <div><label class="text-sm text-gray-700">PDF Background</label><input type="color" v-model="colors.background" class="w-32 h-8 border rounded" /></div>
-          <div><label class="text-sm text-gray-700">Primary Row</label><input type="color" v-model="colors.rowPrimary" class="w-32 h-8 border rounded" /></div>
-          <div><label class="text-sm text-gray-700">Alternate Row</label><input type="color" v-model="colors.rowAlternate" class="w-32 h-8 border rounded" /></div>
-          <div><label class="text-sm text-gray-700">Header Background</label><input type="color" v-model="colors.header" class="w-32 h-8 border rounded" /></div>
-          <div><label class="text-sm text-gray-700">Header Text</label><input type="color" v-model="colors.headerText" class="w-32 h-8 border rounded" /></div>
-          <div><label class="text-sm text-gray-700">Text</label><input type="color" v-model="colors.text" class="w-32 h-8 border rounded" /></div>
-          <div><label class="text-sm text-gray-700">Footer Background</label><input type="color" v-model="colors.footer" class="w-32 h-8 border rounded" /></div>
-          <div><label class="text-sm text-gray-700">Footer Text</label><input type="color" v-model="colors.footerText" class="w-32 h-8 border rounded" /></div>
-          <div class="col-span-2">
-            <label class="block text-sm text-gray-700 mb-2">Show Table Borders</label>
-            <label class="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" v-model="colors.showBorders" class="sr-only peer" />
-              <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-indigo-600 transition-all"></div>
-              <div class="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
-            </label>
-          </div>
-          <div class="col-span-2">
-            <label class="text-sm text-gray-700">Field Font</label>
-            <select v-model="titleSettings.fieldFont" class="w-full p-2 border rounded">
-              <option value="Arial">Arial</option>
-              <option value="Helvetica">Helvetica</option>
-              <option value="Times New Roman">Times New Roman</option>
-              <option value="Georgia">Georgia</option>
-              <option value="Courier New">Courier New</option>
-            </select>
-          </div>
-        </div>
+        <label class="block text-sm text-gray-700 mb-2">Show Table Borders</label>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" v-model="colors.showBorders" class="sr-only peer" />
+          <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-indigo-600 transition-all"></div>
+          <div class="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
+        </label>
       </div>
-
-      <!-- Imágenes -->
       <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
-        <div class="space-y-4">
-          <div><label class="text-sm text-gray-700">Cover</label><input type="file" @change="(e) => handleImageUpload(e, 'cover')" class="file-input w-full" /></div>
-          <div><label class="text-sm text-gray-700">Second Cover</label><input type="file" @change="(e) => handleImageUpload(e, 'second')" class="file-input w-full" /></div>
-          <div><label class="text-sm text-gray-700">Header</label><input type="file" @change="(e) => handleImageUpload(e, 'header')" class="file-input w-full" /></div>
-          <div><label class="text-sm text-gray-700">Footer</label><input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input w-full" /></div>
-          <div><label class="text-sm text-gray-700">Background</label><input type="file" @change="(e) => handleImageUpload(e, 'background')" class="file-input w-full" /></div>
-        </div>
+        <label class="text-sm text-gray-700">Field Font</label>
+        <select v-model="titleSettings.fieldFont" class="w-full p-2 border rounded">
+          <option value="Arial">Arial</option>
+          <option value="Helvetica">Helvetica</option>
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Georgia">Georgia</option>
+          <option value="Courier New">Courier New</option>
+        </select>
       </div>
-
-      <!-- Botón de generar PDF -->
-      <button @click="sendToBackend" class="w-full bg-green-600 text-white px-6 py-3 rounded shadow hover:bg-green-700 hover:scale-105 transition">
-        Generate PDF
-      </button>
     </div>
+
+    <!-- Imágenes -->
+    <div class="space-y-4">
+      <div><label class="text-sm text-gray-700">Cover</label><input type="file" @change="(e) => handleImageUpload(e, 'cover')" class="file-input w-full" /></div>
+      <div><label class="text-sm text-gray-700">Second Cover</label><input type="file" @change="(e) => handleImageUpload(e, 'second')" class="file-input w-full" /></div>
+      <div><label class="text-sm text-gray-700">Header</label><input type="file" @change="(e) => handleImageUpload(e, 'header')" class="file-input w-full" /></div>
+      <div><label class="text-sm text-gray-700">Footer</label><input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input w-full" /></div>
+      <div><label class="text-sm text-gray-700">Background</label><input type="file" @change="(e) => handleImageUpload(e, 'background')" class="file-input w-full" /></div>
+    </div>
+  </div>
+
+  <!-- Botón de generar PDF -->
+  <div class="pt-6">
+    <button @click="sendToBackend" class="w-full bg-green-600 text-white px-6 py-3 rounded shadow hover:bg-green-700 hover:scale-105 transition">
+      Generate PDF
+    </button>
+  </div>
+</div>
+</div>
+
 
     <!-- DERECHA: Vista previa -->
     <div class="w-full lg:w-1/2">
