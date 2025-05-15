@@ -446,7 +446,11 @@ onMounted(() => {
         <!-- Preview -->
         <div class="w-full md:w-[50%]">
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
-        <div id="pdf-content" class="overflow-hidden transform scale-[0.75] origin-top-left">
+        <div
+          id="pdf-content"
+          class="overflow-y-auto overflow-x-hidden h-[1123px] max-w-full transform scale-[0.75] origin-top-left"
+        >
+
             <div
               v-for="(chunk, index) in paginatedRows"
               :key="'page-' + index"
