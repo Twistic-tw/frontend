@@ -358,10 +358,10 @@ onMounted(() => {
   <div v-if="loading" class="text-center text-gray-600">Loading template...</div>
   <div v-else-if="error" class="text-center text-red-500">Error loading data.</div>
 
-  <div v-else class="flex flex-col lg:flex-row gap-6 w-full max-w-[1600px] mx-auto px-4">
-    <!-- Personalización: izquierda -->
+  <div v-else class="flex flex-col lg:flex-row gap-8 w-full max-w-[1600px] mx-auto px-4">
+    <!-- IZQUIERDA: Personalización -->
     <div class="w-full lg:w-1/2 space-y-10">
-      <!-- Fields -->
+      <!-- Campos activos -->
       <div>
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Active Fields</h2>
         <draggable v-model="fields" item-key="name" class="space-y-2">
@@ -382,14 +382,14 @@ onMounted(() => {
       <div>
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Customize Style</h2>
         <div class="grid grid-cols-2 gap-4">
-          <div><label class="block text-sm text-gray-700">PDF Background Color</label><input type="color" v-model="colors.background" class="w-32 h-8 border rounded" /></div>
-          <div><label class="block text-sm text-gray-700">Primary Row Color</label><input type="color" v-model="colors.rowPrimary" class="w-32 h-8 border rounded" /></div>
-          <div><label class="block text-sm text-gray-700">Alternate Row Color</label><input type="color" v-model="colors.rowAlternate" class="w-32 h-8 border rounded" /></div>
-          <div><label class="block text-sm text-gray-700">Header Background</label><input type="color" v-model="colors.header" class="w-32 h-8 border rounded" /></div>
-          <div><label class="block text-sm text-gray-700">Header Text Color</label><input type="color" v-model="colors.headerText" class="w-32 h-8 border rounded" /></div>
-          <div><label class="block text-sm text-gray-700">Text Color</label><input type="color" v-model="colors.text" class="w-32 h-8 border rounded" /></div>
-          <div><label class="block text-sm text-gray-700">Footer Background Color</label><input type="color" v-model="colors.footer" class="w-32 h-8 border rounded" /></div>
-          <div><label class="block text-sm text-gray-700">Footer Text Color</label><input type="color" v-model="colors.footerText" class="w-32 h-8 border rounded" /></div>
+          <div><label class="text-sm text-gray-700">PDF Background</label><input type="color" v-model="colors.background" class="w-32 h-8 border rounded" /></div>
+          <div><label class="text-sm text-gray-700">Primary Row</label><input type="color" v-model="colors.rowPrimary" class="w-32 h-8 border rounded" /></div>
+          <div><label class="text-sm text-gray-700">Alternate Row</label><input type="color" v-model="colors.rowAlternate" class="w-32 h-8 border rounded" /></div>
+          <div><label class="text-sm text-gray-700">Header Background</label><input type="color" v-model="colors.header" class="w-32 h-8 border rounded" /></div>
+          <div><label class="text-sm text-gray-700">Header Text</label><input type="color" v-model="colors.headerText" class="w-32 h-8 border rounded" /></div>
+          <div><label class="text-sm text-gray-700">Text</label><input type="color" v-model="colors.text" class="w-32 h-8 border rounded" /></div>
+          <div><label class="text-sm text-gray-700">Footer Background</label><input type="color" v-model="colors.footer" class="w-32 h-8 border rounded" /></div>
+          <div><label class="text-sm text-gray-700">Footer Text</label><input type="color" v-model="colors.footerText" class="w-32 h-8 border rounded" /></div>
           <div class="col-span-2">
             <label class="block text-sm text-gray-700 mb-2">Show Table Borders</label>
             <label class="relative inline-flex items-center cursor-pointer">
@@ -399,7 +399,7 @@ onMounted(() => {
             </label>
           </div>
           <div class="col-span-2">
-            <label class="block text-sm text-gray-700">Field Font</label>
+            <label class="text-sm text-gray-700">Field Font</label>
             <select v-model="titleSettings.fieldFont" class="w-full p-2 border rounded">
               <option value="Arial">Arial</option>
               <option value="Helvetica">Helvetica</option>
@@ -414,24 +414,22 @@ onMounted(() => {
       <!-- Imágenes -->
       <div>
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
-        <label class="block mb-2 text-sm text-gray-700">Cover Image (shown once)</label>
-        <input type="file" @change="(e) => handleImageUpload(e, 'cover')" class="file-input w-64" />
-        <label class="block mt-4 mb-2 text-sm text-gray-700">Second Cover (optional)</label>
-        <input type="file" @change="(e) => handleImageUpload(e, 'second')" class="file-input w-64" />
-        <label class="block mt-4 mb-2 text-sm text-gray-700">Header Image (repeated on every page)</label>
-        <input type="file" @change="(e) => handleImageUpload(e, 'header')" class="file-input w-64" />
-        <label class="block mt-4 mb-2 text-sm text-gray-700">Footer Image (optional)</label>
-        <input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input w-64" />
-        <label class="block mt-4 mb-2 text-sm text-gray-700">Background Image (optional)</label>
-        <input type="file" @change="(e) => handleImageUpload(e, 'background')" class="file-input w-64" />
+        <div class="space-y-4">
+          <div><label class="text-sm text-gray-700">Cover</label><input type="file" @change="(e) => handleImageUpload(e, 'cover')" class="file-input w-full" /></div>
+          <div><label class="text-sm text-gray-700">Second Cover</label><input type="file" @change="(e) => handleImageUpload(e, 'second')" class="file-input w-full" /></div>
+          <div><label class="text-sm text-gray-700">Header</label><input type="file" @change="(e) => handleImageUpload(e, 'header')" class="file-input w-full" /></div>
+          <div><label class="text-sm text-gray-700">Footer</label><input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input w-full" /></div>
+          <div><label class="text-sm text-gray-700">Background</label><input type="file" @change="(e) => handleImageUpload(e, 'background')" class="file-input w-full" /></div>
+        </div>
       </div>
 
+      <!-- Botón de generar PDF -->
       <button @click="sendToBackend" class="w-full bg-green-600 text-white px-6 py-3 rounded shadow hover:bg-green-700 hover:scale-105 transition">
         Generate PDF
       </button>
     </div>
 
-    <!-- Vista previa: derecha -->
+    <!-- DERECHA: Vista previa -->
     <div class="w-full lg:w-1/2">
       <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
       <div
@@ -439,25 +437,22 @@ onMounted(() => {
         class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full"
         style="aspect-ratio: 794/1123; transform: scale(1);"
       >
-        <!-- Página 1: Portada -->
+        <!-- Portada -->
         <div v-if="images.cover" class="a4-page">
           <img :src="coverUrl" alt="Cover Image" class="a4-image-content no-radius w-full h-full object-cover" />
         </div>
 
-        <!-- Página 2: Segunda portada -->
+        <!-- Segunda portada -->
         <div v-if="images.second" class="a4-page">
           <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
         </div>
 
-        <!-- Páginas dinámicas -->
+        <!-- Páginas de contenido -->
         <div
           v-for="(chunk, index) in paginatedRows"
           :key="'page-' + index"
           class="a4-page"
           :style="{
-            width: '100%',
-            height: 'auto',
-            transformOrigin: 'top left',
             backgroundImage: showBackground(index) ? `url(${backgroundUrl})` : 'none',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
@@ -465,8 +460,8 @@ onMounted(() => {
           }"
         >
           <!-- Cabecera -->
-          <div v-if="images.header" class="mb-4" :style="{ height: '120px', overflow: 'hidden' }">
-            <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-b-lg" :style="{ height: '120px', width: '100%', objectFit: 'cover' }" />
+          <div v-if="images.header" class="mb-4" style="height: 120px; overflow: hidden;">
+            <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-b-lg" style="height: 120px;" />
           </div>
 
           <!-- Tabla -->
@@ -483,12 +478,10 @@ onMounted(() => {
             </div>
           </div>
 
-          <!-- Pie de página con imagen -->
+          <!-- Pie de página -->
           <div v-if="index === paginatedRows.length - 1 && images.footer" class="a4-image full-a4">
             <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
           </div>
-
-          <!-- Pie de página con número -->
           <div class="footer-bar" :style="footerStyle">
             Page {{ index + 1 }}
           </div>
@@ -501,6 +494,7 @@ onMounted(() => {
     <BackButton class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" />
   </div>
 </div>
+
 
 </template>
 
