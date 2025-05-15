@@ -17,7 +17,6 @@ const templateName = ref(''); // Nombre de la plantilla actual
 const fields = ref<{ name: string; active: boolean }[]>([]); // Campos del Excel con activación
 const loading = ref(true); // Estado de carga inicial
 const error = ref(false); // Estado de error
-const headerHeight = ref(100); // Altura del encabezado (por si se usa dinámicamente)
 const windowWidth = ref(window.innerWidth); // Ancho de ventana para diseño responsivo
 const generating = ref(false); // Estado de generación del PDF
 const cellStyle = computed(() => ({
@@ -251,7 +250,6 @@ const sendToBackend = async () => {
       text: colors.value.text,
       title: colors.value.title,
       header: colors.value.header,
-      headerHeight: headerHeight.value,
       headerText: colors.value.headerText,
       footerColor: colors.value.footer,
       footerTextColor: colors.value.footerText,
@@ -264,6 +262,7 @@ const sendToBackend = async () => {
       showBorders: colors.value.showBorders
     }));
 
+    // Agregar imágenes al FormData
     if (images.value.cover) formData.append('cover', images.value.cover);
     if (images.value.second) formData.append('second', images.value.second);
     if (images.value.header) formData.append('header', images.value.header);
@@ -279,6 +278,7 @@ const sendToBackend = async () => {
       responseType: 'blob'
     });
 
+    // Crear un enlace temporal para descargar el PDF
     const blob = new Blob([res.data], { type: 'application/pdf' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
@@ -439,9 +439,6 @@ onMounted(() => {
           <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Header Image (repeated on every page)</label>
           <input type="file" @change="(e) => handleImageUpload(e, 'header')" class="file-input w-64" />
 
-          <label class="block mt-2 mb-2 text-sm font-medium text-gray-700">Header Height (px)</label>
-          <input type="number" v-model="headerHeight" class="file-input w-64" />
-
           <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Footer Image (optional)</label>
           <input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input w-64" />
 
@@ -490,7 +487,7 @@ onMounted(() => {
               <img
                 :src="headerUrl"
                 alt="Header Image"
-                :style="{ height: headerHeight + 'px' }"
+                style="height: 120px"
                 class="w-full object-cover rounded-b-lg"
               />
             </div>
