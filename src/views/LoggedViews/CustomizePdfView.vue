@@ -80,6 +80,7 @@ const images = ref({
   cover: null as File | null,
   header: null as File | null,
   second: null as File | null,
+  background: null as File | null,
   footer: null as File | null,
 });
 
@@ -87,6 +88,7 @@ const images = ref({
 const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '');
 const headerUrl = computed(() => images.value.header ? URL.createObjectURL(images.value.header) : '');
 const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '');
+const backgroundUrl = computed(() => images.value.background ? URL.createObjectURL(images.value.background) : '');
 const footerUrl = computed(() => images.value.footer ? URL.createObjectURL(images.value.footer) : '');
 
 
@@ -265,6 +267,7 @@ const sendToBackend = async () => {
     if (images.value.cover) formData.append('cover', images.value.cover);
     if (images.value.second) formData.append('second', images.value.second);
     if (images.value.header) formData.append('header', images.value.header);
+    if (images.value.background) formData.append('background', images.value.background);
     if (images.value.footer) formData.append('footer', images.value.footer);
 
     const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
@@ -453,6 +456,26 @@ onMounted(() => {
             class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full"
             style="aspect-ratio: 794/1123; transform: scale(1);"
           >
+          <div
+            v-for="(chunk, index) in paginatedRows"
+            :key="'page-' + index"
+            class="a4-page"
+            :style="{
+              width: '100%',
+              height: 'auto',
+              transformOrigin: 'top left',
+              backgroundImage: (index !== 0 && !(index === paginatedRows.length - 1 && images.footer)) && images.background
+                ? `url(${backgroundUrl})`
+                : 'none',
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center'
+            }"
+          >
+          <div class="text-white text-center pt-20 font-semibold">
+            </div>
+          </div>
+
             <div
               v-for="(chunk, index) in paginatedRows"
               :key="'page-' + index"
