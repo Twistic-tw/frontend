@@ -394,8 +394,12 @@ onMounted(() => {
               <input type="color" v-model="colors.footerText" class="w-32 h-8 border rounded" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Show Table Borders</label>
-              <input type="checkbox" v-model="colors.showBorders" />
+              <label class="block text-sm font-medium text-gray-700 mb-1 mb-2">Show Table Borders</label>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" v-model="colors.showBorders" class="sr-only peer" />
+                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-indigo-600 transition-all"></div>
+                <div class="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
+              </label>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Field Font</label>
