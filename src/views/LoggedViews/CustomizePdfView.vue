@@ -467,95 +467,94 @@ onMounted(() => {
 
         <!-- Preview -->
       <div class="w-full md:w-[50%]">
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
+  <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
+
+  <div
+    id="pdf-content"
+    class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full"
+    style="aspect-ratio: 794/1123; transform: scale(1);"
+  >
+    <!-- Página 1: Portada -->
+    <div v-if="images.cover" class="a4-page">
+      <img :src="coverUrl" alt="Cover Image" class="a4-image-content no-radius w-full h-full object-cover" />
+    </div>
+
+    <!-- Página 2: Segunda portada -->
+    <div v-if="images.second" class="a4-page">
+      <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
+    </div>
+
+    <!-- Páginas dinámicas -->
+    <div
+      v-for="(chunk, index) in paginatedRows"
+      :key="'page-' + index"
+      class="a4-page"
+      :style="{
+        width: '100%',
+        height: 'auto',
+        transformOrigin: 'top left',
+        backgroundImage: showBackground(index) ? `url(${backgroundUrl})` : 'none',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center'
+      }"
+    >
+      <!-- Cabecera -->
+      <div
+        v-if="images.header"
+        class="mb-4"
+        :style="{ height: '120px', overflow: 'hidden' }"
+      >
+        <img
+          :src="headerUrl"
+          alt="Header Image"
+          class="w-full object-cover rounded-b-lg"
+          :style="{ height: '120px', width: '100%', objectFit: 'cover' }"
+        />
+      </div>
+
+      <!-- Tabla -->
+      <div class="w-full text-sm border border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow">
+        <div class="grid font-medium" :style="headerStyle">
+          <div
+            v-for="(key, i) in activeFieldNames"
+            :key="'header-' + i"
+            class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
+          >
+            {{ key }}
+          </div>
+        </div>
+
         <div
-          id="pdf-content"
-          class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full"
-          style="aspect-ratio: 794/1123; transform: scale(1);"
+          v-for="(row, ri) in limitedChunk"
+          :key="'row-' + index + '-' + ri"
+          class="grid"
+          :style="rowStyle(ri)"
         >
           <div
-            v-for="(chunk, index) in paginatedRows"
-            :key="'page-' + index"
-            class="a4-page"
-            :style="{
-              width: '100%',
-              height: 'auto',
-              transformOrigin: 'top left',
-              backgroundImage: showBackground(index) ? `url(${backgroundUrl})` : 'none',
-              backgroundSize: 'cover',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center'
-            }"
+            v-for="(key, i) in activeFieldNames"
+            :key="'cell-' + index + '-' + ri + '-' + i"
+            class="px-4 py-2 last:border-r-0"
+            :style="cellStyle"
           >
-            <!-- Imagen de portada -->
-            <div v-if="index === 0 && images.cover" class="a4-image full-a4">
-              <img :src="coverUrl" alt="Cover Image" class="a4-image-content no-radius" />
-            </div>
-
-            <!-- Cabecera -->
-            <div
-              v-if="images.header"
-              class="mb-4"
-              :style="{
-                height: '120px',
-                overflow: 'hidden'
-              }"
-            >
-              <img
-                :src="headerUrl"
-                alt="Header Image"
-                class="w-full object-cover rounded-b-lg"
-                :style="{ height: '120px', width: '100%', objectFit: 'cover' }"
-              />
-            </div>
-
-
-            <!-- Segunda portada -->
-            <div v-if="index === 0 && images.second" class="mb-4">
-              <img :src="secondUrl" alt="Second Cover" class="w-full h-auto rounded" />
-            </div>
-
-            <!-- Tabla -->
-            <div class="w-full text-sm border border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow">
-              <div class="grid font-medium" :style="headerStyle">
-                <div
-                  v-for="(key, i) in activeFieldNames"
-                  :key="'header-' + i"
-                  class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
-                >
-                  {{ key }}
-                </div>
-              </div>
-
-              <div
-                v-for="(row, ri) in limitedChunk"
-                :key="'row-' + index + '-' + ri"
-                class="grid"
-                :style="rowStyle(ri)"
-              >
-                <div
-                  v-for="(key, i) in activeFieldNames"
-                  :key="'cell-' + index + '-' + ri + '-' + i"
-                  class="px-4 py-2 last:border-r-0"
-                  :style="cellStyle"
-                >
-                  {{ row[key] }}
-                </div>
-              </div>
-            </div>
-
-            <!-- Imagen de pie de página -->
-            <div v-if="index === paginatedRows.length - 1 && images.footer" class="a4-image full-a4">
-              <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
-            </div>
-
-            <!-- Footer texto -->
-            <div class="footer-bar" :style="footerStyle">
-              Page {{ index + 1 }}
-            </div>
+            {{ row[key] }}
           </div>
         </div>
       </div>
+
+      <!-- Pie de página con imagen -->
+      <div v-if="index === paginatedRows.length - 1 && images.footer" class="a4-image full-a4">
+        <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
+      </div>
+
+      <!-- Pie de página con número -->
+      <div class="footer-bar" :style="footerStyle">
+        Page {{ index + 1 }}
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
       </div>
