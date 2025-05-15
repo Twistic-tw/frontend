@@ -441,6 +441,9 @@ onMounted(() => {
           <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Footer Image (optional)</label>
           <input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input w-64" />
 
+          <label class="block mt-4 mb-2 text-sm font-medium text-gray-700">Background Image (optional)</label>
+          <input type="file" @change="(e) => handleImageUpload(e, 'background')" class="file-input w-64" />
+
           <button
             @click="sendToBackend"
             class="mt-2 w-full bg-green-600 text-white px-6 py-3 rounded shadow hover:bg-green-700 hover:scale-105 transition">
@@ -494,7 +497,7 @@ onMounted(() => {
             </div>
 
             <!-- Tabla -->
-            <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm p-6">
+            <div class="w-full text-sm border rounded overflow-auto border-gray-300 shadow-sm p-6 table-preview-shadow">
               <div class="grid font-medium" :style="headerStyle">
                 <div
                   v-for="(key, i) in activeFieldNames"
@@ -590,5 +593,9 @@ onMounted(() => {
 
 .no-radius {
   border-radius: 0;
+}
+
+.table-preview-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 </style>
