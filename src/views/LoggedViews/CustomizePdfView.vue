@@ -22,6 +22,18 @@ const generating = ref(false); // Estado de generación del PDF
 const cellStyle = computed(() => ({
   borderRight: colors.value.showBorders ? '1px solid #ccc' : 'none',
 }));
+
+const showBackground = (index: number) => {
+  const hasFooter = !!images.value.footer;
+  const hasCover = !!images.value.cover;
+  const hasSecond = !!images.value.second;
+  const isLast = index === paginatedRows.value.length - 1;
+
+  if ((hasCover || hasSecond) && index === 0) return false;
+  if (hasFooter && isLast) return false;
+
+  return !!images.value.background;
+};
 const footerStyle = computed<CSSProperties>(() => ({
   backgroundColor: colors.value.footer,
   color: colors.value.footerText,
@@ -468,10 +480,7 @@ onMounted(() => {
               width: '100%',
               height: 'auto',
               transformOrigin: 'top left',
-              backgroundImage:
-                (index !== 0 && !(index === paginatedRows.length - 1 && images.footer)) && images.background
-                  ? `url(${backgroundUrl})`
-                  : 'none',
+              backgroundImage: showBackground(index) ? `url(${backgroundUrl})` : 'none',
               backgroundSize: 'cover',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center'
