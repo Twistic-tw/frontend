@@ -44,7 +44,10 @@ const colors = ref({
   text: '#000000', //
   title: '#1f2937', //
   header: '#4f46e5', // Color del encabezado
-  headerText: '#ffffff' // Color del texto del encabezado
+  headerText: '#ffffff', // Color del texto del encabezado
+  footer: '#4f46e5', // Color del pie de página
+  footerText: '#ffffff', // Color del texto del pie de página
+  showBorders: ref(true)
 });
 
 const titleSettings = ref({
@@ -225,18 +228,21 @@ const sendToBackend = async () => {
     formData.append('excel_data', JSON.stringify(excelData.value));
     formData.append('style', JSON.stringify({
       background: colors.value.background,
+      rowPrimary: colors.value.rowPrimary,
       rowAlternate: colors.value.rowAlternate,
       text: colors.value.text,
       title: colors.value.title,
       header: colors.value.header,
       headerText: colors.value.headerText,
+      footerColor: colors.value.footer,
+      footerTextColor: colors.value.footerText,
       size: titleSettings.value.size,
       align: titleSettings.value.align,
       fieldFont: titleSettings.value.fieldFont,
       fieldSize: titleSettings.value.fieldSize,
       borderColor: '#000000',
       borderWidth: '1px',
-      showBorders: true
+      showBorders: colors.value.showBorders
     }));
 
     if (images.value.cover) formData.append('cover', images.value.cover);
@@ -363,6 +369,18 @@ onMounted(() => {
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Text Color</label>
               <input type="color" v-model="colors.text" class="w-32 h-8 border rounded" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Footer Background Color</label>
+              <input type="color" v-model="colors.footer" class="w-32 h-8 border rounded" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Footer Text Color</label>
+              <input type="color" v-model="colors.footerText" class="w-32 h-8 border rounded" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Show Table Borders</label>
+              <input type="checkbox" v-model="colors.showBorders" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Field Font</label>
