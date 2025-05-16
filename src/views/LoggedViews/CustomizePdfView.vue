@@ -1,25 +1,25 @@
 <script setup lang="ts">
 /* ------------------- IMPORTACIONES ------------------- */
-import { ref, onMounted, onUnmounted, computed } from 'vue' // Hooks de Vue
-import { useRoute } from 'vue-router' // Para acceder a los parámetros de ruta
-import axios from 'axios' // Para hacer peticiones HTTP
-import type { CSSProperties } from 'vue' // Para definir tipos de CSS
-import draggable from 'vuedraggable' // Para arrastrar elementos (no usado en este fragmento)
-import BackButton from '@/components/BackButton.vue' // Componente personalizado
-import { useToast } from 'vue-toastification' // Para mostrar notificaciones tipo toast
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import axios from 'axios'
+import type { CSSProperties } from 'vue'
+import draggable from 'vuedraggable'
+import BackButton from '@/components/BackButton.vue'
+import { useToast } from 'vue-toastification'
 
 /* ------------------- VARIABLES ------------------- */
-const route = useRoute() // Obtenemos la ruta actual
-const templateId = route.params.id as string // ID de la plantilla desde la URL
-const toast = useToast() // Instancia del sistema de notificaciones
+const route = useRoute()
+const templateId = route.params.id as string
+const toast = useToast()
 
-const templateName = ref('') // Nombre de la plantilla actual
-const fields = ref<{ name: string; active: boolean }[]>([]) // Campos del Excel con activación
-const limitedChunk = computed(() => paginatedRows.value[0]?.slice(0, 8) ?? []) // Limitar la vista previa a 10 filas
-const loading = ref(true) // Estado de carga inicial
-const error = ref(false) // Estado de error
-const windowWidth = ref(window.innerWidth) // Ancho de ventana para diseño responsivo
-const generating = ref(false) // Estado de generación del PDF
+const templateName = ref('')
+const fields = ref<{ name: string; active: boolean }[]>([])
+const limitedChunk = computed(() => paginatedRows.value[0]?.slice(0, 8) ?? [])
+const loading = ref(true)
+const error = ref(false)
+const windowWidth = ref(window.innerWidth)
+const generating = ref(false)
 const cellStyle = computed(() => ({
   borderRight: colors.value.showBorders ? '1px solid #ccc' : 'none',
 }))
@@ -27,17 +27,33 @@ const cellStyle = computed(() => ({
 const showBackground = (index: number) => {
   const hasFooter = !!images.value.footer
   const isLast = index === paginatedRows.value.length - 1
-
-  // Solo evita aplicar fondo a la última página si tiene imagen de pie
   if (hasFooter && isLast) return false
-
-  // Aplica fondo a todas las páginas de datos si hay imagen de fondo
   return !!images.value.background
 }
 
+// 🔄 Función para convertir HEX + Alpha a RGBA
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
+
+// 🎨 Colores calculados en formato rgba()
+const computedColors = computed(() => ({
+  background: hexToRgba(colors.value.backgroundColor, colors.value.backgroundAlpha),
+  rowPrimary: hexToRgba(colors.value.rowPrimaryColor, colors.value.rowPrimaryAlpha),
+  rowAlternate: hexToRgba(colors.value.rowAlternateColor, colors.value.rowAlternateAlpha),
+  header: hexToRgba(colors.value.headerColor, colors.value.headerAlpha),
+  footer: hexToRgba(colors.value.footerColor, colors.value.footerAlpha),
+  headerText: colors.value.headerText,
+  text: colors.value.text,
+  footerText: colors.value.footerText
+}))
+
 const footerStyle = computed<CSSProperties>(() => ({
-  backgroundColor: colors.value.footer,
-  color: colors.value.footerText,
+  backgroundColor: computedColors.value.footer,
+  color: computedColors.value.footerText,
   textAlign: 'right',
   fontSize: '12px',
   fontStyle: 'italic',
@@ -48,33 +64,34 @@ const footerStyle = computed<CSSProperties>(() => ({
   right: '0',
 }))
 
-// Actualizar el ancho de la ventana cuando se redimensiona
 const updateWindowWidth = () => {
   windowWidth.value = window.innerWidth
 }
 
-// Registrar el listener al montar el componente
 onMounted(() => {
   window.addEventListener('resize', updateWindowWidth)
   updateWindowWidth()
 })
 
-// Eliminar el listener al desmontar
 onUnmounted(() => {
   window.removeEventListener('resize', updateWindowWidth)
 })
 
 /* ------------------- ESTILOS ------------------- */
 const colors = ref({
-  background: '#ffffff', // Color de fondo del PDF
-  rowPrimary: '#ffffff', // Color de la fila principal
-  rowAlternate: '#f9fafb', // Color de la fila alterna
-  text: '#000000', //
-  title: '#1f2937', //
-  header: '#4f46e5', // Color del encabezado
-  headerText: '#ffffff', // Color del texto del encabezado
-  footer: '#4f46e5', // Color del pie de página
-  footerText: '#ffffff', // Color del texto del pie de página
+  backgroundColor: '#ffffff',
+  backgroundAlpha: 1,
+  rowPrimaryColor: '#ffffff',
+  rowPrimaryAlpha: 1,
+  rowAlternateColor: '#f9fafb',
+  rowAlternateAlpha: 1,
+  headerColor: '#4f46e5',
+  headerAlpha: 1,
+  headerText: '#ffffff',
+  text: '#000000',
+  footerColor: '#4f46e5',
+  footerAlpha: 1,
+  footerText: '#ffffff',
   showBorders: ref(true),
 })
 
@@ -96,43 +113,30 @@ const images = ref({
   footer: null as File | null,
 })
 
-// Previsualización de imágenes cargadas localmente
 const coverUrl = computed(() => (images.value.cover ? URL.createObjectURL(images.value.cover) : ''))
-const headerUrl = computed(() =>
-  images.value.header ? URL.createObjectURL(images.value.header) : '',
-)
-const secondUrl = computed(() =>
-  images.value.second ? URL.createObjectURL(images.value.second) : '',
-)
-const backgroundUrl = computed(() =>
-  images.value.background ? URL.createObjectURL(images.value.background) : '',
-)
-const footerUrl = computed(() =>
-  images.value.footer ? URL.createObjectURL(images.value.footer) : '',
-)
+const headerUrl = computed(() => images.value.header ? URL.createObjectURL(images.value.header) : '')
+const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '')
+const backgroundUrl = computed(() => images.value.background ? URL.createObjectURL(images.value.background) : '')
+const footerUrl = computed(() => images.value.footer ? URL.createObjectURL(images.value.footer) : '')
 
 /* -------- VALIDACIÓN Y CARGA DE IMÁGENES -------- */
-// Verifica tipo y tamaño de archivo antes de guardarlo
-const handleImageUpload = (
-  e: Event,
-  type: 'cover' | 'header' | 'second' | 'footer' | 'background',
-) => {
+const handleImageUpload = (e: Event, type: 'cover' | 'header' | 'second' | 'footer' | 'background') => {
   const file = (e.target as HTMLInputElement).files?.[0] || null
   if (!file) return
 
-  const validTypes = ['image/jpeg', 'image/png', 'image/jpg'] // Tipos permitidos
-  const maxSizeMB = 2 // Tamaño máximo
+  const validTypes = ['image/jpeg', 'image/png', 'image/jpg']
+  const maxSizeMB = 2
 
   if (!validTypes.includes(file.type)) {
     toast.error(`"${file.name}" is not a valid image type. Please, use JPG or PNG.`)
-    ;(e.target as HTMLInputElement).value = '' // Limpiar input
+    ;(e.target as HTMLInputElement).value = ''
     return
   }
 
   if (file.size > maxSizeMB * 1024 * 1024) {
     const sizeInMB = (file.size / (1024 * 1024)).toFixed(2)
     toast.error(`"${file.name}" weighs ${sizeInMB}MB. Maximum allowed: ${maxSizeMB}MB.`)
-    ;(e.target as HTMLInputElement).value = '' // Limpiar input
+    ;(e.target as HTMLInputElement).value = ''
     return
   }
 
@@ -140,29 +144,24 @@ const handleImageUpload = (
 }
 
 /* ------------------- DATOS ------------------- */
-const excelData = ref<Record<string, string>[]>([]) // Datos cargados desde Excel
-
-// Nombres de los campos activos seleccionados
+const excelData = ref<Record<string, string>[]>([])
 const activeFieldNames = computed(() => fields.value.filter((f) => f.active).map((f) => f.name))
 
-// Estilo del encabezado de la tabla
 const headerStyle = computed<Record<string, string>>(() => ({
-  backgroundColor: colors.value.header,
-  color: colors.value.headerText,
+  backgroundColor: computedColors.value.header,
+  color: computedColors.value.headerText,
   gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`,
 }))
 
-// Estilo dinámico para cada fila (colores alternos)
 const rowStyle = (ri: number): Record<string, string> => ({
   gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`,
-  backgroundColor: ri % 2 === 0 ? colors.value.rowPrimary : colors.value.rowAlternate,
-  color: colors.value.text,
+  backgroundColor: ri % 2 === 0 ? computedColors.value.rowPrimary : computedColors.value.rowAlternate,
+  color: computedColors.value.text,
   fontFamily: titleSettings.value.fieldFont,
   fontSize: titleSettings.value.fieldSize,
   textAlign: titleSettings.value.fieldAlign,
 })
 
-// Agrupar filas en bloques de 25 (una por página)
 const rowsPerPage = 25
 const paginatedRows = computed(() => {
   const chunks = []
@@ -195,14 +194,12 @@ const fetchTemplate = async () => {
 }
 
 /* ------------------- USUARIO ------------------- */
-const userId = ref<number | null>(null) // ID del usuario autenticado
+const userId = ref<number | null>(null)
 
-// Obtener token XSRF desde las cookies
 const getXsrfToken = (): string | null => {
   return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
 }
 
-// Obtener usuario actual autenticado desde el backend
 const fetchUserId = async () => {
   const xsrfToken = getXsrfToken()
   if (!xsrfToken) return
@@ -222,24 +219,6 @@ const fetchUserId = async () => {
   }
 }
 
-/* ------------------- MARCAR NOTIFICACIÓN ------------------- */
-/*
-const finishNotification = async () => {
-  try {
-    const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-    await axios.post(`${import.meta.env.VITE_URL}/FinishNotification/${templateId}`, {}, {
-      headers: {
-        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-        'Accept': 'application/json',
-      },
-      withCredentials: true,
-    });
-    console.log('Notificación marcada como completada');
-  } catch (err) {
-    console.error('Error al marcar la notificación como completada:', err);
-  }
-};
-*/
 /* ------------------- ENVÍO AL BACKEND ------------------- */
 const sendToBackend = async () => {
   if (!userId.value) {
@@ -253,8 +232,8 @@ const sendToBackend = async () => {
     return
   }
 
-  generating.value = true // Activar spinner
-  const toastId = toast.info('Creating your PDF, please wait...', { timeout: false }) // Mostrar toast persistente
+  generating.value = true
+  const toastId = toast.info('Creating your PDF, please wait...', { timeout: false })
 
   try {
     const formData = new FormData()
@@ -266,15 +245,14 @@ const sendToBackend = async () => {
     formData.append(
       'style',
       JSON.stringify({
-        background: colors.value.background,
-        rowPrimary: colors.value.rowPrimary,
-        rowAlternate: colors.value.rowAlternate,
-        text: colors.value.text,
-        title: colors.value.title,
-        header: colors.value.header,
-        headerText: colors.value.headerText,
-        footerColor: colors.value.footer,
-        footerTextColor: colors.value.footerText,
+        background: computedColors.value.background,
+        rowPrimary: computedColors.value.rowPrimary,
+        rowAlternate: computedColors.value.rowAlternate,
+        text: computedColors.value.text,
+        header: computedColors.value.header,
+        headerText: computedColors.value.headerText,
+        footerColor: computedColors.value.footer,
+        footerTextColor: computedColors.value.footerText,
         size: titleSettings.value.size,
         align: titleSettings.value.align,
         fieldFont: titleSettings.value.fieldFont,
@@ -282,10 +260,9 @@ const sendToBackend = async () => {
         borderColor: '#000000',
         borderWidth: '1px',
         showBorders: colors.value.showBorders,
-      }),
+      })
     )
 
-    // Agregar imágenes al FormData
     if (images.value.cover) formData.append('cover', images.value.cover)
     if (images.value.second) formData.append('second', images.value.second)
     if (images.value.header) formData.append('header', images.value.header)
@@ -301,7 +278,6 @@ const sendToBackend = async () => {
       responseType: 'blob',
     })
 
-    // Crear un enlace temporal para descargar el PDF
     const blob = new Blob([res.data], { type: 'application/pdf' })
     const link = document.createElement('a')
     link.href = URL.createObjectURL(blob)
@@ -309,8 +285,6 @@ const sendToBackend = async () => {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-
-    //await finishNotification();
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
       const reader = new FileReader()
@@ -320,7 +294,7 @@ const sendToBackend = async () => {
           const errorData = JSON.parse(responseText)
           console.error('Mensaje de error detallado del backend:', errorData)
           toast.error(errorData.message || 'Error desconocido')
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (parseError) {
           console.error('Error de parseo del error:', reader.result)
           toast.error('Error inesperado al generar el PDF.')
@@ -332,17 +306,17 @@ const sendToBackend = async () => {
       toast.error('Error inesperado en la conexión con el backend.')
     }
   } finally {
-    generating.value = false // Desactivar spinner
-    toast.dismiss(toastId) // Cerrar toast
+    generating.value = false
+    toast.dismiss(toastId)
   }
 }
 
-/* ------------------- INICIO ------------------- */
 onMounted(() => {
   fetchTemplate()
   fetchUserId()
 })
 </script>
+
 
 <template>
   <!-- Overlay spinner centrado -->
@@ -409,19 +383,23 @@ onMounted(() => {
         <div class="flex flex-col gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">PDF Background</label>
-            <input type="color" v-model="colors.background" class="w-full h-8 border rounded" />
+            <input type="color" v-model="colors.backgroundColor" class="w-full h-8 border rounded mb-1" />
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.backgroundAlpha" class="w-full" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Primary Row</label>
-            <input type="color" v-model="colors.rowPrimary" class="w-full h-8 border rounded" />
+            <input type="color" v-model="colors.rowPrimaryColor" class="w-full h-8 border rounded mb-1" />
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowPrimaryAlpha" class="w-full" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Alternate Row</label>
-            <input type="color" v-model="colors.rowAlternate" class="w-full h-8 border rounded" />
+            <input type="color" v-model="colors.rowAlternateColor" class="w-full h-8 border rounded mb-1" />
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowAlternateAlpha" class="w-full" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Header Background</label>
-            <input type="color" v-model="colors.header" class="w-full h-8 border rounded" />
+            <input type="color" v-model="colors.headerColor" class="w-full h-8 border rounded mb-1" />
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.headerAlpha" class="w-full" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Header Text</label>
@@ -433,12 +411,14 @@ onMounted(() => {
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Footer Background</label>
-            <input type="color" v-model="colors.footer" class="w-full h-8 border rounded" />
+            <input type="color" v-model="colors.footerColor" class="w-full h-8 border rounded mb-1" />
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.footerAlpha" class="w-full" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Footer Text</label>
             <input type="color" v-model="colors.footerText" class="w-full h-8 border rounded" />
           </div>
+
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Show Table Borders</label>
             <label class="relative inline-flex items-center cursor-pointer">
