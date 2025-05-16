@@ -305,17 +305,17 @@ const sendToBackend = async () => {
           const responseText = reader.result as string
           const errorData = JSON.parse(responseText)
           console.error('Mensaje de error detallado del backend:', errorData)
-          toast.error(errorData.message || 'Error desconocido')
+          toast.error(errorData.message || 'Unknown error')
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (parseError) {
           console.error('Error de parseo del error:', reader.result)
-          toast.error('Error inesperado al generar el PDF.')
+          toast.error('Unknow error generating PDF.')
         }
       }
       reader.readAsText(err.response.data)
     } else {
       console.error('Error inesperado:', err)
-      toast.error('Error inesperado en la conexión con el backend.')
+      toast.error('Unknow error generating PDF.')
     }
   } finally {
     generating.value = false
