@@ -379,7 +379,7 @@ onMounted(() => {
             <span>{{ element.name }}</span>
             <label class="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" v-model="element.active" class="sr-only peer" />
-              <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-indigo-600 transition-all"></div>
+              <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-[#1e2939] transition-all"></div>
               <div class="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
             </label>
           </div>
@@ -396,22 +396,22 @@ onMounted(() => {
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">PDF Background</label>
             <input type="color" v-model="colors.backgroundColor" class="w-full h-8 border rounded mb-1" />
-            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.backgroundAlpha" class="w-full"  style="color: #1e2939;"/>
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.backgroundAlpha" class="w-full bg-[#1e2939]"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Primary Row</label>
             <input type="color" v-model="colors.rowPrimaryColor" class="w-full h-8 border rounded mb-1" />
-            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowPrimaryAlpha" class="w-full"  style="color: #1e2939;"/>
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowPrimaryAlpha" class="w-full bg-[#1e2939]"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Alternate Row</label>
             <input type="color" v-model="colors.rowAlternateColor" class="w-full h-8 border rounded mb-1" />
-            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowAlternateAlpha" class="w-full"  style="color: #1e2939;"/>
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowAlternateAlpha" class="w-full bg-[#1e2939]"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Header Background</label>
             <input type="color" v-model="colors.headerColor" class="w-full h-8 border rounded mb-1" />
-            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.headerAlpha" class="w-full"  style="color: #1e2939;"/>
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.headerAlpha" class="w-full bg-[#1e2939]"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Header Text</label>
@@ -424,7 +424,7 @@ onMounted(() => {
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Footer Background</label>
             <input type="color" v-model="colors.footerColor" class="w-full h-8 border rounded mb-1" />
-            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.footerAlpha" class="w-full" style="color: #1e2939;"/>
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.footerAlpha" class="w-full bg-[#1e2939]"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Footer Text</label>
