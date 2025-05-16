@@ -232,6 +232,18 @@ const sendToBackend = async () => {
     return
   }
 
+  if (!images.value.cover) {
+  toast.error('Please upload a cover image before generating the PDF.')
+  generating.value = false
+  return
+  }
+
+  if (!images.value.header) {
+  toast.error('Please upload a header image before generating the PDF.')
+  generating.value = false
+  return
+  }
+
   generating.value = true
   const toastId = toast.info('Creating your PDF, please wait...', { timeout: false })
 
