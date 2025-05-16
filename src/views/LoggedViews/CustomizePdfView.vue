@@ -418,7 +418,7 @@ onMounted(() => {
             <input type="color" v-model="colors.headerText" class="w-full h-8 border rounded" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Text</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Content Text</label>
             <input type="color" v-model="colors.text" class="w-full h-8 border rounded" />
           </div>
           <div>
@@ -457,23 +457,23 @@ onMounted(() => {
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
         <div class="flex flex-col gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700">Cover</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Cover (Required)</label>
             <input type="file" @change="(e) => handleImageUpload(e, 'cover')" class="file-input w-full" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Second Cover</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Second Cover (Optional)</label>
             <input type="file" @change="(e) => handleImageUpload(e, 'second')" class="file-input w-full" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Header</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Header (Required)</label>
             <input type="file" @change="(e) => handleImageUpload(e, 'header')" class="file-input w-full" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Footer</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Footer (Optional)</label>
             <input type="file" @change="(e) => handleImageUpload(e, 'footer')" class="file-input w-full" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Background</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Background (Optional)</label>
             <input type="file" @change="(e) => handleImageUpload(e, 'background')" class="file-input w-full" />
           </div>
         </div>
