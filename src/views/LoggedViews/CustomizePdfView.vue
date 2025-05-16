@@ -396,22 +396,22 @@ onMounted(() => {
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">PDF Background</label>
             <input type="color" v-model="colors.backgroundColor" class="w-full h-8 border rounded mb-1" />
-            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.backgroundAlpha" class="w-full" />
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.backgroundAlpha" class="w-full"  style="color: #1e2939;"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Primary Row</label>
             <input type="color" v-model="colors.rowPrimaryColor" class="w-full h-8 border rounded mb-1" />
-            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowPrimaryAlpha" class="w-full" />
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowPrimaryAlpha" class="w-full"  style="color: #1e2939;"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Alternate Row</label>
             <input type="color" v-model="colors.rowAlternateColor" class="w-full h-8 border rounded mb-1" />
-            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowAlternateAlpha" class="w-full" />
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowAlternateAlpha" class="w-full"  style="color: #1e2939;"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Header Background</label>
             <input type="color" v-model="colors.headerColor" class="w-full h-8 border rounded mb-1" />
-            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.headerAlpha" class="w-full" />
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.headerAlpha" class="w-full"  style="color: #1e2939;"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Header Text</label>
@@ -424,7 +424,7 @@ onMounted(() => {
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Footer Background</label>
             <input type="color" v-model="colors.footerColor" class="w-full h-8 border rounded mb-1" />
-            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.footerAlpha" class="w-full" />
+            <input type="range" min="0" max="1" step="0.01" v-model.number="colors.footerAlpha" class="w-full" style="color: #1e2939;"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Footer Text</label>
