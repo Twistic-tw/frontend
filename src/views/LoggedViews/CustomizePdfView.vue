@@ -483,9 +483,9 @@ onMounted(() => {
     <!-- Botón de generación -->
     <button
       @click="sendToBackend"
-      class="w-full bg-green-600 text-white px-6 py-3 rounded shadow hover:bg-green-700 hover:scale-105 transition"
+      class="w-full bg-[#4f46e5] text-white px-6 py-3 rounded-xl shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-[#4338ca] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
     >
-      Generate PDF
+      📄 Generate PDF
     </button>
   </div>
 
