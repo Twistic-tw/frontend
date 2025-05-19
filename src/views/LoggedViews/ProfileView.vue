@@ -1,8 +1,7 @@
-<script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+<script lang="ts" setup>
+import { onMounted, ref } from 'vue'
 import axios from 'axios'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import BackButton from '@/components/BackButton.vue';
+import BackButton from '@/components/BackButton.vue'
 
 interface User {
   active_catalogos: number
@@ -12,6 +11,10 @@ interface User {
   created_at: string
 }
 
+const user = ref<User | null>(null)
+const loading = ref(true)
+const error = ref(false)
+
 function getCookie(name: string): string {
   const value = `; ${document.cookie}`
   const parts = value.split(`; ${name}=`)
@@ -19,56 +22,58 @@ function getCookie(name: string): string {
   return ''
 }
 
-export default defineComponent({
-  name: 'UserProfile',
-  setup() {
-    const user = ref<User | null>(null)
-    const loading = ref(true)
-    const error = ref(false)
+const fetchUser = async () => {
+  try {
+    const xsrfToken = getCookie('XSRF-TOKEN')
 
-    const fetchUser = async () => {
-      try {
-        const xsrfToken = getCookie('XSRF-TOKEN')
-
-        const response = await axios.get(`${import.meta.env.VITE_URL}/user`, {
-          withCredentials: true,
-          headers: {
-            'X-XSRF-TOKEN': xsrfToken,
-            Accept: 'application/json'
-          }
-        })
-
-        user.value = response.data.user
-      } catch (err: unknown) {
-        if (axios.isAxiosError(err) && err.response) {
-          console.error('Status:', err.response.status);
-          console.error('Mensaje:', err.response.data.message || 'Sin mensaje');
-          console.error('Data completa:', err.response.data);
-        } else if (err instanceof Error) {
-          console.error('Error JS:', err.message);
-        } else {
-          console.error('Error desconocido');
-        }
-        error.value = true
-      } finally {
-        loading.value = false
+    // Obtener usuario
+    const response = await axios.get(`${import.meta.env.VITE_URL}/user`, {
+      withCredentials: true,
+      headers: {
+        'X-XSRF-TOKEN': xsrfToken,
+        Accept: 'application/json'
       }
+    })
+
+    const userData = response.data.user
+
+    // Obtener número de catálogos activos
+    const countResponse = await axios.get(`${import.meta.env.VITE_URL}/CountCatalogs`, {
+      withCredentials: true,
+      headers: {
+        'X-XSRF-TOKEN': xsrfToken,
+        Accept: 'application/json'
+      }
+    })
+
+    const activeCatalogs = countResponse.data.count ?? 0
+
+    user.value = {
+      ...userData,
+      active_catalogos: activeCatalogs
     }
 
-    const formatDate = (dateStr: string): string => {
-      return new Date(dateStr).toLocaleString()
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err) && err.response) {
+      console.error('Status:', err.response.status)
+      console.error('Mensaje:', err.response.data.message || 'Sin mensaje')
+      console.error('Data completa:', err.response.data)
+    } else if (err instanceof Error) {
+      console.error('Error JS:', err.message)
+    } else {
+      console.error('Error desconocido')
     }
-
-    onMounted(fetchUser)
-
-    return {
-      user,
-      loading,
-      error,
-      formatDate
-    }
+    error.value = true
+  } finally {
+    loading.value = false
   }
-})
+}
+
+const formatDate = (dateStr: string): string => {
+  return new Date(dateStr).toLocaleString()
+}
+
+onMounted(fetchUser)
 </script>
 
 <template>
