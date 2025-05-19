@@ -103,29 +103,42 @@ async function eliminarCamposSeleccionados() {
     <!-- Título -->
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Fields</h2>
 
-    <!-- Toggle "Select all" alineado a la derecha -->
-    <div class="flex justify-end items-center mb-6 gap-2">
-      <label
-        for="toggle-select-all-fields"
-        class="text-sm font-medium text-gray-700 dark:text-white"
-      >
-        {{ todosSeleccionados ? 'Unselect all' : 'Select all' }}
-      </label>
-      <label class="relative inline-flex items-center cursor-pointer">
-        <input
-          id="toggle-select-all-fields"
-          type="checkbox"
-          class="sr-only peer"
-          :checked="todosSeleccionados"
-          @change="toggleSeleccionarTodos"
-        />
-        <div
-          class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"
-        ></div>
-        <div
-          class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"
-        ></div>
-      </label>
+    <!-- Toggle + Botón "Delete selected" alineados a la derecha -->
+    <div class="flex justify-end items-center mb-6 gap-4 flex-wrap">
+      <!-- Select all toggle -->
+      <div class="flex items-center gap-2">
+        <label
+          for="toggle-select-all-fields"
+          class="text-sm font-medium text-gray-700 dark:text-white"
+        >
+          {{ todosSeleccionados ? 'Unselect all' : 'Select all' }}
+        </label>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            id="toggle-select-all-fields"
+            type="checkbox"
+            class="sr-only peer"
+            :checked="todosSeleccionados"
+            @change="toggleSeleccionarTodos"
+          />
+          <div
+            class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"
+          ></div>
+          <div
+            class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"
+          ></div>
+        </label>
+      </div>
+
+      <!-- Botón eliminar seleccionados -->
+      <div v-if="camposSeleccionados.length > 0">
+        <button
+          @click="eliminarCamposSeleccionados"
+          class="px-4 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition"
+        >
+          Delete selected ({{ camposSeleccionados.length }})
+        </button>
+      </div>
     </div>
 
     <!-- Grid de campos -->
