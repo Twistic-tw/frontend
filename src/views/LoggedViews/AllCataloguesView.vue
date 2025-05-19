@@ -39,6 +39,8 @@ async function cargarCatalogos() {
     const res = await axios.get(url, {
       withCredentials: true
     })
+
+    console.log('Catalogs:', res.data.catalogs)
     catalogos.value = res.data.catalogs || []
   } catch (error) {
     console.error('Error al cargar catálogos:', error)
