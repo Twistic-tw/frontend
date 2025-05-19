@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
-import { useToast } from 'vue-toastification';
-import BackButton from '@/components/BackButton.vue';
+import { useToast } from 'vue-toastification'
+import BackButton from '@/components/BackButton.vue'
 
 // Declaración de variables
-const toast = useToast();
+const toast = useToast()
 const usuarios = ref([])
 const plantillas = ref([])
 const plantillasSeleccionadas = ref<number[]>([])
-const todasSeleccionadas = computed(() =>
-  plantillasSeleccionadas.value.length === plantillas.value.length &&
-  plantillas.value.length > 0
+const todasSeleccionadas = computed(
+  () =>
+    plantillasSeleccionadas.value.length === plantillas.value.length && plantillas.value.length > 0,
 )
 
 // Ejecutar promesas al cargar el componente
@@ -24,7 +24,7 @@ onMounted(async () => {
 async function loadUsers() {
   try {
     const res = await axios.get(`${import.meta.env.VITE_URL}/Users`, {
-      withCredentials: true
+      withCredentials: true,
     })
     usuarios.value = res.data
   } catch (error) {
@@ -36,7 +36,7 @@ async function loadUsers() {
 async function loadTemplates() {
   try {
     const res = await axios.get(`${import.meta.env.VITE_URL}/ViewTemplates`, {
-      withCredentials: true
+      withCredentials: true,
     })
     plantillas.value = res.data
   } catch (error) {
@@ -49,7 +49,7 @@ function toggleSeleccionarTodas() {
   if (todasSeleccionadas.value) {
     plantillasSeleccionadas.value = []
   } else {
-    plantillasSeleccionadas.value = plantillas.value.map(p => p.id)
+    plantillasSeleccionadas.value = plantillas.value.map((p) => p.id)
   }
 }
 
@@ -57,19 +57,19 @@ function toggleSeleccionarTodas() {
 async function eliminarPlantilla(id) {
   if (confirm('Are you sure you want to delete this template?')) {
     try {
-      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
       if (!xsrfToken) {
-        toast.error('CSRF token not found. Please reload the page.');
-        return;
+        toast.error('CSRF token not found. Please reload the page.')
+        return
       }
       await axios.delete(`${import.meta.env.VITE_URL}/DeleteTemplate/${id}`, {
         withCredentials: true,
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          'Accept': 'application/json'
-        }
+          Accept: 'application/json',
+        },
       })
-      plantillas.value = plantillas.value.filter(p => p.id !== id)
+      plantillas.value = plantillas.value.filter((p) => p.id !== id)
       toast.success('Template successfully deleted.')
     } catch (error) {
       console.error('Error deleting template:', error)
@@ -80,7 +80,12 @@ async function eliminarPlantilla(id) {
 
 // Function to delete multiple templates
 async function eliminarSeleccionadas() {
-  if (!confirm(`Are you sure you want to delete ${plantillasSeleccionadas.value.length} selected templates?`)) return;
+  if (
+    !confirm(
+      `Are you sure you want to delete ${plantillasSeleccionadas.value.length} selected templates?`,
+    )
+  )
+    return
 
   try {
     const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
@@ -89,33 +94,35 @@ async function eliminarSeleccionadas() {
       return
     }
 
-    await axios.post(`${import.meta.env.VITE_URL}/DeleteTemplates`, {
-      ids: plantillasSeleccionadas.value
-    }, {
-      withCredentials: true,
-      headers: {
-        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-        Accept: 'application/json'
-      }
-    })
+    await axios.post(
+      `${import.meta.env.VITE_URL}/DeleteTemplates`,
+      {
+        ids: plantillasSeleccionadas.value,
+      },
+      {
+        withCredentials: true,
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          Accept: 'application/json',
+        },
+      },
+    )
 
-    plantillas.value = plantillas.value.filter(p => !plantillasSeleccionadas.value.includes(p.id))
+    plantillas.value = plantillas.value.filter((p) => !plantillasSeleccionadas.value.includes(p.id))
     plantillasSeleccionadas.value = []
     toast.success('Selected templates deleted.')
-
   } catch (error) {
     console.error('Error deleting templates:', error)
     toast.error('There was an error deleting the templates.')
   }
 }
-
 </script>
 
 <template>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Templates</h2>
 
-    <!-- Toggle "Select all" estilo Apple -->
+    <!-- Toggle "Select all" -->
     <div class="flex justify-end items-center mb-6 gap-2">
       <label for="toggle-select-all" class="text-sm font-medium text-gray-700 dark:text-white">
         {{ todasSeleccionadas ? 'Unselect all' : 'Select all' }}
@@ -144,7 +151,7 @@ async function eliminarSeleccionadas() {
         :key="plantilla.id"
         class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
-        <!-- Cabecera con checkbox estilo Apple -->
+        <!-- Cabecera con checkbox -->
         <div class="flex justify-between items-center mb-2">
           <h3 class="text-xl font-semibold text-indigo-600">{{ plantilla.name }}</h3>
           <label class="relative inline-flex items-center cursor-pointer">

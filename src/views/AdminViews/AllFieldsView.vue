@@ -8,15 +8,15 @@ const toast = useToast()
 const fields = ref([])
 const camposSeleccionados = ref<number[]>([])
 
-const todosSeleccionados = computed(() =>
-  camposSeleccionados.value.length === fields.value.length && fields.value.length > 0
+const todosSeleccionados = computed(
+  () => camposSeleccionados.value.length === fields.value.length && fields.value.length > 0,
 )
 
 function toggleSeleccionarTodos() {
   if (todosSeleccionados.value) {
     camposSeleccionados.value = []
   } else {
-    camposSeleccionados.value = fields.value.map(f => f.id)
+    camposSeleccionados.value = fields.value.map((f) => f.id)
   }
 }
 
@@ -44,14 +44,13 @@ async function eliminarCampo(id: number) {
       withCredentials: true,
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-        Accept: 'application/json'
-      }
+        Accept: 'application/json',
+      },
     })
 
-    fields.value = fields.value.filter(field => field.id !== id)
-    camposSeleccionados.value = camposSeleccionados.value.filter(cid => cid !== id)
+    fields.value = fields.value.filter((field) => field.id !== id)
+    camposSeleccionados.value = camposSeleccionados.value.filter((cid) => cid !== id)
     toast.success('Field deleted successfully.')
-
   } catch (error) {
     console.error('Error deleting field:', error)
     toast.error('An error occurred while deleting the field.')
@@ -59,7 +58,12 @@ async function eliminarCampo(id: number) {
 }
 
 async function eliminarCamposSeleccionados() {
-  if (!confirm(`Are you sure you want to delete ${camposSeleccionados.value.length} selected field(s)?`)) return
+  if (
+    !confirm(
+      `Are you sure you want to delete ${camposSeleccionados.value.length} selected field(s)?`,
+    )
+  )
+    return
 
   try {
     const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
@@ -69,18 +73,22 @@ async function eliminarCamposSeleccionados() {
       return
     }
 
-    await axios.post(`${import.meta.env.VITE_URL}/DeleteFields`, {
-      ids: camposSeleccionados.value
-    }, {
-      withCredentials: true,
-      headers: {
-        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-        Accept: 'application/json'
-      }
-    })
+    await axios.post(
+      `${import.meta.env.VITE_URL}/DeleteFields`,
+      {
+        ids: camposSeleccionados.value,
+      },
+      {
+        withCredentials: true,
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          Accept: 'application/json',
+        },
+      },
+    )
 
     // Actualiza estado local
-    fields.value = fields.value.filter(f => !camposSeleccionados.value.includes(f.id))
+    fields.value = fields.value.filter((f) => !camposSeleccionados.value.includes(f.id))
     camposSeleccionados.value = []
     toast.success('Selected fields deleted.')
   } catch (error) {
@@ -92,28 +100,32 @@ async function eliminarCamposSeleccionados() {
 
 <template>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
-    <!-- Cabecera con título y toggle Apple-style -->
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-3xl font-bold text-gray-800 text-center w-full">Available fields</h2>
-      <div class="flex items-center gap-2">
-        <label class="text-sm font-medium text-gray-700 dark:text-white">
-          {{ todosSeleccionados ? 'Unselect all' : 'Select all' }}
-        </label>
-        <label class="relative inline-flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            class="sr-only peer"
-            :checked="todosSeleccionados"
-            @change="toggleSeleccionarTodos"
-          />
-          <div
-            class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"
-          ></div>
-          <div
-            class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"
-          ></div>
-        </label>
-      </div>
+    <!-- Título -->
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Fields</h2>
+
+    <!-- Toggle "Select all" alineado a la derecha -->
+    <div class="flex justify-end items-center mb-6 gap-2">
+      <label
+        for="toggle-select-all-fields"
+        class="text-sm font-medium text-gray-700 dark:text-white"
+      >
+        {{ todosSeleccionados ? 'Unselect all' : 'Select all' }}
+      </label>
+      <label class="relative inline-flex items-center cursor-pointer">
+        <input
+          id="toggle-select-all-fields"
+          type="checkbox"
+          class="sr-only peer"
+          :checked="todosSeleccionados"
+          @change="toggleSeleccionarTodos"
+        />
+        <div
+          class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"
+        ></div>
+        <div
+          class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"
+        ></div>
+      </label>
     </div>
 
     <!-- Grid de campos -->
@@ -125,9 +137,7 @@ async function eliminarCamposSeleccionados() {
       >
         <!-- Título con checkbox -->
         <div class="flex justify-between items-center mb-2">
-          <h3 class="text-xl font-semibold text-indigo-600">
-            #{{ field.id }} - {{ field.field }}
-          </h3>
+          <h3 class="text-xl font-semibold text-indigo-600">#{{ field.id }} - {{ field.field }}</h3>
           <label class="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
