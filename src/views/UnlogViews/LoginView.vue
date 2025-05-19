@@ -133,7 +133,9 @@ const logUser = async () => {
         </form>
 
         <p class="mt-10 text-center text-sm text-gray-600 dark:text-indigo-50">
-          Contact with us for your own account!
+          <RouterLink to="/contact" class="text-blue-600 hover:underline dark:text-blue-400">
+            Contact with us for your own account!
+          </RouterLink>
         </p>
       </div>
     </div>
