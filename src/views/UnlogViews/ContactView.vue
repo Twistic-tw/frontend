@@ -38,7 +38,7 @@ function handleRegister() {
 
 
 <template>
-  <div class="flex-1 mt-[60px] flex-col justify-center px-6 py-12 lg:px-8 bg-gradient-to-r from-white via-slate-200 to-slate-400 dark:bg-gradient-to-r dark:from-neutral-950 dark:via-none dark:to-slate-900">
+  <div class="flex-1 mt-[60px] flex-col justify-center px-6 py-12 lg:px-8 bg-gradient-to-r from-blue-100 to-purple-200">
     <div class="w-120 m-auto p-5 py-20 rounded-3xl bg-white shadow-[0px_20px_24px_30px_rgba(0,_0,_0,_0.1)] dark:bg-gray-700">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm ">
         <h2 class="text-center text-2xl/9 font-bold tracking-tight text-gray-900 dark:text-indigo-50">Contact us</h2>
