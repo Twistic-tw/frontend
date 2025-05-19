@@ -187,7 +187,7 @@ onBeforeUnmount(() => {
 <style scoped>
 @keyframes slide-in-right {
   0% {
-    transform: translateX(40px);
+    transform: translateX(60px);
     opacity: 0;
   }
   100% {
