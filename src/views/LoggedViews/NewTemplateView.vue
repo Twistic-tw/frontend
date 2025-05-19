@@ -10,6 +10,7 @@ const step = ref(1);
 const loading = ref(false);
 const excelHeaders = ref<string[]>([]);
 const userId = ref<number | null>(null);
+const role = sessionStorage.getItem('userRole'); // Rol del usuario
 const filePath = ref<string>('');
 
 // Formulario reactivo
@@ -134,7 +135,6 @@ const submitForm = async () => {
   formData.append('fields', JSON.stringify(selectedFields));
 
   try {
-    console.log('Enviando datos al backend:', formData);
     const response = await axios.post(`${import.meta.env.VITE_URL}/CreateTemplateWithNotification`, formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
@@ -142,13 +142,10 @@ const submitForm = async () => {
       },
       withCredentials: true,
     });
-    console.log('Respuesta del backend:', response.data);
-    console.log('Verificaciones:', response.data.verificaciones);
-    console.log('Excel:', response.data.excel);
-    console.log('Path:', response.data.path);
 
 
     if (response.status === 200) {
+
       step.value = 6;
     }
   } catch (error: unknown) {
@@ -181,6 +178,11 @@ const resetForm = () => {
 // Redirigir
 const goToDashboard = () => {
   window.location.href = '/dashboard';
+};
+
+// Redirigir a la página de selección de plantilla
+const goToTemplateSelection = () => {
+  window.location.href = '/catalogList';
 };
 
 onMounted(fetchUserId);
@@ -299,6 +301,7 @@ onMounted(fetchUserId);
             <div class="flex justify-center space-x-4">
               <button @click="resetForm" class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition">Create Another</button>
               <button @click="goToDashboard" class="bg-gray-600 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-700 transition">Go to Dashboard</button>
+              <button v-if="role && (role === 'admin')" @click="goToTemplateSelection" class="bg-gray-600 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-700 transition">Select Template</button>
             </div>
           </div>
           <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
