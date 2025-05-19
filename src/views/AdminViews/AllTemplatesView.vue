@@ -80,74 +80,111 @@ async function eliminarPlantilla(id) {
 
 // Function to delete multiple templates
 async function eliminarSeleccionadas() {
-  if (!confirm('Are you sure you want to delete the selected templates?')) return;
+  if (!confirm(`Are you sure you want to delete ${plantillasSeleccionadas.value.length} selected templates?`)) return;
 
   try {
-    const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+    const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
     if (!xsrfToken) {
-      toast.error('CSRF token not found. Please reload the page.');
-      return;
+      toast.error('CSRF token not found. Please reload the page.')
+      return
     }
 
-    for (const id of plantillasSeleccionadas.value) {
-      await axios.delete(`${import.meta.env.VITE_URL}/DeleteTemplate/${id}`, {
-        withCredentials: true,
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          'Accept': 'application/json'
-        }
-      });
-    }
+    await axios.post(`${import.meta.env.VITE_URL}/DeleteTemplates`, {
+      ids: plantillasSeleccionadas.value
+    }, {
+      withCredentials: true,
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        Accept: 'application/json'
+      }
+    })
 
-    // Filtrar plantillas eliminadas
     plantillas.value = plantillas.value.filter(p => !plantillasSeleccionadas.value.includes(p.id))
     plantillasSeleccionadas.value = []
     toast.success('Selected templates deleted.')
 
   } catch (error) {
-    console.error('Error deleting templates:', error);
+    console.error('Error deleting templates:', error)
     toast.error('There was an error deleting the templates.')
   }
 }
+
 </script>
 
 <template>
-  <!-- Encabezado con botón volver atrás -->
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Templates</h2>
-    <div class="flex justify-between items-center mb-6">
-      <button
-        @click="toggleSeleccionarTodas"
-        class="ml-4 text-sm text-indigo-600 underline hover:text-indigo-800"
-      >
+
+    <!-- Toggle "Select all" estilo Apple -->
+    <div class="flex justify-end items-center mb-6 gap-2">
+      <label for="toggle-select-all" class="text-sm font-medium text-gray-700 dark:text-white">
         {{ todasSeleccionadas ? 'Unselect all' : 'Select all' }}
-      </button>
+      </label>
+      <label class="relative inline-flex items-center cursor-pointer">
+        <input
+          id="toggle-select-all"
+          type="checkbox"
+          class="sr-only peer"
+          :checked="todasSeleccionadas"
+          @change="toggleSeleccionarTodas"
+        />
+        <div
+          class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"
+        ></div>
+        <div
+          class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"
+        ></div>
+      </label>
     </div>
 
-
+    <!-- Grid de plantillas -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
         v-for="plantilla in plantillas"
         :key="plantilla.id"
         class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
-        <h3 class="text-xl font-semibold text-indigo-600 mb-2">{{ plantilla.name }}</h3>
+        <!-- Cabecera con checkbox estilo Apple -->
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-xl font-semibold text-indigo-600">{{ plantilla.name }}</h3>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              class="sr-only peer"
+              :value="plantilla.id"
+              v-model="plantillasSeleccionadas"
+            />
+            <div
+              class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"
+            ></div>
+            <div
+              class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"
+            ></div>
+          </label>
+        </div>
 
         <p class="text-sm text-gray-500 dark:text-white mb-1">
-          Created by: <span class="font-medium text-gray-700 dark:text-white">{{ plantilla.user_name || 'Unknown' }}</span>
+          Created by:
+          <span class="font-medium text-gray-700 dark:text-white">
+            {{ plantilla.user_name || 'Unknown' }}
+          </span>
         </p>
 
         <p class="text-sm text-gray-500 dark:text-white mb-3">
-          Created date: <span class="font-medium text-gray-700 dark:text-white">{{ new Date(plantilla.created_at).toLocaleDateString() }}</span>
+          Created date:
+          <span class="font-medium text-gray-700 dark:text-white">
+            {{ new Date(plantilla.created_at).toLocaleDateString() }}
+          </span>
         </p>
 
         <div>
           <h4 class="text-sm font-semibold text-gray-700 dark:text-white mb-2">Fields:</h4>
           <ul class="list-disc list-inside text-gray-600 dark:text-white">
-            <li v-for="field in plantilla.fields " :key="field.id">{{ field.field }}</li>
+            <li v-for="field in plantilla.fields" :key="field.id">{{ field.field }}</li>
           </ul>
         </div>
-        <!-- Botón Eliminar -->
+
+        <!-- Botón Eliminar individual -->
         <button
           @click="eliminarPlantilla(plantilla.id)"
           class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition mt-4"
@@ -157,6 +194,7 @@ async function eliminarSeleccionadas() {
       </div>
     </div>
 
+    <!-- Botón eliminar seleccionadas -->
     <div v-if="plantillasSeleccionadas.length > 0" class="mt-6 text-center">
       <button
         @click="eliminarSeleccionadas"
@@ -169,12 +207,11 @@ async function eliminarSeleccionadas() {
     <div v-if="plantillas.length === 0" class="text-center text-gray-500 mt-8">
       No templates available
     </div>
-    <!-- Botón Volver -->
+
     <div class="mt-12">
       <BackButton
-  class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
-/>
+        class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
+      />
     </div>
   </div>
 </template>
-
