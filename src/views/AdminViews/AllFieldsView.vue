@@ -137,7 +137,7 @@ async function eliminarCamposSeleccionados() {
       >
         <!-- Título con checkbox -->
         <div class="flex justify-between items-center mb-2">
-          <h3 class="text-xl font-semibold text-indigo-600">#{{ field.id }} - {{ field.field }}</h3>
+          <h3 class="text-xl font-semibold text-indigo-600">{{ field.field }}</h3>
           <label class="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
