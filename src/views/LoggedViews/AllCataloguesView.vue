@@ -1,58 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
-import axios from 'axios'
-import BackButton from '@/components/BackButton.vue';
+import { useCatalogManager } from '../../composable/AllCatalogues'
+import BackButton from '@/components/BackButton.vue'
 
-const usuarios = ref([])
-const catalogos = ref([])
-const usuarioSeleccionado = ref('')
-const role = sessionStorage.getItem('userRole');
-const baseUrl = import.meta.env.VITE_URL;
-
-// Cargar usuarios al iniciar
-onMounted(async () => {
-  cargarCatalogos()
-  cargarUsuarios()
-})
-
-// Cargar usuarios
-async function cargarUsuarios() {
-  try {
-    const res = await axios.get(`${import.meta.env.VITE_URL}/Users`, {
-      withCredentials: true
-    })
-    usuarios.value = res.data
-  } catch (error) {
-    console.error('Error al cargar usuarios:', error)
-  }
-}
-
-// Cargar catálogos (todos o filtrados por usuario)
-async function cargarCatalogos() {
-  try {
-    let url = `${import.meta.env.VITE_URL}/ShowCatalogs`
-
-    if (usuarioSeleccionado.value) {
-      url += `?id_user=${usuarioSeleccionado.value}`
-    }
-
-    const res = await axios.get(url, {
-      withCredentials: true
-    })
-
-    console.log('Catalogs:', res.data.catalogs)
-    catalogos.value = res.data.data || []
-  } catch (error) {
-    console.error('Error al cargar catálogos:', error)
-    catalogos.value = []
-  }
-}
-
-// Al cambiar de usuario, carga sus catálogos
-watch(usuarioSeleccionado, () => {
-  cargarCatalogos()
-})
+const {
+  usuarios,
+  catalogos,
+  usuarioSeleccionado,
+  role,
+  baseUrl,
+} = useCatalogManager()
 </script>
+
 
 
 <template>

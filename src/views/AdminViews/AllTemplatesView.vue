@@ -1,121 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import axios from 'axios'
-import { useToast } from 'vue-toastification'
+import { useTemplates } from '../../composable/templateList'
 import BackButton from '@/components/BackButton.vue'
 
-// Declaración de variables
-const toast = useToast()
-const usuarios = ref([])
-const plantillas = ref([])
-const plantillasSeleccionadas = ref<number[]>([])
-const todasSeleccionadas = computed(
-  () =>
-    plantillasSeleccionadas.value.length === plantillas.value.length && plantillas.value.length > 0,
-)
-
-// Ejecutar promesas al cargar el componente
-onMounted(async () => {
-  await loadUsers()
-  await loadTemplates()
-})
-
-// Function to load users
-async function loadUsers() {
-  try {
-    const res = await axios.get(`${import.meta.env.VITE_URL}/Users`, {
-      withCredentials: true,
-    })
-    usuarios.value = res.data
-  } catch (error) {
-    console.error('Error loading users:', error)
-  }
-}
-
-// Function to load templates
-async function loadTemplates() {
-  try {
-    const res = await axios.get(`${import.meta.env.VITE_URL}/ViewTemplates`, {
-      withCredentials: true,
-    })
-    plantillas.value = res.data
-  } catch (error) {
-    console.error('Error loading templates:', error)
-  }
-}
-
-// Function to select all templates
-function toggleSeleccionarTodas() {
-  if (todasSeleccionadas.value) {
-    plantillasSeleccionadas.value = []
-  } else {
-    plantillasSeleccionadas.value = plantillas.value.map((p) => p.id)
-  }
-}
-
-// Delete template
-async function eliminarPlantilla(id) {
-  if (confirm('Are you sure you want to delete this template?')) {
-    try {
-      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
-      if (!xsrfToken) {
-        toast.error('CSRF token not found. Please reload the page.')
-        return
-      }
-      await axios.delete(`${import.meta.env.VITE_URL}/DeleteTemplate/${id}`, {
-        withCredentials: true,
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          Accept: 'application/json',
-        },
-      })
-      plantillas.value = plantillas.value.filter((p) => p.id !== id)
-      toast.success('Template successfully deleted.')
-    } catch (error) {
-      console.error('Error deleting template:', error)
-      toast.error('There was an error deleting the template.')
-    }
-  }
-}
-
-// Function to delete multiple templates
-async function eliminarSeleccionadas() {
-  if (
-    !confirm(
-      `Are you sure you want to delete ${plantillasSeleccionadas.value.length} selected templates?`,
-    )
-  )
-    return
-
-  try {
-    const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
-    if (!xsrfToken) {
-      toast.error('CSRF token not found. Please reload the page.')
-      return
-    }
-
-    await axios.post(
-      `${import.meta.env.VITE_URL}/DeleteTemplates`,
-      {
-        ids: plantillasSeleccionadas.value,
-      },
-      {
-        withCredentials: true,
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          Accept: 'application/json',
-        },
-      },
-    )
-
-    plantillas.value = plantillas.value.filter((p) => !plantillasSeleccionadas.value.includes(p.id))
-    plantillasSeleccionadas.value = []
-    toast.success('Selected templates deleted.')
-  } catch (error) {
-    console.error('Error deleting templates:', error)
-    toast.error('There was an error deleting the templates.')
-  }
-}
+const {
+  plantillas,
+  plantillasSeleccionadas,
+  todasSeleccionadas,
+  toggleSeleccionarTodas,
+  eliminarPlantilla,
+  eliminarSeleccionadas,
+} = useTemplates()
 </script>
 
 <template>
