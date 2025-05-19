@@ -116,7 +116,6 @@ async function eliminarSeleccionadas() {
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Templates</h2>
     <div class="flex justify-between items-center mb-6">
-      <h2 class="text-3xl font-bold text-gray-800 text-center w-full">Available Templates</h2>
       <button
         @click="toggleSeleccionarTodas"
         class="ml-4 text-sm text-indigo-600 underline hover:text-indigo-800"
