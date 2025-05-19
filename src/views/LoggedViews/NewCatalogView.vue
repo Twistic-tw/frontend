@@ -4,10 +4,11 @@ import axios from 'axios';
 import draggable from 'vuedraggable';
 import BackButton from '@/components/BackButton.vue';
 
-const step = ref(1);
-const loading = ref(false);
-const excelHeaders = ref<string[]>([]);
-const userId = ref<number | null>(null);
+const step = ref(1); // Paso actual
+const loading = ref(false); // Cargando
+const excelHeaders = ref<string[]>([]); // Encabezados de Excel
+const userId = ref<number | null>(null); // ID de usuario
+const role = sessionStorage.getItem('userRole'); // Rol del usuario
 
 // Formulario reactivo
 const form = ref({
@@ -112,6 +113,7 @@ const submitForm = async () => {
   formData.append('file', form.value.excel_file);
   formData.append('template_name', form.value.catalog_name);
   formData.append('id_user', String(userId.value));
+  formData.append('user_role', role || '');
   formData.append('fields', JSON.stringify(
     form.value.selected_headers
       .filter(fieldObj => fieldObj.active)
@@ -166,7 +168,13 @@ const resetForm = () => {
 
 // Redirigir
 const goToDashboard = () => {
-  window.location.href = '/dashboard'; // o router push si usas Vue Router
+
+  window.location.href = '/dashboard';
+};
+
+// Redigirir a la elección de plantilla
+const goToTemplateChoice = () => {
+  window.location.href = '/CatalogList';
 };
 
 // Obtener usuario al cargar
@@ -297,6 +305,7 @@ onMounted(fetchUserId);
             <div class="flex justify-center space-x-4">
               <button @click="resetForm" class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition">Create Another</button>
               <button @click="goToDashboard" class="bg-gray-600 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-700 transition">Go to Dashboard</button>
+              <button v-if="role && (role === 'admin')" @click="goToTemplateChoice" class="bg-gray-600 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-700 transition">Go to Dashboard</button>
             </div>
           </div>
           <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
