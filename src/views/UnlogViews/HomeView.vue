@@ -63,12 +63,11 @@ import { RouterLink } from 'vue-router'
         <h2 class="text-xl font-bold text-slate-800 mb-2">Fast & Smart</h2>
         <p class="text-slate-600">No complex steps. Just upload, customize, and download.</p>
       </div>
-      <!--
+
       <div class="bg-white p-6 rounded-2xl shadow-lg text-center transition hover:shadow-2xl">
-        <h2 class="text-xl font-bold text-slate-800 mb-2">Live Notifications</h2>
-        <p class="text-slate-600">Track your requests in real-time with admin updates.</p>
+        <h2 class="text-xl font-bold text-slate-800 mb-2">Reuse your templates</h2>
+        <p class="text-slate-600">Don't like the result?. Reuse the same template and customize it again.</p>
       </div>
-      -->
       <div class="bg-white p-6 rounded-2xl shadow-lg text-center transition hover:shadow-2xl">
         <h2 class="text-xl font-bold text-slate-800 mb-2">Brand-Ready Templates</h2>
         <p class="text-slate-600">Stay consistent with your branding across catalogues.</p>
