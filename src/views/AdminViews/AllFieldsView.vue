@@ -105,7 +105,17 @@ async function eliminarCamposSeleccionados() {
 
     <!-- Toggle + Botón "Delete selected" alineados a la derecha -->
     <div class="flex justify-end items-center mb-6 gap-4 flex-wrap">
-      <!-- Select all toggle -->
+      <!-- Botón eliminar seleccionados -->
+      <div v-if="camposSeleccionados.length > 0">
+        <button
+          @click="eliminarCamposSeleccionados"
+          class="px-4 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition"
+        >
+          Delete selected ({{ camposSeleccionados.length }})
+        </button>
+      </div>
+
+      <!-- Toggle estilo Apple -->
       <div class="flex items-center gap-2">
         <label
           for="toggle-select-all-fields"
@@ -128,16 +138,6 @@ async function eliminarCamposSeleccionados() {
             class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"
           ></div>
         </label>
-      </div>
-
-      <!-- Botón eliminar seleccionados -->
-      <div v-if="camposSeleccionados.length > 0">
-        <button
-          @click="eliminarCamposSeleccionados"
-          class="px-4 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition"
-        >
-          Delete selected ({{ camposSeleccionados.length }})
-        </button>
       </div>
     </div>
 
