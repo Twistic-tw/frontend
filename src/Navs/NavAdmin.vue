@@ -64,10 +64,10 @@ onBeforeUnmount(() => {
       <!-- Toggle botón -->
       <div
         @click.stop="ToggleNav"
-        class="size-12 mr-4 rounded-tl-2xl rounded-br-2xl overflow-hidden border-2 border-indigo-500 hover:border-cyan-400 transition-all duration-300 ease-in-out shadow-lg hover:shadow-indigo-500/50 cursor-pointer">
+        class="size-12 mr-4 rounded-tl-2xl rounded-br-2xl overflow-hidden border-2 border-indigo-500 hover:border-cyan-400 transition-all duration-500 ease-out shadow-lg hover:shadow-indigo-500/50 cursor-pointer transform opacity-0 translate-x-[-20px] animate-slide-in-left"
+      >
         <img src="/avatar.png" alt="Avatar" class="w-full h-full object-cover" />
       </div>
-
 
     </nav>
 
@@ -183,4 +183,21 @@ onBeforeUnmount(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+@keyframes slide-in-left {
+  0% {
+    transform: translateX(-40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.5s ease-out forwards;
+}
+</style>
 
