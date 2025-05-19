@@ -122,36 +122,39 @@ async function eliminarSeleccionadas() {
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Templates</h2>
 
-    <!-- Botón eliminar seleccionadas -->
-    <div v-if="plantillasSeleccionadas.length > 0" class="mt-6 text-center">
-      <button
-        @click="eliminarSeleccionadas"
-        class="px-6 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition"
-      >
-        Delete selected ({{ plantillasSeleccionadas.length }})
-      </button>
-    </div>
+    <!-- Botón eliminar + toggle "Select all", alineados derecha -->
+    <div class="flex justify-end items-center mb-6 gap-4 flex-wrap">
+      <!-- Botón eliminar seleccionadas -->
+      <div v-if="plantillasSeleccionadas.length > 0">
+        <button
+          @click="eliminarSeleccionadas"
+          class="px-4 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition"
+        >
+          Delete selected ({{ plantillasSeleccionadas.length }})
+        </button>
+      </div>
 
-    <!-- Toggle "Select all" -->
-    <div class="flex justify-end items-center mb-6 gap-2">
-      <label for="toggle-select-all" class="text-sm font-medium text-gray-700 dark:text-white">
-        {{ todasSeleccionadas ? 'Unselect all' : 'Select all' }}
-      </label>
-      <label class="relative inline-flex items-center cursor-pointer">
-        <input
-          id="toggle-select-all"
-          type="checkbox"
-          class="sr-only peer"
-          :checked="todasSeleccionadas"
-          @change="toggleSeleccionarTodas"
-        />
-        <div
-          class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"
-        ></div>
-        <div
-          class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"
-        ></div>
-      </label>
+      <!-- Toggle estilo Apple -->
+      <div class="flex items-center gap-2">
+        <label for="toggle-select-all" class="text-sm font-medium text-gray-700 dark:text-white">
+          {{ todasSeleccionadas ? 'Unselect all' : 'Select all' }}
+        </label>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            id="toggle-select-all"
+            type="checkbox"
+            class="sr-only peer"
+            :checked="todasSeleccionadas"
+            @change="toggleSeleccionarTodas"
+          />
+          <div
+            class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"
+          ></div>
+          <div
+            class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"
+          ></div>
+        </label>
+      </div>
     </div>
 
     <!-- Grid de plantillas -->
