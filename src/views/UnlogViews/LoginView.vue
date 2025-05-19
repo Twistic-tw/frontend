@@ -102,7 +102,7 @@ const logUser = async () => {
           <div>
             <div class="flex items-center justify-between">
               <label for="password" class="block text-sm font-medium text-gray-900 dark:text-indigo-50">Password</label>
-              <RouterLink to="/passwordRecover" class="text-sm font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</RouterLink>
+              <!--<RouterLink to="/passwordRecover" class="text-sm font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</RouterLink>-->
             </div>
             <div class="mt-2">
               <input v-model="password" type="password" name="password" id="password" autocomplete="current-password"
