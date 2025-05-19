@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useToast } from 'vue-toastification';
 import BackButton from '@/components/BackButton.vue';
 
+// Declaración de variables
 const toast = useToast();
 const usuarios = ref([])
 const plantillas = ref([])
+const plantillasSeleccionadas = ref<number[]>([])
+const todasSeleccionadas = computed(() =>
+  plantillasSeleccionadas.value.length === plantillas.value.length &&
+  plantillas.value.length > 0
+)
 
+// Ejecutar promesas al cargar el componente
 onMounted(async () => {
   await loadUsers()
   await loadTemplates()
@@ -37,6 +44,15 @@ async function loadTemplates() {
   }
 }
 
+// Function to select all templates
+function toggleSeleccionarTodas() {
+  if (todasSeleccionadas.value) {
+    plantillasSeleccionadas.value = []
+  } else {
+    plantillasSeleccionadas.value = plantillas.value.map(p => p.id)
+  }
+}
+
 // Delete template
 async function eliminarPlantilla(id) {
   if (confirm('Are you sure you want to delete this template?')) {
@@ -61,12 +77,54 @@ async function eliminarPlantilla(id) {
     }
   }
 }
+
+// Function to delete multiple templates
+async function eliminarSeleccionadas() {
+  if (!confirm('Are you sure you want to delete the selected templates?')) return;
+
+  try {
+    const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+    if (!xsrfToken) {
+      toast.error('CSRF token not found. Please reload the page.');
+      return;
+    }
+
+    for (const id of plantillasSeleccionadas.value) {
+      await axios.delete(`${import.meta.env.VITE_URL}/DeleteTemplate/${id}`, {
+        withCredentials: true,
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'Accept': 'application/json'
+        }
+      });
+    }
+
+    // Filtrar plantillas eliminadas
+    plantillas.value = plantillas.value.filter(p => !plantillasSeleccionadas.value.includes(p.id))
+    plantillasSeleccionadas.value = []
+    toast.success('Selected templates deleted.')
+
+  } catch (error) {
+    console.error('Error deleting templates:', error);
+    toast.error('There was an error deleting the templates.')
+  }
+}
 </script>
 
 <template>
   <!-- Encabezado con botón volver atrás -->
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Templates</h2>
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-3xl font-bold text-gray-800 text-center w-full">Available Templates</h2>
+      <button
+        @click="toggleSeleccionarTodas"
+        class="ml-4 text-sm text-indigo-600 underline hover:text-indigo-800"
+      >
+        {{ todasSeleccionadas ? 'Unselect all' : 'Select all' }}
+      </button>
+    </div>
+
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
@@ -98,6 +156,15 @@ async function eliminarPlantilla(id) {
           Delete
         </button>
       </div>
+    </div>
+
+    <div v-if="plantillasSeleccionadas.length > 0" class="mt-6 text-center">
+      <button
+        @click="eliminarSeleccionadas"
+        class="px-6 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition"
+      >
+        Delete selected ({{ plantillasSeleccionadas.length }})
+      </button>
     </div>
 
     <div v-if="plantillas.length === 0" class="text-center text-gray-500 mt-8">
