@@ -3,12 +3,14 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import draggable from 'vuedraggable';
 import BackButton from '@/components/BackButton.vue';
+import { useToast } from 'vue-toastification'
 
 const step = ref(1); // Paso actual
 const loading = ref(false); // Cargando
 const excelHeaders = ref<string[]>([]); // Encabezados de Excel
 const userId = ref<number | null>(null); // ID de usuario
 const role = sessionStorage.getItem('userRole'); // Rol del usuario
+const toast = useToast(); // Toast para notificaciones
 
 // Formulario reactivo
 const form = ref({
@@ -61,7 +63,7 @@ const analyzeExcel = async () => {
 
   const xsrfToken = getXsrfToken();
   if (!xsrfToken || !form.value.excel_file) {
-    alert('CSRF token or file missing.');
+    toast('CSRF token or file missing.');
     loading.value = false;
     return;
   }
@@ -83,7 +85,7 @@ const analyzeExcel = async () => {
     nextStep();
   } catch (error) {
     console.error('Error analyzing the file:', error);
-    alert('Error analyzing the file.');
+    toast('Error analyzing the file.');
   } finally {
     loading.value = false;
   }
@@ -96,7 +98,7 @@ const submitForm = async () => {
   if (!userId.value) {
     await fetchUserId();
     if (!userId.value) {
-      alert('User ID could not be fetched.');
+      toast('User ID could not be fetched.');
       loading.value = false;
       return;
     }
@@ -104,7 +106,7 @@ const submitForm = async () => {
 
   const xsrfToken = getXsrfToken();
   if (!xsrfToken || !form.value.excel_file) {
-    alert('Session expired or file missing.');
+    toast('Session expired or file missing.');
     loading.value = false;
     return;
   }
@@ -126,12 +128,6 @@ const submitForm = async () => {
   formData.append('message', form.value.message);
 
   try {
-    console.log('Submitting with:', {
-  userId: userId.value,
-  catalog_name: form.value.catalog_name,
-  fields: form.value.selected_headers,
-  file: form.value.excel_file
-});
 
     const response = await axios.post(`${import.meta.env.VITE_URL}/CreateTemplate`, formData, {
       headers: {
@@ -141,13 +137,12 @@ const submitForm = async () => {
       withCredentials: true
     });
     if (response.status === 200) {
-      console.log('Template created successfully:', response.data);
       console.log('User role:', role);
       step.value = 6;
     }
 
   } catch (error) {
-    alert('Error creating the template. Contact support.');
+    toast('Error creating the template. Contact support.');
     console.error('Error creating the template:', error);
   } finally {
     loading.value = false;
