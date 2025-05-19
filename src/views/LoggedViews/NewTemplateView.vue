@@ -123,6 +123,7 @@ const submitForm = async () => {
   formData.append('template_name', form.value.catalog_name);
   formData.append('id_user', String(userId.value));
   formData.append('message', form.value.message || 'Solicitud de creación de plantilla');
+  formData.append('user_role', role || ''); // Añadir el rol del usuario
 
   // Añadir los campos seleccionados como JSON
   const selectedFields = form.value.selected_headers
