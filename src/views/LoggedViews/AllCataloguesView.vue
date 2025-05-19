@@ -7,6 +7,7 @@ const usuarios = ref([])
 const catalogos = ref([])
 const usuarioSeleccionado = ref('')
 const role = sessionStorage.getItem('userRole');
+const baseUrl = import.meta.env.VITE_URL;
 
 // Cargar usuarios al iniciar
 onMounted(async () => {
@@ -85,7 +86,7 @@ watch(usuarioSeleccionado, () => {
         <p class="text-sm text-gray-500 dark:text-white mb-1">
         Download Catalog:
         <a
-          :href="`${import.meta.env.VITE_URL}/` + catalogo.file_path"
+          :href="baseUrl + '/' + catalogo.file_path"
           target="_blank"
           class="font-medium text-blue-600 hover:underline dark:text-blue-400"
         >
