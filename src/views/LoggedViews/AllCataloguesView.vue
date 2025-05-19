@@ -41,7 +41,7 @@ async function cargarCatalogos() {
     })
 
     console.log('Catalogs:', res.data.catalogs)
-    catalogos.value = res.data.catalogs || []
+    catalogos.value = res.data.data || []
   } catch (error) {
     console.error('Error al cargar catálogos:', error)
     catalogos.value = []
