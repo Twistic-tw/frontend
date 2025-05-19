@@ -9,7 +9,6 @@ const loading = ref(false); // Cargando
 const excelHeaders = ref<string[]>([]); // Encabezados de Excel
 const userId = ref<number | null>(null); // ID de usuario
 const role = sessionStorage.getItem('userRole'); // Rol del usuario
-console.log('User role:', role);
 
 // Formulario reactivo
 const form = ref({
@@ -143,6 +142,7 @@ const submitForm = async () => {
     });
     if (response.status === 200) {
       console.log('Template created successfully:', response.data);
+      console.log('User role:', role);
       step.value = 6;
     }
 
