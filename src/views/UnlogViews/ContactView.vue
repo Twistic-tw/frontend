@@ -8,34 +8,30 @@ const router = useRouter();
 
 // Datos del formulario
 const email = ref('');
-const password = ref('');
-const passwordConfirmation = ref('');
 const name = ref('');
-const role = ref('');
+const message = ref('');
 
 // Mensaje de estado
 const statusMessage = ref('');
 
-// Función para registrar
+// Función para enviar
 function handleRegister() {
-  statusMessage.value = 'Registrando...';
+  statusMessage.value = 'Sending...';
 
-  axios.post('https://api-catalogos.twistic.app/api/register', {
+  axios.post('https://api-catalogos.twistic.app/api/Contact', {
     nombre: name.value,
-    cargo: role.value,
     email: email.value,
-    password: password.value,
-    password_confirmation: passwordConfirmation.value
+    message: message.value
   })
   .then(() => {
-    statusMessage.value = 'Registro completado. Redirigiendo...';
+    statusMessage.value = 'Message sent. Redirecting...';
     setTimeout(() => {
       router.push('/login');
     }, 1500);
   })
   .catch(error => {
     console.error('Error en el registro:', error);
-    statusMessage.value = 'Error al registrar. Revisa los datos.';
+    statusMessage.value = 'Error sending. Please check your data.';
   });
 }
 </script>
@@ -59,13 +55,6 @@ function handleRegister() {
           </div>
 
           <div>
-            <label for="role" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Role</label>
-            <div class="mt-2">
-              <input v-model="role" type="text" name="role" id="role" autocomplete="role" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-gray-500 dark:text-indigo-50 dark:outline-gray-500 dark:focus:outline-gray-800"/>
-            </div>
-          </div>
-
-          <div>
             <label for="email" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Email address</label>
             <div class="mt-2">
               <input v-model="email" type="email" name="email" id="email" autocomplete="email" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-gray-500 dark:text-indigo-50 dark:outline-gray-500 dark:focus:outline-gray-800"/>
@@ -73,22 +62,17 @@ function handleRegister() {
           </div>
 
           <div>
-            <label for="password" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Password</label>
+            <label for="message" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Message</label>
             <div class="mt-2">
-              <input v-model="password" type="password" name="password" id="password" autocomplete="current-password" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-cyan-500 sm:text-sm/6 dark:bg-gray-500 dark:text-indigo-50 dark:outline-gray-500 dark:focus:outline-gray-800"/>
-            </div>
-          </div>
-
-          <div>
-            <label for="password_confirmation" class="block text-sm/6 font-medium text-gray-900 dark:text-indigo-50">Confirm Password</label>
-            <div class="mt-2">
-              <input v-model="passwordConfirmation" type="password" name="password_confirmation" id="password_confirmation" autocomplete="current-password" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-cyan-500 sm:text-sm/6 dark:bg-gray-500 dark:text-indigo-50 dark:outline-gray-500 dark:focus:outline-gray-800"/>
+              <textarea v-model="message" name="message" id="message" rows="4"
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-gray-500 dark:text-indigo-50 dark:outline-gray-500 dark:focus:outline-gray-800"
+              ></textarea>
             </div>
           </div>
 
           <div>
             <button type="submit" class="flex w-full justify-center rounded-md bg-cyan-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-cyan-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500">
-              Sign up
+              Send
             </button>
           </div>
 
@@ -97,11 +81,6 @@ function handleRegister() {
             {{ statusMessage }}
           </div>
         </form>
-
-        <p class="mt-10 text-center text-sm/6 text-gray-500">
-          You already have an account?
-          <a href="/login" class="font-semibold text-cyan-500 hover:text-cyan-400">Log in with it to enjoy the app</a>
-        </p>
       </div>
     </div>
   </div>
