@@ -1,73 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import BackButton from '@/components/BackButton.vue';
+import { ApprovedCatalog } from '../../composable/ApprovedCatalog';
 
-interface Notification {
-  id_template: number;
-  catalog_name: string;
-  status: string;
-  id_user: number;
-  created_at: string;
-  updated_at: string;
-}
-
-const userId = ref<number>(0);
-const approvedTemplates = ref<Notification[]>([]);
-const loading = ref(true);
-const error = ref(false);
-
-// Obtener token XSRF
-const getXsrfToken = (): string | null => {
-  return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null;
-};
-
-// Obtener el usuario autenticado
-const fetchUserId = async () => {
-  try {
-    const xsrfToken = getXsrfToken();
-    const res = await axios.get(`${import.meta.env.VITE_URL}/user`, {
-      headers: {
-        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-        'Accept': 'application/json',
-      },
-      withCredentials: true,
-    });
-    userId.value = res.data.user.id;
-  } catch (err) {
-    console.error('Error fetching user:', err);
-    error.value = true;
-  }
-};
-
-// Obtener las plantillas aprobadas (In Progress)
-const fetchApprovedTemplates = async () => {
-  try {
-    const res = await axios.get(`${import.meta.env.VITE_URL}/aprovedNotifications`, {
-      withCredentials: true
-    });
-    approvedTemplates.value = res.data.notifications;
-  } catch (err) {
-    console.error('Error fetching approved notifications:', err);
-    error.value = true;
-  } finally {
-    loading.value = false;
-  }
-};
-
-// Formatear fechas
-const formatDate = (dateStr: string): string => {
-  const date = new Date(dateStr);
-  const pad = (n: number) => n.toString().padStart(2, '0');
-  return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
-};
-
-
-onMounted(async () => {
-  await fetchUserId();
-  await fetchApprovedTemplates();
-});
+const {
+  approvedTemplates,
+  loading,
+  error,
+  formatDate
+} = ApprovedCatalog();
 </script>
+
 
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3">
