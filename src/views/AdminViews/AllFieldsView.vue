@@ -92,31 +92,58 @@ async function eliminarCamposSeleccionados() {
 
 <template>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
+    <!-- Cabecera con título y toggle Apple-style -->
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-3xl font-bold text-gray-800 text-center w-full">Available fields</h2>
-      <button
-        @click="toggleSeleccionarTodos"
-        class="ml-4 text-sm text-indigo-600 underline hover:text-indigo-800"
-      >
-        {{ todosSeleccionados ? 'Unselect all' : 'Select all' }}
-      </button>
+      <div class="flex items-center gap-2">
+        <label class="text-sm font-medium text-gray-700 dark:text-white">
+          {{ todosSeleccionados ? 'Unselect all' : 'Select all' }}
+        </label>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            class="sr-only peer"
+            :checked="todosSeleccionados"
+            @change="toggleSeleccionarTodos"
+          />
+          <div
+            class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"
+          ></div>
+          <div
+            class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"
+          ></div>
+        </label>
+      </div>
     </div>
 
+    <!-- Grid de campos -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
         v-for="field in fields"
         :key="field.id"
         class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
+        <!-- Título con checkbox -->
         <div class="flex justify-between items-center mb-2">
-          <h3 class="text-xl font-semibold text-indigo-600">#{{ field.id }} - {{ field.field }}</h3>
-          <input
-            type="checkbox"
-            :value="field.id"
-            v-model="camposSeleccionados"
-            class="accent-indigo-600 w-5 h-5"
-          />
+          <h3 class="text-xl font-semibold text-indigo-600">
+            #{{ field.id }} - {{ field.field }}
+          </h3>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              class="sr-only peer"
+              :value="field.id"
+              v-model="camposSeleccionados"
+            />
+            <div
+              class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"
+            ></div>
+            <div
+              class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"
+            ></div>
+          </label>
         </div>
+
         <p class="text-sm text-gray-500 dark:text-white mb-1">
           Created:
           <span class="font-medium text-gray-700 dark:text-white">
@@ -138,6 +165,7 @@ async function eliminarCamposSeleccionados() {
       </div>
     </div>
 
+    <!-- Botón de eliminación múltiple -->
     <div v-if="camposSeleccionados.length > 0" class="mt-6 text-center">
       <button
         @click="eliminarCamposSeleccionados"
@@ -147,10 +175,12 @@ async function eliminarCamposSeleccionados() {
       </button>
     </div>
 
+    <!-- Si no hay campos -->
     <div v-if="fields.length === 0" class="text-center text-gray-500 mt-8">
       No fields available.
     </div>
 
+    <!-- Botón volver -->
     <div class="mt-12">
       <BackButton
         class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
