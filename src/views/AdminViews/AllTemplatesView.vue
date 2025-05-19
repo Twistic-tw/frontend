@@ -122,6 +122,16 @@ async function eliminarSeleccionadas() {
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Templates</h2>
 
+    <!-- Botón eliminar seleccionadas -->
+    <div v-if="plantillasSeleccionadas.length > 0" class="mt-6 text-center">
+      <button
+        @click="eliminarSeleccionadas"
+        class="px-6 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition"
+      >
+        Delete selected ({{ plantillasSeleccionadas.length }})
+      </button>
+    </div>
+
     <!-- Toggle "Select all" -->
     <div class="flex justify-end items-center mb-6 gap-2">
       <label for="toggle-select-all" class="text-sm font-medium text-gray-700 dark:text-white">
@@ -199,16 +209,6 @@ async function eliminarSeleccionadas() {
           Delete
         </button>
       </div>
-    </div>
-
-    <!-- Botón eliminar seleccionadas -->
-    <div v-if="plantillasSeleccionadas.length > 0" class="mt-6 text-center">
-      <button
-        @click="eliminarSeleccionadas"
-        class="px-6 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition"
-      >
-        Delete selected ({{ plantillasSeleccionadas.length }})
-      </button>
     </div>
 
     <div v-if="plantillas.length === 0" class="text-center text-gray-500 mt-8">

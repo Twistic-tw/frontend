@@ -135,6 +135,15 @@ async function eliminarCamposSeleccionados() {
         :key="field.id"
         class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 border border-violet-200 hover:shadow-lg transition"
       >
+        <!-- Botón de eliminación múltiple -->
+        <div v-if="camposSeleccionados.length > 0" class="mt-6 text-center">
+          <button
+            @click="eliminarCamposSeleccionados"
+            class="px-6 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition"
+          >
+            Delete selected ({{ camposSeleccionados.length }})
+          </button>
+        </div>
         <!-- Título con checkbox -->
         <div class="flex justify-between items-center mb-2">
           <h3 class="text-xl font-semibold text-indigo-600">{{ field.field }}</h3>
@@ -173,16 +182,6 @@ async function eliminarCamposSeleccionados() {
           Delete
         </button>
       </div>
-    </div>
-
-    <!-- Botón de eliminación múltiple -->
-    <div v-if="camposSeleccionados.length > 0" class="mt-6 text-center">
-      <button
-        @click="eliminarCamposSeleccionados"
-        class="px-6 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition"
-      >
-        Delete selected ({{ camposSeleccionados.length }})
-      </button>
     </div>
 
     <!-- Si no hay campos -->
