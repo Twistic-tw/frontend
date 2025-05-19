@@ -18,7 +18,7 @@ const statusMessage = ref('');
 function handleRegister() {
   statusMessage.value = 'Sending...';
 
-  axios.post('https://api-catalogos.twistic.app/api/Contact', {
+  axios.post('https://api-catalogos.twistic.app/api/contact', {
     nombre: name.value,
     email: email.value,
     message: message.value
