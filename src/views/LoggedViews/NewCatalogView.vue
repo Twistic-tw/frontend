@@ -305,7 +305,7 @@ onMounted(fetchUserId);
             <div class="flex justify-center space-x-4">
               <button @click="resetForm" class="bg-blue-500 text-white px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition">Create Another</button>
               <button @click="goToDashboard" class="bg-gray-600 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-700 transition">Go to Dashboard</button>
-              <button v-if="role && (role === 'admin')" @click="goToTemplateChoice" class="bg-gray-600 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-700 transition">Go to Dashboard</button>
+              <button v-if="role && (role === 'admin')" @click="goToTemplateChoice" class="bg-gray-600 text-white px-6 py-2 rounded-xl shadow hover:bg-gray-700 transition">Select template</button>
             </div>
           </div>
           <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
