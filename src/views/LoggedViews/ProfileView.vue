@@ -38,7 +38,7 @@ const fetchUser = async () => {
     const userData = response.data.user
 
     // Obtener número de catálogos activos
-    const countResponse = await axios.get(`${import.meta.env.VITE_URL}/CountCatalogs`, {
+    const countResponse = await axios.get(`${import.meta.env.VITE_URL}/CountCatalogs?id_user=${userData.id}`, {
       withCredentials: true,
       headers: {
         'X-XSRF-TOKEN': xsrfToken,
