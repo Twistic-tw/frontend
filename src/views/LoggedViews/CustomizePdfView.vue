@@ -245,7 +245,6 @@ const sendToBackend = async () => {
   }
 
   generating.value = true
-  const toastId = toast.info('Creating your PDF, please wait...', { timeout: false })
 
   try {
     const formData = new FormData()
@@ -319,7 +318,6 @@ const sendToBackend = async () => {
     }
   } finally {
     generating.value = false
-    toast.dismiss(toastId)
   }
 }
 
