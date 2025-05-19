@@ -31,28 +31,30 @@ const fetchUser = async () => {
       withCredentials: true,
       headers: {
         'X-XSRF-TOKEN': xsrfToken,
-        Accept: 'application/json'
-      }
+        Accept: 'application/json',
+      },
     })
 
     const userData = response.data.user
 
     // Obtener número de catálogos activos
-    const countResponse = await axios.get(`${import.meta.env.VITE_URL}/CountCatalogs?id_user=${userData.id}`, {
-      withCredentials: true,
-      headers: {
-        'X-XSRF-TOKEN': xsrfToken,
-        Accept: 'application/json'
-      }
-    })
+    const countResponse = await axios.get(
+      `${import.meta.env.VITE_URL}/CountCatalogs?id_user=${userData.id}`,
+      {
+        withCredentials: true,
+        headers: {
+          'X-XSRF-TOKEN': xsrfToken,
+          Accept: 'application/json',
+        },
+      },
+    )
 
     const activeCatalogs = countResponse.data.count ?? 0
 
     user.value = {
       ...userData,
-      active_catalogos: activeCatalogs
+      active_catalogos: activeCatalogs,
     }
-
   } catch (err: unknown) {
     if (axios.isAxiosError(err) && err.response) {
       console.error('Status:', err.response.status)
@@ -86,7 +88,10 @@ onMounted(fetchUser)
       Loading user data...
     </div>
 
-    <div v-else-if="!user" class="text-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md text-gray-700 dark:text-gray-200">
+    <div
+      v-else-if="!user"
+      class="text-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md text-gray-700 dark:text-gray-200"
+    >
       No user information found.
     </div>
 
@@ -105,12 +110,16 @@ onMounted(fetchUser)
       </div>
       <div class="mb-4"></div>
       <div class="mb-4">
-        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Active catalogs</h2>
+        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">
+          Active catalogs
+        </h2>
         <p class="text-gray-700 dark:text-gray-200">{{ user.active_catalogos }}</p>
       </div>
       <div class="mb-4"></div>
       <div>
-        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Registration date</h2>
+        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-1">
+          Registration date
+        </h2>
         <p class="text-gray-700 dark:text-gray-200">{{ formatDate(user.created_at) }}</p>
       </div>
     </div>
