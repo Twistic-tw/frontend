@@ -1,85 +1,14 @@
 <script setup lang="ts">
-import '../../styles.css';
-import axios from 'axios';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { RouterLink } from 'vue-router';
+import '../../styles.css'
+import { Login } from '../../composable/Login'
 
-// Datos del formulario
-const email = ref('');
-const password = ref('');
-const loading = ref(false);
-const error = ref(null);
-const router = useRouter();
-
-// Función de login
-const logUser = async () => {
-  error.value = null;
-  loading.value = true;
-
-  try {
-    // Paso 1: Pedir cookies iniciales (XSRF-TOKEN y laravel_session)
-    await axios.get(`${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
-      withCredentials: true
-    });
-
-    // Paso 2: Obtener el token CSRF actual desde las cookies
-    const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-    if (!xsrfToken) {
-      throw new Error('No se encontró el token CSRF');
-    }
-
-    // Paso 3: Hacer login y dejar que el navegador actualice la laravel_session
-    const response = await axios.post(`${import.meta.env.VITE_URL}/loginProcess`,
-      {
-        email: email.value,
-        password: password.value
-      },
-      {
-        withCredentials: true,
-        headers: {
-          Accept: 'application/json',
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken)
-        }
-      }
-    );
-
-    if (response.status === 200) {
-      let userRole = response.data.user_rol[0] || 'client';
-
-      switch (userRole) {
-        case 'ROLE_ADMINISTRATOR':
-          userRole = 'admin';
-          break;
-        default:
-          userRole = 'client';
-          break;
-      }
-
-      // Guardar datos del usuario
-      sessionStorage.setItem('userRole', userRole);
-      sessionStorage.setItem('userName', response.data.nombre);
-      sessionStorage.setItem('userEmail', response.data.email);
-
-      // Redirigir
-      router.push('/dashboard');
-    } else {
-      error.value = 'Error inesperado';
-    }
-
-  } catch (err) {
-    if (err.response?.status === 401) {
-      error.value = 'Credenciales incorrectas';
-    } else if (err.response?.status === 419) {
-      error.value = 'Token CSRF inválido o caducado';
-    } else {
-      error.value = 'Error de conexión';
-    }
-    console.error(error.value, err);
-  } finally {
-    loading.value = false;
-  }
-};
+const {
+  email,
+  password,
+  loading,
+  error,
+  logUser
+} = Login()
 </script>
 
 <template>

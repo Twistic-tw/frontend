@@ -1,41 +1,15 @@
 <script setup lang="ts">
 import '../../styles.css'
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { Contact } from '../../composable/Contact'
 
-const router = useRouter();
-
-// Datos del formulario
-const email = ref('');
-const name = ref('');
-const message = ref('');
-
-// Mensaje de estado
-const statusMessage = ref('');
-
-// Función para enviar
-function handleRegister() {
-  statusMessage.value = 'Sending...';
-
-  axios.post('https://api-catalogos.twistic.app/api/contact', {
-    nombre: name.value,
-    email: email.value,
-    message: message.value
-  })
-  .then(() => {
-    statusMessage.value = 'Message sent. Redirecting...';
-    setTimeout(() => {
-      router.push('/login');
-    }, 1500);
-  })
-  .catch(error => {
-    console.error('Error en el registro:', error);
-    statusMessage.value = 'Error sending. Please check your data.';
-  });
-}
+const {
+  email,
+  name,
+  message,
+  statusMessage,
+  handleRegister
+} = Contact()
 </script>
-
 
 <template>
   <div class="flex-1 mt-[60px] flsex-col justify-center px-6 py-12 lg:px-8 from-gray-100 to-white">
