@@ -62,110 +62,7 @@ export function CustomizePdf() {
 
   const userId = ref<number | null>(null)
 
-  const fetchUserId = async () => {
-    const xsrfToken = getXsrfToken()
-    if (!xsrfToken) return
-    try {
-      const res = await axios.get(`${import.meta.env.VITE_URL}/user`, {
-        headers: { 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken), Accept: 'application/json' },
-        withCredentials: true,
-      })
-      userId.value = res.data.user.id
-    } catch (err) {
-      console.error('Error fetching user:', err)
-      userId.value = null
-    }
-  }
-
-  const fetchTemplate = async () => {
-    try {
-      const xsrfToken = getXsrfToken()
-      const res = await axios.get(`${import.meta.env.VITE_URL}/Templates/${templateId}/data`, {
-        withCredentials: true,
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          Accept: 'application/json',
-        },
-      })
-      templateName.value = res.data.template.name
-      fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }))
-      excelData.value = res.data.excel_data || []
-    } catch (err) {
-      console.error('Error loading data:', err)
-      error.value = true
-    } finally {
-      loading.value = false
-    }
-  }
-
-  const sendToBackend = async () => {
-    if (!userId.value || !images.value.cover || !images.value.header) {
-      toast.error('Please upload required images and ensure user is authenticated.')
-      generating.value = false
-      return
-    }
-
-    const xsrfToken = getXsrfToken()
-    if (!xsrfToken) {
-      toast.error('No CSRF token found.')
-      return
-    }
-
-    generating.value = true
-    try {
-      const formData = new FormData()
-      formData.append('id_user', userId.value.toString())
-      formData.append('template_name', templateName.value)
-      formData.append('fields', JSON.stringify(activeFieldNames.value))
-      formData.append('excel_data', JSON.stringify(excelData.value))
-      formData.append('style', JSON.stringify({
-        background: computedColors.value.background,
-        rowPrimary: computedColors.value.rowPrimary,
-        rowAlternate: computedColors.value.rowAlternate,
-        text: computedColors.value.text,
-        header: computedColors.value.header,
-        headerText: computedColors.value.headerText,
-        footerColor: computedColors.value.footer,
-        footerTextColor: computedColors.value.footerText,
-        size: titleSettings.value.size,
-        align: titleSettings.value.align,
-        fieldFont: titleSettings.value.fieldFont,
-        fieldSize: titleSettings.value.fieldSize,
-        borderColor: '#000000',
-        borderWidth: '1px',
-        showBorders: colors.value.showBorders,
-      }))
-
-      Object.entries(images.value).forEach(([key, file]) => {
-        if (file) formData.append(key, file)
-      })
-
-      const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          Accept: 'application/json',
-        },
-        withCredentials: true,
-        responseType: 'blob',
-      })
-
-      const blob = new Blob([res.data], { type: 'application/pdf' })
-      const link = document.createElement('a')
-      link.href = URL.createObjectURL(blob)
-      link.download = `${templateName.value}.pdf`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      toast.error('Error generating PDF.')
-      console.error(err)
-    } finally {
-      generating.value = false
-    }
-  }
-
-  const hexToRgba = (hex: string, alpha: number) => {
+    const hexToRgba = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16)
     const g = parseInt(hex.slice(3, 5), 16)
     const b = parseInt(hex.slice(5, 7), 16)
@@ -253,6 +150,111 @@ export function CustomizePdf() {
     }
 
     images.value[type] = file
+  }
+
+  const fetchUserId = async () => {
+    const xsrfToken = getXsrfToken()
+    if (!xsrfToken) return
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_URL}/user`, {
+        headers: { 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken), Accept: 'application/json' },
+        withCredentials: true,
+      })
+      userId.value = res.data.user.id
+    } catch (err) {
+      console.error('Error fetching user:', err)
+      userId.value = null
+    }
+  }
+
+  const fetchTemplate = async () => {
+    try {
+      const xsrfToken = getXsrfToken()
+      const res = await axios.get(`${import.meta.env.VITE_URL}/Templates/${templateId}/data`, {
+        withCredentials: true,
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          Accept: 'application/json',
+        },
+      })
+      templateName.value = res.data.template.name
+      fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }))
+      excelData.value = res.data.excel_data || []
+    } catch (err) {
+      console.error('Error loading data:', err)
+      error.value = true
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const sendToBackend = async () => {
+    if (!userId.value || !images.value.cover || !images.value.header) {
+      toast.error('Please upload required images and ensure user is authenticated.')
+      generating.value = false
+      return
+    }
+
+    const xsrfToken = getXsrfToken()
+    if (!xsrfToken) {
+      toast.error('No CSRF token found.')
+      return
+    }
+
+    generating.value = true
+    try {
+      const formData = new FormData()
+      formData.append('id_user', userId.value.toString())
+      formData.append('template_name', templateName.value)
+      formData.append('fields', JSON.stringify(activeFieldNames.value))
+      formData.append('excel_data', JSON.stringify(excelData.value))
+      formData.append('style', JSON.stringify({
+        background: computedColors.value.background,
+        rowPrimary: computedColors.value.rowPrimary,
+        rowAlternate: computedColors.value.rowAlternate,
+        text: computedColors.value.text,
+        header: computedColors.value.header,
+        headerText: computedColors.value.headerText,
+        footerColor: computedColors.value.footer,
+        footerTextColor: computedColors.value.footerText,
+        size: titleSettings.value.size,
+        align: titleSettings.value.align,
+        fieldFont: titleSettings.value.fieldFont,
+        fieldSize: titleSettings.value.fieldSize,
+        borderColor: '#000000',
+        borderWidth: '1px',
+        showBorders: colors.value.showBorders,
+      }))
+
+      console.log('FormData:', formData)
+
+      Object.entries(images.value).forEach(([key, file]) => {
+        if (file) formData.append(key, file)
+      })
+
+      const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          Accept: 'application/json',
+        },
+        withCredentials: true,
+        responseType: 'blob',
+      })
+
+      const blob = new Blob([res.data], { type: 'application/pdf' })
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(blob)
+      link.download = `${templateName.value}.pdf`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      toast.error('Error generating PDF.')
+      console.error(err)
+    } finally {
+      generating.value = false
+    }
   }
 
   onMounted(() => {
