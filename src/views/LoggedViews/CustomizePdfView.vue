@@ -275,7 +275,7 @@ const {
             >
               <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
             </div>
-            <div class="footer-bar" :style="footerStyle">Page {{ index + 1 }}</div>
+            <div class="footer-bar" :style="footerStyle">{{ index + 1 }}</div>
           </div>
         </div>
       </div>
