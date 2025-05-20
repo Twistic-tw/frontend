@@ -271,6 +271,7 @@ export function CustomizePdf() {
     toast.error('Error al generar el PDF.')
   }
 }
+  }
 
   onMounted(() => {
     window.addEventListener('resize', () => windowWidth.value = window.innerWidth)
