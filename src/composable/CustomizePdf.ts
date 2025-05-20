@@ -249,13 +249,28 @@ export function CustomizePdf() {
       link.click()
       document.body.removeChild(link)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      toast.error('Error generating PDF.')
-      console.error(err)
-    } finally {
-      generating.value = false
+    } catch (err) {
+  if (axios.isAxiosError(err) && err.response && err.response.data instanceof Blob) {
+    const reader = new FileReader()
+
+    reader.onload = () => {
+      try {
+        const text = reader.result as string
+        const json = JSON.parse(text)
+        console.error('📄 Error desde el backend (detalle):', json)
+        toast.error(json.message || 'Error interno del servidor.')
+      } catch (parseError) {
+        console.error('❌ No se pudo parsear el error:', reader.result)
+        toast.error('Error interno inesperado.')
+      }
     }
+
+    reader.readAsText(err.response.data)
+  } else {
+    console.error('Error inesperado:', err)
+    toast.error('Error al generar el PDF.')
   }
+}
 
   onMounted(() => {
     window.addEventListener('resize', () => windowWidth.value = window.innerWidth)
