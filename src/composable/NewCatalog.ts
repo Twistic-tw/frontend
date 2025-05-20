@@ -124,6 +124,7 @@ export function NewCatalog() {
       ),
     )
     formData.append('message', form.value.message)
+    console.log('Form data:', formData)
 
     try {
       const response = await axios.post(`${import.meta.env.VITE_URL}/CreateTemplate`, formData, {
