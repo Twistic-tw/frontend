@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTemplates } from '../../composable/templateList'
 import BackButton from '@/components/BackButton.vue'
-import ConfirmDialog from '../../components/ConfirmDialogComponent.vue'
+import ConfirmDialog from '../../components/ConfirmDialog.vue'
 
 const {
   plantillas,
