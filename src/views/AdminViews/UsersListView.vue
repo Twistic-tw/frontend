@@ -14,6 +14,7 @@ const {
 <template>
   <ConfirmDialog
     v-if="showConfirm"
+    :visible="showConfirm"
     :message="confirmMessage"
     @confirm="handleConfirm"
     @cancel="cancelConfirm"
@@ -68,7 +69,7 @@ const {
           <button @click="editUser(user)" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg">
             Edit
           </button>
-          <button @click="deleteUser(user.id)" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
+          <button @click="() => deleteUser(user.id)" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
             Delete
           </button>
         </div>
