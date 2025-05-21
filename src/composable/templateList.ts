@@ -39,7 +39,7 @@ export function useTemplates() {
   }
 
   async function eliminarPlantilla(id: number) {
-    confirmAction('¿Seguro que quieres eliminar esta plantilla?', async () => {
+    confirmAction('Are you sure you want to delete this template?', async () => {
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
       if (!xsrfToken) return toast.error('No CSRF token')
 
@@ -62,7 +62,7 @@ export function useTemplates() {
   }
 
   async function eliminarSeleccionadas() {
-    confirmAction(`¿Seguro que quieres eliminar ${plantillasSeleccionadas.value.length} plantillas?`, async () => {
+    confirmAction(`You are going to delete ${plantillasSeleccionadas.value.length} templates!`, async () => {
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
       if (!xsrfToken) return toast.error('No CSRF token')
 
