@@ -8,6 +8,10 @@ export function useTemplates() {
   const plantillas = ref([])
   const plantillasSeleccionadas = ref<number[]>([])
 
+  const mostrarDialogo = ref(false)
+  const plantillaAEliminar = ref<number | null>(null)
+  const modoConfirmacion = ref<'single' | 'bulk'>('single')
+
   const todasSeleccionadas = computed(
     () => plantillasSeleccionadas.value.length === plantillas.value.length && plantillas.value.length > 0
   )
@@ -34,54 +38,63 @@ export function useTemplates() {
     }
   }
 
-  async function eliminarPlantilla(id: number) {
-    const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
-    if (!xsrfToken) {
-      toast.error('No CSRF token')
-      return
-    }
-
-    try {
-      await axios.delete(`${import.meta.env.VITE_URL}/DeleteTemplate/${id}`, {
-        withCredentials: true,
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          Accept: 'application/json',
-        },
-      })
-      plantillas.value = plantillas.value.filter(p => p.id !== id)
-      plantillasSeleccionadas.value = plantillasSeleccionadas.value.filter(pid => pid !== id)
-      toast.success('Deleted!')
-    } catch (err) {
-      toast.error('Error deleting')
-    }
+  function pedirConfirmacion(id: number) {
+    plantillaAEliminar.value = id
+    modoConfirmacion.value = 'single'
+    mostrarDialogo.value = true
   }
 
-  async function eliminarSeleccionadas() {
-    if (!confirm(`Delete ${plantillasSeleccionadas.value.length} selected?`)) return
+  function pedirConfirmacionMultiple() {
+    if (plantillasSeleccionadas.value.length === 0) {
+      toast.warning('No hay plantillas seleccionadas.')
+      return
+    }
+    modoConfirmacion.value = 'bulk'
+    mostrarDialogo.value = true
+  }
 
+  async function confirmarEliminacion() {
     const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
     if (!xsrfToken) {
       toast.error('No CSRF token')
+      mostrarDialogo.value = false
       return
     }
 
     try {
-      await axios.post(`${import.meta.env.VITE_URL}/DeleteTemplates`, {
-        ids: plantillasSeleccionadas.value,
-      }, {
-        withCredentials: true,
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          Accept: 'application/json',
-        },
-      })
-
-      plantillas.value = plantillas.value.filter(p => !plantillasSeleccionadas.value.includes(p.id))
-      plantillasSeleccionadas.value = []
-      toast.success('Deleted selected templates!')
+      if (modoConfirmacion.value === 'single') {
+        const id = plantillaAEliminar.value
+        if (!id) return
+        await axios.delete(`${import.meta.env.VITE_URL}/DeleteTemplate/${id}`, {
+          withCredentials: true,
+          headers: {
+            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            Accept: 'application/json',
+          },
+        })
+        plantillas.value = plantillas.value.filter(p => p.id !== id)
+        plantillasSeleccionadas.value = plantillasSeleccionadas.value.filter(pid => pid !== id)
+        toast.success('Plantilla eliminada.')
+      } else {
+        await axios.post(`${import.meta.env.VITE_URL}/DeleteTemplates`, {
+          ids: plantillasSeleccionadas.value,
+        }, {
+          withCredentials: true,
+          headers: {
+            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            Accept: 'application/json',
+          },
+        })
+        plantillas.value = plantillas.value.filter(p => !plantillasSeleccionadas.value.includes(p.id))
+        plantillasSeleccionadas.value = []
+        toast.success('Plantillas seleccionadas eliminadas.')
+      }
     } catch (err) {
-      toast.error('Error deleting selected')
+      toast.error('Error al eliminar.')
+    } finally {
+      mostrarDialogo.value = false
+      plantillaAEliminar.value = null
+      modoConfirmacion.value = 'single'
     }
   }
 
@@ -96,7 +109,10 @@ export function useTemplates() {
     plantillasSeleccionadas,
     todasSeleccionadas,
     toggleSeleccionarTodas,
-    eliminarPlantilla,
-    eliminarSeleccionadas
+    pedirConfirmacion,
+    pedirConfirmacionMultiple,
+    confirmarEliminacion,
+    mostrarDialogo,
+    modoConfirmacion,
   }
 }
