@@ -12,15 +12,13 @@ const {
 </script>
 
 <template>
-  <transition name="fade-modal">
+  <!-- Modal de confirmación con fade -->
   <ConfirmDialog
-    v-show="showConfirm"
+    :visible="showConfirm"
     :message="confirmMessage"
     @confirm="handleConfirm"
     @cancel="cancelConfirm"
   />
-</transition>
-
 
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3">
     <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-800 mb-6 text-center">Users Management</h1>
@@ -48,8 +46,8 @@ const {
         <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl w-full max-w-sm sm:max-w-lg shadow-xl transition-all duration-300 transform scale-95 hover:scale-100">
           <h2 class="text-lg sm:text-xl font-bold mb-4 text-gray-800 dark:text-white">New user</h2>
           <form @submit.prevent="submitCreateUser">
-            <!-- Form fields aquí -->
-            <!-- ...omitidos para brevedad... -->
+            <!-- Campos del formulario -->
+            <!-- Añádelos aquí -->
             <div class="flex justify-end space-x-2 mt-4">
               <button type="button" @click="closeCreateModal" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-md">Cancelar</button>
               <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Save</button>
@@ -71,7 +69,7 @@ const {
           <button @click="editUser(user)" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg">
             Edit
           </button>
-          <button @click="() => deleteUser(user.id)" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
+          <button @click="deleteUser(user.id)" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
             Delete
           </button>
         </div>
@@ -95,7 +93,6 @@ const {
           <h2 class="text-lg sm:text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Edit User</h2>
           <form @submit.prevent="guardarCambios">
             <!-- Campos edición aquí -->
-            <!-- ...omitidos para brevedad... -->
             <div class="flex justify-end space-x-2">
               <button type="button" @click="mostrarModal = false" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400 dark:hover:bg-gray-500">Cancel</button>
               <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save</button>
@@ -113,13 +110,16 @@ const {
 </template>
 
 <style scoped>
-.fade-modal-enter-active, .fade-modal-leave-active {
+.fade-modal-enter-active,
+.fade-modal-leave-active {
   transition: opacity 0.3s ease;
 }
-.fade-modal-enter-from, .fade-modal-leave-to {
+.fade-modal-enter-from,
+.fade-modal-leave-to {
   opacity: 0;
 }
-.fade-modal-enter-to, .fade-modal-leave-from {
+.fade-modal-enter-to,
+.fade-modal-leave-from {
   opacity: 1;
 }
 </style>
