@@ -12,13 +12,15 @@ const {
 </script>
 
 <template>
+  <transition name="fade-modal">
   <ConfirmDialog
-    v-if="showConfirm"
-    :visible="showConfirm"
+    v-show="showConfirm"
     :message="confirmMessage"
     @confirm="handleConfirm"
     @cancel="cancelConfirm"
   />
+</transition>
+
 
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3">
     <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-800 mb-6 text-center">Users Management</h1>
