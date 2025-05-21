@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useTemplates } from '../../composable/templateList'
 import BackButton from '@/components/BackButton.vue'
+import ConfirmDialog from '../../components/ConfirmDialog.vue'
 
 const {
   plantillas,
@@ -9,10 +10,22 @@ const {
   toggleSeleccionarTodas,
   eliminarPlantilla,
   eliminarSeleccionadas,
+  showConfirm,
+  confirmMessage,
+  handleConfirm,
+  cancelConfirm
 } = useTemplates()
 </script>
 
+
 <template>
+  <ConfirmDialog
+  :visible="showConfirm"
+  :message="confirmMessage"
+  @confirm="handleConfirm"
+  @cancel="cancelConfirm"
+/>
+
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Templates</h2>
 

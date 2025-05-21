@@ -7,9 +7,10 @@ export function useTemplates() {
   const usuarios = ref([])
   const plantillas = ref([])
   const plantillasSeleccionadas = ref<number[]>([])
-  const mostrarDialogo = ref(false)
-  const modoConfirmacion = ref<'individual' | 'multiple' | null>(null)
-  const idAEliminar = ref<number | null>(null)
+
+  const showConfirm = ref(false)
+  const confirmMessage = ref('')
+  const confirmCallback = ref<() => void>(() => {})
 
   const todasSeleccionadas = computed(
     () => plantillasSeleccionadas.value.length === plantillas.value.length && plantillas.value.length > 0
@@ -38,31 +39,34 @@ export function useTemplates() {
   }
 
   async function eliminarPlantilla(id: number) {
-    mostrarDialogo.value = true
-    modoConfirmacion.value = 'individual'
-    idAEliminar.value = id
-  }
+    confirmAction('¿Seguro que quieres eliminar esta plantilla?', async () => {
+      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
+      if (!xsrfToken) return toast.error('No CSRF token')
 
-  async function confirmarEliminacion() {
-    const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
-    if (!xsrfToken) {
-      toast.error('No CSRF token')
-      return
-    }
-
-    try {
-      if (modoConfirmacion.value === 'individual' && idAEliminar.value !== null) {
-        await axios.delete(`${import.meta.env.VITE_URL}/DeleteTemplate/${idAEliminar.value}`, {
+      try {
+        await axios.delete(`${import.meta.env.VITE_URL}/DeleteTemplate/${id}`, {
           withCredentials: true,
           headers: {
             'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
             Accept: 'application/json',
           },
         })
-        plantillas.value = plantillas.value.filter(p => p.id !== idAEliminar.value)
-        plantillasSeleccionadas.value = plantillasSeleccionadas.value.filter(pid => pid !== idAEliminar.value)
+
+        plantillas.value = plantillas.value.filter(p => p.id !== id)
+        plantillasSeleccionadas.value = plantillasSeleccionadas.value.filter(pid => pid !== id)
         toast.success('Deleted!')
-      } else if (modoConfirmacion.value === 'multiple') {
+      } catch (err) {
+        toast.error('Error deleting')
+      }
+    })
+  }
+
+  async function eliminarSeleccionadas() {
+    confirmAction(`¿Seguro que quieres eliminar ${plantillasSeleccionadas.value.length} plantillas?`, async () => {
+      const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
+      if (!xsrfToken) return toast.error('No CSRF token')
+
+      try {
         await axios.post(`${import.meta.env.VITE_URL}/DeleteTemplates`, {
           ids: plantillasSeleccionadas.value,
         }, {
@@ -76,21 +80,25 @@ export function useTemplates() {
         plantillas.value = plantillas.value.filter(p => !plantillasSeleccionadas.value.includes(p.id))
         plantillasSeleccionadas.value = []
         toast.success('Deleted selected templates!')
+      } catch (err) {
+        toast.error('Error deleting selected')
       }
-    } catch (err) {
-      toast.error('Error deleting')
-    } finally {
-      mostrarDialogo.value = false
-      idAEliminar.value = null
-      modoConfirmacion.value = null
-    }
+    })
   }
 
-  function pedirConfirmacionMultiple() {
-    if (plantillasSeleccionadas.value.length > 0) {
-      mostrarDialogo.value = true
-      modoConfirmacion.value = 'multiple'
-    }
+  function confirmAction(message: string, callback: () => void) {
+    confirmMessage.value = message
+    confirmCallback.value = callback
+    showConfirm.value = true
+  }
+
+  function handleConfirm() {
+    showConfirm.value = false
+    confirmCallback.value()
+  }
+
+  function cancelConfirm() {
+    showConfirm.value = false
   }
 
   onMounted(() => {
@@ -105,9 +113,10 @@ export function useTemplates() {
     todasSeleccionadas,
     toggleSeleccionarTodas,
     eliminarPlantilla,
-    eliminarSeleccionadas: pedirConfirmacionMultiple,
-    confirmarEliminacion,
-    mostrarDialogo,
-    modoConfirmacion
+    eliminarSeleccionadas,
+    showConfirm,
+    confirmMessage,
+    handleConfirm,
+    cancelConfirm,
   }
 }
