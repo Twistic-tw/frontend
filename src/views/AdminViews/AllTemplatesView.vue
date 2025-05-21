@@ -17,14 +17,13 @@ const {
 } = useTemplates()
 </script>
 
-
 <template>
   <ConfirmDialog
-  :visible="showConfirm"
-  :message="confirmMessage"
-  @confirm="handleConfirm"
-  @cancel="cancelConfirm"
-/>
+    :visible="showConfirm"
+    :message="confirmMessage"
+    @confirm="handleConfirm"
+    @cancel="cancelConfirm"
+  />
 
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Templates</h2>
@@ -34,7 +33,7 @@ const {
       <!-- Botón eliminar seleccionadas -->
       <div v-if="plantillasSeleccionadas.length > 0">
         <button
-          @click="eliminarSeleccionadas"
+          @click="() => eliminarSeleccionadas()"
           class="px-4 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition"
         >
           Delete selected ({{ plantillasSeleccionadas.length }})
@@ -113,7 +112,7 @@ const {
 
         <!-- Botón Eliminar individual -->
         <button
-          @click="eliminarPlantilla(plantilla.id)"
+          @click="() => eliminarPlantilla(plantilla.id)"
           class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition mt-4"
         >
           Delete
