@@ -25,6 +25,25 @@ export function useUserListManagement() {
   const showCreateModal = ref(false);
   const newUser = ref({ nombre: '', email: '', cargo: '', password: '', idioma: '' , rol: '' });
 
+  const showConfirm = ref(false);
+  const confirmMessage = ref('');
+  let confirmCallback = () => {};
+
+  function showDeleteConfirm(message: string, onConfirm: () => void) {
+    confirmMessage.value = message;
+    confirmCallback = onConfirm;
+    showConfirm.value = true;
+  }
+
+  function handleConfirm() {
+    showConfirm.value = false;
+    confirmCallback();
+  }
+
+  function cancelConfirm() {
+    showConfirm.value = false;
+  }
+
   // Obtener usuarios
   const fetchUsers = async () => {
     try {
@@ -118,7 +137,7 @@ export function useUserListManagement() {
         payload.password = nuevaPassword.value;
       }
 
-      await axios.put(`https://api-catalogos.twistic.app/api/Users/${usuarioSeleccionado.value.id}`, payload, {
+      await axios.put(`${import.meta.env.VITE_URL}/Users/${usuarioSeleccionado.value.id}`, payload, {
         withCredentials: true,
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
@@ -137,11 +156,11 @@ export function useUserListManagement() {
 
   // Eliminar usuario
   const deleteUser = async (id: number) => {
-    if (confirm('Are you sure you want to delete this user?')) {
+    showDeleteConfirm('Are you sure you want to delete this user?', async () => {
       try {
         const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
 
-        await axios.delete(`https://api-catalogos.twistic.app/api/Users/${id}`, {
+        await axios.delete(`${import.meta.env.VITE_URL}/Users/${id}`, {
           withCredentials: true,
           headers: {
             'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
@@ -154,7 +173,7 @@ export function useUserListManagement() {
       } catch (err) {
         alert('Error deleting user.');
       }
-    }
+    });
   };
 
   onMounted(() => {
@@ -167,6 +186,7 @@ export function useUserListManagement() {
     deleteUser, editUser, mostrarModal, usuarioSeleccionado,
     nuevaPassword, guardarCambios,
     openCreateModal, showCreateModal, submitCreateUser, newUser, closeCreateModal,
-    idiomasDisponibles, fetchIdiomas
+    idiomasDisponibles, fetchIdiomas,
+    showConfirm, confirmMessage, handleConfirm, cancelConfirm
   };
 }
