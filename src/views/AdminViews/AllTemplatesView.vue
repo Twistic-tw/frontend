@@ -1,32 +1,18 @@
 <script setup lang="ts">
 import { useTemplates } from '../../composable/templateList'
 import BackButton from '@/components/BackButton.vue'
-import ConfirmDialog from '../../components/ConfirmDialog.vue'
 
 const {
   plantillas,
   plantillasSeleccionadas,
   todasSeleccionadas,
   toggleSeleccionarTodas,
-  pedirConfirmacion,
-  pedirConfirmacionMultiple,
-  confirmarEliminacion,
-  mostrarDialogo,
-  modoConfirmacion
+  eliminarPlantilla,
+  eliminarSeleccionadas,
 } = useTemplates()
 </script>
 
-
 <template>
-  <ConfirmDialog
-  :visible="mostrarDialogo"
-  :message="modoConfirmacion === 'bulk'
-    ? `¿Eliminar ${plantillasSeleccionadas.length} plantillas seleccionadas?`
-    : '¿Seguro que quieres eliminar esta plantilla?'"
-  @confirm="confirmarEliminacion"
-  @cancel="mostrarDialogo = false"
-/>
-
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Templates</h2>
 
@@ -35,15 +21,14 @@ const {
       <!-- Botón eliminar seleccionadas -->
       <div v-if="plantillasSeleccionadas.length > 0">
         <button
-          @click="pedirConfirmacionMultiple"
+          @click="eliminarSeleccionadas"
           class="px-4 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition"
         >
           Delete selected ({{ plantillasSeleccionadas.length }})
         </button>
       </div>
 
-
-      <!-- Toggle-->
+      <!-- Toggle estilo Apple -->
       <div class="flex items-center gap-2">
         <label for="toggle-select-all" class="text-sm font-medium text-gray-700 dark:text-white">
           {{ todasSeleccionadas ? 'Unselect all' : 'Select all' }}
@@ -115,12 +100,11 @@ const {
 
         <!-- Botón Eliminar individual -->
         <button
-          @click="pedirConfirmacion(plantilla.id)"
+          @click="eliminarPlantilla(plantilla.id)"
           class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition mt-4"
         >
           Delete
         </button>
-
       </div>
     </div>
 
