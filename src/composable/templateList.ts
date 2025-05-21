@@ -7,6 +7,9 @@ export function useTemplates() {
   const usuarios = ref([])
   const plantillas = ref([])
   const plantillasSeleccionadas = ref<number[]>([])
+  const mostrarDialogo = ref(false)
+  const modoConfirmacion = ref<'individual' | 'multiple' | null>(null)
+  const idAEliminar = ref<number | null>(null)
 
   const todasSeleccionadas = computed(
     () => plantillasSeleccionadas.value.length === plantillas.value.length && plantillas.value.length > 0
@@ -35,6 +38,12 @@ export function useTemplates() {
   }
 
   async function eliminarPlantilla(id: number) {
+    mostrarDialogo.value = true
+    modoConfirmacion.value = 'individual'
+    idAEliminar.value = id
+  }
+
+  async function confirmarEliminacion() {
     const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
     if (!xsrfToken) {
       toast.error('No CSRF token')
@@ -42,46 +51,45 @@ export function useTemplates() {
     }
 
     try {
-      await axios.delete(`${import.meta.env.VITE_URL}/DeleteTemplate/${id}`, {
-        withCredentials: true,
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          Accept: 'application/json',
-        },
-      })
-      plantillas.value = plantillas.value.filter(p => p.id !== id)
-      plantillasSeleccionadas.value = plantillasSeleccionadas.value.filter(pid => pid !== id)
-      toast.success('Deleted!')
+      if (modoConfirmacion.value === 'individual' && idAEliminar.value !== null) {
+        await axios.delete(`${import.meta.env.VITE_URL}/DeleteTemplate/${idAEliminar.value}`, {
+          withCredentials: true,
+          headers: {
+            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            Accept: 'application/json',
+          },
+        })
+        plantillas.value = plantillas.value.filter(p => p.id !== idAEliminar.value)
+        plantillasSeleccionadas.value = plantillasSeleccionadas.value.filter(pid => pid !== idAEliminar.value)
+        toast.success('Deleted!')
+      } else if (modoConfirmacion.value === 'multiple') {
+        await axios.post(`${import.meta.env.VITE_URL}/DeleteTemplates`, {
+          ids: plantillasSeleccionadas.value,
+        }, {
+          withCredentials: true,
+          headers: {
+            'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            Accept: 'application/json',
+          },
+        })
+
+        plantillas.value = plantillas.value.filter(p => !plantillasSeleccionadas.value.includes(p.id))
+        plantillasSeleccionadas.value = []
+        toast.success('Deleted selected templates!')
+      }
     } catch (err) {
       toast.error('Error deleting')
+    } finally {
+      mostrarDialogo.value = false
+      idAEliminar.value = null
+      modoConfirmacion.value = null
     }
   }
 
-  async function eliminarSeleccionadas() {
-    if (!confirm(`Delete ${plantillasSeleccionadas.value.length} selected?`)) return
-
-    const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
-    if (!xsrfToken) {
-      toast.error('No CSRF token')
-      return
-    }
-
-    try {
-      await axios.post(`${import.meta.env.VITE_URL}/DeleteTemplates`, {
-        ids: plantillasSeleccionadas.value,
-      }, {
-        withCredentials: true,
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          Accept: 'application/json',
-        },
-      })
-
-      plantillas.value = plantillas.value.filter(p => !plantillasSeleccionadas.value.includes(p.id))
-      plantillasSeleccionadas.value = []
-      toast.success('Deleted selected templates!')
-    } catch (err) {
-      toast.error('Error deleting selected')
+  function pedirConfirmacionMultiple() {
+    if (plantillasSeleccionadas.value.length > 0) {
+      mostrarDialogo.value = true
+      modoConfirmacion.value = 'multiple'
     }
   }
 
@@ -97,6 +105,9 @@ export function useTemplates() {
     todasSeleccionadas,
     toggleSeleccionarTodas,
     eliminarPlantilla,
-    eliminarSeleccionadas
+    eliminarSeleccionadas: pedirConfirmacionMultiple,
+    confirmarEliminacion,
+    mostrarDialogo,
+    modoConfirmacion
   }
 }
