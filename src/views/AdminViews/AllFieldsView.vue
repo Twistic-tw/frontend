@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useFields } from '../../composable/fieldsList'
 import BackButton from '@/components/BackButton.vue'
+import ConfirmDialog from '../../components/ConfirmDialog.vue'
 
 const {
   fields,
@@ -9,10 +10,20 @@ const {
   toggleSeleccionarTodos,
   eliminarCampo,
   eliminarCamposSeleccionados,
+  showConfirm,
+  confirmMessage,
+  handleConfirm,
+  cancelConfirm,
 } = useFields()
 </script>
 
 <template>
+  <ConfirmDialog
+  :visible="showConfirm"
+  :message="confirmMessage"
+  @confirm="handleConfirm"
+  @cancel="cancelConfirm"
+/>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <!-- Título -->
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Fields</h2>
