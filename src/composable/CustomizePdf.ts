@@ -1,4 +1,4 @@
-import { ref, computed, onMounted, onUnmounted, type CSSProperties } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, type CSSProperties } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
@@ -456,8 +456,15 @@ function toggleFullscreen() {
     window.addEventListener('resize', () => (windowWidth.value = window.innerWidth))
     fetchTemplate()
     fetchUserId()
-    filteredRows.value = paginatedRows.value.flat()
-  })
+    watch(
+      () => excelData.value,
+      (data) => {
+        filteredRows.value = data
+        selectedRows.value = new Set(data.map((_, i) => i))
+      },
+      { immediate: true }
+    )
+      })
 
   onUnmounted(() => {
     window.removeEventListener('resize', () => (windowWidth.value = window.innerWidth))
