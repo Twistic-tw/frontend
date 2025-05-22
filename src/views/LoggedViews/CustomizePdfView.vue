@@ -19,7 +19,7 @@ const {
   backgroundUrl,
   footerUrl,
   paginatedRows,
-  //limitedChunk,
+  limitedChunk,
   searchField,
   searchValue,
   filteredRows,
@@ -385,7 +385,7 @@ const {
             >
               <div class="grid font-medium" :style="headerStyle">
                 <div
-                  v-for="(key, i) in activeFieldNames"
+                  v-for="(key, i) in limitedChunk"
                   :key="'header-' + i"
                   class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
                 >
