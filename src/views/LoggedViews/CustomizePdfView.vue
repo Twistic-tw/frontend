@@ -347,10 +347,9 @@ const {
         <div
           id="pdf-content"
           ref="previewRef"
-          class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full h-fit"
-          style="transform: scale(1)"
+          class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full h-fit-content"
+          style="aspect-ratio: 794/1123; transform: scale(1)"
         >
-
           <!-- Portada -->
           <div v-if="images.cover" class="a4-page">
             <img
