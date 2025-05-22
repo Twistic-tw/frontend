@@ -72,21 +72,72 @@ export function CustomizePdf() {
 
   // Filtrar filas
   function filterRows() {
-    if (!searchField.value || !searchValue.value) {
-      filteredRows.value = paginatedRows.value.flat()
-      return
-    }
+  const field = searchField.value
+  const input = searchValue.value.trim().toLowerCase()
 
-    const field = searchField.value.toLowerCase()
-    const value = searchValue.value.toLowerCase()
-
-    filteredRows.value = paginatedRows.value
-      .flat()
-      .filter(row => {
-        const cell = row[field]
-        return cell && cell.toString().toLowerCase().includes(value)
-      })
+  if (!field || !input) {
+    filteredRows.value = paginatedRows.value.flat()
+    return
   }
+
+  // Procesa múltiples valores separados por coma
+  const queries = input.split(',').map(s => s.trim()).filter(Boolean)
+
+  filteredRows.value = paginatedRows.value.flat().filter(row => {
+    const rawValue = row[field]
+    const value = rawValue?.toString().toLowerCase()
+
+    if (!value) return false
+
+    return queries.some(query => {
+      // Rango numérico o de texto: 10..50 o a..z
+      if (query.includes('..')) {
+        const [min, max] = query.split('..').map(v => v.trim())
+        const numVal = parseFloat(value)
+        const isNumRange = !isNaN(parseFloat(min)) && !isNaN(parseFloat(max))
+
+        if (isNumRange) {
+          return numVal >= parseFloat(min) && numVal <= parseFloat(max)
+        }
+
+        return value >= min && value <= max
+      }
+
+      // Operadores: >10, <=20, =abc, !=x
+      const match = query.match(/^(>=|<=|!=|>|<|=)(.+)$/)
+      if (match) {
+        const operator = match[1]
+        const target = match[2].trim()
+
+        const numValue = parseFloat(value)
+        const numTarget = parseFloat(target)
+
+        switch (operator) {
+          case '>': return numValue > numTarget
+          case '<': return numValue < numTarget
+          case '>=': return numValue >= numTarget
+          case '<=': return numValue <= numTarget
+          case '=': return value === target
+          case '!=': return value !== target
+        }
+      }
+
+      // Comodines: *abc*, abc*, *abc
+      if (query.startsWith('*') && query.endsWith('*')) {
+        const inner = query.slice(1, -1)
+        return value.includes(inner)
+      } else if (query.startsWith('*')) {
+        return value.endsWith(query.slice(1))
+      } else if (query.endsWith('*')) {
+        return value.startsWith(query.slice(0, -1))
+      }
+
+      // Coincidencia exacta o parcial por defecto
+      return value.includes(query)
+    })
+  })
+}
+
 
   // Seleccionar todas las filas filtradas
   function selectAllFiltered() {
