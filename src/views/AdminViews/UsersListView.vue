@@ -181,16 +181,18 @@ const {
 </template>
 
 <style scoped>
-.fade-modal-enter-active,
-.fade-modal-leave-active {
-  transition: opacity 0.3s ease;
+.fade-filter-enter-active,
+.fade-filter-leave-active {
+  transition: all 0.3s ease;
 }
-.fade-modal-enter-from,
-.fade-modal-leave-to {
+.fade-filter-enter-from,
+.fade-filter-leave-to {
   opacity: 0;
+  transform: translateY(10px);
 }
-.fade-modal-enter-to,
-.fade-modal-leave-from {
+.fade-filter-enter-to,
+.fade-filter-leave-from {
   opacity: 1;
+  transform: translateY(0);
 }
 </style>
