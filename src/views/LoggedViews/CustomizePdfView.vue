@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import BackButton from '@/components/BackButton.vue'
 import { CustomizePdf } from '../../composable/CustomizePdf'
+import draggable from 'vuedraggable'
 
 const {
   templateName,
