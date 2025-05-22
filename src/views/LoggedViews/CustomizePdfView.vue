@@ -19,13 +19,13 @@ const {
   backgroundUrl,
   footerUrl,
   paginatedRows,
-  limitedChunk,
+  //limitedChunk,
   searchField,
   searchValue,
   searchActive,
   filteredRows,
   selectedRows,
-  //previewRows,
+  previewRows,
   filterRows,
   selectAllFiltered,
   deselectAllFiltered,
@@ -387,7 +387,7 @@ const {
                 </div>
               </div>
               <div
-                v-for="(row, ri) in limitedChunk"
+                v-for="(row, ri) in previewRows"
                 :key="'row-' + index + '-' + ri"
                 class="grid"
                 :style="rowStyle(ri)"

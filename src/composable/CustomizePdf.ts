@@ -62,14 +62,12 @@ export function CustomizePdf() {
   const filteredRows = ref<Record<string, string>[]>([])
   const selectedRows = ref<Set<number>>(new Set())
   const previewRows = computed(() => {
-    // Si hay filas filtradas y alguna está seleccionada
-    if (searchField.value && searchValue.value && selectedRows.value.size > 0) {
-      return filteredRows.value.filter((_, i) => selectedRows.value.has(i))
-    }
+  if (searchActive.value && searchField.value && searchValue.value && selectedRows.value.size > 0) {
+    return filteredRows.value.filter((_, i) => selectedRows.value.has(i))
+  }
+  return limitedChunk.value
+})
 
-    // Si no hay filtro activo, usa la vista por defecto
-    return limitedChunk.value
-  })
 
   function filterRows() {
     const field = searchField.value
