@@ -16,7 +16,7 @@ export function CustomizePdf() {
   const windowWidth = ref(window.innerWidth)
 
   const excelData = ref<Record<string, string>[]>([])
-  const activeFieldNames = computed(() => fields.value.filter(f => f.active).map(f => f.name))
+  const activeFieldNames = computed(() => fields.value.filter((f) => f.active).map((f) => f.name))
 
   // Estilos de tabla
   const colors = ref({
@@ -62,101 +62,110 @@ export function CustomizePdf() {
   const filteredRows = ref<Record<string, string>[]>([])
   const selectedRows = ref<Set<number>>(new Set())
   const previewRows = computed(() => {
-  // Si hay filas filtradas y alguna está seleccionada
-  if (searchField.value && searchValue.value && selectedRows.value.size > 0) {
-    return filteredRows.value.filter((_, i) => selectedRows.value.has(i))
-  }
+    // Si hay filas filtradas y alguna está seleccionada
+    if (searchField.value && searchValue.value && selectedRows.value.size > 0) {
+      return filteredRows.value.filter((_, i) => selectedRows.value.has(i))
+    }
 
-  // Si no hay filtro activo, usa la vista por defecto
-  return limitedChunk.value
-})
+    // Si no hay filtro activo, usa la vista por defecto
+    return limitedChunk.value
+  })
 
   function filterRows() {
-  const field = searchField.value
-  const input = searchValue.value.trim().toLowerCase()
+    const field = searchField.value
+    const input = searchValue.value.trim().toLowerCase()
 
-  if (!field || !input) {
-    filteredRows.value = paginatedRows.value.flat()
-    selectedRows.value = new Set(filteredRows.value.map((_, i) => i))
-    return
-  }
-  // Si no hay filas filtradas, mostrar todas las filas
-  searchActive.value = true
-
-  // Procesar múltiples términos separados por coma
-  const queries = input.split(',').map(s => s.trim()).filter(Boolean)
-
-  // Guardar el estado anterior de selección
-  const oldSelection = new Set(selectedRows.value)
-
-  // Filtrar filas
-  const resultadoFiltrado = paginatedRows.value.flat().filter(row => {
-    const rawValue = row[field]
-    const value = rawValue?.toString().toLowerCase()
-
-    if (!value) return false
-
-    return queries.some(query => {
-      // Rango: 10..50
-      if (query.includes('..')) {
-        const [min, max] = query.split('..').map(v => v.trim())
-        const numVal = parseFloat(value)
-        const isNumRange = !isNaN(parseFloat(min)) && !isNaN(parseFloat(max))
-
-        if (isNumRange) {
-          return numVal >= parseFloat(min) && numVal <= parseFloat(max)
-        }
-
-        return value >= min && value <= max
-      }
-
-      // Operadores: >10, <=20, etc.
-      const match = query.match(/^(>=|<=|!=|>|<|=)(.+)$/)
-      if (match) {
-        const operator = match[1]
-        const target = match[2].trim()
-
-        const numValue = parseFloat(value)
-        const numTarget = parseFloat(target)
-
-        switch (operator) {
-          case '>': return numValue > numTarget
-          case '<': return numValue < numTarget
-          case '>=': return numValue >= numTarget
-          case '<=': return numValue <= numTarget
-          case '=': return value === target
-          case '!=': return value !== target
-        }
-      }
-
-      // Comodines
-      if (query.startsWith('*') && query.endsWith('*')) {
-        return value.includes(query.slice(1, -1))
-      } else if (query.startsWith('*')) {
-        return value.endsWith(query.slice(1))
-      } else if (query.endsWith('*')) {
-        return value.startsWith(query.slice(0, -1))
-      }
-
-      return value.includes(query)
-    })
-  })
-
-  // Actualizar resultados filtrados
-  filteredRows.value = resultadoFiltrado
-
-  // Mantener selección anterior cuando sea posible
-  const nuevaSeleccion = new Set<number>()
-  resultadoFiltrado.forEach((_, index) => {
-    if (oldSelection.has(index)) {
-      nuevaSeleccion.add(index)
-    } else {
-      nuevaSeleccion.add(index) // mostrar por defecto
+    if (!field || !input) {
+      filteredRows.value = paginatedRows.value.flat()
+      selectedRows.value = new Set(filteredRows.value.map((_, i) => i))
+      return
     }
-  })
 
-  selectedRows.value = nuevaSeleccion
-}
+    // Procesar múltiples términos separados por coma
+    const queries = input
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
+
+    // Guardar el estado anterior de selección
+    const oldSelection = new Set(selectedRows.value)
+
+    // Filtrar filas
+    const resultadoFiltrado = paginatedRows.value.flat().filter((row) => {
+      const rawValue = row[field]
+      const value = rawValue?.toString().toLowerCase()
+
+      if (!value) return false
+
+      return queries.some((query) => {
+        // Rango: 10..50
+        if (query.includes('..')) {
+          const [min, max] = query.split('..').map((v) => v.trim())
+          const numVal = parseFloat(value)
+          const isNumRange = !isNaN(parseFloat(min)) && !isNaN(parseFloat(max))
+
+          if (isNumRange) {
+            return numVal >= parseFloat(min) && numVal <= parseFloat(max)
+          }
+
+          return value >= min && value <= max
+        }
+
+        // Operadores: >10, <=20, etc.
+        const match = query.match(/^(>=|<=|!=|>|<|=)(.+)$/)
+        if (match) {
+          const operator = match[1]
+          const target = match[2].trim()
+
+          const numValue = parseFloat(value)
+          const numTarget = parseFloat(target)
+
+          switch (operator) {
+            case '>':
+              return numValue > numTarget
+            case '<':
+              return numValue < numTarget
+            case '>=':
+              return numValue >= numTarget
+            case '<=':
+              return numValue <= numTarget
+            case '=':
+              return value === target
+            case '!=':
+              return value !== target
+          }
+        }
+
+        // Comodines
+        if (query.startsWith('*') && query.endsWith('*')) {
+          return value.includes(query.slice(1, -1))
+        } else if (query.startsWith('*')) {
+          return value.endsWith(query.slice(1))
+        } else if (query.endsWith('*')) {
+          return value.startsWith(query.slice(0, -1))
+        }
+
+        return value.includes(query)
+      })
+    })
+
+    // Actualizar resultados filtrados
+    filteredRows.value = resultadoFiltrado
+
+    // Mantener selección anterior cuando sea posible
+    const nuevaSeleccion = new Set<number>()
+    resultadoFiltrado.forEach((_, index) => {
+      if (oldSelection.has(index)) {
+        nuevaSeleccion.add(index)
+      } else {
+        nuevaSeleccion.add(index) // mostrar por defecto
+      }
+    })
+
+    searchActive.value = true
+
+    selectedRows.value = nuevaSeleccion
+  }
 
   // Seleccionar todas las filas filtradas
   function selectAllFiltered() {
@@ -172,7 +181,6 @@ export function CustomizePdf() {
     })
   }
 
-
   // Seleccionar filas
   function toggleRow(index: number) {
     if (selectedRows.value.has(index)) {
@@ -184,24 +192,34 @@ export function CustomizePdf() {
 
   // Limpiar búsqueda dinámica
   function clearSearch() {
-  searchField.value = ''
-  searchValue.value = ''
-  selectedRows.value.clear()
+    searchField.value = ''
+    searchValue.value = ''
+    selectedRows.value.clear()
 
-  const allRows = paginatedRows.value.flat()
-  filteredRows.value = allRows
-  selectedRows.value = new Set(allRows.map((_, i) => i))
+    const allRows = paginatedRows.value.flat()
+    filteredRows.value = allRows
+    selectedRows.value = new Set(allRows.map((_, i) => i))
 
-  // Ocultar la tabla al limpiar
-  searchActive.value = false
-}
+    // Ocultar la tabla al limpiar
+    searchActive.value = false
+  }
 
   // Imágenes
-  const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '')
-  const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '')
-  const headerUrl = computed(() => images.value.header ? URL.createObjectURL(images.value.header) : '')
-  const backgroundUrl = computed(() => images.value.background ? URL.createObjectURL(images.value.background) : '')
-  const footerUrl = computed(() => images.value.footer ? URL.createObjectURL(images.value.footer) : '')
+  const coverUrl = computed(() =>
+    images.value.cover ? URL.createObjectURL(images.value.cover) : '',
+  )
+  const secondUrl = computed(() =>
+    images.value.second ? URL.createObjectURL(images.value.second) : '',
+  )
+  const headerUrl = computed(() =>
+    images.value.header ? URL.createObjectURL(images.value.header) : '',
+  )
+  const backgroundUrl = computed(() =>
+    images.value.background ? URL.createObjectURL(images.value.background) : '',
+  )
+  const footerUrl = computed(() =>
+    images.value.footer ? URL.createObjectURL(images.value.footer) : '',
+  )
 
   // Obtener el token XSRF
   const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
@@ -210,7 +228,7 @@ export function CustomizePdf() {
   const userId = ref<number | null>(null)
 
   // Convertir hex a rgba
-    const hexToRgba = (hex: string, alpha: number) => {
+  const hexToRgba = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16)
     const g = parseInt(hex.slice(3, 5), 16)
     const b = parseInt(hex.slice(5, 7), 16)
@@ -239,7 +257,8 @@ export function CustomizePdf() {
   // Estilos de fila
   const rowStyle = (ri: number): Record<string, string> => ({
     gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`,
-    backgroundColor: ri % 2 === 0 ? computedColors.value.rowPrimary : computedColors.value.rowAlternate,
+    backgroundColor:
+      ri % 2 === 0 ? computedColors.value.rowPrimary : computedColors.value.rowAlternate,
     color: computedColors.value.text,
     fontFamily: titleSettings.value.fieldFont,
     fontSize: titleSettings.value.fieldSize,
@@ -371,23 +390,26 @@ export function CustomizePdf() {
       formData.append('template_name', templateName.value)
       formData.append('fields', JSON.stringify(activeFieldNames.value))
       formData.append('excel_data', JSON.stringify(excelData.value))
-      formData.append('style', JSON.stringify({
-        background: computedColors.value.background,
-        rowPrimary: computedColors.value.rowPrimary,
-        rowAlternate: computedColors.value.rowAlternate,
-        text: computedColors.value.text,
-        header: computedColors.value.header,
-        headerText: computedColors.value.headerText,
-        footerColor: computedColors.value.footer,
-        footerTextColor: computedColors.value.footerText,
-        size: titleSettings.value.size,
-        align: titleSettings.value.align,
-        fieldFont: titleSettings.value.fieldFont,
-        fieldSize: titleSettings.value.fieldSize,
-        borderColor: '#000000',
-        borderWidth: '1px',
-        showBorders: colors.value.showBorders,
-      }))
+      formData.append(
+        'style',
+        JSON.stringify({
+          background: computedColors.value.background,
+          rowPrimary: computedColors.value.rowPrimary,
+          rowAlternate: computedColors.value.rowAlternate,
+          text: computedColors.value.text,
+          header: computedColors.value.header,
+          headerText: computedColors.value.headerText,
+          footerColor: computedColors.value.footer,
+          footerTextColor: computedColors.value.footerText,
+          size: titleSettings.value.size,
+          align: titleSettings.value.align,
+          fieldFont: titleSettings.value.fieldFont,
+          fieldSize: titleSettings.value.fieldSize,
+          borderColor: '#000000',
+          borderWidth: '1px',
+          showBorders: colors.value.showBorders,
+        }),
+      )
 
       Object.entries(images.value).forEach(([key, file]) => {
         if (file) formData.append(key, file)
@@ -409,7 +431,7 @@ export function CustomizePdf() {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toast.error('Error generating PDF.')
       console.error(err)
@@ -419,14 +441,14 @@ export function CustomizePdf() {
   }
 
   onMounted(() => {
-    window.addEventListener('resize', () => windowWidth.value = window.innerWidth)
+    window.addEventListener('resize', () => (windowWidth.value = window.innerWidth))
     fetchTemplate()
     fetchUserId()
     filteredRows.value = paginatedRows.value.flat()
   })
 
   onUnmounted(() => {
-    window.removeEventListener('resize', () => windowWidth.value = window.innerWidth)
+    window.removeEventListener('resize', () => (windowWidth.value = window.innerWidth))
   })
 
   return {
@@ -469,7 +491,6 @@ export function CustomizePdf() {
     sendToBackend,
     fetchTemplate,
     userId,
-    fetchUserId
+    fetchUserId,
   }
 }
-
