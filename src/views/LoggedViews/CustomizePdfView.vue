@@ -19,12 +19,15 @@ const {
   backgroundUrl,
   footerUrl,
   paginatedRows,
-  limitedChunk,
+  //limitedChunk,
   searchField,
   searchValue,
   filteredRows,
   selectedRows,
+  previewRows,
   filterRows,
+  selectAllFiltered,
+  deselectAllFiltered,
   toggleRow,
   clearSearch,
   showBackground,
@@ -157,8 +160,26 @@ const {
     </div>
   </div>
 
-  <!-- Tabla de resultados filtrados -->
-  <div class="overflow-auto max-h-[300px] border rounded">
+  <!-- Tabla de resultados filtrados + botones de acción -->
+  <div v-if="filteredRows.length" class="overflow-auto max-h-[300px] border rounded">
+    <div class="flex justify-between items-center px-4 py-2 bg-gray-100 border-b">
+      <span class="text-sm text-gray-700">{{ selectedRows.size }} of {{ filteredRows.length }} selected</span>
+      <div class="flex gap-2">
+        <button
+          @click="selectAllFiltered"
+          class="text-xs bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700"
+        >
+          Show all
+        </button>
+        <button
+          @click="deselectAllFiltered"
+          class="text-xs bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500"
+        >
+          Hide all
+        </button>
+      </div>
+    </div>
+
     <table class="table-auto w-full text-sm">
       <thead class="bg-gray-100 sticky top-0 z-10">
         <tr>
@@ -197,6 +218,11 @@ const {
       </tbody>
     </table>
   </div>
+
+  <div v-else class="text-sm text-gray-500 mt-2">
+    No results found. Try another value.
+  </div>
+
 </div>
 
 
@@ -367,7 +393,7 @@ const {
                 </div>
               </div>
               <div
-                v-for="(row, ri) in limitedChunk"
+                v-for="(row, ri) in previewRows"
                 :key="'row-' + index + '-' + ri"
                 class="grid"
                 :style="rowStyle(ri)"

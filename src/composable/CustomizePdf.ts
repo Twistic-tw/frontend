@@ -60,7 +60,17 @@ export function CustomizePdf() {
   const searchValue = ref('')
   const filteredRows = ref<Record<string, string>[]>([])
   const selectedRows = ref<Set<number>>(new Set())
+  const previewRows = computed(() => {
+  // Si hay filas filtradas y alguna está seleccionada
+  if (searchField.value && searchValue.value && selectedRows.value.size > 0) {
+    return filteredRows.value.filter((_, i) => selectedRows.value.has(i))
+  }
 
+  // Si no hay filtro activo, usa la vista por defecto
+  return limitedChunk.value
+})
+
+  // Filtrar filas
   function filterRows() {
     if (!searchField.value || !searchValue.value) {
       filteredRows.value = paginatedRows.value.flat()
@@ -77,6 +87,21 @@ export function CustomizePdf() {
         return cell && cell.toString().toLowerCase().includes(value)
       })
   }
+
+  // Seleccionar todas las filas filtradas
+  function selectAllFiltered() {
+    filteredRows.value.forEach((_, index) => {
+      selectedRows.value.add(index)
+    })
+  }
+
+  // Deseleccionar todas las filas filtradas
+  function deselectAllFiltered() {
+    filteredRows.value.forEach((_, index) => {
+      selectedRows.value.delete(index)
+    })
+  }
+
 
   // Seleccionar filas
   function toggleRow(index: number) {
@@ -356,7 +381,10 @@ export function CustomizePdf() {
     searchValue,
     filteredRows,
     selectedRows,
+    previewRows,
     filterRows,
+    selectAllFiltered,
+    deselectAllFiltered,
     toggleRow,
     clearSearch,
     showBackground,
