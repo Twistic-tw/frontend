@@ -5,7 +5,7 @@ import ConfirmDialog from '@/components/ConfirmDialog.vue';
 
 const {
   error, searchQuery, filteredUsers, usuarioSeleccionado, nuevaPassword,
-  deleteUser, editUser, mostrarModal, guardarCambios,
+  newUser, idiomasDisponibles, deleteUser, editUser, mostrarModal, guardarCambios,
   openCreateModal, showCreateModal, submitCreateUser, closeCreateModal,
   showConfirm, confirmMessage, handleConfirm, cancelConfirm
 } = useUserListManagement();
@@ -46,8 +46,52 @@ const {
         <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl w-full max-w-sm sm:max-w-lg shadow-xl transition-all duration-300 transform scale-95 hover:scale-100">
           <h2 class="text-lg sm:text-xl font-bold mb-4 text-gray-800 dark:text-white">New user</h2>
           <form @submit.prevent="submitCreateUser">
-            <!-- Campos del formulario -->
-            <!-- Añádelos aquí -->
+            <!-- Campo de Name -->
+            <div class="mb-3">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Name</label>
+              <input v-model="newUser.nombre" type="text" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
+            </div>
+
+            <!-- Campo de Email -->
+            <div class="mb-3">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
+              <input v-model="newUser.email" type="email" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
+            </div>
+
+            <!-- Campo de Position -->
+            <div class="mb-3">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Position</label>
+              <input v-model="newUser.cargo" type="text" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" />
+            </div>
+
+            <!-- Campo de Idioma -->
+            <div class="mb-3">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Language</label>
+              <select v-model="newUser.idioma" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                <option disabled value="">Select a language</option>
+                <option v-for="idioma in idiomasDisponibles" :key="idioma.id" :value="idioma.id">
+                  {{ idioma.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Campo de Rol -->
+            <div class="mb-3">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Role</label>
+              <select v-model="newUser.rol" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                <option value="" disabled>Select a role</option>
+                <option value="ROLE_ADMINISTRATOR">Administrator</option>
+                <option value="ROLE_USER">User</option>
+              </select>
+            </div>
+
+            <!-- Campo de Password -->
+            <div class="mb-3">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Password</label>
+              <input v-model="newUser.password" type="current-password" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
+            </div>
+
+            <!-- Botones -->
             <div class="flex justify-end space-x-2 mt-4">
               <button type="button" @click="closeCreateModal" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-md">Cancelar</button>
               <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Save</button>
