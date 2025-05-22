@@ -186,17 +186,20 @@ const {
       <tr
         v-for="(row, index) in filteredRows"
         :key="'row-' + index"
-        class="hover:bg-gray-50"
+        class="hover:bg-gray-50 text-sm"
       >
-        <td class="px-4 py-2">
+        <!-- Checkbox para mostrar/ocultar fila -->
+        <td class="px-3 py-1 text-center align-middle">
           <input
             type="checkbox"
             :checked="selectedRows.has(index)"
             @change="toggleRow(index)"
-            class="form-checkbox rounded text-indigo-600"
+            class="form-checkbox w-4 h-4 text-indigo-600"
           />
         </td>
-        <td class="px-4 py-2 border-t">
+
+        <!-- Solo el campo buscado -->
+        <td class="px-3 py-1 border-t align-middle">
           {{ row[searchField] }}
         </td>
       </tr>
