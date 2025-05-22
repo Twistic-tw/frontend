@@ -64,7 +64,36 @@ const {
       Customize {{ templateName }} Catalog
     </h1>
 
-    <div v-if="loading" class="text-center text-gray-600">Loading template...</div>
+    <!-- Pantalla oscurecida al cargar -->
+    <div
+      v-if="loading"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 text-white text-xl font-semibold"
+    >
+      <div class="flex items-center gap-4">
+        <svg
+          class="animate-spin h-6 w-6 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          ></path>
+        </svg>
+        Loading template...
+      </div>
+    </div>
+
     <div v-else-if="error" class="text-center text-red-500">Error loading data.</div>
 
     <!-- Overlay spinner centrado -->
