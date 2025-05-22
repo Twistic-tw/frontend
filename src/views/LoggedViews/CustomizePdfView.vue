@@ -193,7 +193,7 @@ const {
   </div>
 
       <!-- DERECHA: Vista previa -->
-      <div class="w-full lg:w-1/2 px-4 sticky top-24 h-fit bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+      <div class="w-full lg:w-1/2 bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
         <div
           id="pdf-content"
