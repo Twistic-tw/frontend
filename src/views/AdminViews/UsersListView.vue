@@ -4,7 +4,7 @@ import BackButton from '@/components/BackButton.vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 
 const {
-  error, searchQuery, filteredUsers,
+  error, searchQuery, filteredUsers, usuarioSeleccionado, nuevaPassword,
   deleteUser, editUser, mostrarModal, guardarCambios,
   openCreateModal, showCreateModal, submitCreateUser, closeCreateModal,
   showConfirm, confirmMessage, handleConfirm, cancelConfirm
@@ -93,6 +93,23 @@ const {
           <h2 class="text-lg sm:text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Edit User</h2>
           <form @submit.prevent="guardarCambios">
             <!-- Campos edición aquí -->
+            <div class="mb-4">
+              <label class="block text-gray-700 dark:text-gray-200 mb-1">Name</label>
+              <input v-model="usuarioSeleccionado.nombre" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 dark:text-gray-200 mb-1">Position</label>
+              <input v-model="usuarioSeleccionado.cargo" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 dark:text-gray-200 mb-1">Email</label>
+              <input v-model="usuarioSeleccionado.email" type="email" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 dark:text-gray-200 mb-1">New password</label>
+              <input v-model="nuevaPassword" type="password" placeholder="Optional" class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Leave blank if you don't want to change it.</p>
+            </div>
             <div class="flex justify-end space-x-2">
               <button type="button" @click="mostrarModal = false" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400 dark:hover:bg-gray-500">Cancel</button>
               <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save</button>
