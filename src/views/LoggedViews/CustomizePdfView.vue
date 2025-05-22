@@ -22,6 +22,7 @@ const {
   limitedChunk,
   searchField,
   searchValue,
+  searchActive,
   filteredRows,
   selectedRows,
   //previewRows,
@@ -162,7 +163,7 @@ const {
   </div>
 
   <!-- Tabla de solo valores + botones de acción -->
-<div v-if="filteredRows.length" class="overflow-auto max-h-[300px] border rounded">
+<div v-if="searchActive && filteredRows.length" class="overflow-auto max-h-[300px] border rounded">
   <div class="flex justify-between items-center px-4 py-2 bg-gray-100 border-b">
     <span class="text-sm text-gray-700">{{ selectedRows.size }} of {{ filteredRows.length }} selected</span>
     <div class="flex gap-2">

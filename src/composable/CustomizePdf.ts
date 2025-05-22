@@ -58,6 +58,7 @@ export function CustomizePdf() {
   // Buscar y filtrar
   const searchField = ref('')
   const searchValue = ref('')
+  const searchActive = ref(false)
   const filteredRows = ref<Record<string, string>[]>([])
   const selectedRows = ref<Set<number>>(new Set())
   const previewRows = computed(() => {
@@ -77,6 +78,7 @@ export function CustomizePdf() {
   if (!field || !input) {
     filteredRows.value = paginatedRows.value.flat()
     selectedRows.value = new Set(filteredRows.value.map((_, i) => i))
+    searchActive.value = true
     return
   }
 
@@ -181,15 +183,17 @@ export function CustomizePdf() {
 
   // Limpiar búsqueda dinámica
   function clearSearch() {
-    searchField.value = ''
-    searchValue.value = ''
-    selectedRows.value.clear()
-    filteredRows.value = paginatedRows.value.flat()
-    // Restaurar todos los datos y marcarlos como visibles
-    const allRows = paginatedRows.value.flat()
-    filteredRows.value = allRows
-    selectedRows.value = new Set(allRows.map((_, i) => i))
-  }
+  searchField.value = ''
+  searchValue.value = ''
+  selectedRows.value.clear()
+
+  const allRows = paginatedRows.value.flat()
+  filteredRows.value = allRows
+  selectedRows.value = new Set(allRows.map((_, i) => i))
+
+  // Ocultar la tabla al limpiar
+  searchActive.value = false
+}
 
   // Imágenes
   const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '')
@@ -450,6 +454,7 @@ export function CustomizePdf() {
     limitedChunk,
     searchField,
     searchValue,
+    searchActive,
     filteredRows,
     selectedRows,
     previewRows,
