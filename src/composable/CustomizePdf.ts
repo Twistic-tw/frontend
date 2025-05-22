@@ -62,12 +62,9 @@ export function CustomizePdf() {
   const filteredRows = ref<Record<string, string>[]>([])
   const selectedRows = ref<Set<number>>(new Set())
   const previewRows = computed(() => {
-  if (searchActive.value && searchField.value && searchValue.value && selectedRows.value.size > 0) {
-    return filteredRows.value.filter((_, i) => selectedRows.value.has(i))
-  }
-  return limitedChunk.value
+  // Mostrar SOLO los rows seleccionados, sin importar el filtro activo
+  return paginatedRows.value.flat().filter((_, i) => selectedRows.value.has(i))
 })
-
 
   function filterRows() {
     const field = searchField.value
