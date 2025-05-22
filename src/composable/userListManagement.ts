@@ -1,5 +1,6 @@
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
+import { useToast } from 'vue-toastification';
 
 // Interface para el usuario
 interface User {
@@ -12,6 +13,7 @@ interface User {
 }
 
 export function useUserListManagement() {
+  const toast = useToast();
   const users = ref<User[]>([]);
   const loading = ref(true);
   const error = ref(false);
@@ -91,7 +93,10 @@ export function useUserListManagement() {
   const submitCreateUser = async () => {
     try {
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
-      if (!xsrfToken) { alert('Session expired.'); return; }
+      if (!xsrfToken) {
+        toast.error('Session expired.');
+        return;
+      }
 
       await axios.post(`${import.meta.env.VITE_URL}/Users`, newUser.value, {
         withCredentials: true,
@@ -103,13 +108,13 @@ export function useUserListManagement() {
 
       await fetchUsers();
       closeCreateModal();
-      alert('User created successfully.');
+      toast.success('User created successfully.');
     } catch (err) {
       if (err.response?.status === 422) {
+        toast.error('Validation error.');
       } else {
-        alert("Duplicated email. The user already exists.");
+        toast.error('Duplicated email. The user already exists.');
       }
-      alert('Error creating user.');
       console.error('Error creating user:', err);
     }
   };
@@ -145,12 +150,12 @@ export function useUserListManagement() {
         }
       });
 
-      alert('User updated successfully.');
+      toast.success('User updated successfully.');
       mostrarModal.value = false;
       fetchUsers();
       nuevaPassword.value = '';
     } catch (error) {
-      alert('Error updating user.');
+      toast.error('Error updating user.');
     }
   };
 
@@ -169,9 +174,9 @@ export function useUserListManagement() {
         });
 
         users.value = users.value.filter(user => user.id !== id);
-        alert('User deleted successfully.');
+        toast.success('User deleted successfully.');
       } catch (err) {
-        alert('Error deleting user.');
+        toast.error('Error deleting user.');
       }
     });
   };
