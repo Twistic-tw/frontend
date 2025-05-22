@@ -288,7 +288,7 @@ const {
       <!-- Imágenes -->
       <div class="h-auto bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
         <h2 class="text-2xl font-bold text-gray-800 mb-3">Images</h2>
-        <div class="flex flex-col gap-4">
+        <div class="h-auto flex flex-col gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Cover (Required)</label>
             <input type="file" @change="(e) => handleImageUpload(e, 'cover')" class="file-input w-full" />
