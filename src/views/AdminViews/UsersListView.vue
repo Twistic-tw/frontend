@@ -103,21 +103,30 @@ const {
 
     <!-- Usuarios Filtrados -->
     <div v-if="filteredUsers.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-      <div v-for="user in filteredUsers" :key="user.id" class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-lg transition">
-        <h2 class="text-xl font-semibold text-gray-800 dark:text-indigo-400 mb-2">{{ user.nombre }}</h2>
-        <p class="text-gray-700 dark:text-gray-200"><strong>Email:</strong> {{ user.email }}</p>
-        <p class="text-gray-700 dark:text-gray-200"><strong>Position:</strong> {{ user.cargo }}</p>
+      <TransitionGroup
+        name="fade-filter"
+        tag="div"
+        class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-lg transition"
+      >
+        <div
+          v-for="user in filteredUsers"
+          :key="user.id"
+          class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-lg transition"
+        >
+          <h2 class="text-xl font-semibold text-gray-800 dark:text-indigo-400 mb-2">{{ user.nombre }}</h2>
+          <p class="text-gray-700 dark:text-gray-200"><strong>Email:</strong> {{ user.email }}</p>
+          <p class="text-gray-700 dark:text-gray-200"><strong>Position:</strong> {{ user.cargo }}</p>
 
-        <!-- Botones de acción -->
-        <div class="mt-4 flex space-x-2">
-          <button @click="editUser(user)" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg">
-            Edit
-          </button>
-          <button @click="deleteUser(user.id)" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
-            Delete
-          </button>
+          <div class="mt-4 flex space-x-2">
+            <button @click="editUser(user)" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg">
+              Edit
+            </button>
+            <button @click="deleteUser(user.id)" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
+              Delete
+            </button>
+          </div>
         </div>
-      </div>
+      </TransitionGroup>
     </div>
 
     <!-- Si no hay usuarios -->
