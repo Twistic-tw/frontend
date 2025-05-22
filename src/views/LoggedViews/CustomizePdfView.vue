@@ -119,6 +119,34 @@ const {
       </draggable>
     </div>
 
+    <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+    <h2 class="text-xl font-semibold text-gray-800 mb-3">Text Options</h2>
+    <div class="flex flex-col gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Header Text</label>
+        <input type="color" v-model="colors.headerText" class="w-full h-8 border rounded" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Content Text</label>
+        <input type="color" v-model="colors.text" class="w-full h-8 border rounded" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Footer Text</label>
+        <input type="color" v-model="colors.footerText" class="w-full h-8 border rounded" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Field Font</label>
+        <select v-model="titleSettings.fieldFont" class="w-full p-2 border rounded">
+          <option value="Arial">Arial</option>
+          <option value="Helvetica">Helvetica</option>
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Georgia">Georgia</option>
+          <option value="Courier New">Courier New</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
     <!-- Estilos e Imágenes -->
     <div class="grid grid-cols-2 gap-6">
       <!-- Estilos -->
