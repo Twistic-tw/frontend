@@ -74,7 +74,7 @@ const {
   <div class="w-full md:w-[50%] space-y-8">
     <!-- Card de Campos Activos -->
     <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
-      <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Active Fields</h2>
+      <h2 class="text-2xl font-bold text-gray-800 mb-4 pb-2">Active Fields</h2>
 
       <draggable v-model="fields" item-key="name" class="space-y-3">
         <template #item="{ element }">
