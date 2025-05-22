@@ -111,23 +111,24 @@ const {
 <div class="flex flex-col md:flex-row gap-6 w-full max-w-[1600px] mx-auto px-4">
   <!-- Columna izquierda: Campos, Estilos e Imágenes -->
   <div class="w-full md:w-[50%] space-y-8">
-    <!-- Card de Campos Activos -->
+    <!-- Card de Campos Activos compacto y ordenado -->
     <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
       <h2 class="text-2xl font-bold text-gray-800 mb-4 pb-2">Active Fields</h2>
 
-      <draggable v-model="fields" item-key="name" class="space-y-3">
+      <draggable v-model="fields" item-key="name" class="grid grid-cols-2 md:grid-cols-3 gap-3">
         <template #item="{ element }">
-          <div class="flex justify-between items-center bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 shadow-sm hover:shadow-md transition">
-            <span class="text-gray-700 font-medium">{{ element.name }}</span>
+          <div class="flex justify-between items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 shadow-sm hover:shadow-md transition text-sm">
+            <span class="text-gray-700 truncate">{{ element.name }}</span>
             <label class="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" v-model="element.active" class="sr-only peer" />
-              <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-[#1e2939] transition-all"></div>
-              <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
+              <div class="w-9 h-5 bg-gray-300 rounded-full peer peer-checked:bg-[#1e2939] transition-all"></div>
+              <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
             </label>
           </div>
         </template>
       </draggable>
     </div>
+
     <!-- Filtro de búsqueda de datos -->
 <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
   <h2 class="text-2xl font-bold text-gray-800 mb-4">Search & Filter Data</h2>
