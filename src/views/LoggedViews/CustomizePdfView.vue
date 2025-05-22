@@ -223,7 +223,7 @@ const {
     <!-- Estilos e Imágenes -->
     <div class="grid grid-cols-2 gap-6">
       <!-- Estilos -->
-      <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+      <div class="w-fit bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
         <h2 class="text-2xl font-bold text-gray-800 mb-3">Customize Style</h2>
         <div class="flex flex-col gap-4">
           <div>
@@ -286,7 +286,7 @@ const {
       </div>
 
       <!-- Imágenes -->
-      <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+      <div class="w-fit bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
         <h2 class="text-2xl font-bold text-gray-800 mb-3">Images</h2>
         <div class="flex flex-col gap-4">
           <div>
@@ -438,13 +438,14 @@ const {
 .a4-page {
   position: relative;
   width: 100%;
-  height: 1123px;
+  min-height: 1123px;
   background-color: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   margin: 0 auto 2rem;
   page-break-after: always;
   overflow: hidden;
   z-index: 1;
+  height: fit-content;
 }
 
 .a4-page > *:not(.absolute) {
