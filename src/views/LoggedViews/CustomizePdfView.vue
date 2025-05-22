@@ -222,12 +222,12 @@ const {
   </div>
 
       <!-- DERECHA: Vista previa -->
-      <div class="w-full lg:w-1/2 bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+      <div class="w-full lg:w-1/2 bg-white rounded-2xl shadow-lg p-6 border border-gray-200" style="position: sticky; top: 100px; height: fit-content;">
         <h2 class="text-2xl font-bold text-gray-800 mb-3">Live Preview</h2>
         <div
           id="pdf-content"
           class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full"
-          style="aspect-ratio: 794/1123; transform: scale(1); position: sticky; top: 100px; height: fit-content;"
+          style="aspect-ratio: 794/1123; transform: scale(1)"
         >
           <!-- Portada -->
           <div v-if="images.cover" class="a4-page">
