@@ -94,7 +94,7 @@ const {
     <div class="grid grid-cols-2 gap-6">
       <!-- Estilos -->
       <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Customize Style</h2>
+        <h2 class="text-xl font-bold text-gray-800 mb-3">Customize Style</h2>
         <div class="flex flex-col gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">PDF Background</label>
@@ -157,7 +157,7 @@ const {
 
       <!-- Imágenes -->
       <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
+        <h2 class="text-xl font-bold text-gray-800 mb-3">Images</h2>
         <div class="flex flex-col gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Cover (Required)</label>
@@ -194,7 +194,7 @@ const {
 
       <!-- DERECHA: Vista previa -->
       <div class="w-full lg:w-1/2 bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
+        <h2 class="text-xl font-bold text-gray-800 mb-3">Live Preview</h2>
         <div
           id="pdf-content"
           class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full"
