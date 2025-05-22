@@ -385,7 +385,7 @@ const {
             >
               <div class="grid font-medium" :style="headerStyle">
                 <div
-                  v-for="(key, i) in limitedChunk"
+                  v-for="(key, i) in activeFieldNames"
                   :key="'header-' + i"
                   class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
                 >
@@ -393,7 +393,7 @@ const {
                 </div>
               </div>
               <div
-                v-for="(row, ri) in previewRows"
+                v-for="(row, ri) in limitedChunk"
                 :key="'row-' + index + '-' + ri"
                 class="grid"
                 :style="rowStyle(ri)"
