@@ -78,9 +78,10 @@ export function CustomizePdf() {
   if (!field || !input) {
     filteredRows.value = paginatedRows.value.flat()
     selectedRows.value = new Set(filteredRows.value.map((_, i) => i))
-    searchActive.value = true
     return
   }
+  // Si no hay filas filtradas, mostrar todas las filas
+  searchActive.value = true
 
   // Procesar múltiples términos separados por coma
   const queries = input.split(',').map(s => s.trim()).filter(Boolean)
