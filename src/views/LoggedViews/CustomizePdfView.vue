@@ -24,7 +24,7 @@ const {
   searchValue,
   filteredRows,
   selectedRows,
-  previewRows,
+  //previewRows,
   filterRows,
   selectAllFiltered,
   deselectAllFiltered,
