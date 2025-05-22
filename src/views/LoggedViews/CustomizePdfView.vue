@@ -111,7 +111,7 @@ const {
   <!-- Editor y Preview en grid -->
 <div class="flex flex-col md:flex-row gap-6 w-full max-w-[1600px] mx-auto px-4">
   <!-- Columna izquierda: Campos, Estilos e Imágenes -->
-  <div class="w-full md:w-[50%] space-y-8">
+  <div class="h-auto md:w-[50%] space-y-8">
     <!-- Card de Campos Activos compacto y ordenado -->
     <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
       <h2 class="text-2xl font-bold text-gray-800 mb-4 pb-2">Active Fields</h2>
@@ -223,7 +223,7 @@ const {
     <!-- Estilos e Imágenes -->
     <div class="grid grid-cols-2 gap-6">
       <!-- Estilos -->
-      <div class="w-fit bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+      <div class="h-auto bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
         <h2 class="text-2xl font-bold text-gray-800 mb-3">Customize Style</h2>
         <div class="flex flex-col gap-4">
           <div>
@@ -286,7 +286,7 @@ const {
       </div>
 
       <!-- Imágenes -->
-      <div class="w-fit bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+      <div class="h-auto bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
         <h2 class="text-2xl font-bold text-gray-800 mb-3">Images</h2>
         <div class="flex flex-col gap-4">
           <div>
@@ -324,7 +324,7 @@ const {
 
       <!-- DERECHA: Vista previa -->
       <div
-        class="w-full lg:w-1/2 bg-white rounded-2xl shadow-lg p-6 border border-gray-200"
+        class="h-auto lg:w-1/2 bg-white rounded-2xl shadow-lg p-6 border border-gray-200"
         style="position: sticky; top: 100px; height: fit-content;"
       >
         <h2 class="text-2xl font-semibold text-gray-800 mb-3">Live Preview</h2>
