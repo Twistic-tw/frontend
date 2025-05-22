@@ -196,12 +196,8 @@ const {
             class="form-checkbox rounded text-indigo-600"
           />
         </td>
-        <td
-          v-for="field in fields"
-          :key="'cell-' + field.name + '-' + index"
-          class="px-4 py-2 border-t"
-        >
-          {{ row[field.name] }}
+        <td class="px-4 py-2 border-t">
+          {{ row[searchField] }}
         </td>
       </tr>
     </tbody>
