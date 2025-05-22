@@ -103,31 +103,21 @@ const {
 
     <!-- Usuarios Filtrados -->
     <div v-if="filteredUsers.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-      <TransitionGroup
-        name="fade-filter"
-        tag="div"
-        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
-      >
-        <div
-          v-for="user in filteredUsers"
-          :key="user.id"
-          class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-lg transition"
-        >
-          <h2 class="text-xl font-semibold text-gray-800 dark:text-indigo-400 mb-2">{{ user.nombre }}</h2>
-          <p class="text-gray-700 dark:text-gray-200"><strong>Email:</strong> {{ user.email }}</p>
-          <p class="text-gray-700 dark:text-gray-200"><strong>Position:</strong> {{ user.cargo }}</p>
+      <div v-for="user in filteredUsers" :key="user.id" class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-lg transition">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-indigo-400 mb-2">{{ user.nombre }}</h2>
+        <p class="text-gray-700 dark:text-gray-200"><strong>Email:</strong> {{ user.email }}</p>
+        <p class="text-gray-700 dark:text-gray-200"><strong>Position:</strong> {{ user.cargo }}</p>
 
-          <div class="mt-4 flex space-x-2">
-            <button @click="editUser(user)" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg">
-              Edit
-            </button>
-            <button @click="deleteUser(user.id)" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
-              Delete
-            </button>
-          </div>
+        <!-- Botones de acción -->
+        <div class="mt-4 flex space-x-2">
+          <button @click="editUser(user)" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg">
+            Edit
+          </button>
+          <button @click="deleteUser(user.id)" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
+            Delete
+          </button>
         </div>
-      </TransitionGroup>
-
+      </div>
     </div>
 
     <!-- Si no hay usuarios -->
@@ -181,18 +171,16 @@ const {
 </template>
 
 <style scoped>
-.fade-filter-enter-active,
-.fade-filter-leave-active {
-  transition: opacity 0.4s ease, transform 0.4s ease;
+.fade-modal-enter-active,
+.fade-modal-leave-active {
+  transition: opacity 0.3s ease;
 }
-.fade-filter-enter-from,
-.fade-filter-leave-to {
+.fade-modal-enter-from,
+.fade-modal-leave-to {
   opacity: 0;
-  transform: translateY(10px);
 }
-.fade-filter-enter-to,
-.fade-filter-leave-from {
+.fade-modal-enter-to,
+.fade-modal-leave-from {
   opacity: 1;
-  transform: translateY(0);
 }
 </style>
