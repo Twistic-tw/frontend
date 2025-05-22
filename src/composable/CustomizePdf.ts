@@ -185,6 +185,10 @@ export function CustomizePdf() {
     searchValue.value = ''
     selectedRows.value.clear()
     filteredRows.value = paginatedRows.value.flat()
+    // Restaurar todos los datos y marcarlos como visibles
+    const allRows = paginatedRows.value.flat()
+    filteredRows.value = allRows
+    selectedRows.value = new Set(allRows.map((_, i) => i))
   }
 
   // Imágenes
