@@ -156,7 +156,7 @@ const {
       </div>
 
       <!-- Imágenes -->
-      <div>
+      <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Images</h2>
         <div class="flex flex-col gap-4">
           <div>
@@ -193,7 +193,7 @@ const {
   </div>
 
       <!-- DERECHA: Vista previa -->
-      <div class="w-full lg:w-1/2">
+      <div class="w-full lg:w-1/2 bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Live Preview</h2>
         <div
           id="pdf-content"
