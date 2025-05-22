@@ -88,9 +88,7 @@ const {
           </div>
         </template>
       </draggable>
-    </div>
-
-    <!-- Text Customization Card -->
+      <!-- Text Customization Card -->
         <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
           <h2 class="text-xl font-semibold text-gray-800 mb-3">Text Options</h2>
           <div class="flex flex-col gap-4">
@@ -118,6 +116,7 @@ const {
             </div>
           </div>
         </div>
+    </div>
 
     <!-- Estilos e Imágenes -->
     <div class="grid grid-cols-2 gap-6">
