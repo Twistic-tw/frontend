@@ -93,8 +93,8 @@ const {
     <!-- Estilos e Imágenes -->
     <div class="grid grid-cols-2 gap-6">
       <!-- Estilos -->
-      <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-3 bg-white rounded-2xl shadow-lg p-6 border border-gray-200">Customize Style</h2>
+      <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Customize Style</h2>
         <div class="flex flex-col gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">PDF Background</label>
