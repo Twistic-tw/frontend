@@ -60,7 +60,7 @@ const {
     <!-- Usuarios Filtrados -->
     <div v-if="filteredUsers.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       <div v-for="user in filteredUsers" :key="user.id" class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-lg transition">
-        <h2 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-2">{{ user.nombre }}</h2>
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-indigo-400 mb-2">{{ user.nombre }}</h2>
         <p class="text-gray-700 dark:text-gray-200"><strong>Email:</strong> {{ user.email }}</p>
         <p class="text-gray-700 dark:text-gray-200"><strong>Position:</strong> {{ user.cargo }}</p>
 
