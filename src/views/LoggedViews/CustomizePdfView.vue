@@ -227,7 +227,7 @@ const {
         <div
           id="pdf-content"
           class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full"
-          style="aspect-ratio: 794/1123; transform: scale(1)"
+          style="aspect-ratio: 794/1123; transform: scale(1); position: sticky; top: 100px; height: fit-content;"
         >
           <!-- Portada -->
           <div v-if="images.cover" class="a4-page">
