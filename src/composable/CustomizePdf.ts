@@ -372,6 +372,7 @@ function toggleFullscreen() {
       templateName.value = res.data.template.name
       fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }))
       excelData.value = res.data.excel_data || []
+      selectedRows.value = new Set(excelData.value.map((_, i) => i))
     } catch (err) {
       console.error('Error loading data:', err)
       error.value = true
