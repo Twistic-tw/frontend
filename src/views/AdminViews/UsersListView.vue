@@ -102,7 +102,8 @@ const {
     </transition>
 
     <!-- Usuarios Filtrados -->
-    <div v-if="filteredUsers.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div v-if="filteredUsers.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
       <TransitionGroup
         name="fade-filter"
         tag="div"
