@@ -20,6 +20,13 @@ const {
   footerUrl,
   paginatedRows,
   limitedChunk,
+  searchField,
+  searchValue,
+  filteredRows,
+  selectedRows,
+  filterRows,
+  toggleRow,
+  clearSearch,
   showBackground,
   headerStyle,
   rowStyle,
@@ -118,6 +125,80 @@ const {
         </template>
       </draggable>
     </div>
+    <!-- Filtro de búsqueda de datos -->
+<div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+  <h2 class="text-2xl font-bold text-gray-800 mb-4">Search & Filter Data</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>
+      <select v-model="searchField" class="w-full p-2 border rounded">
+        <option disabled value="">Select field</option>
+        <option v-for="field in fields" :key="field.name" :value="field.name">
+          {{ field.name }}
+        </option>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Search value</label>
+      <input
+        v-model="searchValue"
+        @input="filterRows"
+        placeholder="Enter value to filter"
+        class="w-full p-2 border rounded"
+      />
+    </div>
+    <div class="flex items-end">
+      <button
+        @click="clearSearch"
+        class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition"
+      >
+        Clear Filter
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabla de resultados filtrados -->
+  <div class="overflow-auto max-h-[300px] border rounded">
+    <table class="table-auto w-full text-sm">
+      <thead class="bg-gray-100 sticky top-0 z-10">
+        <tr>
+          <th class="px-4 py-2 text-left">Show</th>
+          <th
+            v-for="field in fields"
+            :key="'head-' + field.name"
+            class="px-4 py-2 text-left"
+          >
+            {{ field.name }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(row, index) in filteredRows"
+          :key="'row-' + index"
+          class="hover:bg-gray-50"
+        >
+          <td class="px-4 py-2">
+            <input
+              type="checkbox"
+              :checked="selectedRows.has(index)"
+              @change="toggleRow(index)"
+              class="form-checkbox rounded text-indigo-600"
+            />
+          </td>
+          <td
+            v-for="field in fields"
+            :key="'cell-' + field.name + '-' + index"
+            class="px-4 py-2 border-t"
+          >
+            {{ row[field.name] }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
 
     <!-- Estilos e Imágenes -->
     <div class="grid grid-cols-2 gap-6">

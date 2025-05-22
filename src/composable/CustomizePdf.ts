@@ -18,6 +18,7 @@ export function CustomizePdf() {
   const excelData = ref<Record<string, string>[]>([])
   const activeFieldNames = computed(() => fields.value.filter(f => f.active).map(f => f.name))
 
+  // Estilos de tabla
   const colors = ref({
     backgroundColor: '#ffffff',
     backgroundAlpha: 1,
@@ -35,6 +36,7 @@ export function CustomizePdf() {
     showBorders: true,
   })
 
+  // Estilos de título
   const titleSettings = ref({
     size: '2rem',
     align: 'center' as 'left' | 'center' | 'right',
@@ -44,6 +46,7 @@ export function CustomizePdf() {
     fieldAlign: 'left' as 'left' | 'center' | 'right',
   })
 
+  // Imágenes
   const images = ref({
     cover: null as File | null,
     header: null as File | null,
@@ -52,16 +55,60 @@ export function CustomizePdf() {
     footer: null as File | null,
   })
 
+  // Buscar y filtrar
+  const searchField = ref('')
+  const searchValue = ref('')
+  const filteredRows = ref<Record<string, string>[]>([])
+  const selectedRows = ref<Set<number>>(new Set())
+
+  function filterRows() {
+    if (!searchField.value || !searchValue.value) {
+      filteredRows.value = paginatedRows.value.flat()
+      return
+    }
+
+    const field = searchField.value.toLowerCase()
+    const value = searchValue.value.toLowerCase()
+
+    filteredRows.value = paginatedRows.value
+      .flat()
+      .filter(row => {
+        const cell = row[field]
+        return cell && cell.toString().toLowerCase().includes(value)
+      })
+  }
+
+  // Seleccionar filas
+  function toggleRow(index: number) {
+    if (selectedRows.value.has(index)) {
+      selectedRows.value.delete(index)
+    } else {
+      selectedRows.value.add(index)
+    }
+  }
+
+  // Limpiar búsqueda dinámica
+  function clearSearch() {
+    searchField.value = ''
+    searchValue.value = ''
+    selectedRows.value.clear()
+    filteredRows.value = paginatedRows.value.flat()
+  }
+
+  // Imágenes
   const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '')
   const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '')
   const headerUrl = computed(() => images.value.header ? URL.createObjectURL(images.value.header) : '')
   const backgroundUrl = computed(() => images.value.background ? URL.createObjectURL(images.value.background) : '')
   const footerUrl = computed(() => images.value.footer ? URL.createObjectURL(images.value.footer) : '')
 
+  // Obtener el token XSRF
   const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
 
+  // Obtener el ID del usuario
   const userId = ref<number | null>(null)
 
+  // Convertir hex a rgba
     const hexToRgba = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16)
     const g = parseInt(hex.slice(3, 5), 16)
@@ -69,6 +116,7 @@ export function CustomizePdf() {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`
   }
 
+  // vincular colores a variable
   const computedColors = computed(() => ({
     background: hexToRgba(colors.value.backgroundColor, colors.value.backgroundAlpha),
     rowPrimary: hexToRgba(colors.value.rowPrimaryColor, colors.value.rowPrimaryAlpha),
@@ -80,12 +128,14 @@ export function CustomizePdf() {
     footerText: colors.value.footerText,
   }))
 
+  // Estilos de cabecera
   const headerStyle = computed<Record<string, string>>(() => ({
     backgroundColor: computedColors.value.header,
     color: computedColors.value.headerText,
     gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`,
   }))
 
+  // Estilos de fila
   const rowStyle = (ri: number): Record<string, string> => ({
     gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`,
     backgroundColor: ri % 2 === 0 ? computedColors.value.rowPrimary : computedColors.value.rowAlternate,
@@ -95,10 +145,12 @@ export function CustomizePdf() {
     textAlign: titleSettings.value.fieldAlign,
   })
 
+  // Estilos de celda
   const cellStyle = computed(() => ({
     borderRight: colors.value.showBorders ? '1px solid #ccc' : 'none',
   }))
 
+  // Estilos de pie de página
   const footerStyle = computed<CSSProperties>(() => ({
     backgroundColor: computedColors.value.footer,
     color: computedColors.value.footerText,
@@ -112,6 +164,7 @@ export function CustomizePdf() {
     right: '0',
   }))
 
+  // Paginación
   const rowsPerPage = 25
   const paginatedRows = computed(() => {
     const chunks = []
@@ -121,27 +174,33 @@ export function CustomizePdf() {
     return chunks
   })
 
+  // Limitar la cantidad de filas a mostrar
   const limitedChunk = computed(() => paginatedRows.value[0]?.slice(0, 8) ?? [])
 
+  // Mostrar fondo
   const showBackground = (index: number): boolean => {
     const hasFooter = !!images.value.footer
     const isLast = index === paginatedRows.value.length - 1
     return hasFooter && isLast ? false : !!images.value.background
   }
 
+  // Manejar la carga de imágenes
   const handleImageUpload = (e: Event, type: keyof typeof images.value) => {
     const file = (e.target as HTMLInputElement).files?.[0] || null
+    // Validar si el archivo existe
     if (!file) return
 
     const validTypes = ['image/jpeg', 'image/png', 'image/jpg']
     const maxSizeMB = 2
 
+    // Validar el tipo de archivo
     if (!validTypes.includes(file.type)) {
       toast.error(`"${file.name}" is not a valid image type. Please, use JPG or PNG.`)
       ;(e.target as HTMLInputElement).value = ''
       return
     }
 
+    // Validar el tamaño del archivo
     if (file.size > maxSizeMB * 1024 * 1024) {
       const sizeInMB = (file.size / (1024 * 1024)).toFixed(2)
       toast.error(`"${file.name}" weighs ${sizeInMB}MB. Maximum allowed: ${maxSizeMB}MB.`)
@@ -152,6 +211,7 @@ export function CustomizePdf() {
     images.value[type] = file
   }
 
+  // Obtener el token XSRF
   const fetchUserId = async () => {
     const xsrfToken = getXsrfToken()
     if (!xsrfToken) return
@@ -167,6 +227,7 @@ export function CustomizePdf() {
     }
   }
 
+  // Obtener plantilla
   const fetchTemplate = async () => {
     try {
       const xsrfToken = getXsrfToken()
@@ -188,6 +249,7 @@ export function CustomizePdf() {
     }
   }
 
+  // Enviar al backend
   const sendToBackend = async () => {
     if (!userId.value || !images.value.cover || !images.value.header) {
       toast.error('Please upload required images and ensure user is authenticated.')
@@ -259,6 +321,7 @@ export function CustomizePdf() {
     window.addEventListener('resize', () => windowWidth.value = window.innerWidth)
     fetchTemplate()
     fetchUserId()
+    filteredRows.value = paginatedRows.value.flat()
   })
 
   onUnmounted(() => {
@@ -289,6 +352,13 @@ export function CustomizePdf() {
     footerStyle,
     paginatedRows,
     limitedChunk,
+    searchField,
+    searchValue,
+    filteredRows,
+    selectedRows,
+    filterRows,
+    toggleRow,
+    clearSearch,
     showBackground,
     handleImageUpload,
     sendToBackend,
