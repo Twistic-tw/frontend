@@ -190,12 +190,16 @@ const {
       >
         <!-- Checkbox para mostrar/ocultar fila -->
         <td class="px-3 py-1 text-center align-middle">
-          <input
-            type="checkbox"
-            :checked="selectedRows.has(index)"
-            @change="toggleRow(index)"
-            class="form-checkbox w-4 h-4 text-indigo-600"
-          />
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              :checked="selectedRows.has(index)"
+              @change="toggleRow(index)"
+              class="sr-only peer"
+            />
+            <div class="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-[#1e2939] transition-all"></div>
+            <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
+          </label>
         </td>
 
         <!-- Solo el campo buscado -->
