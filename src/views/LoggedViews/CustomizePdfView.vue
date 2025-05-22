@@ -37,7 +37,8 @@ const {
   cellStyle,
   footerStyle,
   sendToBackend,
-  handleImageUpload
+  handleImageUpload,
+  toggleFullscreen
 } = CustomizePdf()
 </script>
 
@@ -286,7 +287,7 @@ const {
       </div>
 
       <!-- Imágenes -->
-      <div class="g-white rounded-2xl shadow-lg p-6 border border-gray-200" style="height: fit-content;">
+      <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200" style="height: fit-content;">
         <h2 class="text-2xl font-bold text-gray-800 mb-3">Images</h2>
         <div class="h-auto flex flex-col gap-4">
           <div>
@@ -328,11 +329,28 @@ const {
         style="position: sticky; top: 100px; height: fit-content;"
       >
         <h2 class="text-2xl font-semibold text-gray-800 mb-3">Live Preview</h2>
+        <!-- Botón de pantalla completa -->
+        <div class="flex justify-end mb-2 relative">
+          <button
+            @click="toggleFullscreen"
+            class="absolute top-0 right-0 p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition z-10"
+            title="Fullscreen"
+          >
+            <!-- Icono de pantalla completa SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 3H5a2 2 0 00-2 2v3m0 8v3a2 2 0 002 2h3m8-18h3a2 2 0 012 2v3m0 8v3a2 2 0 01-2 2h-3" />
+            </svg>
+          </button>
+        </div>
+
         <div
           id="pdf-content"
-          class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full"
-          style="aspect-ratio: 794/1123; transform: scale(1)"
+          ref="previewRef"
+          class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full h-fit"
+          style="transform: scale(1)"
         >
+
           <!-- Portada -->
           <div v-if="images.cover" class="a4-page">
             <img

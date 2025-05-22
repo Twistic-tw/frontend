@@ -7,7 +7,7 @@ export function CustomizePdf() {
   const route = useRoute()
   const templateId = route.params.id as string
   const toast = useToast()
-
+  const previewRef = ref<HTMLElement | null>(null)
   const templateName = ref('')
   const fields = ref<{ name: string; active: boolean }[]>([])
   const loading = ref(true)
@@ -65,6 +65,22 @@ export function CustomizePdf() {
   // Mostrar SOLO los rows seleccionados, sin importar el filtro activo
   return paginatedRows.value.flat().filter((_, i) => selectedRows.value.has(i))
 })
+
+// Cambiar el tamaño de la vista previa
+function toggleFullscreen() {
+  const el = previewRef.value
+  if (!el) return
+
+  if (!document.fullscreenElement) {
+    el.requestFullscreen().catch(err => {
+      console.error(`Error entering fullscreen: ${err.message}`)
+    })
+  } else {
+    document.exitFullscreen().catch(err => {
+      console.error(`Error exiting fullscreen: ${err.message}`)
+    })
+  }
+}
 
   function filterRows() {
     const field = searchField.value
@@ -487,5 +503,6 @@ export function CustomizePdf() {
     fetchTemplate,
     userId,
     fetchUserId,
+    toggleFullscreen,
   }
 }
