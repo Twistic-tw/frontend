@@ -70,27 +70,31 @@ export function CustomizePdf() {
   return limitedChunk.value
 })
 
-  // Filtrar filas
   function filterRows() {
   const field = searchField.value
   const input = searchValue.value.trim().toLowerCase()
 
   if (!field || !input) {
     filteredRows.value = paginatedRows.value.flat()
+    selectedRows.value = new Set(filteredRows.value.map((_, i) => i))
     return
   }
 
-  // Procesa múltiples valores separados por coma
+  // Procesar múltiples términos separados por coma
   const queries = input.split(',').map(s => s.trim()).filter(Boolean)
 
-  filteredRows.value = paginatedRows.value.flat().filter(row => {
+  // Guardar el estado anterior de selección
+  const oldSelection = new Set(selectedRows.value)
+
+  // Filtrar filas
+  const resultadoFiltrado = paginatedRows.value.flat().filter(row => {
     const rawValue = row[field]
     const value = rawValue?.toString().toLowerCase()
 
     if (!value) return false
 
     return queries.some(query => {
-      // Rango numérico o de texto: 10..50 o a..z
+      // Rango: 10..50
       if (query.includes('..')) {
         const [min, max] = query.split('..').map(v => v.trim())
         const numVal = parseFloat(value)
@@ -103,7 +107,7 @@ export function CustomizePdf() {
         return value >= min && value <= max
       }
 
-      // Operadores: >10, <=20, =abc, !=x
+      // Operadores: >10, <=20, etc.
       const match = query.match(/^(>=|<=|!=|>|<|=)(.+)$/)
       if (match) {
         const operator = match[1]
@@ -122,22 +126,34 @@ export function CustomizePdf() {
         }
       }
 
-      // Comodines: *abc*, abc*, *abc
+      // Comodines
       if (query.startsWith('*') && query.endsWith('*')) {
-        const inner = query.slice(1, -1)
-        return value.includes(inner)
+        return value.includes(query.slice(1, -1))
       } else if (query.startsWith('*')) {
         return value.endsWith(query.slice(1))
       } else if (query.endsWith('*')) {
         return value.startsWith(query.slice(0, -1))
       }
 
-      // Coincidencia exacta o parcial por defecto
       return value.includes(query)
     })
   })
-}
 
+  // Actualizar resultados filtrados
+  filteredRows.value = resultadoFiltrado
+
+  // Mantener selección anterior cuando sea posible
+  const nuevaSeleccion = new Set<number>()
+  resultadoFiltrado.forEach((_, index) => {
+    if (oldSelection.has(index)) {
+      nuevaSeleccion.add(index)
+    } else {
+      nuevaSeleccion.add(index) // mostrar por defecto
+    }
+  })
+
+  selectedRows.value = nuevaSeleccion
+}
 
   // Seleccionar todas las filas filtradas
   function selectAllFiltered() {
