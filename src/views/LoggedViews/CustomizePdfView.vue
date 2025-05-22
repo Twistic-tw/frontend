@@ -286,7 +286,7 @@ const {
       </div>
 
       <!-- Imágenes -->
-      <div class="h-auto bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+      <div class="g-white rounded-2xl shadow-lg p-6 border border-gray-200" style="height: fit-content;">
         <h2 class="text-2xl font-bold text-gray-800 mb-3">Images</h2>
         <div class="h-auto flex flex-col gap-4">
           <div>
