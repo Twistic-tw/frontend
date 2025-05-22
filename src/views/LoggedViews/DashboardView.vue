@@ -130,7 +130,7 @@ const {
 
       <!-- Notifications Card (client and admin) -->
       <RouterLink
-        to="notifications"
+        to="/notifications"
         v-if="role && (role === 'admin')"
         class="flex items-center justify-between p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800"
       >
@@ -158,7 +158,7 @@ const {
 
       <!-- Users Card (admin)-->
       <RouterLink
-        to="users"
+        to="/users"
         v-if="role && (role === 'admin')"
         class="flex items-center justify-between p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800"
       >
