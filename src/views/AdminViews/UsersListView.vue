@@ -106,7 +106,7 @@ const {
       <TransitionGroup
         name="fade-filter"
         tag="div"
-        class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-lg transition"
+        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
       >
         <div
           v-for="user in filteredUsers"
