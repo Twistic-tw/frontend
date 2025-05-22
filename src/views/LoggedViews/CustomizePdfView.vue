@@ -143,7 +143,7 @@ const {
       </select>
     </div>
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Search value</label>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Search by value</label>
       <input
         v-model="searchValue"
         @input="filterRows"
@@ -161,64 +161,53 @@ const {
     </div>
   </div>
 
-  <!-- Tabla de resultados filtrados + botones de acción -->
-  <div v-if="filteredRows.length" class="overflow-auto max-h-[300px] border rounded">
-    <div class="flex justify-between items-center px-4 py-2 bg-gray-100 border-b">
-      <span class="text-sm text-gray-700">{{ selectedRows.size }} of {{ filteredRows.length }} selected</span>
-      <div class="flex gap-2">
-        <button
-          @click="selectAllFiltered"
-          class="text-xs bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700"
-        >
-          Show all
-        </button>
-        <button
-          @click="deselectAllFiltered"
-          class="text-xs bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500"
-        >
-          Hide all
-        </button>
-      </div>
+  <!-- Tabla de solo valores + botones de acción -->
+<div v-if="filteredRows.length" class="overflow-auto max-h-[300px] border rounded">
+  <div class="flex justify-between items-center px-4 py-2 bg-gray-100 border-b">
+    <span class="text-sm text-gray-700">{{ selectedRows.size }} of {{ filteredRows.length }} selected</span>
+    <div class="flex gap-2">
+      <button
+        @click="selectAllFiltered"
+        class="text-xs bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700"
+      >
+        Show all
+      </button>
+      <button
+        @click="deselectAllFiltered"
+        class="text-xs bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500"
+      >
+        Hide all
+      </button>
     </div>
-
-    <table class="table-auto w-full text-sm">
-      <thead class="bg-gray-100 sticky top-0 z-10">
-        <tr>
-          <th class="px-4 py-2 text-left">Show</th>
-          <th
-            v-for="field in fields"
-            :key="'head-' + field.name"
-            class="px-4 py-2 text-left"
-          >
-            {{ field.name }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(row, index) in filteredRows"
-          :key="'row-' + index"
-          class="hover:bg-gray-50"
-        >
-          <td class="px-4 py-2">
-            <input
-              type="checkbox"
-              :checked="selectedRows.has(index)"
-              @change="toggleRow(index)"
-              class="form-checkbox rounded text-indigo-600"
-            />
-          </td>
-          <td
-            v-for="field in fields"
-            :key="'cell-' + field.name + '-' + index"
-            class="px-4 py-2 border-t"
-          >
-            {{ row[field.name] }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
+
+  <table class="table-auto w-full text-sm">
+    <tbody>
+      <tr
+        v-for="(row, index) in filteredRows"
+        :key="'row-' + index"
+        class="hover:bg-gray-50"
+      >
+        <td class="px-4 py-2">
+          <input
+            type="checkbox"
+            :checked="selectedRows.has(index)"
+            @change="toggleRow(index)"
+            class="form-checkbox rounded text-indigo-600"
+          />
+        </td>
+        <td
+          v-for="field in fields"
+          :key="'cell-' + field.name + '-' + index"
+          class="px-4 py-2 border-t"
+        >
+          {{ row[field.name] }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 
   <div v-else class="text-sm text-gray-500 mt-2">
     No results found. Try another value.
