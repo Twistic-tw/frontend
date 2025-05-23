@@ -136,7 +136,6 @@ const {
 <style scoped>
 .a4-page {
   position: relative;
-  width: 794px;
   height: 1123px;
   background-color: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
