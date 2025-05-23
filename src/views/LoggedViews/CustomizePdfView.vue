@@ -73,7 +73,7 @@ const {
         />
         <div class="grid grid-cols-2 gap-6">
           <StyleOptions v-model:colors="colors" v-model:titleSettings="titleSettings" />
-          <ImageUploader :images="images" @upload="handleImageUpload" />
+          <ImageUploader :handleImageUpload="handleImageUpload" />
         </div>
 
         <button
