@@ -105,6 +105,7 @@ const {
               v-for="(key, i) in activeFieldNames"
               :key="'header-' + i"
               class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
+              :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' }]"
             >
               {{ key }}
             </div>

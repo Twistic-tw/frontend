@@ -204,14 +204,15 @@ export function CustomizePdf() {
   }))
 
   const headerStyle = computed<Record<string, string>>(() => ({
+    gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(80px, 1fr))`,
     backgroundColor: computedColors.value.header,
     color: computedColors.value.headerText,
-    gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`,
   }))
 
   const rowStyle = (ri: number): Record<string, string> => ({
-    gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`,
-    backgroundColor: ri % 2 === 0 ? computedColors.value.rowPrimary : computedColors.value.rowAlternate,
+    gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(80px, 1fr))`,
+    backgroundColor:
+      ri % 2 === 0 ? computedColors.value.rowPrimary : computedColors.value.rowAlternate,
     color: computedColors.value.text,
     fontFamily: titleSettings.value.fieldFont,
     fontSize: titleSettings.value.fieldSize,
