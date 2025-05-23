@@ -2,6 +2,7 @@
 import BackButton from '@/components/BackButton.vue'
 import { CustomizePdf } from '../../composable/CustomizePdf'
 import draggable from 'vuedraggable'
+import { computed } from 'vue'
 
 const {
   templateName,
@@ -19,11 +20,10 @@ const {
   backgroundUrl,
   footerUrl,
   paginatedRows,
-  //limitedChunk,
+  allRows,
   searchField,
   searchValue,
   searchActive,
-  filteredRows,
   selectedRows,
   previewRows,
   filterRows,
@@ -40,6 +40,13 @@ const {
   handleImageUpload,
   toggleFullscreen
 } = CustomizePdf()
+
+const filteredRows = computed(() =>
+  searchActive
+    ? allRows.value.filter((_, index) => selectedRows.value.has(index))
+    : []
+)
+
 </script>
 
 

@@ -321,7 +321,7 @@ export function CustomizePdf() {
     excelData, activeFieldNames, loading, error, generating, windowWidth,
     computedColors, headerStyle, rowStyle, cellStyle, footerStyle,
     paginatedRows, limitedChunk, previewRows,
-    searchField, searchValue, searchActive, selectedRows,
+    searchField, searchValue, searchActive, selectedRows, allRows,
     filterRows, selectAllFiltered, deselectAllFiltered,
     toggleRow, clearSearch, showBackground, handleImageUpload,
     sendToBackend, fetchTemplate, userId, fetchUserId, toggleFullscreen
