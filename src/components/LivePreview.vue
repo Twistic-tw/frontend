@@ -97,7 +97,7 @@ const {
 
         <!-- Tabla con padding para dejar espacio al footer -->
         <div
-          class="w-full text-sm border border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow"
+          class="w-full h-full text-sm border border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow"
           style="padding-bottom: 60px;"
         >
           <div class="grid font-medium" :style="headerStyle">
