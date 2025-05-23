@@ -235,7 +235,7 @@ export function CustomizePdf() {
     right: '0',
   }))
 
-  const rowsPerPage = 16
+  const rowsPerPage = 10
   const paginatedRows = computed(() => {
     const chunks = []
     for (let i = 0; i < excelData.value.length; i += rowsPerPage) {
