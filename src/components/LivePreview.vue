@@ -1,3 +1,47 @@
+<script setup lang="ts">
+import type { Ref, CSSProperties } from 'vue'
+
+const {
+  previewRef,
+  toggleFullscreen,
+  images,
+  coverUrl,
+  secondUrl,
+  headerUrl,
+  backgroundUrl,
+  footerUrl,
+  previewRows,
+  showBackground,
+  activeFieldNames,
+  headerStyle,
+  rowStyle,
+  cellStyle,
+  footerStyle
+} = defineProps<{
+  previewRef: Ref<HTMLElement | null>,
+  toggleFullscreen: () => void,
+  images: {
+    cover: File | null,
+    second: File | null,
+    header: File | null,
+    background: File | null,
+    footer: File | null
+  },
+  coverUrl: string,
+  secondUrl: string,
+  headerUrl: string,
+  backgroundUrl: string,
+  footerUrl: string,
+  previewRows: Record<string, string>[][],
+  showBackground: (index: number) => boolean,
+  activeFieldNames: string[],
+  headerStyle: Record<string, string>,
+  rowStyle: (index: number) => Record<string, string>,
+  cellStyle: Record<string, string>,
+  footerStyle: CSSProperties
+}>()
+</script>
+
 <template>
   <div
     class="h-auto w-full bg-white rounded-2xl shadow-lg p-6 border border-gray-200"
@@ -86,15 +130,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps([
-  'previewRef', 'toggleFullscreen', 'images',
-  'coverUrl', 'secondUrl', 'headerUrl', 'backgroundUrl', 'footerUrl',
-  'previewRows', 'showBackground', 'activeFieldNames',
-  'headerStyle', 'rowStyle', 'cellStyle', 'footerStyle'
-])
-</script>
 
 <style scoped>
 .a4-page {
