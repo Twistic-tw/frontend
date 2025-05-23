@@ -4,6 +4,7 @@
     style="position: sticky; top: 100px; height: fit-content"
   >
     <h2 class="text-2xl font-semibold text-gray-800 mb-3">Live Preview</h2>
+
     <div class="flex justify-end mb-2 relative">
       <button
         @click="toggleFullscreen"
@@ -20,8 +21,8 @@
     <div
       id="pdf-content"
       ref="previewRef"
-      class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full"
-      style="transform: scale(1)"
+      class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full h-fit-content"
+      style="aspect-ratio: 794/1123; transform: scale(1)"
     >
       <!-- Portada -->
       <div v-if="images.cover" class="a4-page">
@@ -59,8 +60,9 @@
               {{ key }}
             </div>
           </div>
+
           <div
-            v-for="(row, ri) in chunk.filter((_, rowIndex) => selectedRows.has(index * rowsPerPage + rowIndex))"
+            v-for="(row, ri) in chunk"
             :key="'row-' + index + '-' + ri"
             class="grid"
             :style="rowStyle(ri)"
@@ -76,7 +78,7 @@
           </div>
         </div>
 
-        <div v-if="index === paginatedRows.length - 1 && images.footer" class="a4-image full-a4">
+        <div v-if="index === previewRows.length - 1 && images.footer" class="a4-image full-a4">
           <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
         </div>
         <div class="footer-bar" :style="footerStyle">{{ index + 1 }}</div>
@@ -87,9 +89,10 @@
 
 <script setup lang="ts">
 defineProps([
-  'previewRef', 'toggleFullscreen', 'images', 'coverUrl', 'secondUrl', 'headerUrl', 'backgroundUrl', 'footerUrl',
-  'paginatedRows', 'showBackground', 'activeFieldNames', 'headerStyle', 'previewRows', 'rowStyle', 'cellStyle', 'footerStyle',
-  'selectedRows', 'rowsPerPage'
+  'previewRef', 'toggleFullscreen', 'images',
+  'coverUrl', 'secondUrl', 'headerUrl', 'backgroundUrl', 'footerUrl',
+  'previewRows', 'showBackground', 'activeFieldNames',
+  'headerStyle', 'rowStyle', 'cellStyle', 'footerStyle'
 ])
 </script>
 
