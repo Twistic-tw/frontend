@@ -20,8 +20,8 @@
     <div
       id="pdf-content"
       ref="previewRef"
-      class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full h-fit-content"
-      style="aspect-ratio: 794/1123; transform: scale(1)"
+      class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full"
+      style="transform: scale(1)"
     >
       <!-- Portada -->
       <div v-if="images.cover" class="a4-page">
@@ -33,12 +33,13 @@
         <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
       </div>
 
-      <!-- Contenido filtrado como una sola página -->
+      <!-- Páginas de contenido -->
       <div
-        v-if="previewRows.length"
+        v-for="(pageRows, index) in paginatedRows"
+        :key="'page-' + index"
         class="a4-page"
         :style="{
-          backgroundImage: showBackground(0) ? `url(${backgroundUrl})` : 'none',
+          backgroundImage: showBackground(index) ? `url(${backgroundUrl})` : 'none',
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center'
@@ -59,14 +60,14 @@
             </div>
           </div>
           <div
-            v-for="(row, ri) in previewRows"
-            :key="'row-' + ri"
+            v-for="(row, ri) in pageRows.filter((_, rowIndex) => selectedRows.has(index * rowsPerPage + rowIndex))"
+            :key="'row-' + index + '-' + ri"
             class="grid"
             :style="rowStyle(ri)"
           >
             <div
               v-for="(key, i) in activeFieldNames"
-              :key="'cell-' + ri + '-' + i"
+              :key="'cell-' + index + '-' + ri + '-' + i"
               class="px-4 py-2 last:border-r-0"
               :style="cellStyle"
             >
@@ -75,10 +76,10 @@
           </div>
         </div>
 
-        <div v-if="images.footer" class="a4-image full-a4">
+        <div v-if="index === paginatedRows.length - 1 && images.footer" class="a4-image full-a4">
           <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
         </div>
-        <div class="footer-bar" :style="footerStyle">1</div>
+        <div class="footer-bar" :style="footerStyle">{{ index + 1 }}</div>
       </div>
     </div>
   </div>
@@ -87,22 +88,22 @@
 <script setup lang="ts">
 defineProps([
   'previewRef', 'toggleFullscreen', 'images', 'coverUrl', 'secondUrl', 'headerUrl', 'backgroundUrl', 'footerUrl',
-  'previewRows', 'showBackground', 'activeFieldNames', 'headerStyle', 'rowStyle', 'cellStyle', 'footerStyle'
+  'paginatedRows', 'showBackground', 'activeFieldNames', 'headerStyle', 'previewRows', 'rowStyle', 'cellStyle', 'footerStyle',
+  'selectedRows', 'rowsPerPage'
 ])
 </script>
 
 <style scoped>
 .a4-page {
   position: relative;
-  width: 100%;
-  min-height: 1123px;
+  width: 794px;
+  height: 1123px;
   background-color: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   margin: 0 auto 2rem;
   page-break-after: always;
   overflow: hidden;
   z-index: 1;
-  height: fit-content;
 }
 .a4-page > *:not(.absolute) {
   position: relative;
