@@ -4,7 +4,7 @@
     <div class="h-auto flex flex-col gap-4">
       <div v-for="(label, key) in imageLabels" :key="key">
         <label class="block text-sm font-medium text-gray-700 mb-1">{{ label }}</label>
-        <input type="file" @change="(e) => handleImageUpload(e, key)" class="file-input w-full" />
+        <input type="file" @change="(e) => handleUpload(e, key)" class="file-input w-full" />
       </div>
     </div>
   </div>
@@ -13,10 +13,13 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
   handleImageUpload: (e: Event, key: string) => void
 }>()
+
+const handleUpload = (e: Event, key: string) => {
+  props.handleImageUpload(e, key)
+}
 
 const imageLabels: Record<string, string> = {
   cover: 'Cover (Required)',
