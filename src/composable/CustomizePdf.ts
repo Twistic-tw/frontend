@@ -18,6 +18,7 @@ export function CustomizePdf() {
   const excelData = ref<Record<string, string>[]>([])
   const activeFieldNames = computed(() => fields.value.filter((f) => f.active).map((f) => f.name))
 
+  // Estilos de tabla
   const colors = ref({
     backgroundColor: '#ffffff',
     backgroundAlpha: 1,
@@ -35,6 +36,7 @@ export function CustomizePdf() {
     showBorders: true,
   })
 
+  // Estilos de título
   const titleSettings = ref({
     size: '2rem',
     align: 'center' as 'left' | 'center' | 'right',
@@ -44,6 +46,7 @@ export function CustomizePdf() {
     fieldAlign: 'left' as 'left' | 'center' | 'right',
   })
 
+  // Imágenes
   const images = ref({
     cover: null as File | null,
     header: null as File | null,
@@ -52,103 +55,198 @@ export function CustomizePdf() {
     footer: null as File | null,
   })
 
+  // Buscar y filtrar
   const searchField = ref('')
   const searchValue = ref('')
   const searchActive = ref(false)
+  const filteredRows = ref<Record<string, string>[]>([])
   const selectedRows = ref<Set<number>>(new Set())
+  const previewRows = computed(() => {
+  // Mostrar SOLO los rows seleccionados, sin importar el filtro activo
+  return paginatedRows.value.flat().filter((_, i) => selectedRows.value.has(i))
+})
 
-  const rowsPerPage = 25
-  const paginatedRows = computed(() => {
-    const chunks = []
-    for (let i = 0; i < excelData.value.length; i += rowsPerPage) {
-      chunks.push(excelData.value.slice(i, i + rowsPerPage))
-    }
-    return chunks
-  })
+// Cambiar el tamaño de la vista previa
+function toggleFullscreen() {
+  const el = previewRef.value
+  if (!el) return
 
-  const allRows = computed(() => paginatedRows.value.flat())
-  const previewRows = computed(() => allRows.value.filter((_, i) => selectedRows.value.has(i)))
-
-  function toggleFullscreen() {
-    const el = previewRef.value
-    if (!el) return
-    if (!document.fullscreenElement) {
-      el.requestFullscreen().catch(err => console.error(`Error entering fullscreen: ${err.message}`))
-    } else {
-      document.exitFullscreen().catch(err => console.error(`Error exiting fullscreen: ${err.message}`))
-    }
+  if (!document.fullscreenElement) {
+    el.requestFullscreen().catch(err => {
+      console.error(`Error entering fullscreen: ${err.message}`)
+    })
+  } else {
+    document.exitFullscreen().catch(err => {
+      console.error(`Error exiting fullscreen: ${err.message}`)
+    })
   }
+}
 
   function filterRows() {
     const field = searchField.value
     const input = searchValue.value.trim().toLowerCase()
+
     if (!field || !input) {
-      selectedRows.value = new Set(allRows.value.map((_, i) => i))
+      filteredRows.value = paginatedRows.value.flat()
+      selectedRows.value = new Set(filteredRows.value.map((_, i) => i))
       return
     }
-    const queries = input.split(',').map(s => s.trim()).filter(Boolean)
-    const nuevaSeleccion = new Set<number>()
-    allRows.value.forEach((row, index) => {
-      const value = row[field]?.toString().toLowerCase() || ''
-      const match = queries.some(query => {
+
+    // Procesar múltiples términos separados por coma
+    const queries = input
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
+
+    // Guardar el estado anterior de selección
+    const oldSelection = new Set(selectedRows.value)
+
+    // Filtrar filas
+    const resultadoFiltrado = paginatedRows.value.flat().filter((row) => {
+      const rawValue = row[field]
+      const value = rawValue?.toString().toLowerCase()
+
+      if (!value) return false
+
+      return queries.some((query) => {
+        // Rango: 10..50
         if (query.includes('..')) {
-          const [min, max] = query.split('..').map(v => v.trim())
+          const [min, max] = query.split('..').map((v) => v.trim())
           const numVal = parseFloat(value)
-          return !isNaN(+min) && !isNaN(+max) ? numVal >= +min && numVal <= +max : value >= min && value <= max
+          const isNumRange = !isNaN(parseFloat(min)) && !isNaN(parseFloat(max))
+
+          if (isNumRange) {
+            return numVal >= parseFloat(min) && numVal <= parseFloat(max)
+          }
+
+          return value >= min && value <= max
         }
-        const op = query.match(/^(>=|<=|!=|>|<|=)(.+)$/)
-        if (op) {
-          const [, operator, target] = op
-          const numValue = parseFloat(value), numTarget = parseFloat(target.trim())
-          return operator === '>' ? numValue > numTarget :
-                 operator === '<' ? numValue < numTarget :
-                 operator === '>=' ? numValue >= numTarget :
-                 operator === '<=' ? numValue <= numTarget :
-                 operator === '=' ? value === target :
-                 value !== target
+
+        // Operadores: >10, <=20, etc.
+        const match = query.match(/^(>=|<=|!=|>|<|=)(.+)$/)
+        if (match) {
+          const operator = match[1]
+          const target = match[2].trim()
+
+          const numValue = parseFloat(value)
+          const numTarget = parseFloat(target)
+
+          switch (operator) {
+            case '>':
+              return numValue > numTarget
+            case '<':
+              return numValue < numTarget
+            case '>=':
+              return numValue >= numTarget
+            case '<=':
+              return numValue <= numTarget
+            case '=':
+              return value === target
+            case '!=':
+              return value !== target
+          }
         }
-        return query.startsWith('*') && query.endsWith('*') ? value.includes(query.slice(1, -1)) :
-               query.startsWith('*') ? value.endsWith(query.slice(1)) :
-               query.endsWith('*') ? value.startsWith(query.slice(0, -1)) :
-               value.includes(query)
+
+        // Comodines
+        if (query.startsWith('*') && query.endsWith('*')) {
+          return value.includes(query.slice(1, -1))
+        } else if (query.startsWith('*')) {
+          return value.endsWith(query.slice(1))
+        } else if (query.endsWith('*')) {
+          return value.startsWith(query.slice(0, -1))
+        }
+
+        return value.includes(query)
       })
-      if (match) nuevaSeleccion.add(index)
     })
-    selectedRows.value = nuevaSeleccion
+
+    // Actualizar resultados filtrados
+    filteredRows.value = resultadoFiltrado
+
+    // Mantener selección anterior cuando sea posible
+    const nuevaSeleccion = new Set<number>()
+    resultadoFiltrado.forEach((_, index) => {
+      if (oldSelection.has(index)) {
+        nuevaSeleccion.add(index)
+      } else {
+        nuevaSeleccion.add(index) // mostrar por defecto
+      }
+    })
+
     searchActive.value = true
+
+    selectedRows.value = nuevaSeleccion
   }
 
+  // Seleccionar todas las filas filtradas
   function selectAllFiltered() {
-    allRows.value.forEach((_, index) => selectedRows.value.add(index))
+    filteredRows.value.forEach((_, index) => {
+      selectedRows.value.add(index)
+    })
   }
 
+  // Deseleccionar todas las filas filtradas
   function deselectAllFiltered() {
-    allRows.value.forEach((_, index) => selectedRows.value.delete(index))
+    filteredRows.value.forEach((_, index) => {
+      selectedRows.value.delete(index)
+    })
   }
 
+  // Seleccionar filas
   function toggleRow(index: number) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    selectedRows.value.has(index) ? selectedRows.value.delete(index) : selectedRows.value.add(index)
+    if (selectedRows.value.has(index)) {
+      selectedRows.value.delete(index)
+    } else {
+      selectedRows.value.add(index)
+    }
   }
 
+  // Limpiar búsqueda dinámica
   function clearSearch() {
     searchField.value = ''
     searchValue.value = ''
-    selectedRows.value = new Set(allRows.value.map((_, i) => i))
+    selectedRows.value.clear()
+
+    const allRows = paginatedRows.value.flat()
+    filteredRows.value = allRows
+    selectedRows.value = new Set(allRows.map((_, i) => i))
+
+    // Ocultar la tabla al limpiar
     searchActive.value = false
   }
 
-  const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '')
-  const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '')
-  const headerUrl = computed(() => images.value.header ? URL.createObjectURL(images.value.header) : '')
-  const backgroundUrl = computed(() => images.value.background ? URL.createObjectURL(images.value.background) : '')
-  const footerUrl = computed(() => images.value.footer ? URL.createObjectURL(images.value.footer) : '')
+  // Imágenes
+  const coverUrl = computed(() =>
+    images.value.cover ? URL.createObjectURL(images.value.cover) : '',
+  )
+  const secondUrl = computed(() =>
+    images.value.second ? URL.createObjectURL(images.value.second) : '',
+  )
+  const headerUrl = computed(() =>
+    images.value.header ? URL.createObjectURL(images.value.header) : '',
+  )
+  const backgroundUrl = computed(() =>
+    images.value.background ? URL.createObjectURL(images.value.background) : '',
+  )
+  const footerUrl = computed(() =>
+    images.value.footer ? URL.createObjectURL(images.value.footer) : '',
+  )
 
+  // Obtener el token XSRF
   const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
+
+  // Obtener el ID del usuario
   const userId = ref<number | null>(null)
 
-  const hexToRgba = (hex: string, alpha: number) => `rgba(${parseInt(hex.slice(1, 3), 16)}, ${parseInt(hex.slice(3, 5), 16)}, ${parseInt(hex.slice(5, 7), 16)}, ${alpha})`
+  // Convertir hex a rgba
+  const hexToRgba = (hex: string, alpha: number) => {
+    const r = parseInt(hex.slice(1, 3), 16)
+    const g = parseInt(hex.slice(3, 5), 16)
+    const b = parseInt(hex.slice(5, 7), 16)
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`
+  }
 
+  // vincular colores a variable
   const computedColors = computed(() => ({
     background: hexToRgba(colors.value.backgroundColor, colors.value.backgroundAlpha),
     rowPrimary: hexToRgba(colors.value.rowPrimaryColor, colors.value.rowPrimaryAlpha),
@@ -160,47 +258,91 @@ export function CustomizePdf() {
     footerText: colors.value.footerText,
   }))
 
-  const headerStyle = computed(() => ({
+  // Estilos de cabecera
+  const headerStyle = computed<Record<string, string>>(() => ({
     backgroundColor: computedColors.value.header,
     color: computedColors.value.headerText,
-    gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`
+    gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`,
   }))
 
+  // Estilos de fila
   const rowStyle = (ri: number): Record<string, string> => ({
     gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`,
-    backgroundColor: ri % 2 === 0 ? computedColors.value.rowPrimary : computedColors.value.rowAlternate,
+    backgroundColor:
+      ri % 2 === 0 ? computedColors.value.rowPrimary : computedColors.value.rowAlternate,
     color: computedColors.value.text,
     fontFamily: titleSettings.value.fieldFont,
     fontSize: titleSettings.value.fieldSize,
     textAlign: titleSettings.value.fieldAlign,
   })
 
-  const cellStyle = computed(() => ({ borderRight: colors.value.showBorders ? '1px solid #ccc' : 'none' }))
+  // Estilos de celda
+  const cellStyle = computed(() => ({
+    borderRight: colors.value.showBorders ? '1px solid #ccc' : 'none',
+  }))
 
-  const footerStyle = computed<CSSProperties>(() => ({ backgroundColor: computedColors.value.footer, color: computedColors.value.footerText, textAlign: 'right', fontSize: '12px', fontStyle: 'italic', padding: '10px 30px', position: 'absolute', bottom: '0', left: '0', right: '0' }))
+  // Estilos de pie de página
+  const footerStyle = computed<CSSProperties>(() => ({
+    backgroundColor: computedColors.value.footer,
+    color: computedColors.value.footerText,
+    textAlign: 'right',
+    fontSize: '12px',
+    fontStyle: 'italic',
+    padding: '10px 30px',
+    position: 'absolute',
+    bottom: '0',
+    left: '0',
+    right: '0',
+  }))
 
+  // Paginación
+  const rowsPerPage = 25
+  const paginatedRows = computed(() => {
+    const chunks = []
+    for (let i = 0; i < excelData.value.length; i += rowsPerPage) {
+      chunks.push(excelData.value.slice(i, i + rowsPerPage))
+    }
+    return chunks
+  })
+
+  // Limitar la cantidad de filas a mostrar
   const limitedChunk = computed(() => paginatedRows.value[0]?.slice(0, 8) ?? [])
-  const showBackground = (index: number): boolean => !!images.value.background && !(!!images.value.footer && index === paginatedRows.value.length - 1)
 
+  // Mostrar fondo
+  const showBackground = (index: number): boolean => {
+    const hasFooter = !!images.value.footer
+    const isLast = index === paginatedRows.value.length - 1
+    return hasFooter && isLast ? false : !!images.value.background
+  }
+
+  // Manejar la carga de imágenes
   const handleImageUpload = (e: Event, type: keyof typeof images.value) => {
     const file = (e.target as HTMLInputElement).files?.[0] || null
+    // Validar si el archivo existe
     if (!file) return
+
     const validTypes = ['image/jpeg', 'image/png', 'image/jpg']
     const maxSizeMB = 2
+
+    // Validar el tipo de archivo
     if (!validTypes.includes(file.type)) {
       toast.error(`"${file.name}" is not a valid image type. Please, use JPG or PNG.`)
       ;(e.target as HTMLInputElement).value = ''
       return
     }
+
+    // Validar el tamaño del archivo
     if (file.size > maxSizeMB * 1024 * 1024) {
       const sizeInMB = (file.size / (1024 * 1024)).toFixed(2)
       toast.error(`"${file.name}" weighs ${sizeInMB}MB. Maximum allowed: ${maxSizeMB}MB.`)
       ;(e.target as HTMLInputElement).value = ''
       return
     }
+
     images.value[type] = file
   }
 
+  // Obtener el token XSRF
   const fetchUserId = async () => {
     const xsrfToken = getXsrfToken()
     if (!xsrfToken) return
@@ -216,12 +358,16 @@ export function CustomizePdf() {
     }
   }
 
+  // Obtener plantilla
   const fetchTemplate = async () => {
     try {
       const xsrfToken = getXsrfToken()
       const res = await axios.get(`${import.meta.env.VITE_URL}/Templates/${templateId}/data`, {
         withCredentials: true,
-        headers: { 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken), Accept: 'application/json' },
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          Accept: 'application/json',
+        },
       })
       templateName.value = res.data.template.name
       fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }))
@@ -235,95 +381,136 @@ export function CustomizePdf() {
     }
   }
 
+  // Enviar al backend
   const sendToBackend = async () => {
-  if (!userId.value || !images.value.cover || !images.value.header) {
-    toast.error('Please upload required images and ensure user is authenticated.')
-    generating.value = false
-    return
+    if (!userId.value || !images.value.cover || !images.value.header) {
+      toast.error('Please upload required images and ensure user is authenticated.')
+      generating.value = false
+      return
+    }
+
+    const xsrfToken = getXsrfToken()
+    if (!xsrfToken) {
+      toast.error('No CSRF token found.')
+      return
+    }
+
+    generating.value = true
+    try {
+      const formData = new FormData()
+      formData.append('id_user', userId.value.toString())
+      formData.append('template_name', templateName.value)
+      formData.append('fields', JSON.stringify(activeFieldNames.value))
+      formData.append('excel_data', JSON.stringify(excelData.value))
+      formData.append(
+        'style',
+        JSON.stringify({
+          background: computedColors.value.background,
+          rowPrimary: computedColors.value.rowPrimary,
+          rowAlternate: computedColors.value.rowAlternate,
+          text: computedColors.value.text,
+          header: computedColors.value.header,
+          headerText: computedColors.value.headerText,
+          footerColor: computedColors.value.footer,
+          footerTextColor: computedColors.value.footerText,
+          size: titleSettings.value.size,
+          align: titleSettings.value.align,
+          fieldFont: titleSettings.value.fieldFont,
+          fieldSize: titleSettings.value.fieldSize,
+          borderColor: '#000000',
+          borderWidth: '1px',
+          showBorders: colors.value.showBorders,
+        }),
+      )
+
+      Object.entries(images.value).forEach(([key, file]) => {
+        if (file) formData.append(key, file)
+      })
+
+      const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          Accept: 'application/json',
+        },
+        withCredentials: true,
+        responseType: 'blob',
+      })
+
+      const blob = new Blob([res.data], { type: 'application/pdf' })
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(blob)
+      link.download = `${templateName.value}.pdf`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      toast.error('Error generating PDF.')
+      console.error(err)
+    } finally {
+      generating.value = false
+    }
   }
-
-  const xsrfToken = getXsrfToken()
-  if (!xsrfToken) {
-    toast.error('No CSRF token found.')
-    return
-  }
-
-  generating.value = true
-  try {
-    const formData = new FormData()
-    formData.append('id_user', userId.value.toString())
-    formData.append('template_name', templateName.value)
-    formData.append('fields', JSON.stringify(activeFieldNames.value))
-    formData.append('excel_data', JSON.stringify(excelData.value))
-    formData.append(
-      'style',
-      JSON.stringify({
-        background: computedColors.value.background,
-        rowPrimary: computedColors.value.rowPrimary,
-        rowAlternate: computedColors.value.rowAlternate,
-        text: computedColors.value.text,
-        header: computedColors.value.header,
-        headerText: computedColors.value.headerText,
-        footerColor: computedColors.value.footer,
-        footerTextColor: computedColors.value.footerText,
-        size: titleSettings.value.size,
-        align: titleSettings.value.align,
-        fieldFont: titleSettings.value.fieldFont,
-        fieldSize: titleSettings.value.fieldSize,
-        borderColor: '#000000',
-        borderWidth: '1px',
-        showBorders: colors.value.showBorders,
-      }),
-    )
-
-    Object.entries(images.value).forEach(([key, file]) => {
-      if (file) formData.append(key, file)
-    })
-
-    const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
-      headers: {
-        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-        Accept: 'application/json',
-      },
-      withCredentials: true,
-      responseType: 'blob',
-    })
-
-    const blob = new Blob([res.data], { type: 'application/pdf' })
-    const link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
-    link.download = `${templateName.value}.pdf`
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    toast.error('Error generating PDF.')
-    console.error(err)
-  } finally {
-    generating.value = false
-  }
-}
 
   onMounted(() => {
     window.addEventListener('resize', () => (windowWidth.value = window.innerWidth))
     fetchTemplate()
     fetchUserId()
-  })
+    watch(
+      () => excelData.value,
+      (data) => {
+        filteredRows.value = data
+        selectedRows.value = new Set(data.map((_, i) => i))
+      },
+      { immediate: true }
+    )
+      })
 
   onUnmounted(() => {
     window.removeEventListener('resize', () => (windowWidth.value = window.innerWidth))
   })
 
   return {
-    templateName, fields, colors, titleSettings, images,
-    coverUrl, secondUrl, headerUrl, backgroundUrl, footerUrl,
-    excelData, activeFieldNames, loading, error, generating, windowWidth,
-    computedColors, headerStyle, rowStyle, cellStyle, footerStyle,
-    paginatedRows, limitedChunk, previewRows,
-    searchField, searchValue, searchActive, selectedRows, allRows,
-    filterRows, selectAllFiltered, deselectAllFiltered,
-    toggleRow, clearSearch, showBackground, handleImageUpload,
-    sendToBackend, fetchTemplate, userId, fetchUserId, toggleFullscreen
+    templateName,
+    fields,
+    colors,
+    titleSettings,
+    images,
+    coverUrl,
+    secondUrl,
+    headerUrl,
+    backgroundUrl,
+    footerUrl,
+    excelData,
+    activeFieldNames,
+    loading,
+    error,
+    generating,
+    windowWidth,
+    computedColors,
+    headerStyle,
+    rowStyle,
+    cellStyle,
+    footerStyle,
+    paginatedRows,
+    limitedChunk,
+    searchField,
+    searchValue,
+    searchActive,
+    filteredRows,
+    selectedRows,
+    previewRows,
+    filterRows,
+    selectAllFiltered,
+    deselectAllFiltered,
+    toggleRow,
+    clearSearch,
+    showBackground,
+    handleImageUpload,
+    sendToBackend,
+    fetchTemplate,
+    userId,
+    fetchUserId,
+    toggleFullscreen,
   }
 }
