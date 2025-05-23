@@ -55,7 +55,6 @@ export function CustomizePdf() {
   const searchField = ref('')
   const searchValue = ref('')
   const searchActive = ref(false)
-  const filteredRows = ref<Record<string, string>[]>([])
   const selectedRows = ref<Set<number>>(new Set())
 
   const rowsPerPage = 25
@@ -69,11 +68,6 @@ export function CustomizePdf() {
 
   const allRows = computed(() => paginatedRows.value.flat())
   const previewRows = computed(() => allRows.value.filter((_, i) => selectedRows.value.has(i)))
-
-  function resetSelection(data: Record<string, string>[]) {
-    filteredRows.value = data
-    selectedRows.value = new Set(data.map((_, i) => i))
-  }
 
   function toggleFullscreen() {
     const el = previewRef.value
@@ -89,22 +83,22 @@ export function CustomizePdf() {
     const field = searchField.value
     const input = searchValue.value.trim().toLowerCase()
     if (!field || !input) {
-      resetSelection(allRows.value)
+      selectedRows.value = new Set(allRows.value.map((_, i) => i))
       return
     }
     const queries = input.split(',').map(s => s.trim()).filter(Boolean)
-    const oldSelection = new Set(selectedRows.value)
-    const resultadoFiltrado = allRows.value.filter(row => {
+    const nuevaSeleccion = new Set<number>()
+    allRows.value.forEach((row, index) => {
       const value = row[field]?.toString().toLowerCase() || ''
-      return queries.some(query => {
+      const match = queries.some(query => {
         if (query.includes('..')) {
           const [min, max] = query.split('..').map(v => v.trim())
           const numVal = parseFloat(value)
           return !isNaN(+min) && !isNaN(+max) ? numVal >= +min && numVal <= +max : value >= min && value <= max
         }
-        const match = query.match(/^(>=|<=|!=|>|<|=)(.+)$/)
-        if (match) {
-          const [, operator, target] = match
+        const op = query.match(/^(>=|<=|!=|>|<|=)(.+)$/)
+        if (op) {
+          const [, operator, target] = op
           const numValue = parseFloat(value), numTarget = parseFloat(target.trim())
           return operator === '>' ? numValue > numTarget :
                  operator === '<' ? numValue < numTarget :
@@ -118,19 +112,31 @@ export function CustomizePdf() {
                query.endsWith('*') ? value.startsWith(query.slice(0, -1)) :
                value.includes(query)
       })
+      if (match) nuevaSeleccion.add(index)
     })
-    filteredRows.value = resultadoFiltrado
-    const nuevaSeleccion = new Set<number>()
-    resultadoFiltrado.forEach((_, index) => nuevaSeleccion.add(index))
     selectedRows.value = nuevaSeleccion
     searchActive.value = true
   }
 
-  function selectAllFiltered() { filteredRows.value.forEach((_, index) => selectedRows.value.add(index)) }
-  function deselectAllFiltered() { filteredRows.value.forEach((_, index) => selectedRows.value.delete(index)) }
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  function toggleRow(index: number) { selectedRows.value.has(index) ? selectedRows.value.delete(index) : selectedRows.value.add(index) }
-  function clearSearch() { searchField.value = ''; searchValue.value = ''; resetSelection(allRows.value); searchActive.value = false }
+  function selectAllFiltered() {
+    allRows.value.forEach((_, index) => selectedRows.value.add(index))
+  }
+
+  function deselectAllFiltered() {
+    allRows.value.forEach((_, index) => selectedRows.value.delete(index))
+  }
+
+  function toggleRow(index: number) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    selectedRows.value.has(index) ? selectedRows.value.delete(index) : selectedRows.value.add(index)
+  }
+
+  function clearSearch() {
+    searchField.value = ''
+    searchValue.value = ''
+    selectedRows.value = new Set(allRows.value.map((_, i) => i))
+    searchActive.value = false
+  }
 
   const coverUrl = computed(() => images.value.cover ? URL.createObjectURL(images.value.cover) : '')
   const secondUrl = computed(() => images.value.second ? URL.createObjectURL(images.value.second) : '')
@@ -142,6 +148,7 @@ export function CustomizePdf() {
   const userId = ref<number | null>(null)
 
   const hexToRgba = (hex: string, alpha: number) => `rgba(${parseInt(hex.slice(1, 3), 16)}, ${parseInt(hex.slice(3, 5), 16)}, ${parseInt(hex.slice(5, 7), 16)}, ${alpha})`
+
   const computedColors = computed(() => ({
     background: hexToRgba(colors.value.backgroundColor, colors.value.backgroundAlpha),
     rowPrimary: hexToRgba(colors.value.rowPrimaryColor, colors.value.rowPrimaryAlpha),
@@ -153,10 +160,10 @@ export function CustomizePdf() {
     footerText: colors.value.footerText,
   }))
 
-  const headerStyle = computed<Record<string, string>>(() => ({
+  const headerStyle = computed(() => ({
     backgroundColor: computedColors.value.header,
     color: computedColors.value.headerText,
-    gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`,
+    gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(0, 1fr))`
   }))
 
   const rowStyle = (ri: number): Record<string, string> => ({
@@ -169,12 +176,13 @@ export function CustomizePdf() {
   })
 
   const cellStyle = computed(() => ({ borderRight: colors.value.showBorders ? '1px solid #ccc' : 'none' }))
+
   const footerStyle = computed<CSSProperties>(() => ({ backgroundColor: computedColors.value.footer, color: computedColors.value.footerText, textAlign: 'right', fontSize: '12px', fontStyle: 'italic', padding: '10px 30px', position: 'absolute', bottom: '0', left: '0', right: '0' }))
 
   const limitedChunk = computed(() => paginatedRows.value[0]?.slice(0, 8) ?? [])
   const showBackground = (index: number): boolean => !!images.value.background && !(!!images.value.footer && index === paginatedRows.value.length - 1)
 
-  function handleImageUpload(e: Event, type: keyof typeof images.value) {
+  const handleImageUpload = (e: Event, type: keyof typeof images.value) => {
     const file = (e.target as HTMLInputElement).files?.[0] || null
     if (!file) return
     const validTypes = ['image/jpeg', 'image/png', 'image/jpg']
@@ -193,7 +201,7 @@ export function CustomizePdf() {
     images.value[type] = file
   }
 
-  async function fetchUserId() {
+  const fetchUserId = async () => {
     const xsrfToken = getXsrfToken()
     if (!xsrfToken) return
     try {
@@ -208,7 +216,7 @@ export function CustomizePdf() {
     }
   }
 
-  async function fetchTemplate() {
+  const fetchTemplate = async () => {
     try {
       const xsrfToken = getXsrfToken()
       const res = await axios.get(`${import.meta.env.VITE_URL}/Templates/${templateId}/data`, {
@@ -218,6 +226,7 @@ export function CustomizePdf() {
       templateName.value = res.data.template.name
       fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }))
       excelData.value = res.data.excel_data || []
+      selectedRows.value = new Set(excelData.value.map((_, i) => i))
     } catch (err) {
       console.error('Error loading data:', err)
       error.value = true
@@ -226,25 +235,29 @@ export function CustomizePdf() {
     }
   }
 
-  async function sendToBackend() {
-    if (!userId.value || !images.value.cover || !images.value.header) {
-      toast.error('Please upload required images and ensure user is authenticated.')
-      generating.value = false
-      return
-    }
-    const xsrfToken = getXsrfToken()
-    if (!xsrfToken) {
-      toast.error('No CSRF token found.')
-      return
-    }
-    generating.value = true
-    try {
-      const formData = new FormData()
-      formData.append('id_user', userId.value.toString())
-      formData.append('template_name', templateName.value)
-      formData.append('fields', JSON.stringify(activeFieldNames.value))
-      formData.append('excel_data', JSON.stringify(excelData.value))
-      formData.append('style', JSON.stringify({
+  const sendToBackend = async () => {
+  if (!userId.value || !images.value.cover || !images.value.header) {
+    toast.error('Please upload required images and ensure user is authenticated.')
+    generating.value = false
+    return
+  }
+
+  const xsrfToken = getXsrfToken()
+  if (!xsrfToken) {
+    toast.error('No CSRF token found.')
+    return
+  }
+
+  generating.value = true
+  try {
+    const formData = new FormData()
+    formData.append('id_user', userId.value.toString())
+    formData.append('template_name', templateName.value)
+    formData.append('fields', JSON.stringify(activeFieldNames.value))
+    formData.append('excel_data', JSON.stringify(excelData.value))
+    formData.append(
+      'style',
+      JSON.stringify({
         background: computedColors.value.background,
         rowPrimary: computedColors.value.rowPrimary,
         rowAlternate: computedColors.value.rowAlternate,
@@ -260,48 +273,57 @@ export function CustomizePdf() {
         borderColor: '#000000',
         borderWidth: '1px',
         showBorders: colors.value.showBorders,
-      }))
-      Object.entries(images.value).forEach(([key, file]) => file && formData.append(key, file))
-      const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
-        headers: { 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken), Accept: 'application/json' },
-        withCredentials: true,
-        responseType: 'blob',
-      })
-      const blob = new Blob([res.data], { type: 'application/pdf' })
-      const link = document.createElement('a')
-      link.href = URL.createObjectURL(blob)
-      link.download = `${templateName.value}.pdf`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-    } catch (err) {
-      toast.error('Error generating PDF.')
-      console.error(err)
-    } finally {
-      generating.value = false
-    }
+      }),
+    )
+
+    Object.entries(images.value).forEach(([key, file]) => {
+      if (file) formData.append(key, file)
+    })
+
+    const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        Accept: 'application/json',
+      },
+      withCredentials: true,
+      responseType: 'blob',
+    })
+
+    const blob = new Blob([res.data], { type: 'application/pdf' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = `${templateName.value}.pdf`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    toast.error('Error generating PDF.')
+    console.error(err)
+  } finally {
+    generating.value = false
   }
-
-  watch(excelData, (data) => resetSelection(data), { immediate: true })
-
-  const updateWidth = () => (windowWidth.value = window.innerWidth)
+}
 
   onMounted(() => {
-    window.addEventListener('resize', updateWidth)
-    Promise.all([fetchTemplate(), fetchUserId()])
+    window.addEventListener('resize', () => (windowWidth.value = window.innerWidth))
+    fetchTemplate()
+    fetchUserId()
   })
 
   onUnmounted(() => {
-    window.removeEventListener('resize', updateWidth)
+    window.removeEventListener('resize', () => (windowWidth.value = window.innerWidth))
   })
 
   return {
-    templateName, fields, colors, titleSettings, images, coverUrl, secondUrl, headerUrl,
-    backgroundUrl, footerUrl, excelData, activeFieldNames, loading, error, generating,
-    windowWidth, computedColors, headerStyle, rowStyle, cellStyle, footerStyle,
-    paginatedRows, allRows, previewRows, searchField, searchValue, searchActive,
-    filteredRows, selectedRows, filterRows, selectAllFiltered, deselectAllFiltered,
-    toggleRow, clearSearch, showBackground, handleImageUpload, sendToBackend,
-    fetchTemplate, userId, fetchUserId, toggleFullscreen
+    templateName, fields, colors, titleSettings, images,
+    coverUrl, secondUrl, headerUrl, backgroundUrl, footerUrl,
+    excelData, activeFieldNames, loading, error, generating, windowWidth,
+    computedColors, headerStyle, rowStyle, cellStyle, footerStyle,
+    paginatedRows, limitedChunk, previewRows,
+    searchField, searchValue, searchActive, selectedRows,
+    filterRows, selectAllFiltered, deselectAllFiltered,
+    toggleRow, clearSearch, showBackground, handleImageUpload,
+    sendToBackend, fetchTemplate, userId, fetchUserId, toggleFullscreen
   }
 }
