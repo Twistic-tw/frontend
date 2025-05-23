@@ -33,16 +33,15 @@
         <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
       </div>
 
-      <!-- Páginas de contenido -->
+      <!-- Contenido filtrado como una sola página -->
       <div
-        v-for="(chunk, index) in paginatedRows"
-        :key="'page-' + index"
+        v-if="previewRows.length"
         class="a4-page"
         :style="{
-          backgroundImage: showBackground(index) ? `url(${backgroundUrl})` : 'none',
+          backgroundImage: showBackground(0) ? `url(${backgroundUrl})` : 'none',
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
+          backgroundPosition: 'center'
         }"
       >
         <div v-if="images.header" class="mb-4" style="height: 120px; overflow: hidden">
@@ -61,13 +60,13 @@
           </div>
           <div
             v-for="(row, ri) in previewRows"
-            :key="'row-' + index + '-' + ri"
+            :key="'row-' + ri"
             class="grid"
             :style="rowStyle(ri)"
           >
             <div
               v-for="(key, i) in activeFieldNames"
-              :key="'cell-' + index + '-' + ri + '-' + i"
+              :key="'cell-' + ri + '-' + i"
               class="px-4 py-2 last:border-r-0"
               :style="cellStyle"
             >
@@ -76,10 +75,10 @@
           </div>
         </div>
 
-        <div v-if="index === paginatedRows.length - 1 && images.footer" class="a4-image full-a4">
+        <div v-if="images.footer" class="a4-image full-a4">
           <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
         </div>
-        <div class="footer-bar" :style="footerStyle">{{ index + 1 }}</div>
+        <div class="footer-bar" :style="footerStyle">1</div>
       </div>
     </div>
   </div>
@@ -88,7 +87,7 @@
 <script setup lang="ts">
 defineProps([
   'previewRef', 'toggleFullscreen', 'images', 'coverUrl', 'secondUrl', 'headerUrl', 'backgroundUrl', 'footerUrl',
-  'paginatedRows', 'showBackground', 'activeFieldNames', 'headerStyle', 'previewRows', 'rowStyle', 'cellStyle', 'footerStyle'
+  'previewRows', 'showBackground', 'activeFieldNames', 'headerStyle', 'rowStyle', 'cellStyle', 'footerStyle'
 ])
 </script>
 
