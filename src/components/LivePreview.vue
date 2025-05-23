@@ -87,14 +87,19 @@ const {
           backgroundImage: showBackground(index) ? `url(${backgroundUrl})` : 'none',
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center',
         }"
       >
+        <!-- Cabecera -->
         <div v-if="images.header" class="mb-4" style="height: 120px; overflow: hidden">
           <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-b-lg" style="height: 120px" />
         </div>
 
-        <div class="w-full text-sm border border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow">
+        <!-- Tabla con padding para dejar espacio al footer -->
+        <div
+          class="w-full text-sm border border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow"
+          style="padding-bottom: 60px;"
+        >
           <div class="grid font-medium" :style="headerStyle">
             <div
               v-for="(key, i) in activeFieldNames"
@@ -121,6 +126,8 @@ const {
             </div>
           </div>
         </div>
+
+        <!-- Footer fijo en cada página -->
         <div class="footer-bar" :style="footerStyle">{{ index + 1 }}</div>
       </div>
       <!-- Página extra solo con footer -->
