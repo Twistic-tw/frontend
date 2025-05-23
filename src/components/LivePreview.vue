@@ -35,7 +35,7 @@
 
       <!-- Páginas de contenido -->
       <div
-        v-for="(pageRows, index) in paginatedRows"
+        v-for="(chunk, index) in previewRows"
         :key="'page-' + index"
         class="a4-page"
         :style="{
@@ -60,7 +60,7 @@
             </div>
           </div>
           <div
-            v-for="(row, ri) in pageRows.filter((_, rowIndex) => selectedRows.has(index * rowsPerPage + rowIndex))"
+            v-for="(row, ri) in chunk.filter((_, rowIndex) => selectedRows.has(index * rowsPerPage + rowIndex))"
             :key="'row-' + index + '-' + ri"
             class="grid"
             :style="rowStyle(ri)"

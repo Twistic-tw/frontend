@@ -62,9 +62,14 @@ export function CustomizePdf() {
   const filteredRows = ref<Record<string, string>[]>([])
   const selectedRows = ref<Set<number>>(new Set())
   const previewRows = computed(() => {
-  // Mostrar SOLO los rows seleccionados, sin importar el filtro activo
-  return paginatedRows.value.flat().filter((_, i) => selectedRows.value.has(i))
-})
+  const selected = excelData.value.filter((_, i) => selectedRows.value.has(i));
+  const pages = [];
+  for (let i = 0; i < selected.length; i += rowsPerPage) {
+    pages.push(selected.slice(i, i + rowsPerPage));
+  }
+  return pages;
+});
+
 
 // Cambiar el tamaño de la vista previa
 function toggleFullscreen() {
