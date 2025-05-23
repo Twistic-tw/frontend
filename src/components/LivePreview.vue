@@ -122,7 +122,10 @@ const {
           </div>
         </div>
 
-        <div v-if="index === previewRows.length - 1 && images.footer" class="a4-image full-a4">
+        <div
+          v-if="images.footer && chunk.length > 0 && index === previewRows.length - 1"
+          class="a4-image full-a4"
+        >
           <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
         </div>
         <div class="footer-bar" :style="footerStyle">{{ index + 1 }}</div>
