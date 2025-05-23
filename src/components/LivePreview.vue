@@ -122,11 +122,11 @@ const {
           </div>
         </div>
 
-        <div
-          v-if="images.footer && chunk.length > 0 && index === previewRows.length - 1"
-          class="a4-image full-a4"
-        >
-          <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
+        <!-- Página extra solo con footer -->
+        <div v-if="images.footer" class="a4-page">
+          <div class="a4-image full-a4">
+            <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
+          </div>
         </div>
         <div class="footer-bar" :style="footerStyle">{{ index + 1 }}</div>
       </div>
