@@ -27,7 +27,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>
             <select
-              :value="searchField"
+              :value="searchField || ''"
               @change="$emit('update:searchField', ($event.target as HTMLSelectElement).value); props.filterRows()"
               class="w-full p-2 border rounded"
             >
