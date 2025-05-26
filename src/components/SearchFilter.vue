@@ -121,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineEmits, defineProps } from 'vue'
+import { computed, defineEmits, withDefaults, defineProps } from 'vue'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const emit = defineEmits<{
@@ -130,11 +130,11 @@ const emit = defineEmits<{
   (e: 'toggle', id: string): void
 }>()
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   fields: { name: string }[]
-  searchField: string
-  searchValue: string
-  searchActive: boolean
+  searchField?: string
+  searchValue?: string
+  searchActive?: boolean
   filteredRows: Record<string, string>[]
   selectedRows: Set<number>
   filterRows: () => void
@@ -142,12 +142,18 @@ const props = defineProps<{
   selectAllFiltered: () => void
   deselectAllFiltered: () => void
   toggleRow: (index: number) => void
-  activeCard: string | null
+  activeCard?: string | null
   cardId: string
-}>()
+}>(), {
+  searchField: '',
+  searchValue: '',
+  searchActive: false,
+  activeCard: null,
+})
 
 const isOpen = computed(() => props.activeCard === props.cardId)
 </script>
+
 
 <style scoped>
 .expand-enter-active,
