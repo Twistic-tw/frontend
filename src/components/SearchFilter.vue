@@ -147,8 +147,14 @@ const props = defineProps<{
 const localSearchField = ref(props.searchField)
 const localSearchValue = ref(props.searchValue)
 
-watch(() => props.searchField, (val) => localSearchField.value = val)
-watch(() => props.searchValue, (val) => localSearchValue.value = val)
+watch(() => props.searchField, (val) => {
+  if (val != null) localSearchField.value = val
+})
+
+watch(() => props.searchValue, (val) => {
+  if (val != null) localSearchValue.value = val
+})
+
 
 watch(localSearchField, (val) => {
   emit('update:searchField', val)
