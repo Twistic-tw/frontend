@@ -7,7 +7,7 @@
       @click="$emit('toggle', cardId)"
     >
       <h2 class="text-xl font-bold text-gray-800">
-        Customize Style
+        Styles Options
       </h2>
       <svg
         :class="{ 'rotate-180': isOpen }"
