@@ -121,6 +121,12 @@
 <script setup lang="ts">
 import { computed, ref, watch, defineEmits, defineProps } from 'vue'
 
+const emit = defineEmits<{
+  (e: 'update:searchField', value: string): void
+  (e: 'update:searchValue', value: string): void
+  (e: 'toggle', id: string): void
+}>()
+
 const props = defineProps<{
   fields: { name: string }[]
   searchField: string
@@ -135,21 +141,14 @@ const props = defineProps<{
   toggleRow: (index: number) => void
   activeCard: string | null
   cardId: string
-
 }>()
+
 
 const localSearchField = ref(props.searchField)
 const localSearchValue = ref(props.searchValue)
 
 watch(() => props.searchField, (val) => localSearchField.value = val)
 watch(() => props.searchValue, (val) => localSearchValue.value = val)
-
-const emit = defineEmits<{
-  (e: 'update:searchField', value: string): void
-  (e: 'update:searchValue', value: string): void
-  (e: 'toggle', id: string): void
-}>()
-
 
 watch(localSearchField, (val) => {
   emit('update:searchField', val)
