@@ -6,14 +6,6 @@
       @click="showModal = true"
     >
       <h2 class="text-xl font-bold text-gray-800">Search & Filter Data</h2>
-      <svg
-        class="w-5 h-5 text-gray-600 transition-transform duration-300"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-      </svg>
     </div>
 
     <!-- MODAL CON TRANSICIÓN -->
@@ -106,12 +98,16 @@
                   class="hover:bg-gray-50"
                 >
                   <td class="px-4 py-2">
-                    <input
-                      type="checkbox"
-                      :checked="selectedRows.includes(index)"
-                      @change="handleToggle(index)"
-                      class="accent-indigo-600 w-4 h-4"
-                    />
+                    <label class="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        :checked="selectedRows.includes(index)"
+                        @change="handleToggle(index)"
+                        class="sr-only peer"
+                      />
+                      <div class="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-[#1e2939] transition-all"></div>
+                      <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
+                    </label>
                   </td>
                   <td
                     v-for="key in fields.map(f => f.name)"
