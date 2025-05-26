@@ -22,7 +22,7 @@
 
     <!-- Contenido expandible -->
     <Transition name="expand">
-      <div v-if="isOpen" class="p-6 pt-0 flex flex-col gap-4">
+      <div v-if="isOpen" class="p-6 flex flex-col gap-4">
         <!-- ... -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">PDF Background</label>

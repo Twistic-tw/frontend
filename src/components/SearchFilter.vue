@@ -22,7 +22,7 @@
 
     <!-- Contenido expandible -->
     <Transition name="expand">
-      <div v-if="isOpen" class="p-6 pt-0">
+      <div v-if="isOpen" class="p-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>

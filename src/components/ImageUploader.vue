@@ -21,7 +21,7 @@
 
     <!-- Contenido expandible -->
     <Transition name="expand">
-      <div v-if="isOpen" class="p-6 pt-0">
+      <div v-if="isOpen" class="p-6">
         <div class="h-auto flex flex-col gap-4">
           <div v-for="(label, key) in imageLabels" :key="key">
             <label class="block text-sm font-medium text-gray-700 mb-1">{{ label }}</label>
