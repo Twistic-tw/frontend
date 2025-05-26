@@ -68,6 +68,32 @@
               </button>
             </div>
           </div>
+          <!-- Ordenar campos -->
+           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Order by Field</label>
+              <select
+                v-model="sortField"
+                class="w-full p-2 border rounded shadow-sm"
+              >
+                <option disabled value="">Order by: </option>
+                <option v-for="field in fields" :key="field.name" :value="field.name">
+                  {{ field.name }}
+                </option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Order direction</label>
+              <select
+                v-model="sortDirection"
+                class="w-full p-2 border rounded shadow-sm"
+              >
+                <option value="asc">Upward</option>
+                <option value="desc">Falling</option>
+              </select>
+            </div>
+          </div>
 
           <!-- Tabla moderna -->
           <div v-if="filteredRows.length" class="overflow-auto border rounded-lg">
@@ -106,7 +132,7 @@
               </thead>
               <tbody class="divide-y divide-gray-100">
                 <tr
-                  v-for="(row, index) in filteredRows"
+                  v-for="(row, index) in sortedRows"
                   :key="'row-' + index"
                   class="hover:bg-gray-50"
                 >
@@ -147,6 +173,25 @@
 import { ref, defineEmits, defineProps, withDefaults, onMounted, onBeforeUnmount } from 'vue'
 
 const showModal = ref(false)
+const sortField = ref('')
+const sortDirection = ref<'asc' | 'desc'>('asc')
+
+// Función para ordenar los resultados
+const sortedRows = computed(() => {
+  if (!sortField.value) return filteredRows
+
+  return [...filteredRows].sort((a, b) => {
+    const aVal = a[sortField.value]
+    const bVal = b[sortField.value]
+
+    if (aVal === bVal) return 0
+    if (sortDirection.value === 'asc') {
+      return aVal > bVal ? 1 : -1
+    } else {
+      return aVal < bVal ? 1 : -1
+    }
+  })
+})
 
 // Función para cerrar el modal al pulsar Esc
 const handleKeyDown = (event: KeyboardEvent) => {
