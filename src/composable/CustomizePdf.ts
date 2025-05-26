@@ -105,7 +105,8 @@ export function CustomizePdf() {
   function filterRows() {
   const field = searchField.value
   const input = searchValue.value.trim().toLowerCase()
-  console.log('Campo:', searchField.value, 'Valor:', searchValue.value)
+console.log('Filtrando:', searchField.value, searchValue.value)
+
 
   if (!field || !input) {
     filteredRows.value = [...excelData.value]
