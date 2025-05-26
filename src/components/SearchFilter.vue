@@ -18,12 +18,12 @@
           <!-- Botón cerrar -->
           <button
             @click="showModal = false"
-            class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors duration-300"
-            aria-label="Close"
+            class="absolute top-4 right-4 backdrop-blur-md bg-white/30 border border-white/50 shadow-md hover:shadow-lg text-gray-800 hover:text-red-600 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300"
+            aria-label="Cerrar"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
+              class="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -32,7 +32,6 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-
           <!-- Filtros -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div>
