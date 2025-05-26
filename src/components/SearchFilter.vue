@@ -28,7 +28,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>
             <select
               :value="searchField"
-              @change="$emit('update:searchField', ($event.target as HTMLSelectElement).value)"
+              @change="$emit('update:searchField', ($event.target as HTMLSelectElement).value); props.filterRows()"
               class="w-full p-2 border rounded"
             >
               <option disabled value="">Select field</option>
@@ -41,7 +41,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by value</label>
             <input
               :value="searchValue"
-              @input="$emit('update:searchValue', ($event.target as HTMLInputElement).value)"
+              @input="$emit('update:searchValue', ($event.target as HTMLInputElement).value); props.filterRows()"
               class="w-full p-2 border rounded"
             />
           </div>
