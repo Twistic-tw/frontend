@@ -90,8 +90,7 @@ const {
             cardId="styleOptions"
             @toggle="(id) => activeCard = activeCard === id ? null : id"
           />
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
           <ImageUploader
             v-model:images="images"
             :coverUrl="coverUrl"
@@ -105,6 +104,7 @@ const {
             @toggle="(id) => activeCard = activeCard === id ? null : id"
           />
         </div>
+
         <button
           @click="sendToBackend"
           class="w-full bg-[#4f46e5] text-white px-6 py-3 rounded-xl shadow-md transition-colors duration-300 hover:bg-[#1e2939] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
