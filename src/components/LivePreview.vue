@@ -61,7 +61,7 @@ const showFullscreen = ref(false)
     </h2>
 
     <LivePreviewModal
-      v-if="showFullscreen"
+      :show="showFullscreen"
       :previewRows="previewRows"
       :activeFieldNames="activeFieldNames"
       :headerStyle="headerStyle"
@@ -70,6 +70,7 @@ const showFullscreen = ref(false)
       :headerUrl="headerUrl"
       @close="showFullscreen = false"
     />
+
 
     <div
       id="pdf-content"

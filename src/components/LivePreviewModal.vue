@@ -1,15 +1,5 @@
 <template>
   <div>
-    <!-- Botón para abrir el modal -->
-    <div class="flex justify-end mb-2">
-      <button
-        @click="showFullscreen = true"
-        class="bg-gray-200 text-sm text-gray-700 px-3 py-1 rounded hover:bg-gray-300 transition"
-      >
-        Ampliar vista
-      </button>
-    </div>
-
     <!-- Modal fullscreen -->
     <transition name="fade-scale">
       <div
@@ -18,7 +8,7 @@
       >
         <div class="bg-white w-full h-full p-4 overflow-auto relative">
           <button
-            @click="showFullscreen = false"
+            @click="$emit('close')"
             class="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-200"
           >
             &times;
@@ -68,9 +58,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
   previewRows: Record<string, string>[][]
   activeFieldNames: string[]
@@ -80,9 +69,19 @@ const props = defineProps<{
     header: File | null
   }
   headerUrl: string
+  show: boolean
+}>()
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const emit = defineEmits<{
+  (e: 'close'): void
 }>()
 
 const showFullscreen = ref(false)
+
+watch(() => props.show, (value) => {
+  showFullscreen.value = value
+})
 </script>
 
 <style scoped>
