@@ -2,7 +2,7 @@
 <template>
   <div class="bg-white rounded-2xl shadow-lg border border-gray-200">
     <h2
-      class="text-2xl font-bold text-gray-800 p-6 border-b border-gray-100 cursor-pointer"
+      class="text-xl font-bold text-gray-800 p-6 border-b border-gray-100 cursor-pointer"
       @click="$emit('toggle', cardId)"
     >
       Search & Filter Data
@@ -12,6 +12,20 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>
+            <svg
+              :class="{ 'rotate-180': isOpen }"
+              class="w-5 h-5 transition-transform"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
             <select v-model="searchField" class="w-full p-2 border rounded">
               <option disabled value="">Select field</option>
               <option v-for="field in fields" :key="field.name" :value="field.name">
@@ -77,7 +91,9 @@
                       @change="toggleRow(index)"
                       class="sr-only peer"
                     />
-                    <div class="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-[#1e2939] transition-all"></div>
+                    <div
+                      class="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-[#1e2939] transition-all"
+                    ></div>
                     <div
                       class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all"
                     ></div>
@@ -91,16 +107,16 @@
           </table>
         </div>
 
-        <div v-else class="text-sm text-gray-500 mt-2">
-          No results found. Try another value.
-        </div>
+        <div v-else class="text-sm text-gray-500 mt-2">No results found. Try another value.</div>
       </div>
     </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import { computed } from 'vue'
+
+const props = defineProps<{
   fields: { name: string }[]
   searchField: string
   searchValue: string
@@ -115,6 +131,8 @@ defineProps<{
   activeCard: string | null
   cardId: string
 }>()
+
+const isOpen = computed(() => props.activeCard === props.cardId)
 </script>
 
 <style scoped>

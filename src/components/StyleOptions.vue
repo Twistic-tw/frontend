@@ -2,35 +2,84 @@
 <template>
   <div class="bg-white rounded-2xl shadow-lg border border-gray-200">
     <h2
-      class="text-2xl font-bold text-gray-800 p-6 border-b border-gray-100 cursor-pointer"
+      class="text-xl font-bold text-gray-800 p-6 border-b border-gray-100 cursor-pointer"
       @click="$emit('toggle', cardId)"
     >
       Customize Style
     </h2>
+    <svg
+      :class="{ 'rotate-180': isOpen }"
+      class="w-5 h-5 transition-transform"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
     <Transition name="expand">
       <div v-if="activeCard === cardId" class="p-6 pt-0 flex flex-col gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">PDF Background</label>
-          <input type="color" v-model="colors.backgroundColor" class="w-full h-8 border rounded mb-1" />
-          <input type="range" min="0" max="1" step="0.01" v-model.number="colors.backgroundAlpha" class="w-full bg-[#1e2939]" />
+          <input
+            type="color"
+            v-model="colors.backgroundColor"
+            class="w-full h-8 border rounded mb-1"
+          />
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            v-model.number="colors.backgroundAlpha"
+            class="w-full bg-[#1e2939]"
+          />
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Primary Row</label>
-          <input type="color" v-model="colors.rowPrimaryColor" class="w-full h-8 border rounded mb-1" />
-          <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowPrimaryAlpha" class="w-full bg-[#1e2939]" />
+          <input
+            type="color"
+            v-model="colors.rowPrimaryColor"
+            class="w-full h-8 border rounded mb-1"
+          />
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            v-model.number="colors.rowPrimaryAlpha"
+            class="w-full bg-[#1e2939]"
+          />
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Alternate Row</label>
-          <input type="color" v-model="colors.rowAlternateColor" class="w-full h-8 border rounded mb-1" />
-          <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowAlternateAlpha" class="w-full bg-[#1e2939]" />
+          <input
+            type="color"
+            v-model="colors.rowAlternateColor"
+            class="w-full h-8 border rounded mb-1"
+          />
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            v-model.number="colors.rowAlternateAlpha"
+            class="w-full bg-[#1e2939]"
+          />
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Header Background</label>
           <input type="color" v-model="colors.headerColor" class="w-full h-8 border rounded mb-1" />
-          <input type="range" min="0" max="1" step="0.01" v-model.number="colors.headerAlpha" class="w-full bg-[#1e2939]" />
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            v-model.number="colors.headerAlpha"
+            class="w-full bg-[#1e2939]"
+          />
         </div>
 
         <div>
@@ -46,7 +95,14 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Footer Background</label>
           <input type="color" v-model="colors.footerColor" class="w-full h-8 border rounded mb-1" />
-          <input type="range" min="0" max="1" step="0.01" v-model.number="colors.footerAlpha" class="w-full bg-[#1e2939]" />
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            v-model.number="colors.footerAlpha"
+            class="w-full bg-[#1e2939]"
+          />
         </div>
 
         <div>
@@ -58,8 +114,12 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">Show Table Borders</label>
           <label class="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" v-model="colors.showBorders" class="sr-only peer" />
-            <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-[#1e2939] transition-all"></div>
-            <div class="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
+            <div
+              class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-[#1e2939] transition-all"
+            ></div>
+            <div
+              class="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full shadow transform peer-checked:translate-x-full transition-all"
+            ></div>
           </label>
         </div>
 
@@ -79,14 +139,18 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import { computed } from 'vue'
+
+const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  colors: any,
+  colors: any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  titleSettings: any,
-  activeCard: string | null,
+  titleSettings: any
+  activeCard: string | null
   cardId: string
 }>()
+
+const isOpen = computed(() => props.activeCard === props.cardId)
 </script>
 
 <style scoped>

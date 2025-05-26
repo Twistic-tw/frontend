@@ -1,11 +1,20 @@
 <template>
   <div class="bg-white rounded-2xl shadow-lg border border-gray-200">
     <h2
-      class="text-2xl font-bold text-gray-800 p-6 border-b border-gray-100 cursor-pointer"
+      class="text-xl font-bold text-gray-800 p-6 border-b border-gray-100 cursor-pointer"
       @click="$emit('toggle', cardId)"
     >
       Images
     </h2>
+    <svg
+      :class="{ 'rotate-180': isOpen }"
+      class="w-5 h-5 transition-transform"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
     <Transition name="expand">
       <div v-if="activeCard === cardId" class="p-6 pt-0">
         <div class="h-auto flex flex-col gap-4">
@@ -20,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { computed, defineProps } from 'vue'
 
 const props = defineProps<{
   handleImageUpload: (e: Event, key: string) => void
@@ -39,6 +48,8 @@ const imageLabels: Record<string, string> = {
   footer: 'Footer (Optional)',
   background: 'Background (Optional)',
 }
+
+const isOpen = computed(() => props.activeCard === props.cardId)
 </script>
 
 <style scoped>
