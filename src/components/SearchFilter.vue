@@ -55,13 +55,10 @@
           </div>
         </div>
 
-        <div
-          v-if="filteredRows.length"
-          class="overflow-auto max-h-[300px] border rounded"
-        >
+        <div v-if="filteredRows.length" class="overflow-auto max-h-[300px] border rounded">
           <div class="flex justify-between items-center px-4 py-2 bg-gray-100 border-b">
             <span class="text-sm text-gray-700">
-              {{ selectedRows.size }} of {{ filteredRows.length }} selected
+              {{ selectedRows.length }} of {{ filteredRows.length }} selected
             </span>
             <div class="flex gap-2">
               <button
@@ -90,8 +87,8 @@
                   <label class="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
-                      :checked="selectedRows.has(index)"
-                      @change="toggleRow(index)"
+                      :checked="selectedRows.includes(index)"
+                      @change="handleToggle(index)"
                       class="sr-only peer"
                     />
                     <div
@@ -114,7 +111,9 @@
           </table>
         </div>
 
-        <div v-else-if="searchField && searchValue" class="text-sm text-gray-500 mt-2">No results found. Try another value.</div>
+        <div v-else-if="searchField && searchValue" class="text-sm text-gray-500 mt-2">
+          No results found. Try another value.
+        </div>
       </div>
     </Transition>
   </div>
@@ -123,7 +122,6 @@
 <script setup lang="ts">
 import { computed, defineEmits, withDefaults, defineProps } from 'vue'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const emit = defineEmits<{
   (e: 'update:searchField', value: string): void
   (e: 'update:searchValue', value: string): void
@@ -132,8 +130,8 @@ const emit = defineEmits<{
   (e: 'clear'): void
   (e: 'selectAll'): void
   (e: 'deselectAll'): void
+  (e: 'toggleRow', index: number): void
 }>()
-
 
 const props = withDefaults(defineProps<{
   fields: { name: string }[]
@@ -141,12 +139,7 @@ const props = withDefaults(defineProps<{
   searchValue?: string
   searchActive?: boolean
   filteredRows: Record<string, string>[]
-  selectedRows: Set<number>
-  filterRows: () => void
-  clearSearch: () => void
-  selectAllFiltered: () => void
-  deselectAllFiltered: () => void
-  toggleRow: (index: number) => void
+  selectedRows: number[]
   activeCard?: string | null
   cardId: string
 }>(), {
@@ -156,9 +149,12 @@ const props = withDefaults(defineProps<{
   activeCard: null,
 })
 
+// Emitir selección individual
+const handleToggle = (index: number) => emit('toggleRow', index)
+
+// Mostrar u ocultar sección
 const isOpen = computed(() => props.activeCard === props.cardId)
 </script>
-
 
 <style scoped>
 .expand-enter-active,
