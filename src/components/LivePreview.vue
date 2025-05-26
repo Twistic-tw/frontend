@@ -47,9 +47,7 @@ const {
     class="h-auto w-full bg-white rounded-2xl shadow-lg p-6 border border-gray-200"
     style="position: sticky; top: 100px; height: fit-content"
   >
-    <h2 class="text-2xl font-semibold text-gray-800 mb-3">Live Preview</h2>
-
-    <div class="flex justify-end mb-2 relative">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-3">Live Preview
       <button
         @click="toggleFullscreen"
         class="absolute top-0 right-0 p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition z-10"
@@ -60,8 +58,7 @@ const {
             d="M8 3H5a2 2 0 00-2 2v3m0 8v3a2 2 0 002 2h3m8-18h3a2 2 0 012 2v3m0 8v3a2 2 0 01-2 2h-3" />
         </svg>
       </button>
-    </div>
-
+    </h2>
     <div
       id="pdf-content"
       ref="previewRef"
