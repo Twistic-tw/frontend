@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-white rounded-2xl shadow-lg border border-gray-200">
+  <div class="bg-white rounded-2xl shadow-lg border border-gray-200 cursor-pointer">
     <h2
-      class="text-xl font-bold text-gray-800 p-6 border-b border-gray-100 cursor-pointer"
+      class="text-xl font-bold text-gray-800"
       @click="$emit('toggle', cardId)"
     >
       Images
