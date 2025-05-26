@@ -201,16 +201,19 @@ const showFullscreen = ref(false)
 }
 .fade-scale-enter-active,
 .fade-scale-leave-active {
-  transition: all 0.25s ease;
+  transition: all 0.4s ease-in-out;
 }
+
 .fade-scale-enter-from,
 .fade-scale-leave-to {
   opacity: 0;
   transform: scale(0.95);
 }
+
 .fade-scale-enter-to,
 .fade-scale-leave-from {
   opacity: 1;
   transform: scale(1);
 }
+
 </style>
