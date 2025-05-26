@@ -82,7 +82,7 @@ const {
           cardId="searchField"
           @toggle="(id) => activeCard = activeCard === id ? null : id"
         />
-        <div class="grid grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <StyleOptions
             v-model:colors="colors"
             v-model:titleSettings="titleSettings"
@@ -90,14 +90,21 @@ const {
             cardId="styleOptions"
             @toggle="(id) => activeCard = activeCard === id ? null : id"
           />
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ImageUploader
-            :handleImageUpload="handleImageUpload"
+            v-model:images="images"
+            :coverUrl="coverUrl"
+            :secondUrl="secondUrl"
+            :headerUrl="headerUrl"
+            :backgroundUrl="backgroundUrl"
+            :footerUrl="footerUrl"
+            @upload="handleImageUpload"
             :activeCard="activeCard"
-            cardId="imagenUploader"
+            cardId="imageUploader"
             @toggle="(id) => activeCard = activeCard === id ? null : id"
           />
         </div>
-
         <button
           @click="sendToBackend"
           class="w-full bg-[#4f46e5] text-white px-6 py-3 rounded-xl shadow-md transition-colors duration-300 hover:bg-[#1e2939] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
