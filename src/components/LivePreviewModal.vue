@@ -5,65 +5,79 @@
       <div
         v-if="showFullscreen"
         class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center"
-        style="margin-top: 5em;"
       >
         <div
-        class="bg-white w-screen h-screen p-6 overflow-auto relative rounded-lg shadow-xl"
-        style="margin-top: 8em;"
+          class="bg-white w-screen h-screen p-6 overflow-auto relative rounded-lg shadow-xl"
         >
           <!-- Vista completa del catálogo -->
-          <div class="scale-100 origin-top-left">
-            <!-- Imagen de portada -->
+          <div id="pdf-content" class="origin-top-left w-full h-fit-content bg-gray-100">
+            <!-- Portada -->
             <div v-if="images.cover" class="a4-page">
-              <img :src="images.coverUrl" alt="Cover" class="a4-image-content no-radius w-full h-full object-cover" />
+              <img :src="images.coverUrl" alt="Cover Image" class="a4-image-content no-radius w-full h-full object-cover" />
             </div>
 
-            <!-- Segunda imagen -->
+            <!-- Segunda portada -->
             <div v-if="images.second" class="a4-page">
-              <img :src="images.secondUrl" alt="Second" class="a4-image-content no-radius w-full h-full object-contain" />
+              <img :src="images.secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
             </div>
 
-            <div v-for="(chunk, index) in previewRows" :key="index" class="a4-page relative">
+            <!-- Páginas de contenido -->
+            <div
+              v-for="(chunk, index) in previewRows"
+              :key="'page-' + index"
+              class="a4-page"
+              :style="{
+                backgroundImage: images.backgroundUrl ? `url(${images.backgroundUrl})` : 'none',
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }"
+            >
               <!-- Cabecera -->
-              <div v-if="images.header" class="mb-4" style="height: 120px;">
-                <img :src="headerUrl" alt="Header" class="w-full object-cover rounded" />
+              <div v-if="images.header" class="mb-4" style="height: 120px; overflow: hidden">
+                <img :src="images.headerUrl" alt="Header Image" class="w-full object-cover rounded-b-lg" style="height: 120px" />
               </div>
 
               <!-- Tabla -->
-              <div class="grid font-medium" :style="headerStyle">
+              <div class="w-full h-full text-sm border border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow" style="padding-bottom: 60px;">
+                <div class="grid font-medium" :style="headerStyle">
+                  <div
+                    v-for="(key, i) in activeFieldNames"
+                    :key="'header-' + i"
+                    class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
+                    style="max-width: 250px; overflow: hidden; text-overflow: ellipsis"
+                  >
+                    {{ key }}
+                  </div>
+                </div>
+
                 <div
-                  v-for="(key, i) in activeFieldNames"
-                  :key="'header-' + i"
-                  class="px-4 py-2 border-b"
+                  v-for="(row, ri) in chunk"
+                  :key="'row-' + index + '-' + ri"
+                  class="grid"
+                  :style="rowStyle(ri)"
                 >
-                  {{ key }}
+                  <div
+                    v-for="(key, i) in activeFieldNames"
+                    :key="'cell-' + index + '-' + ri + '-' + i"
+                    class="px-4 py-2 last:border-r-0"
+                  >
+                    {{ row[key] }}
+                  </div>
                 </div>
               </div>
 
-              <div
-                v-for="(row, ri) in chunk"
-                :key="'row-' + ri"
-                class="grid"
-                :style="rowStyle(ri)"
-              >
-                <div
-                  v-for="(key, i) in activeFieldNames"
-                  :key="'cell-' + ri + '-' + i"
-                  class="px-4 py-2"
-                >
-                  {{ row[key] }}
-                </div>
-              </div>
-
-              <!-- Footer de página -->
-              <div class="absolute bottom-4 right-6 text-sm text-gray-500 italic">
+              <!-- Footer fijo en cada página -->
+              <div class="footer-bar absolute bottom-4 right-6 text-sm text-gray-500 italic">
                 Página {{ index + 1 }}
               </div>
             </div>
 
-            <!-- Imagen de pie de página -->
+            <!-- Página extra solo con footer -->
             <div v-if="images.footer" class="a4-page">
-              <img :src="images.footerUrl" alt="Footer" class="a4-image-content no-radius w-full h-full object-cover" />
+              <div class="a4-image full-a4">
+                <img :src="images.footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
+              </div>
             </div>
           </div>
 
@@ -101,12 +115,11 @@ const props = defineProps<{
     headerUrl?: string,
     footerUrl?: string,
     coverUrl?: string,
-    secondUrl?: string
+    secondUrl?: string,
+    backgroundUrl?: string
   },
-  headerUrl: string,
   show: boolean
 }>()
-
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const emit = defineEmits<{
