@@ -32,6 +32,7 @@
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
+                padding: '0'
               }"
             >
               <!-- Cabecera -->
