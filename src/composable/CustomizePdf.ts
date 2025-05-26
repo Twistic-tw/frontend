@@ -103,54 +103,72 @@ export function CustomizePdf() {
   }
 
   function filterRows() {
-    const field = searchField.value
-    const input = searchValue.value.trim().toLowerCase()
-    if (!field || !input) {
-      filteredRows.value = paginatedRows.value.flat()
-      selectedRows.value = new Set(filteredRows.value.map((_, i) => i))
-      return
-    }
-    const queries = input.split(',').map((s) => s.trim()).filter(Boolean)
-    const oldSelection = new Set(selectedRows.value)
-    const resultadoFiltrado = paginatedRows.value.flat().filter((row) => {
-      const rawValue = row[field]
-      const value = rawValue?.toString().toLowerCase()
-      if (!value) return false
-      return queries.some((query) => {
-        if (query.includes('..')) {
-          const [min, max] = query.split('..').map((v) => v.trim())
-          const numVal = parseFloat(value)
-          const isNumRange = !isNaN(parseFloat(min)) && !isNaN(parseFloat(max))
-          if (isNumRange) return numVal >= parseFloat(min) && numVal <= parseFloat(max)
-          return value >= min && value <= max
-        }
-        const match = query.match(/^(>=|<=|!=|>|<|=)(.+)$/)
-        if (match) {
-          const operator = match[1]
-          const target = match[2].trim()
-          const numValue = parseFloat(value)
-          const numTarget = parseFloat(target)
-          switch (operator) {
-            case '>': return numValue > numTarget
-            case '<': return numValue < numTarget
-            case '>=': return numValue >= numTarget
-            case '<=': return numValue <= numTarget
-            case '=': return value === target
-            case '!=': return value !== target
-          }
-        }
-        if (query.startsWith('*') && query.endsWith('*')) return value.includes(query.slice(1, -1))
-        if (query.startsWith('*')) return value.endsWith(query.slice(1))
-        if (query.endsWith('*')) return value.startsWith(query.slice(0, -1))
-        return value.includes(query)
-      })
-    })
-    filteredRows.value = resultadoFiltrado
-    const nuevaSeleccion = new Set<number>()
-    resultadoFiltrado.forEach((_, index) => nuevaSeleccion.add(index))
-    searchActive.value = true
-    selectedRows.value = nuevaSeleccion
+  const field = searchField.value
+  const input = searchValue.value.trim().toLowerCase()
+
+  if (!field || !input) {
+    filteredRows.value = [...excelData.value]
+    selectedRows.value = new Set(filteredRows.value.map((_, i) => i))
+    searchActive.value = false
+    return
   }
+
+  const queries = input.split(',').map((s) => s.trim()).filter(Boolean)
+
+  const resultadoFiltrado: Record<string, string>[] = []
+  const nuevaSeleccion = new Set<number>()
+
+  excelData.value.forEach((row, index) => {
+    const rawValue = row[field]
+    const value = rawValue?.toString().toLowerCase()
+    if (!value) return
+
+    const coincide = queries.some((query) => {
+      // Rango: 10..50
+      if (query.includes('..')) {
+        const [min, max] = query.split('..').map((v) => v.trim())
+        const numVal = parseFloat(value)
+        const isNumRange = !isNaN(parseFloat(min)) && !isNaN(parseFloat(max))
+        if (isNumRange) return numVal >= parseFloat(min) && numVal <= parseFloat(max)
+        return value >= min && value <= max
+      }
+
+      // Operadores
+      const match = query.match(/^(>=|<=|!=|>|<|=)(.+)$/)
+      if (match) {
+        const operator = match[1]
+        const target = match[2].trim()
+        const numValue = parseFloat(value)
+        const numTarget = parseFloat(target)
+        switch (operator) {
+          case '>': return numValue > numTarget
+          case '<': return numValue < numTarget
+          case '>=': return numValue >= numTarget
+          case '<=': return numValue <= numTarget
+          case '=': return value === target
+          case '!=': return value !== target
+        }
+      }
+
+      // Comodines
+      if (query.startsWith('*') && query.endsWith('*')) return value.includes(query.slice(1, -1))
+      if (query.startsWith('*')) return value.endsWith(query.slice(1))
+      if (query.endsWith('*')) return value.startsWith(query.slice(0, -1))
+
+      return value.includes(query)
+    })
+
+    if (coincide) {
+      resultadoFiltrado.push(row)
+      nuevaSeleccion.add(index)
+    }
+  })
+
+  filteredRows.value = resultadoFiltrado
+  selectedRows.value = nuevaSeleccion
+  searchActive.value = true
+}
+
 
   function selectAllFiltered() {
     filteredRows.value.forEach((_, index) => {

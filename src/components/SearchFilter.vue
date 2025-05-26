@@ -99,8 +99,12 @@
                     ></div>
                   </label>
                 </td>
-                <td class="px-3 py-1 border-t align-middle">
-                  {{ row[searchField] }}
+                <td
+                  v-for="key in fields.map(f => f.name)"
+                  :key="key"
+                  class="px-3 py-1 border-t align-middle"
+                >
+                  {{ row[key] }}
                 </td>
               </tr>
             </tbody>
