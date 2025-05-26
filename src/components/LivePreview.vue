@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Ref, CSSProperties } from 'vue'
+import { type Ref, type CSSProperties, ref } from 'vue'
 
 const {
   previewRef,
-  toggleFullscreen,
+  //toggleFullscreen,
   images,
   coverUrl,
   secondUrl,
@@ -40,6 +40,7 @@ const {
   cellStyle: Record<string, string>,
   footerStyle: CSSProperties
 }>()
+const showFullscreen = ref(false)
 </script>
 
 <template>
@@ -49,7 +50,7 @@ const {
   >
     <h2 class="text-2xl font-semibold text-gray-800 mb-3">Live Preview
       <button
-        @click="toggleFullscreen"
+        @click="showFullscreen = true"
         class="absolute top-0 right-0 p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition z-10"
         title="Fullscreen"
         style="margin: 0.5em;"
@@ -60,6 +61,25 @@ const {
         </svg>
       </button>
     </h2>
+    <transition name="fade-scale">
+      <div v-if="showFullscreen" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
+        <div class="bg-white w-full h-full p-4 overflow-auto relative">
+          <button
+            @click="showFullscreen = false"
+            class="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-200"
+          >
+            &times;
+          </button>
+
+          <!-- Reutiliza el contenido del LivePreview (o parte) -->
+          <div class="scale-100 origin-top-left">
+            <!-- Puedes renderizar el mismo contenido que ya muestras -->
+            <slot name="preview" />
+          </div>
+        </div>
+      </div>
+    </transition>
+
     <div
       id="pdf-content"
       ref="previewRef"
@@ -175,4 +195,19 @@ const {
   margin-bottom: 40px;
   width: 100%;
 }
+.fade-scale-enter-active,
+.fade-scale-leave-active {
+  transition: all 0.25s ease;
+}
+.fade-scale-enter-from,
+.fade-scale-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.fade-scale-enter-to,
+.fade-scale-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+
 </style>
