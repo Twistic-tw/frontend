@@ -14,7 +14,10 @@
         v-if="showModal"
         class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
       >
-        <div class="bg-white w-[95%] h-[90vh] rounded-xl shadow-xl p-6 overflow-auto relative">
+        <div
+        class="bg-white w-[95%] h-[90vh] rounded-xl shadow-xl p-6 overflow-auto relative"
+        style="padding-top:3em;"
+        >
           <!-- Botón cerrar -->
           <button
             @click="showModal = false"
