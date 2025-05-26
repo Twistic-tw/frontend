@@ -6,13 +6,22 @@
         v-if="showFullscreen"
         class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center"
       >
-        <div class="bg-white w-full h-full p-4 overflow-auto relative">
+        <div class="bg-white w-screen h-screen p-6 overflow-auto relative">
           <button
             @click="$emit('close')"
-            class="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-200"
+            class="absolute top-4 right-4 text-gray-800 text-3xl font-bold hover:text-black"
           >
             &times;
           </button>
+
+          <div class="flex justify-end mb-4">
+            <button
+              @click="$emit('close')"
+              class="bg-gray-800 text-white text-sm px-5 py-2 rounded-lg shadow hover:bg-gray-900 transition"
+            >
+              Cerrar vista ampliada
+            </button>
+          </div>
 
           <div class="scale-100 origin-top-left">
             <div class="bg-white shadow rounded-lg p-6">
