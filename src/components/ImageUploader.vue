@@ -1,22 +1,27 @@
 <template>
   <div class="bg-white rounded-2xl shadow-lg border border-gray-200 cursor-pointer">
-    <h2
-      class="text-xl font-bold text-gray-800"
+    <!-- Título con flecha alineada -->
+    <div
+      class="flex items-center justify-between p-6 border-b border-gray-100"
       @click="$emit('toggle', cardId)"
     >
-      Images
-    </h2>
-    <svg
-      :class="{ 'rotate-180': isOpen }"
-      class="w-5 h-5 transition-transform"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-    </svg>
+      <h2 class="text-xl font-bold text-gray-800">
+        Images
+      </h2>
+      <svg
+        :class="{ 'rotate-180': isOpen }"
+        class="w-5 h-5 text-gray-600 transition-transform duration-300"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+
+    <!-- Contenido expandible -->
     <Transition name="expand">
-      <div v-if="activeCard === cardId" class="p-6 pt-0">
+      <div v-if="isOpen" class="p-6 pt-0">
         <div class="h-auto flex flex-col gap-4">
           <div v-for="(label, key) in imageLabels" :key="key">
             <label class="block text-sm font-medium text-gray-700 mb-1">{{ label }}</label>

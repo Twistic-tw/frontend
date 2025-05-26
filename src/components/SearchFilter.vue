@@ -1,31 +1,31 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="bg-white rounded-2xl shadow-lg border border-gray-200">
-    <h2
-      class="text-xl font-bold text-gray-800 p-6 border-b border-gray-100 cursor-pointer"
+    <!-- Encabezado con icono -->
+    <div
+      class="flex items-center justify-between p-6 border-b border-gray-100 cursor-pointer"
       @click="$emit('toggle', cardId)"
     >
-      Search & Filter Data
-    </h2>
+      <h2 class="text-xl font-bold text-gray-800">
+        Search & Filter Data
+      </h2>
+      <svg
+        :class="{ 'rotate-180': isOpen }"
+        class="w-5 h-5 text-gray-600 transition-transform duration-300"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+
+    <!-- Contenido expandible -->
     <Transition name="expand">
-      <div v-if="activeCard === cardId" class="p-6 pt-0">
+      <div v-if="isOpen" class="p-6 pt-0">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>
-            <svg
-              :class="{ 'rotate-180': isOpen }"
-              class="w-5 h-5 transition-transform"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
             <select v-model="searchField" class="w-full p-2 border rounded">
               <option disabled value="">Select field</option>
               <option v-for="field in fields" :key="field.name" :value="field.name">
@@ -134,6 +134,7 @@ const props = defineProps<{
 
 const isOpen = computed(() => props.activeCard === props.cardId)
 </script>
+
 
 <style scoped>
 .expand-enter-active,
