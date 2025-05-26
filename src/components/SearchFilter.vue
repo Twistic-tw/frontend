@@ -129,8 +129,14 @@ const emit = defineEmits<{
 
 const props = defineProps<{
   fields: { name: string }[]
-  searchField: string
-  searchValue: string
+  searchField: {
+    type: String,
+    default: ''
+  },
+  searchValue: {
+    type: String,
+    default: ''
+  },
   searchActive: boolean
   filteredRows: Record<string, string>[]
   selectedRows: Set<number>
