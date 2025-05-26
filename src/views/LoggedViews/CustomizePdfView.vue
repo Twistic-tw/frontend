@@ -98,7 +98,7 @@ const {
             :headerUrl="headerUrl"
             :backgroundUrl="backgroundUrl"
             :footerUrl="footerUrl"
-            @upload="handleImageUpload"
+            :handleImageUpload="handleImageUpload"
             :activeCard="activeCard"
             cardId="imageUploader"
             @toggle="(id) => activeCard = activeCard === id ? null : id"
