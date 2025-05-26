@@ -170,7 +170,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, defineProps, withDefaults, onMounted, onBeforeUnmount } from 'vue'
+import { ref, defineEmits, defineProps, withDefaults, onMounted, onBeforeUnmount, computed } from 'vue'
 
 const showModal = ref(false)
 const sortField = ref('')
@@ -178,9 +178,9 @@ const sortDirection = ref<'asc' | 'desc'>('asc')
 
 // Función para ordenar los resultados
 const sortedRows = computed(() => {
-  if (!sortField.value) return filteredRows
+  if (!sortField.value) return props.filteredRows
 
-  return [...filteredRows].sort((a, b) => {
+  return [...props.filteredRows].sort((a, b) => {
     const aVal = a[sortField.value]
     const bVal = b[sortField.value]
 
