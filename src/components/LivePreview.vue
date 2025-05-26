@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { type Ref, type CSSProperties, ref } from 'vue'
+import LivePreviewModal from './LivePreviewModal.vue'
 
 const {
   previewRef,
@@ -59,29 +60,16 @@ const showFullscreen = ref(false)
       </button>
     </h2>
 
-    <transition name="fade-scale">
-      <div v-if="showFullscreen" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
-        <div class="bg-white w-full h-full p-4 overflow-auto relative">
-          <button
-            @click="showFullscreen = false"
-            class="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-200"
-          >
-            &times;
-          </button>
-
-          <div class="scale-100 origin-top-left">
-            <slot name="preview">
-              <!-- Vista completa del catálogo -->
-              <div class="bg-white shadow rounded-lg p-6">
-                <div v-for="(page, i) in previewRows" :key="i" class="mb-4">
-                  <!-- ... tu renderizado de catálogo ... -->
-                </div>
-              </div>
-            </slot>
-          </div>
-        </div>
-      </div>
-    </transition>
+    <LivePreviewModal
+      v-if="showFullscreen"
+      :previewRows="previewRows"
+      :activeFieldNames="activeFieldNames"
+      :headerStyle="headerStyle"
+      :rowStyle="rowStyle"
+      :images="images"
+      :headerUrl="headerUrl"
+      @close="showFullscreen = false"
+    />
 
     <div
       id="pdf-content"
@@ -203,17 +191,14 @@ const showFullscreen = ref(false)
 .fade-scale-leave-active {
   transition: all 0.4s ease-in-out;
 }
-
 .fade-scale-enter-from,
 .fade-scale-leave-to {
   opacity: 0;
   transform: scale(0.95);
 }
-
 .fade-scale-enter-to,
 .fade-scale-leave-from {
   opacity: 1;
   transform: scale(1);
 }
-
 </style>
