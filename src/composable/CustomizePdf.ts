@@ -74,17 +74,6 @@ export function CustomizePdf() {
     footerUrl.value = file ? URL.createObjectURL(file) : ''
   })
 
-  const props = defineProps<{
-    searchField: string
-    searchValue: string
-  }>()
-
-  const localSearchField = ref(props.searchField)
-  const localSearchValue = ref(props.searchValue)
-
-  watch(() => props.searchField, (val) => localSearchField.value = val)
-  watch(() => props.searchValue, (val) => localSearchValue.value = val)
-
   const searchField = ref('')
   const searchValue = ref('')
   const searchActive = ref(false)
@@ -425,6 +414,6 @@ export function CustomizePdf() {
     filterRows, selectAllFiltered, deselectAllFiltered, toggleRow, clearSearch,
     showBackground, handleImageUpload, sendToBackend,
     fetchTemplate, userId, fetchUserId, toggleFullscreen,
-    previewRef, localSearchField, localSearchValue
+    previewRef
   }
 }
