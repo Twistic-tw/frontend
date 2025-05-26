@@ -5,6 +5,7 @@ import SearchFilter from '@/components/SearchFilter.vue'
 import StyleOptions from '@/components/StyleOptions.vue'
 import ImageUploader from '@/components/ImageUploader.vue'
 import LivePreview from '@/components/LivePreview.vue'
+import LivePreviewModal from '@/components/LivePreviewModal.vue'
 import BackButton from '@/components/BackButton.vue'
 import { CustomizePdf } from '../../composable/CustomizePdf'
 import { ref } from 'vue'
@@ -130,6 +131,15 @@ const {
         :showBackground="showBackground"
         :toggleFullscreen="toggleFullscreen"
       />
+      <LivePreviewModal
+        :previewRows="previewRows"
+        :activeFieldNames="activeFieldNames"
+        :headerStyle="headerStyle"
+        :rowStyle="rowStyle"
+        :images="images"
+        :headerUrl="headerUrl"
+      />
+
     </div>
 
     <div class="mt-12">
