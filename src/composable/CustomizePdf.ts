@@ -1,4 +1,4 @@
-import { ref, computed, onMounted, onUnmounted, watch, type CSSProperties } from 'vue'
+import { ref, computed, onMounted, onUnmounted, defineProps, watch, type CSSProperties } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
