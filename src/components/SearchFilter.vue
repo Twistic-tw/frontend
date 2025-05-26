@@ -119,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, defineEmits } from 'vue'
+import { computed, ref, watch, defineEmits, defineProps } from 'vue'
 
 const props = defineProps<{
   fields: { name: string }[]
