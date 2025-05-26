@@ -28,7 +28,6 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>
             <select
               v-model="localSearchField"
-              @change="$emit('update:searchField', localSearchField)"
               class="w-full p-2 border rounded"
             >
               <option disabled value="">Select field</option>
@@ -41,7 +40,6 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by value</label>
             <input
               v-model="localSearchValue"
-              @input="$emit('update:searchValue', localSearchValue)"
               class="w-full p-2 border rounded"
             />
           </div>
@@ -145,6 +143,23 @@ const localSearchValue = ref(props.searchValue)
 
 watch(() => props.searchField, (val) => localSearchField.value = val)
 watch(() => props.searchValue, (val) => localSearchValue.value = val)
+
+const emit = defineEmits<{
+  (e: 'update:searchField', value: string): void
+  (e: 'update:searchValue', value: string): void
+  (e: 'toggle', id: string): void
+}>()
+
+
+watch(localSearchField, (val) => {
+  emit('update:searchField', val)
+  props.filterRows()
+})
+
+watch(localSearchValue, (val) => {
+  emit('update:searchValue', val)
+  props.filterRows()
+})
 
 const isOpen = computed(() => props.activeCard === props.cardId)
 </script>
