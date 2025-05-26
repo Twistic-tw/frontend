@@ -13,6 +13,7 @@
       <div
         v-if="showModal"
         class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
+        @click.self="showModal = false"
       >
         <div
         class="bg-white w-[95%] h-[90vh] rounded-xl shadow-xl p-6 overflow-auto relative"
@@ -143,9 +144,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, defineProps, withDefaults } from 'vue'
+import { ref, defineEmits, defineProps, withDefaults, onMounted, onBeforeUnmount } from 'vue'
 
 const showModal = ref(false)
+
+// Función para cerrar el modal al pulsar Esc
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.key === 'Escape') {
+    showModal.value = false
+  }
+}
+
+// Añadir y quitar el event listener
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeyDown)
+})
 
 const emit = defineEmits<{
   (e: 'update:searchField', value: string): void
