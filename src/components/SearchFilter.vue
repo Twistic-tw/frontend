@@ -27,9 +27,10 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>
             <select
-            v-model="searchField"
-            @input="$emit('update:searchField', ($event.target as HTMLSelectElement).value)"
-            class="w-full p-2 border rounded">
+              v-model="localSearchField"
+              @change="$emit('update:searchField', localSearchField)"
+              class="w-full p-2 border rounded"
+            >
               <option disabled value="">Select field</option>
               <option v-for="field in fields" :key="field.name" :value="field.name">
                 {{ field.name }}
@@ -39,8 +40,8 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by value</label>
             <input
-              :value="searchValue"
-              @input="$emit('update:searchValue', ($event.target as HTMLInputElement).value)"
+              v-model="localSearchValue"
+              @input="$emit('update:searchValue', localSearchValue)"
               class="w-full p-2 border rounded"
             />
           </div>
@@ -120,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{
   fields: { name: string }[]
@@ -136,7 +137,14 @@ const props = defineProps<{
   toggleRow: (index: number) => void
   activeCard: string | null
   cardId: string
+
 }>()
+
+const localSearchField = ref(props.searchField)
+const localSearchValue = ref(props.searchValue)
+
+watch(() => props.searchField, (val) => localSearchField.value = val)
+watch(() => props.searchValue, (val) => localSearchValue.value = val)
 
 const isOpen = computed(() => props.activeCard === props.cardId)
 </script>
