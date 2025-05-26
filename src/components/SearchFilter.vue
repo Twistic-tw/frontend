@@ -45,7 +45,7 @@
           </div>
           <div class="flex items-end">
             <button
-              @click="clearSearch"
+             @click="() => clearSearch()"
               class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition"
             >
               Clear Filter
@@ -63,13 +63,13 @@
             </span>
             <div class="flex gap-2">
               <button
-                @click="selectAllFiltered"
+                @click="() => selectAllFiltered()"
                 class="text-xs bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700"
               >
                 Show all
               </button>
               <button
-                @click="deselectAllFiltered"
+                @click="() => deselectAllFiltered()"
                 class="text-xs bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500"
               >
                 Hide all
@@ -127,32 +127,57 @@ const emit = defineEmits<{
   (e: 'toggle', id: string): void
 }>()
 
-const props = defineProps<{
-  fields: { name: string }[]
-  searchField: string
-  searchValue: string
-  searchActive: boolean
-  filteredRows: Record<string, string>[]
-  selectedRows: Set<number>
-  filterRows: () => void
-  clearSearch: () => void
-  selectAllFiltered: () => void
-  deselectAllFiltered: () => void
-  toggleRow: (index: number) => void
-  activeCard: string | null
-  cardId: string
-}>()
+const props = defineProps({
+  fields: {
+    type: Array as () => { name: string }[],
+    required: true,
+  },
+  searchField: {
+    type: String,
+    default: '',
+  },
+  searchValue: {
+    type: String,
+    default: '',
+  },
+  searchActive: {
+    type: Boolean,
+    default: false,
+  },
+  filteredRows: {
+    type: Array as () => Record<string, string>[],
+    default: () => [],
+  },
+  selectedRows: {
+    type: Object as () => Set<number>,
+    default: () => new Set(),
+  },
+  filterRows: Function,
+  clearSearch: Function,
+  selectAllFiltered: Function,
+  deselectAllFiltered: Function,
+  toggleRow: Function,
+  activeCard: {
+    type: String,
+    default: null,
+  },
+  cardId: {
+    type: String,
+    default: '',
+  },
+})
+
 
 
 const localSearchField = ref(props.searchField)
 const localSearchValue = ref(props.searchValue)
 
 watch(() => props.searchField, (val) => {
-  if (val == null) localSearchField.value = ''
+  if (val != null) localSearchField.value = val
 })
 
 watch(() => props.searchValue, (val) => {
-  if (val == null) localSearchValue.value = ''
+  if (val != null) localSearchValue.value = val
 })
 
 
