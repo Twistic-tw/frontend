@@ -4,13 +4,12 @@
     <!-- Encabezado con icono -->
     <div
       class="flex items-center justify-between p-6 border-b border-gray-100 cursor-pointer"
-      @click="$emit('toggle', cardId)"
+      @click="showModal = true"
     >
       <h2 class="text-xl font-bold text-gray-800">
         Search & Filter Data
       </h2>
       <svg
-        :class="{ 'rotate-180': isOpen }"
         class="w-5 h-5 text-gray-600 transition-transform duration-300"
         fill="none"
         viewBox="0 0 24 24"
@@ -20,9 +19,17 @@
       </svg>
     </div>
 
-    <!-- Contenido expandible -->
-    <Transition name="expand">
-      <div v-if="isOpen" class="p-6">
+    <!-- MODAL -->
+    <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
+      <div class="bg-white w-full max-w-[95%] h-[90vh] rounded-xl shadow-xl p-6 overflow-auto relative">
+        <button
+          @click="showModal = false"
+          class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl"
+        >
+          &times;
+        </button>
+
+        <!-- Filtros -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>
@@ -55,7 +62,8 @@
           </div>
         </div>
 
-        <div v-if="filteredRows.length" class="overflow-auto max-h-[300px] border rounded">
+        <!-- Tabla -->
+        <div v-if="filteredRows.length" class="overflow-auto max-h-[60vh] border rounded">
           <div class="flex justify-between items-center px-4 py-2 bg-gray-100 border-b">
             <span class="text-sm text-gray-700">
               {{ selectedRows.length }} of {{ filteredRows.length }} selected
@@ -91,12 +99,8 @@
                       @change="handleToggle(index)"
                       class="sr-only peer"
                     />
-                    <div
-                      class="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-[#1e2939] transition-all"
-                    ></div>
-                    <div
-                      class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all"
-                    ></div>
+                    <div class="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-[#1e2939] transition-all"></div>
+                    <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
                   </label>
                 </td>
                 <td
@@ -115,12 +119,13 @@
           No results found. Try another value.
         </div>
       </div>
-    </Transition>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, defineEmits, withDefaults, defineProps } from 'vue'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { ref, computed, defineEmits, withDefaults, defineProps } from 'vue'
 
 const emit = defineEmits<{
   (e: 'update:searchField', value: string): void
@@ -133,6 +138,7 @@ const emit = defineEmits<{
   (e: 'toggleRow', index: number): void
 }>()
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = withDefaults(defineProps<{
   fields: { name: string }[]
   searchField?: string
@@ -149,11 +155,8 @@ const props = withDefaults(defineProps<{
   activeCard: null,
 })
 
-// Emitir selección individual
+const showModal = ref(false)
 const handleToggle = (index: number) => emit('toggleRow', index)
-
-// Mostrar u ocultar sección
-const isOpen = computed(() => props.activeCard === props.cardId)
 </script>
 
 <style scoped>
