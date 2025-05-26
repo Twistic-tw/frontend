@@ -3,7 +3,6 @@ import { type Ref, type CSSProperties, ref } from 'vue'
 
 const {
   previewRef,
-  //toggleFullscreen,
   images,
   coverUrl,
   secondUrl,
@@ -40,14 +39,12 @@ const {
   cellStyle: Record<string, string>,
   footerStyle: CSSProperties
 }>()
+
 const showFullscreen = ref(false)
 </script>
 
 <template>
-  <div
-    class="h-auto w-full bg-white rounded-2xl shadow-lg p-6 border border-gray-200"
-    style="position: sticky; top: 100px; height: fit-content"
-  >
+  <div class="h-auto w-full bg-white rounded-2xl shadow-lg p-6 border border-gray-200" style="position: sticky; top: 100px; height: fit-content">
     <h2 class="text-2xl font-semibold text-gray-800 mb-3">Live Preview
       <button
         @click="showFullscreen = true"
@@ -61,6 +58,7 @@ const showFullscreen = ref(false)
         </svg>
       </button>
     </h2>
+
     <transition name="fade-scale">
       <div v-if="showFullscreen" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
         <div class="bg-white w-full h-full p-4 overflow-auto relative">
@@ -71,10 +69,15 @@ const showFullscreen = ref(false)
             &times;
           </button>
 
-          <!-- Reutiliza el contenido del LivePreview (o parte) -->
           <div class="scale-100 origin-top-left">
-            <!-- Puedes renderizar el mismo contenido que ya muestras -->
-            <slot name="preview" />
+            <slot name="preview">
+              <!-- Vista completa del catálogo -->
+              <div class="bg-white shadow rounded-lg p-6">
+                <div v-for="(page, i) in previewRows" :key="i" class="mb-4">
+                  <!-- ... tu renderizado de catálogo ... -->
+                </div>
+              </div>
+            </slot>
           </div>
         </div>
       </div>
@@ -149,12 +152,13 @@ const showFullscreen = ref(false)
         <!-- Footer fijo en cada página -->
         <div class="footer-bar" :style="footerStyle">{{ index + 1 }}</div>
       </div>
+
       <!-- Página extra solo con footer -->
-        <div v-if="images.footer" class="a4-page">
-          <div class="a4-image full-a4">
-            <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
-          </div>
+      <div v-if="images.footer" class="a4-page">
+        <div class="a4-image full-a4">
+          <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -209,5 +213,4 @@ const showFullscreen = ref(false)
   opacity: 1;
   transform: scale(1);
 }
-
 </style>
