@@ -132,18 +132,9 @@ const props = defineProps({
     type: Array as () => { name: string }[],
     required: true,
   },
-  searchField: {
-    type: String,
-    default: '',
-  },
-  searchValue: {
-    type: String,
-    default: '',
-  },
-  searchActive: {
-    type: Boolean,
-    default: false,
-  },
+  searchField: String,
+  searchValue: String,
+  searchActive: Boolean,
   filteredRows: {
     type: Array as () => Record<string, string>[],
     default: () => [],
@@ -152,20 +143,30 @@ const props = defineProps({
     type: Object as () => Set<number>,
     default: () => new Set(),
   },
-  filterRows: Function,
-  clearSearch: Function,
-  selectAllFiltered: Function,
-  deselectAllFiltered: Function,
-  toggleRow: Function,
-  activeCard: {
-    type: String,
-    default: null,
+  filterRows: {
+    type: Function,
+    required: true,
   },
-  cardId: {
-    type: String,
-    default: '',
+  clearSearch: {
+    type: Function,
+    required: true,
   },
+  selectAllFiltered: {
+    type: Function,
+    required: true,
+  },
+  deselectAllFiltered: {
+    type: Function,
+    required: true,
+  },
+  toggleRow: {
+    type: Function,
+    required: true,
+  },
+  activeCard: String,
+  cardId: String,
 })
+
 
 
 
