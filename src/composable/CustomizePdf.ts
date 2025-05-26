@@ -1,4 +1,4 @@
-import { ref, computed, onMounted, onUnmounted, defineProps, watch, type CSSProperties } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, type CSSProperties } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
@@ -7,6 +7,7 @@ export function CustomizePdf() {
   const route = useRoute()
   const templateId = route.params.id as string
   const toast = useToast()
+
   const previewRef = ref<HTMLElement | null>(null)
   const templateName = ref('')
   const fields = ref<{ name: string; active: boolean }[]>([])
@@ -16,7 +17,9 @@ export function CustomizePdf() {
   const windowWidth = ref(window.innerWidth)
 
   const excelData = ref<Record<string, string>[]>([])
-  const activeFieldNames = computed(() => fields.value.filter((f) => f.active).map((f) => f.name))
+  const activeFieldNames = computed(() =>
+    fields.value.filter((f) => f.active).map((f) => f.name)
+  )
 
   const colors = ref({
     backgroundColor: '#ffffff',
@@ -58,29 +61,20 @@ export function CustomizePdf() {
   const backgroundUrl = ref('')
   const footerUrl = ref('')
 
-  watch(() => images.value.cover, (file) => {
-    coverUrl.value = file ? URL.createObjectURL(file) : ''
-  })
-  watch(() => images.value.second, (file) => {
-    secondUrl.value = file ? URL.createObjectURL(file) : ''
-  })
-  watch(() => images.value.header, (file) => {
-    headerUrl.value = file ? URL.createObjectURL(file) : ''
-  })
-  watch(() => images.value.background, (file) => {
-    backgroundUrl.value = file ? URL.createObjectURL(file) : ''
-  })
-  watch(() => images.value.footer, (file) => {
-    footerUrl.value = file ? URL.createObjectURL(file) : ''
-  })
+  watch(() => images.value.cover, file => { coverUrl.value = file ? URL.createObjectURL(file) : '' })
+  watch(() => images.value.second, file => { secondUrl.value = file ? URL.createObjectURL(file) : '' })
+  watch(() => images.value.header, file => { headerUrl.value = file ? URL.createObjectURL(file) : '' })
+  watch(() => images.value.background, file => { backgroundUrl.value = file ? URL.createObjectURL(file) : '' })
+  watch(() => images.value.footer, file => { footerUrl.value = file ? URL.createObjectURL(file) : '' })
 
   const searchField = ref('')
   const searchValue = ref('')
   const searchActive = ref(false)
   const filteredRows = ref<Record<string, string>[]>([])
-  const selectedRows = ref<Set<number>>(new Set())
+  const selectedRows = ref<number[]>([])
+
   const previewRows = computed(() => {
-    const selected = excelData.value.filter((_, i) => selectedRows.value.has(i));
+    const selected = excelData.value.filter((_, i) => selectedRows.value.includes(i))
     const pages = []
     for (let i = 0; i < selected.length; i += rowsPerPage) {
       pages.push(selected.slice(i, i + rowsPerPage))
@@ -88,128 +82,115 @@ export function CustomizePdf() {
     return pages
   })
 
-  function toggleFullscreen() {
-    const el = previewRef.value
-    if (!el) return
-    if (!document.fullscreenElement) {
-      el.requestFullscreen().catch(err => {
-        console.error(`Error entering fullscreen: ${err.message}`)
-      })
+  function toggleRow(index: number) {
+    if (selectedRows.value.includes(index)) {
+      selectedRows.value = selectedRows.value.filter(i => i !== index)
     } else {
-      document.exitFullscreen().catch(err => {
-        console.error(`Error exiting fullscreen: ${err.message}`)
-      })
+      selectedRows.value = [...selectedRows.value, index]
     }
   }
-
-  function filterRows() {
-  const field = searchField.value
-  const input = searchValue.value.trim().toLowerCase()
-console.log('Filtrando:', searchField.value, searchValue.value)
-
-
-  if (!field || !input) {
-    filteredRows.value = [...excelData.value]
-    selectedRows.value = new Set(filteredRows.value.map((_, i) => i))
-    searchActive.value = false
-    return
-  }
-
-  const queries = input.split(',').map((s) => s.trim()).filter(Boolean)
-
-  const resultadoFiltrado: Record<string, string>[] = []
-  const nuevaSeleccion = new Set<number>()
-
-  excelData.value.forEach((row, index) => {
-    const rawValue = row[field]
-    const value = rawValue?.toString().toLowerCase()
-    if (!value) return
-
-    const coincide = queries.some((query) => {
-      // Rango: 10..50
-      if (query.includes('..')) {
-        const [min, max] = query.split('..').map((v) => v.trim())
-        const numVal = parseFloat(value)
-        const isNumRange = !isNaN(parseFloat(min)) && !isNaN(parseFloat(max))
-        if (isNumRange) return numVal >= parseFloat(min) && numVal <= parseFloat(max)
-        return value >= min && value <= max
-      }
-
-      // Operadores
-      const match = query.match(/^(>=|<=|!=|>|<|=)(.+)$/)
-      if (match) {
-        const operator = match[1]
-        const target = match[2].trim()
-        const numValue = parseFloat(value)
-        const numTarget = parseFloat(target)
-        switch (operator) {
-          case '>': return numValue > numTarget
-          case '<': return numValue < numTarget
-          case '>=': return numValue >= numTarget
-          case '<=': return numValue <= numTarget
-          case '=': return value === target
-          case '!=': return value !== target
-        }
-      }
-
-      // Comodines
-      if (query.startsWith('*') && query.endsWith('*')) return value.includes(query.slice(1, -1))
-      if (query.startsWith('*')) return value.endsWith(query.slice(1))
-      if (query.endsWith('*')) return value.startsWith(query.slice(0, -1))
-
-      return value.includes(query)
-    })
-
-    if (coincide) {
-      resultadoFiltrado.push(row)
-      nuevaSeleccion.add(index)
-    }
-  })
-
-  filteredRows.value = resultadoFiltrado
-  selectedRows.value = nuevaSeleccion
-  searchActive.value = true
-}
-
 
   function selectAllFiltered() {
-    filteredRows.value.forEach((_, index) => {
-      selectedRows.value.add(index)
-    })
+    selectedRows.value = filteredRows.value.map((_, i) => i)
   }
 
   function deselectAllFiltered() {
-    filteredRows.value.forEach((_, index) => {
-      selectedRows.value.delete(index)
-    })
+    selectedRows.value = []
   }
 
-  function toggleRow(index: number) {
-    if (selectedRows.value.has(index)) {
-      selectedRows.value.delete(index)
-    } else {
-      selectedRows.value.add(index)
+  function filterRows() {
+    const field = searchField.value
+    const input = searchValue.value.trim().toLowerCase()
+    if (!field || !input) {
+      filteredRows.value = [...excelData.value]
+      selectedRows.value = filteredRows.value.map((_, i) => i)
+      searchActive.value = false
+      return
     }
+
+    const queries = input.split(',').map(s => s.trim()).filter(Boolean)
+    const resultadoFiltrado: Record<string, string>[] = []
+    const nuevaSeleccion: number[] = []
+
+    excelData.value.forEach((row, index) => {
+      const rawValue = row[field]
+      const value = rawValue?.toString().toLowerCase()
+      if (!value) return
+
+      const coincide = queries.some(query => {
+        if (query.includes('..')) {
+          const [min, max] = query.split('..').map(v => v.trim())
+          const numVal = parseFloat(value)
+          const isNumRange = !isNaN(parseFloat(min)) && !isNaN(parseFloat(max))
+          return isNumRange ? numVal >= +min && numVal <= +max : value >= min && value <= max
+        }
+
+        const match = query.match(/^(>=|<=|!=|>|<|=)(.+)$/)
+        if (match) {
+          const [_, operator, target] = match
+          const numValue = parseFloat(value)
+          const numTarget = parseFloat(target.trim())
+          switch (operator) {
+            case '>': return numValue > numTarget
+            case '<': return numValue < numTarget
+            case '>=': return numValue >= numTarget
+            case '<=': return numValue <= numTarget
+            case '=': return value === target
+            case '!=': return value !== target
+          }
+        }
+
+        if (query.startsWith('*') && query.endsWith('*')) return value.includes(query.slice(1, -1))
+        if (query.startsWith('*')) return value.endsWith(query.slice(1))
+        if (query.endsWith('*')) return value.startsWith(query.slice(0, -1))
+        return value.includes(query)
+      })
+
+      if (coincide) {
+        resultadoFiltrado.push(row)
+        nuevaSeleccion.push(index)
+      }
+    })
+
+    filteredRows.value = resultadoFiltrado
+    selectedRows.value = nuevaSeleccion
+    searchActive.value = true
   }
 
   function clearSearch() {
     searchField.value = ''
     searchValue.value = ''
-    selectedRows.value.clear()
     const allRows = paginatedRows.value.flat()
     filteredRows.value = allRows
-    selectedRows.value = new Set(allRows.map((_, i) => i))
+    selectedRows.value = allRows.map((_, i) => i)
     searchActive.value = false
   }
 
-  const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
-  const userId = ref<number | null>(null)
+  const rowsPerPage = 14
+  const paginatedRows = computed(() => {
+    const chunks = []
+    for (let i = 0; i < excelData.value.length; i += rowsPerPage) {
+      chunks.push(excelData.value.slice(i, i + rowsPerPage))
+    }
+    return chunks
+  })
 
-  const hexToRgba = (hex: string, alpha: number) => {
-    const r = parseInt(hex.slice(1, 3), 16)
-    const g = parseInt(hex.slice(3, 5), 16)
-    const b = parseInt(hex.slice(5, 7), 16)
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`
+  const limitedChunk = computed(() => paginatedRows.value[0]?.slice(0, 8) ?? [])
+
+  const showBackground = (index: number): boolean => {
+    const hasFooter = !!images.value.footer
+    const isLast = index === paginatedRows.value.length - 1
+    return hasFooter && isLast ? false : !!images.value.background
+  }
+
+  function toggleFullscreen() {
+    const el = previewRef.value
+    if (!el) return
+    if (!document.fullscreenElement) {
+      el.requestFullscreen().catch(err => console.error(`Error entering fullscreen: ${err.message}`))
+    } else {
+      document.exitFullscreen().catch(err => console.error(`Error exiting fullscreen: ${err.message}`))
+    }
   }
 
   const computedColors = computed(() => ({
@@ -223,16 +204,15 @@ console.log('Filtrando:', searchField.value, searchValue.value)
     footerText: colors.value.footerText,
   }))
 
-  const headerStyle = computed<Record<string, string>>(() => ({
+  const headerStyle = computed(() => ({
     gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(80px, 1fr))`,
     backgroundColor: computedColors.value.header,
     color: computedColors.value.headerText,
   }))
 
-  const rowStyle = (ri: number): Record<string, string> => ({
+  const rowStyle = (ri: number) => ({
     gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(80px, 1fr))`,
-    backgroundColor:
-      ri % 2 === 0 ? computedColors.value.rowPrimary : computedColors.value.rowAlternate,
+    backgroundColor: ri % 2 === 0 ? computedColors.value.rowPrimary : computedColors.value.rowAlternate,
     color: computedColors.value.text,
     fontFamily: titleSettings.value.fieldFont,
     fontSize: titleSettings.value.fieldSize,
@@ -256,21 +236,14 @@ console.log('Filtrando:', searchField.value, searchValue.value)
     right: '0',
   }))
 
-  const rowsPerPage = 14
-  const paginatedRows = computed(() => {
-    const chunks = []
-    for (let i = 0; i < excelData.value.length; i += rowsPerPage) {
-      chunks.push(excelData.value.slice(i, i + rowsPerPage))
-    }
-    return chunks
-  })
+  const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
+  const userId = ref<number | null>(null)
 
-  const limitedChunk = computed(() => paginatedRows.value[0]?.slice(0, 8) ?? [])
-
-  const showBackground = (index: number): boolean => {
-    const hasFooter = !!images.value.footer
-    const isLast = index === paginatedRows.value.length - 1
-    return hasFooter && isLast ? false : !!images.value.background
+  const hexToRgba = (hex: string, alpha: number) => {
+    const r = parseInt(hex.slice(1, 3), 16)
+    const g = parseInt(hex.slice(3, 5), 16)
+    const b = parseInt(hex.slice(5, 7), 16)
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`
   }
 
   const handleImageUpload = (e: Event, type: keyof typeof images.value) => {
@@ -278,17 +251,20 @@ console.log('Filtrando:', searchField.value, searchValue.value)
     if (!file) return
     const validTypes = ['image/jpeg', 'image/png', 'image/jpg']
     const maxSizeMB = 2
+
     if (!validTypes.includes(file.type)) {
       toast.error(`"${file.name}" is not a valid image type. Please, use JPG or PNG.`)
       ;(e.target as HTMLInputElement).value = ''
       return
     }
+
     if (file.size > maxSizeMB * 1024 * 1024) {
       const sizeInMB = (file.size / (1024 * 1024)).toFixed(2)
-      toast.error(`"${file.name}" weighs ${sizeInMB}MB. Maximum allowed: ${maxSizeMB}MB.`)
+      toast.error(`"${file.name}" pesa ${sizeInMB}MB. Máximo permitido: ${maxSizeMB}MB.`)
       ;(e.target as HTMLInputElement).value = ''
       return
     }
+
     images.value[type] = file
   }
 
@@ -320,7 +296,8 @@ console.log('Filtrando:', searchField.value, searchValue.value)
       templateName.value = res.data.template.name
       fields.value = (res.data.fields || []).map((f: string) => ({ name: f, active: true }))
       excelData.value = res.data.excel_data || []
-      selectedRows.value = new Set(excelData.value.map((_, i) => i))
+      filteredRows.value = excelData.value
+      selectedRows.value = excelData.value.map((_, i) => i)
     } catch (err) {
       console.error('Error loading data:', err)
       error.value = true
@@ -335,11 +312,13 @@ console.log('Filtrando:', searchField.value, searchValue.value)
       generating.value = false
       return
     }
+
     const xsrfToken = getXsrfToken()
     if (!xsrfToken) {
       toast.error('No CSRF token found.')
       return
     }
+
     generating.value = true
     try {
       const formData = new FormData()
@@ -367,6 +346,7 @@ console.log('Filtrando:', searchField.value, searchValue.value)
       Object.entries(images.value).forEach(([key, file]) => {
         if (file) formData.append(key, file)
       })
+
       const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
@@ -375,6 +355,7 @@ console.log('Filtrando:', searchField.value, searchValue.value)
         withCredentials: true,
         responseType: 'blob',
       })
+
       const blob = new Blob([res.data], { type: 'application/pdf' })
       const link = document.createElement('a')
       link.href = URL.createObjectURL(blob)
@@ -395,10 +376,6 @@ console.log('Filtrando:', searchField.value, searchValue.value)
     window.addEventListener('resize', () => (windowWidth.value = window.innerWidth))
     fetchTemplate()
     fetchUserId()
-    watch(() => excelData.value, (data) => {
-      filteredRows.value = data
-      selectedRows.value = new Set(data.map((_, i) => i))
-    }, { immediate: true })
   })
 
   onUnmounted(() => {
