@@ -6,7 +6,7 @@
         v-if="showFullscreen"
         class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center"
       >
-        <div class="bg-white w-screen h-screen p-6 overflow-auto relative">
+        <div class="bg-white w-screen h-screen p-6 overflow-auto relative rounded-lg shadow-xl">
           <button
             @click="$emit('close')"
             class="absolute top-4 right-4 text-gray-800 text-3xl font-bold hover:text-black"
@@ -14,41 +14,59 @@
             &times;
           </button>
 
+          <!-- Vista completa del catálogo -->
           <div class="scale-100 origin-top-left">
-            <div class="bg-white shadow rounded-lg p-6">
-              <!-- Vista renderizada directamente -->
-              <div v-for="(chunk, index) in previewRows" :key="index" class="a4-page">
-                <!-- Cabecera -->
-                <div v-if="images.header" class="mb-4" style="height: 120px;">
-                  <img :src="headerUrl" alt="Header" class="w-full object-cover rounded" />
-                </div>
+            <!-- Imagen de portada -->
+            <div v-if="images.cover" class="a4-page">
+              <img :src="images.coverUrl" alt="Cover" class="a4-image-content no-radius w-full h-full object-cover" />
+            </div>
 
-                <!-- Tabla -->
-                <div class="grid font-medium" :style="headerStyle">
-                  <div
-                    v-for="(key, i) in activeFieldNames"
-                    :key="'header-' + i"
-                    class="px-4 py-2 border-b"
-                  >
-                    {{ key }}
-                  </div>
-                </div>
+            <!-- Segunda imagen -->
+            <div v-if="images.second" class="a4-page">
+              <img :src="images.secondUrl" alt="Second" class="a4-image-content no-radius w-full h-full object-contain" />
+            </div>
 
+            <div v-for="(chunk, index) in previewRows" :key="index" class="a4-page relative">
+              <!-- Cabecera -->
+              <div v-if="images.header" class="mb-4" style="height: 120px;">
+                <img :src="headerUrl" alt="Header" class="w-full object-cover rounded" />
+              </div>
+
+              <!-- Tabla -->
+              <div class="grid font-medium" :style="headerStyle">
                 <div
-                  v-for="(row, ri) in chunk"
-                  :key="'row-' + ri"
-                  class="grid"
-                  :style="rowStyle(ri)"
+                  v-for="(key, i) in activeFieldNames"
+                  :key="'header-' + i"
+                  class="px-4 py-2 border-b"
                 >
-                  <div
-                    v-for="(key, i) in activeFieldNames"
-                    :key="'cell-' + ri + '-' + i"
-                    class="px-4 py-2"
-                  >
-                    {{ row[key] }}
-                  </div>
+                  {{ key }}
                 </div>
               </div>
+
+              <div
+                v-for="(row, ri) in chunk"
+                :key="'row-' + ri"
+                class="grid"
+                :style="rowStyle(ri)"
+              >
+                <div
+                  v-for="(key, i) in activeFieldNames"
+                  :key="'cell-' + ri + '-' + i"
+                  class="px-4 py-2"
+                >
+                  {{ row[key] }}
+                </div>
+              </div>
+
+              <!-- Footer de página -->
+              <div class="absolute bottom-4 right-6 text-sm text-gray-500 italic">
+                Página {{ index + 1 }}
+              </div>
+            </div>
+
+            <!-- Imagen de pie de página -->
+            <div v-if="images.footer" class="a4-page">
+              <img :src="images.footerUrl" alt="Footer" class="a4-image-content no-radius w-full h-full object-cover" />
             </div>
           </div>
 
@@ -74,16 +92,24 @@
 import { ref, watch } from 'vue'
 
 const props = defineProps<{
-  previewRows: Record<string, string>[][]
-  activeFieldNames: string[]
-  headerStyle: Record<string, string>
-  rowStyle: (index: number) => Record<string, string>
+  previewRows: Record<string, string>[][],
+  activeFieldNames: string[],
+  headerStyle: Record<string, string>,
+  rowStyle: (index: number) => Record<string, string>,
   images: {
-    header: File | null
-  }
-  headerUrl: string
+    header: File | null,
+    footer: File | null,
+    cover: File | null,
+    second: File | null,
+    headerUrl?: string,
+    footerUrl?: string,
+    coverUrl?: string,
+    secondUrl?: string
+  },
+  headerUrl: string,
   show: boolean
 }>()
+
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const emit = defineEmits<{
@@ -118,5 +144,15 @@ watch(() => props.show, (value) => {
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
+  position: relative;
+}
+.a4-image-content {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+.no-radius {
+  border-radius: 0;
 }
 </style>
