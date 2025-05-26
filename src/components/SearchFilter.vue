@@ -129,14 +129,8 @@ const emit = defineEmits<{
 
 const props = defineProps<{
   fields: { name: string }[]
-  searchField: {
-    type: String,
-    default: ''
-  },
-  searchValue: {
-    type: String,
-    default: ''
-  },
+  searchField: string
+  searchValue: string
   searchActive: boolean
   filteredRows: Record<string, string>[]
   selectedRows: Set<number>
@@ -154,11 +148,11 @@ const localSearchField = ref(props.searchField)
 const localSearchValue = ref(props.searchValue)
 
 watch(() => props.searchField, (val) => {
-  if (val != null) localSearchField.value = val
+  if (val == null) localSearchField.value = ''
 })
 
 watch(() => props.searchValue, (val) => {
-  if (val != null) localSearchValue.value = val
+  if (val == null) localSearchValue.value = ''
 })
 
 
