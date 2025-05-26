@@ -66,17 +66,11 @@ const showFullscreen = ref(false)
       :activeFieldNames="activeFieldNames"
       :headerStyle="headerStyle"
       :rowStyle="rowStyle"
-      :images="{
-        header: images.header,
-        footer: images.footer,
-        cover: images.cover,
-        second: images.second,
-        headerUrl,
-        footerUrl,
-        coverUrl,
-        secondUrl,
-        backgroundUrl
-      }"
+      :headerUrl="headerUrl"
+      :footerUrl="footerUrl"
+      :coverUrl="coverUrl"
+      :secondUrl="secondUrl"
+      :backgroundUrl="backgroundUrl"
       @close="showFullscreen = false"
     />
 

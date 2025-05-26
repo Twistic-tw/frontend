@@ -103,17 +103,17 @@
 import { ref, watch } from 'vue'
 
 const props = defineProps<{
-  previewRows: Record<string, string>[][],
-  activeFieldNames: string[],
-  headerStyle: Record<string, string>,
-  rowStyle: (index: number) => Record<string, string>,
-  headerUrl: string,
-  footerUrl: string,
-  coverUrl: string,
-  secondUrl: string,
-  backgroundUrl: string,
-  show: boolean
-}>()
+  previewRows: Record<string, string>[][];
+  activeFieldNames: string[];
+  headerStyle: Record<string, string>;
+  rowStyle: (index: number) => Record<string, string>;
+  headerUrl?: string;
+  footerUrl?: string;
+  coverUrl?: string;
+  secondUrl?: string;
+  backgroundUrl?: string;
+  show: boolean;
+}>();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const emit = defineEmits<{
