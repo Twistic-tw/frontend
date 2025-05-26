@@ -1,14 +1,11 @@
-<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="bg-white rounded-2xl shadow-lg border border-gray-200">
-    <!-- Encabezado con icono -->
+    <!-- Encabezado del card -->
     <div
       class="flex items-center justify-between p-6 border-b border-gray-100 cursor-pointer"
       @click="showModal = true"
     >
-      <h2 class="text-xl font-bold text-gray-800">
-        Search & Filter Data
-      </h2>
+      <h2 class="text-xl font-bold text-gray-800">Search & Filter Data</h2>
       <svg
         class="w-5 h-5 text-gray-600 transition-transform duration-300"
         fill="none"
@@ -19,118 +16,132 @@
       </svg>
     </div>
 
-    <!-- MODAL -->
-    <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
-      <div class="bg-white w-full max-w-[95%] h-[90vh] rounded-xl shadow-xl p-6 overflow-auto relative">
-        <button
-          @click="showModal = false"
-          class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl"
-        >
-          &times;
-        </button>
+    <!-- MODAL CON TRANSICIÓN -->
+    <transition name="fade-scale">
+      <div
+        v-if="showModal"
+        class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
+      >
+        <div class="bg-white w-[95%] h-[90vh] rounded-xl shadow-xl p-6 overflow-auto relative">
+          <!-- Botón cerrar -->
+          <button
+            @click="showModal = false"
+            class="absolute top-3 right-3 text-gray-400 hover:text-gray-800 text-2xl font-bold"
+          >
+            &times;
+          </button>
 
-        <!-- Filtros -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>
-            <select
-              :value="searchField || ''"
-              @change="$emit('update:searchField', ($event.target as HTMLSelectElement).value); $emit('filter')"
-              class="w-full p-2 border rounded"
-            >
-              <option disabled value="">Select field</option>
-              <option v-for="field in fields" :key="field.name" :value="field.name">
-                {{ field.name }}
-              </option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Search by value</label>
-            <input
-              :value="searchValue"
-              @input="$emit('update:searchValue', ($event.target as HTMLInputElement).value); $emit('filter')"
-              class="w-full p-2 border rounded"
-            />
-          </div>
-          <div class="flex items-end">
-            <button
-              @click="$emit('clear')"
-              class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition"
-            >
-              Clear Filter
-            </button>
-          </div>
-        </div>
-
-        <!-- Tabla -->
-        <div v-if="filteredRows.length" class="overflow-auto max-h-[60vh] border rounded">
-          <div class="flex justify-between items-center px-4 py-2 bg-gray-100 border-b">
-            <span class="text-sm text-gray-700">
-              {{ selectedRows.length }} of {{ filteredRows.length }} selected
-            </span>
-            <div class="flex gap-2">
-              <button
-                @click="$emit('selectAll')"
-                class="text-xs bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700"
+          <!-- Filtros -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>
+              <select
+                :value="searchField || ''"
+                @change="$emit('update:searchField', ($event.target as HTMLSelectElement).value); $emit('filter')"
+                class="w-full p-2 border rounded shadow-sm"
               >
-                Show all
-              </button>
+                <option disabled value="">Select field</option>
+                <option v-for="field in fields" :key="field.name" :value="field.name">
+                  {{ field.name }}
+                </option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Search by value</label>
+              <input
+                :value="searchValue"
+                @input="$emit('update:searchValue', ($event.target as HTMLInputElement).value); $emit('filter')"
+                class="w-full p-2 border rounded shadow-sm"
+              />
+            </div>
+            <div class="flex items-end">
               <button
-                @click="$emit('deselectAll')"
-                class="text-xs bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500"
+                @click="$emit('clear')"
+                class="w-full bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition shadow-sm"
               >
-                Hide all
+                Clear Filter
               </button>
             </div>
           </div>
 
-          <table class="table-auto w-full text-sm">
-            <tbody>
-              <tr
-                v-for="(row, index) in filteredRows"
-                :key="'row-' + index"
-                class="hover:bg-gray-50 text-sm"
-              >
-                <td class="px-3 py-1 text-center align-middle">
-                  <label class="relative inline-flex items-center cursor-pointer">
+          <!-- Tabla moderna -->
+          <div v-if="filteredRows.length" class="overflow-auto border rounded-lg">
+            <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
+              <span class="text-sm text-gray-700">
+                {{ selectedRows.length }} of {{ filteredRows.length }} selected
+              </span>
+              <div class="flex gap-2">
+                <button
+                  @click="$emit('selectAll')"
+                  class="text-xs bg-indigo-600 text-white px-4 py-1.5 rounded hover:bg-indigo-700"
+                >
+                  Show all
+                </button>
+                <button
+                  @click="$emit('deselectAll')"
+                  class="text-xs bg-gray-400 text-white px-4 py-1.5 rounded hover:bg-gray-500"
+                >
+                  Hide all
+                </button>
+              </div>
+            </div>
+
+            <table class="min-w-full divide-y divide-gray-200 text-sm">
+              <thead class="bg-gray-50 sticky top-0 z-10">
+                <tr>
+                  <th class="px-4 py-2 text-left font-semibold text-gray-700">Visible</th>
+                  <th
+                    v-for="field in fields"
+                    :key="field.name"
+                    class="px-4 py-2 text-left font-semibold text-gray-700"
+                  >
+                    {{ field.name }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr
+                  v-for="(row, index) in filteredRows"
+                  :key="'row-' + index"
+                  class="hover:bg-gray-50"
+                >
+                  <td class="px-4 py-2">
                     <input
                       type="checkbox"
                       :checked="selectedRows.includes(index)"
                       @change="handleToggle(index)"
-                      class="sr-only peer"
+                      class="accent-indigo-600 w-4 h-4"
                     />
-                    <div class="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-[#1e2939] transition-all"></div>
-                    <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
-                  </label>
-                </td>
-                <td
-                  v-for="key in fields.map(f => f.name)"
-                  :key="key"
-                  class="px-3 py-1 border-t align-middle"
-                >
-                  {{ row[key] }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                  </td>
+                  <td
+                    v-for="key in fields.map(f => f.name)"
+                    :key="key"
+                    class="px-4 py-2 text-gray-700"
+                  >
+                    {{ row[key] }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <div v-else-if="searchField && searchValue" class="text-sm text-gray-500 mt-2">
-          No results found. Try another value.
+          <div v-else-if="searchField && searchValue" class="text-sm text-gray-500 mt-4 text-center">
+            No results found. Try another value.
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
 <script setup lang="ts">
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ref, computed, defineEmits, withDefaults, defineProps } from 'vue'
+import { ref, defineEmits, defineProps, withDefaults } from 'vue'
+
+const showModal = ref(false)
 
 const emit = defineEmits<{
   (e: 'update:searchField', value: string): void
   (e: 'update:searchValue', value: string): void
-  (e: 'toggle', id: string): void
   (e: 'filter'): void
   (e: 'clear'): void
   (e: 'selectAll'): void
@@ -143,36 +154,30 @@ const props = withDefaults(defineProps<{
   fields: { name: string }[]
   searchField?: string
   searchValue?: string
-  searchActive?: boolean
   filteredRows: Record<string, string>[]
   selectedRows: number[]
-  activeCard?: string | null
-  cardId: string
 }>(), {
   searchField: '',
   searchValue: '',
-  searchActive: false,
-  activeCard: null,
 })
 
-const showModal = ref(false)
 const handleToggle = (index: number) => emit('toggleRow', index)
 </script>
 
 <style scoped>
-.expand-enter-active,
-.expand-leave-active {
-  transition: all 0.3s ease;
+/* Transición suave para el modal */
+.fade-scale-enter-active,
+.fade-scale-leave-active {
+  transition: all 0.25s ease;
 }
-.expand-enter-from,
-.expand-leave-to {
-  max-height: 0;
+.fade-scale-enter-from,
+.fade-scale-leave-to {
   opacity: 0;
-  overflow: hidden;
+  transform: scale(0.95);
 }
-.expand-enter-to,
-.expand-leave-from {
-  max-height: 1000px;
+.fade-scale-enter-to,
+.fade-scale-leave-from {
   opacity: 1;
+  transform: scale(1);
 }
 </style>
