@@ -7,6 +7,9 @@ import ImageUploader from '@/components/ImageUploader.vue'
 import LivePreview from '@/components/LivePreview.vue'
 import BackButton from '@/components/BackButton.vue'
 import { CustomizePdf } from '../../composable/CustomizePdf'
+import { ref } from 'vue'
+
+const activeCard = ref<string | null>(null)
 
 const {
   templateName,
@@ -57,7 +60,12 @@ const {
 
     <div class="flex flex-col md:flex-row gap-6 w-full max-w-[1600px] mx-auto px-4">
       <div class="h-auto md:w-[50%] space-y-8">
-        <ActiveFields v-model:fields="fields" />
+        <ActiveFields
+          v-model:fields="fields"
+          :activeCard="activeCard"
+          cardId="activeFields"
+          @toggle="(id) => activeCard.valueOf = activeCard.valueOf === id ? null : id"
+        />
         <SearchFilter
           :searchField="searchField"
           :searchValue="searchValue"
@@ -70,10 +78,24 @@ const {
           @selectAll="selectAllFiltered"
           @deselectAll="deselectAllFiltered"
           @toggleRow="toggleRow"
+          :activeCard="activeCard"
+          cardId="searchField"
+          @toggle="(id) => activeCard.valueOf = activeCard.valueOf === id ? null : id"
         />
         <div class="grid grid-cols-2 gap-6">
-          <StyleOptions v-model:colors="colors" v-model:titleSettings="titleSettings" />
-          <ImageUploader :handleImageUpload="handleImageUpload" />
+          <StyleOptions
+            v-model:colors="colors"
+            v-model:titleSettings="titleSettings"
+            :activeCard="activeCard"
+            cardId="styleOptions"
+            @toggle="(id) => activeCard.valueOf = activeCard.valueOf === id ? null : id"
+          />
+          <ImageUploader
+            :handleImageUpload="handleImageUpload"
+            :activeCard="activeCard"
+            cardId="imagenUploader"
+            @toggle="(id) => activeCard.valueOf = activeCard.valueOf === id ? null : id"
+          />
         </div>
 
         <button
