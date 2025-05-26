@@ -27,7 +27,8 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>
             <select
-              v-model="localSearchField"
+              :value="searchField"
+              @change="$emit('update:searchField', ($event.target as HTMLSelectElement).value)"
               class="w-full p-2 border rounded"
             >
               <option disabled value="">Select field</option>
@@ -39,13 +40,14 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by value</label>
             <input
-              v-model="localSearchValue"
+              :value="searchValue"
+              @input="$emit('update:searchValue', ($event.target as HTMLInputElement).value)"
               class="w-full p-2 border rounded"
             />
           </div>
           <div class="flex items-end">
             <button
-             @click="() => clearSearch()"
+              @click="clearSearch"
               class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition"
             >
               Clear Filter
@@ -63,13 +65,13 @@
             </span>
             <div class="flex gap-2">
               <button
-                @click="() => selectAllFiltered()"
+                @click="selectAllFiltered"
                 class="text-xs bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700"
               >
                 Show all
               </button>
               <button
-                @click="() => deselectAllFiltered()"
+                @click="deselectAllFiltered"
                 class="text-xs bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500"
               >
                 Hide all
@@ -119,82 +121,33 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, defineEmits, defineProps } from 'vue'
+import { computed, defineEmits, defineProps } from 'vue'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const emit = defineEmits<{
   (e: 'update:searchField', value: string): void
   (e: 'update:searchValue', value: string): void
   (e: 'toggle', id: string): void
 }>()
 
-const props = defineProps({
-  fields: {
-    type: Array as () => { name: string }[],
-    required: true,
-  },
-  searchField: String,
-  searchValue: String,
-  searchActive: Boolean,
-  filteredRows: {
-    type: Array as () => Record<string, string>[],
-    default: () => [],
-  },
-  selectedRows: {
-    type: Object as () => Set<number>,
-    default: () => new Set(),
-  },
-  filterRows: {
-    type: Function,
-    required: true,
-  },
-  clearSearch: {
-    type: Function,
-    required: true,
-  },
-  selectAllFiltered: {
-    type: Function,
-    required: true,
-  },
-  deselectAllFiltered: {
-    type: Function,
-    required: true,
-  },
-  toggleRow: {
-    type: Function,
-    required: true,
-  },
-  activeCard: String,
-  cardId: String,
-})
-
-
-
-
-const localSearchField = ref(props.searchField)
-const localSearchValue = ref(props.searchValue)
-
-watch(() => props.searchField, (val) => {
-  if (val != null) localSearchField.value = val
-})
-
-watch(() => props.searchValue, (val) => {
-  if (val != null) localSearchValue.value = val
-})
-
-
-watch(localSearchField, (val) => {
-  emit('update:searchField', val)
-  props.filterRows()
-})
-
-watch(localSearchValue, (val) => {
-  emit('update:searchValue', val)
-  props.filterRows()
-})
+const props = defineProps<{
+  fields: { name: string }[]
+  searchField: string
+  searchValue: string
+  searchActive: boolean
+  filteredRows: Record<string, string>[]
+  selectedRows: Set<number>
+  filterRows: () => void
+  clearSearch: () => void
+  selectAllFiltered: () => void
+  deselectAllFiltered: () => void
+  toggleRow: (index: number) => void
+  activeCard: string | null
+  cardId: string
+}>()
 
 const isOpen = computed(() => props.activeCard === props.cardId)
 </script>
-
 
 <style scoped>
 .expand-enter-active,
