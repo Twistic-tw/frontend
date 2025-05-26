@@ -64,7 +64,7 @@ const {
           v-model:fields="fields"
           :activeCard="activeCard"
           cardId="activeFields"
-          @toggle="(id) => activeCard.valueOf = activeCard.valueOf === id ? null : id"
+          @toggle="(id) => activeCard = activeCard === id ? null : id"
         />
         <SearchFilter
           :searchField="searchField"
@@ -80,7 +80,7 @@ const {
           @toggleRow="toggleRow"
           :activeCard="activeCard"
           cardId="searchField"
-          @toggle="(id) => activeCard.valueOf = activeCard.valueOf === id ? null : id"
+          @toggle="(id) => activeCard = activeCard === id ? null : id"
         />
         <div class="grid grid-cols-2 gap-6">
           <StyleOptions
@@ -88,13 +88,13 @@ const {
             v-model:titleSettings="titleSettings"
             :activeCard="activeCard"
             cardId="styleOptions"
-            @toggle="(id) => activeCard.valueOf = activeCard.valueOf === id ? null : id"
+            @toggle="(id) => activeCard = activeCard === id ? null : id"
           />
           <ImageUploader
             :handleImageUpload="handleImageUpload"
             :activeCard="activeCard"
             cardId="imagenUploader"
-            @toggle="(id) => activeCard.valueOf = activeCard.valueOf === id ? null : id"
+            @toggle="(id) => activeCard = activeCard === id ? null : id"
           />
         </div>
 
