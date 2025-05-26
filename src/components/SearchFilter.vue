@@ -18,8 +18,8 @@
           <!-- Botón cerrar -->
           <button
             @click="showModal = false"
-            class="absolute top-4 right-4 backdrop-blur-md bg-white/30 border border-white/50 shadow-md hover:shadow-lg text-gray-800 hover:text-red-600 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300"
-            aria-label="Cerrar"
+            class="absolute top-4 right-4 bg-gray-800 text-white hover:bg-red-600 hover:scale-105 transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
+            aria-label="Cerrar modal"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
