@@ -47,7 +47,7 @@
           </div>
           <div class="flex items-end">
             <button
-              @click="clearSearch"
+              @click="$emit('clear')"
               class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition"
             >
               Clear Filter
@@ -129,6 +129,7 @@ const emit = defineEmits<{
   (e: 'update:searchValue', value: string): void
   (e: 'toggle', id: string): void
   (e: 'filter'): void
+  (e: 'clear'): void
 }>()
 
 
