@@ -63,7 +63,7 @@ const {
     <div
       id="pdf-content"
       ref="previewRef"
-      class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full h-fit-content"
+      class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full h-fit-content bg-gray-100"
       style="aspect-ratio: 794/1123; transform: scale(1)"
     >
       <!-- Portada -->
