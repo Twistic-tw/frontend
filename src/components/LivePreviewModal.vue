@@ -12,13 +12,13 @@
           <!-- Vista completa del catálogo -->
           <div id="pdf-content" class="origin-top-left w-full h-fit-content bg-gray-100">
             <!-- Portada -->
-            <div v-if="images.cover" class="a4-page">
-              <img :src="images.coverUrl" alt="Cover Image" class="a4-image-content no-radius w-full h-full object-cover" />
+            <div v-if="coverUrl" class="a4-page">
+              <img :src="coverUrl" alt="Cover Image" class="a4-image-content no-radius w-full h-full object-cover" />
             </div>
 
             <!-- Segunda portada -->
-            <div v-if="images.second" class="a4-page">
-              <img :src="images.secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
+            <div v-if="secondUrl" class="a4-page">
+              <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
             </div>
 
             <!-- Páginas de contenido -->
@@ -27,15 +27,15 @@
               :key="'page-' + index"
               class="a4-page"
               :style="{
-                backgroundImage: images.backgroundUrl ? `url(${images.backgroundUrl})` : 'none',
+                backgroundImage: backgroundUrl ? `url(${backgroundUrl})` : 'none',
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
               }"
             >
               <!-- Cabecera -->
-              <div v-if="images.header" class="mb-4" style="height: 120px; overflow: hidden">
-                <img :src="images.headerUrl" alt="Header Image" class="w-full object-cover rounded-b-lg" style="height: 120px" />
+              <div v-if="headerUrl" class="mb-4" style="height: 120px; overflow: hidden">
+                <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-b-lg" style="height: 120px" />
               </div>
 
               <!-- Tabla -->
@@ -74,9 +74,9 @@
             </div>
 
             <!-- Página extra solo con footer -->
-            <div v-if="images.footer" class="a4-page">
+            <div v-if="footerUrl" class="a4-page">
               <div class="a4-image full-a4">
-                <img :src="images.footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
+                <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
               </div>
             </div>
           </div>
@@ -107,17 +107,11 @@ const props = defineProps<{
   activeFieldNames: string[],
   headerStyle: Record<string, string>,
   rowStyle: (index: number) => Record<string, string>,
-  images: {
-    header: File | null,
-    footer: File | null,
-    cover: File | null,
-    second: File | null,
-    headerUrl?: string,
-    footerUrl?: string,
-    coverUrl?: string,
-    secondUrl?: string,
-    backgroundUrl?: string
-  },
+  headerUrl: string,
+  footerUrl: string,
+  coverUrl: string,
+  secondUrl: string,
+  backgroundUrl: string,
   show: boolean
 }>()
 
