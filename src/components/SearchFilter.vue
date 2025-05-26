@@ -26,7 +26,10 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>
-            <select v-model="searchField" @input="$emit('update:searchField', $event.target)" class="w-full p-2 border rounded">
+            <select
+            v-model="searchField"
+            @input="$emit('update:searchField', ($event.target as HTMLSelectElement).value)"
+            class="w-full p-2 border rounded">
               <option disabled value="">Select field</option>
               <option v-for="field in fields" :key="field.name" :value="field.name">
                 {{ field.name }}
@@ -37,7 +40,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Search by value</label>
             <input
               :value="searchValue"
-              @input="$emit('update:searchValue', $event.target)"
+              @input="$emit('update:searchValue', ($event.target as HTMLInputElement).value)"
               class="w-full p-2 border rounded"
             />
           </div>
