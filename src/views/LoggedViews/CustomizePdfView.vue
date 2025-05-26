@@ -67,8 +67,8 @@ const {
           @toggle="(id) => activeCard = activeCard === id ? null : id"
         />
         <SearchFilter
-          :searchField="searchField"
-          :searchValue="searchValue"
+          v-model:searchField="searchField"
+          v-model:searchValue="searchValue"
           :fields="fields"
           :filteredRows="filteredRows"
           :selectedRows="selectedRows"
