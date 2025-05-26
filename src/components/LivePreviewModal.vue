@@ -8,6 +8,7 @@
       >
         <div
           class="bg-white w-screen h-screen p-6 overflow-auto relative rounded-lg shadow-xl"
+          style="margin-top:8em;"
         >
           <!-- Vista completa del catálogo -->
           <div id="pdf-content" class="origin-top-left w-full h-fit-content bg-gray-100">
