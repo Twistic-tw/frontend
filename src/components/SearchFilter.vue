@@ -65,13 +65,13 @@
             </span>
             <div class="flex gap-2">
               <button
-                @click="selectAllFiltered"
+                @click="$emit('selectAllFiltered')"
                 class="text-xs bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700"
               >
                 Show all
               </button>
               <button
-                @click="deselectAllFiltered"
+                @click="$emit('deselectAllFiltered')"
                 class="text-xs bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500"
               >
                 Hide all
@@ -130,6 +130,8 @@ const emit = defineEmits<{
   (e: 'toggle', id: string): void
   (e: 'filter'): void
   (e: 'clear'): void
+  (e: 'selectAllFiltered'): void
+  (e: 'deselectAllFiltered'): void
 }>()
 
 
