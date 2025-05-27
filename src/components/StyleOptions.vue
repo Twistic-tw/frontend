@@ -42,7 +42,7 @@
             min="0"
             max="1"
             step="0.01"
-            v-model.number="colors.titleTextAlpha"
+            v-model.number="colors.titleAlpha"
             class="w-full bg-[#1e2939]"
           />
         </div>

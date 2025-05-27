@@ -123,7 +123,7 @@ const showFullscreen = ref(false)
       >
         <!-- Cabecera -->
         <div v-if="images.header" style="height: 120px; overflow: hidden">
-          <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-b-lg" style="height: 120px" />
+          <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-t-lg" style="height: 120px" />
         </div>
         <div
           class="text-center mb-4 py-2 px-4"
@@ -133,7 +133,7 @@ const showFullscreen = ref(false)
           }"
         >
           <h1
-            class="text-2xl font-bold uppercase tracking-wide"
+            class="text-2xl font-bold tracking-wide"
             :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align }"
           >
             {{ templateName }}
