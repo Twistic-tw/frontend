@@ -134,7 +134,7 @@ const showFeaturedModal = ref(false)
             @close="showTextModal = false"
           />
 
-          <FeaturedImagesCard
+          <FeaturedImages
             :activeCard="activeCard"
             cardId="featuredImages"
             @toggle="() => showFeaturedModal = true"
