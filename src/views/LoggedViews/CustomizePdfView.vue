@@ -4,6 +4,7 @@ import ActiveFields from '@/components/ActiveFields.vue'
 import SearchFilter from '@/components/SearchFilter.vue'
 import StyleOptions from '@/components/StyleOptions.vue'
 import ImageUploader from '@/components/ImageUploader.vue'
+import FeaturedImages from '@/components/FeaturedImages.vue'
 import TextOptions from '@/components/TextOptions.vue'
 import TextOptionsModal from '@/components/TextOptionsModal.vue'
 import LivePreview from '@/components/LivePreview.vue'
@@ -35,6 +36,7 @@ const {
   filteredRows,
   selectedRows,
   previewRows,
+  featuredImages,
   filterRows,
   selectAllFiltered,
   deselectAllFiltered,
@@ -128,6 +130,10 @@ const showTextModal = ref(false)
             v-model="textOptions"
             :show="showTextModal"
             @close="showTextModal = false"
+          />
+
+          <FeaturedImages
+            v-model="featuredImages"
           />
 
         </div>

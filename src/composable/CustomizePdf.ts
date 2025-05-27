@@ -58,6 +58,13 @@ export function CustomizePdf() {
     footer: null as File | null,
   })
 
+  const featuredImages = ref({
+  image_one: null,
+  image_two: null,
+  image_three: null,
+  image_four: null
+})
+
   const coverUrl = ref('')
   const secondUrl = ref('')
   const headerUrl = ref('')
@@ -399,6 +406,6 @@ export function CustomizePdf() {
     filterRows, selectAllFiltered, deselectAllFiltered, toggleRow, clearSearch,
     showBackground, handleImageUpload, sendToBackend,
     fetchTemplate, userId, fetchUserId, toggleFullscreen,
-    previewRef, titleBackgroundRgba
+    previewRef, titleBackgroundRgba, featuredImages
   }
 }
