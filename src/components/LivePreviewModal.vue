@@ -8,7 +8,13 @@
       >
         <div
           class="bg-white w-screen h-screen p-6 overflow-auto relative rounded-lg shadow-xl"
-          style="margin-top:8em;"
+          :style="{
+            marginTop: '8em',
+            maxWidth: '794px',
+            maxHeight: 'calc(100vh - 4rem)',
+            width: '100%',
+            height: 'auto'
+          }"
         >
           <!-- Vista completa del catálogo -->
           <div id="pdf-content" class="origin-top-left w-full h-fit-content bg-gray-100">
