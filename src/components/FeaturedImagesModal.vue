@@ -20,7 +20,11 @@
             <label class="block text-sm font-medium text-gray-700 capitalize">
               {{ key.replace('_', ' ') }}
             </label>
-            <input type="file" accept="image/png, image/jpeg" @change="onUpload($event, key)" class="w-full" />
+            <input
+            type="file"
+            accept="image/png, image/jpeg"
+            @change="onUpload($event, key)"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 file:bg-indigo-600 file:text-white file:rounded-full file:px-4 file:py-2 file:border-0 file:cursor-pointer file:hover:bg-indigo-700" />
             <div v-if="previews[key]" class="rounded overflow-hidden border">
               <img :src="previews[key]" class="w-full h-40 object-cover" />
             </div>
