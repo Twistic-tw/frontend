@@ -360,6 +360,9 @@ export function CustomizePdf() {
       Object.entries(images.value).forEach(([key, file]) => {
         if (file) formData.append(key, file)
       })
+      Object.entries(featuredImages.value).forEach(([key, file]) => {
+        if (file) formData.append(key, file)
+      })
 
       const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
         headers: {

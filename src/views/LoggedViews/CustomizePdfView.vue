@@ -4,7 +4,8 @@ import ActiveFields from '@/components/ActiveFields.vue'
 import SearchFilter from '@/components/SearchFilter.vue'
 import StyleOptions from '@/components/StyleOptions.vue'
 import ImageUploader from '@/components/ImageUploader.vue'
-import FeaturedImages from '@/components/FeaturedImages.vue'
+import FeaturedImagesCard from '@/components/FeaturedImagesCard.vue'
+import FeaturedImagesModal from '@/components/FeaturedImagesModal.vue'
 import TextOptions from '@/components/TextOptions.vue'
 import TextOptionsModal from '@/components/TextOptionsModal.vue'
 import LivePreview from '@/components/LivePreview.vue'
@@ -60,6 +61,7 @@ const textOptions = ref({
 })
 
 const showTextModal = ref(false)
+const showFeaturedModal = ref(false)
 
 </script>
 
@@ -132,9 +134,18 @@ const showTextModal = ref(false)
             @close="showTextModal = false"
           />
 
-          <FeaturedImages
-            v-model="featuredImages"
+          <FeaturedImagesCard
+            :activeCard="activeCard"
+            cardId="featuredImages"
+            @toggle="() => showFeaturedModal = true"
           />
+
+          <FeaturedImagesModal
+            v-model="featuredImages"
+            :show="showFeaturedModal"
+            @close="showFeaturedModal = false"
+          />
+
 
         </div>
 
