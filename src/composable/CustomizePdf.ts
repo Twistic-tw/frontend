@@ -38,7 +38,7 @@ export function CustomizePdf() {
     showBorders: true,
     titleBackground: '#ffffff',
     titleText: '#1f2937',
-    titleTextAlpha: 1,
+    titleAlpha: 1,
   })
 
   const titleSettings = ref({
@@ -208,11 +208,7 @@ export function CustomizePdf() {
   }))
 
   const titleBackgroundRgba = computed(() =>
-    hexToRgba(colors.value.titleBackground, 1)
-  )
-
-  const titleTextRgba = computed(() =>
-    hexToRgba(colors.value.titleText, colors.value.titleTextAlpha)
+    hexToRgba(colors.value.titleBackground, colors.value.titleAlpha)
   )
 
   const headerStyle = computed(() => ({
@@ -403,6 +399,6 @@ export function CustomizePdf() {
     filterRows, selectAllFiltered, deselectAllFiltered, toggleRow, clearSearch,
     showBackground, handleImageUpload, sendToBackend,
     fetchTemplate, userId, fetchUserId, toggleFullscreen,
-    previewRef, titleBackgroundRgba, titleTextRgba
+    previewRef, titleBackgroundRgba
   }
 }

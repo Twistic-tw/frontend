@@ -37,6 +37,14 @@
             v-model="colors.titleBackground"
             class="w-full h-10 rounded border shadow-sm"
           />
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            v-model.number="colors.titleTextAlpha"
+            class="w-full bg-[#1e2939]"
+          />
         </div>
 
         <div>
@@ -45,14 +53,6 @@
             type="color"
             v-model="colors.titleText"
             class="w-full h-10 rounded border shadow-sm"
-          />
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            v-model.number="colors.titleTextAlpha"
-            class="w-full bg-[#1e2939]"
           />
         </div>
 

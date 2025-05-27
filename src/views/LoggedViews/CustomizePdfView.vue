@@ -41,7 +41,6 @@ const {
   showBackground,
   headerStyle,
   titleBackgroundRgba,
-  titleTextRgba,
   rowStyle,
   cellStyle,
   footerStyle,
@@ -134,7 +133,7 @@ const {
         :showBackground="showBackground"
         :toggleFullscreen="toggleFullscreen"
         :titleBackground="titleBackgroundRgba"
-        :titleText="titleTextRgba"
+        :titleText="colors.titleText"
         :titleSettings="titleSettings"
       />
 
@@ -152,7 +151,7 @@ const {
         :secondUrl="secondUrl"
         :footerStyle="footerStyle"
         :titleBackground="titleBackgroundRgba"
-        :titleText="titleTextRgba"
+        :titleText="colors.titleText"
         :titleSettings="titleSettings"
       />
 
