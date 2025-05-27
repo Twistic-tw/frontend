@@ -43,7 +43,22 @@
             >
               <!-- Cabecera -->
               <div v-if="headerUrl" class="mb-4" style="height: 120px; overflow: hidden">
-                <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-b-lg" style="height: 120px" />
+                <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-lg" style="height: 120px" />
+              </div>
+              <!-- Título cabecera -->
+              <div
+                class="text-center mt-6 mb-4 py-2 px-4 rounded"
+                :style="{
+                  backgroundColor: titleBackground,
+                  color: titleText
+                }"
+              >
+                <h1
+                  class="text-2xl font-bold uppercase tracking-wide"
+                  :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align }"
+                >
+                  {{ templateName }}
+                </h1>
               </div>
 
               <!-- Tabla -->
@@ -114,6 +129,7 @@ const props = defineProps<{
   previewRows: Record<string, string>[][];
   activeFieldNames: string[];
   headerStyle: Record<string, string>;
+  templateName: string
   footerStyle: Record<string, string>;
   rowStyle: (index: number) => Record<string, string>;
   headerUrl?: string;
@@ -122,6 +138,17 @@ const props = defineProps<{
   secondUrl?: string;
   backgroundUrl?: string;
   show: boolean;
+
+  titleBackground: string;
+  titleText: string;
+  titleSettings: {
+    font: string;
+    align: 'left' | 'center' | 'right';
+    size: string;
+    fieldFont: string;
+    fieldSize: string;
+    fieldAlign: 'left' | 'center' | 'right';
+  };
 }>();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

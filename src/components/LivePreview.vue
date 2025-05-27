@@ -16,7 +16,10 @@ const {
   headerStyle,
   rowStyle,
   cellStyle,
-  footerStyle
+  footerStyle,
+  titleBackground,
+  titleText,
+  titleSettings
 } = defineProps<{
   previewRef: Ref<HTMLElement | null>,
   toggleFullscreen: () => void,
@@ -30,6 +33,7 @@ const {
   coverUrl: string,
   secondUrl: string,
   headerUrl: string,
+  templateName: string
   backgroundUrl: string,
   footerUrl: string,
   previewRows: Record<string, string>[][],
@@ -38,7 +42,17 @@ const {
   headerStyle: Record<string, string>,
   rowStyle: (index: number) => Record<string, string>,
   cellStyle: Record<string, string>,
-  footerStyle: Record<string, string>
+  footerStyle: Record<string, string>,
+  titleBackground: string
+  titleText: string
+  titleSettings: {
+    font: string
+    align: 'left' | 'center' | 'right'
+    size: string
+    fieldFont: string
+    fieldSize: string
+    fieldAlign: 'left' | 'center' | 'right'
+  }
 }>()
 
 const showFullscreen = ref(false)
@@ -65,6 +79,10 @@ const showFullscreen = ref(false)
       :previewRows="previewRows"
       :activeFieldNames="activeFieldNames"
       :headerStyle="headerStyle"
+      :template-name="templateName"
+      :title-background="titleBackground"
+      :title-text="titleText"
+      :title-settings="titleSettings"
       :rowStyle="rowStyle"
       :footer-style="footerStyle"
       :headerUrl="headerUrl"
@@ -107,6 +125,21 @@ const showFullscreen = ref(false)
         <div v-if="images.header" class="mb-4" style="height: 120px; overflow: hidden">
           <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-b-lg" style="height: 120px" />
         </div>
+        <div
+          class="text-center mt-6 mb-4 py-2 px-4 rounded"
+          :style="{
+            backgroundColor: titleBackground,
+            color: titleText
+          }"
+        >
+          <h1
+            class="text-2xl font-bold uppercase tracking-wide"
+            :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align }"
+          >
+            {{ templateName }}
+          </h1>
+        </div>
+
 
         <!-- Tabla con padding para dejar espacio al footer -->
         <div

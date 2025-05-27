@@ -36,6 +36,8 @@ export function CustomizePdf() {
     footerAlpha: 1,
     footerText: '#ffffff',
     showBorders: true,
+    titleBackground: '#ffffff',
+    titleText: '#1f2937',
   })
 
   const titleSettings = ref({

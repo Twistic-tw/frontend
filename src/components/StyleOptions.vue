@@ -31,6 +31,24 @@
         </div>
 
         <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Title background color</label>
+          <input
+            type="color"
+            v-model="colors.titleBackground"
+            class="w-full h-10 rounded border shadow-sm"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Title color</label>
+          <input
+            type="color"
+            v-model="colors.titleText"
+            class="w-full h-10 rounded border shadow-sm"
+          />
+        </div>
+
+        <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Primary Row</label>
           <input type="color" v-model="colors.rowPrimaryColor" class="w-full h-8 border rounded mb-1" />
           <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowPrimaryAlpha" class="w-full bg-[#1e2939]" />
