@@ -40,6 +40,7 @@ const {
   clearSearch,
   showBackground,
   headerStyle,
+  titleBackgroundRgba,
   rowStyle,
   cellStyle,
   footerStyle,
@@ -134,6 +135,7 @@ const {
         :titleBackground="colors.titleBackground"
         :titleText="colors.titleText"
         :titleSettings="titleSettings"
+        :titleBackgroundRgba="titleBackgroundRgba"
       />
       <LivePreviewModal
         :previewRows="previewRows"
@@ -146,6 +148,7 @@ const {
         :titleBackground="colors.titleBackground"
         :titleText="colors.titleText"
         :titleSettings="titleSettings"
+        :titleBackgroundRgba="titleBackgroundRgba"
       />
 
     </div>

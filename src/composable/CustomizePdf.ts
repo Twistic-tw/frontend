@@ -38,11 +38,12 @@ export function CustomizePdf() {
     showBorders: true,
     titleBackground: '#ffffff',
     titleText: '#1f2937',
+    titleAlpha: 1,
   })
 
   const titleSettings = ref({
     size: '2rem',
-    align: 'left' as 'left' | 'center' | 'right',
+    align: 'left',
     font: 'Arial',
     fieldFont: 'Arial',
     fieldSize: '1rem',
@@ -205,6 +206,10 @@ export function CustomizePdf() {
     text: colors.value.text,
     footerText: colors.value.footerText,
   }))
+
+  const titleBackgroundRgba = computed(() =>
+  hexToRgba(colors.value.titleBackground, colors.value.titleAlpha)
+)
 
   const headerStyle = computed(() => ({
     gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(80px, 1fr))`,
@@ -394,6 +399,6 @@ export function CustomizePdf() {
     filterRows, selectAllFiltered, deselectAllFiltered, toggleRow, clearSearch,
     showBackground, handleImageUpload, sendToBackend,
     fetchTemplate, userId, fetchUserId, toggleFullscreen,
-    previewRef
+    previewRef, titleBackgroundRgba
   }
 }
