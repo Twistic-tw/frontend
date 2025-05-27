@@ -76,8 +76,8 @@
               </div>
 
               <!-- Footer fijo en cada página -->
-              <div class="footer-bar absolute bottom-4 right-6 text-sm text-gray-500 italic">
-                Página {{ index + 1 }}
+              <div class="footer-bar absolute bottom-4 right-6 text-sm text-gray-500 italic" :style="footerStyle">
+                {{ index + 1 }}
               </div>
             </div>
 
@@ -114,6 +114,7 @@ const props = defineProps<{
   previewRows: Record<string, string>[][];
   activeFieldNames: string[];
   headerStyle: Record<string, string>;
+  footerStyle: Record<string, string>;
   rowStyle: (index: number) => Record<string, string>;
   headerUrl?: string;
   footerUrl?: string;

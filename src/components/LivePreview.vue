@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Ref, type CSSProperties, ref } from 'vue'
+import { type Ref, ref } from 'vue'
 import LivePreviewModal from './LivePreviewModal.vue'
 
 const {
@@ -38,7 +38,7 @@ const {
   headerStyle: Record<string, string>,
   rowStyle: (index: number) => Record<string, string>,
   cellStyle: Record<string, string>,
-  footerStyle: CSSProperties
+  footerStyle: Record<string, string>
 }>()
 
 const showFullscreen = ref(false)
@@ -66,6 +66,7 @@ const showFullscreen = ref(false)
       :activeFieldNames="activeFieldNames"
       :headerStyle="headerStyle"
       :rowStyle="rowStyle"
+      :footer-style="footerStyle"
       :headerUrl="headerUrl"
       :footerUrl="footerUrl"
       :coverUrl="coverUrl"
