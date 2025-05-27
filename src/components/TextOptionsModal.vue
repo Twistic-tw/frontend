@@ -13,35 +13,35 @@
           &times;
         </button>
 
-        <h2 class="text-xl font-bold text-gray-800 mb-4">Editar textos del catálogo</h2>
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Edit catalog texts</h2>
 
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Descripción corta</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Short Description</label>
           <input
             type="text"
             v-model="model.short"
             class="w-full border rounded px-3 py-2 shadow-sm"
-            placeholder="Ej: Catálogo de temporada"
+            placeholder="Eg: Seasonal catalog"
           />
         </div>
 
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Descripción larga</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Long Description</label>
           <textarea
             v-model="model.long"
             rows="4"
             class="w-full border rounded px-3 py-2 shadow-sm"
-            placeholder="Descripción detallada..."
+            placeholder="Detailed description..."
           />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Texto de pie de página</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Footer Text</label>
           <input
             type="text"
             v-model="model.footer"
             class="w-full border rounded px-3 py-2 shadow-sm"
-            placeholder="Ej: Información sujeta a cambios"
+            placeholder="Eg: Information subject to change"
           />
         </div>
       </div>
