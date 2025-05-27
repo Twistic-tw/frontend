@@ -55,7 +55,7 @@
               >
                 <h1
                   class="text-2xl font-bold tracking-wide"
-                  :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align }"
+                  :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align, paddingLeft: '1em'}"
                 >
                   {{ templateName }}
                 </h1>
