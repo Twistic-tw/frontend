@@ -219,7 +219,6 @@ const emit = defineEmits<{
   (e: 'toggleRow', index: number): void
 }>()
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = withDefaults(defineProps<{
   fields: { name: string }[]
   searchField?: string
