@@ -44,7 +44,7 @@ export function CustomizePdf() {
   const titleSettings = ref({
     size: '2rem',
     align: 'left',
-    font: 'Arial',
+    font: 'Georgia',
     fieldFont: 'Arial',
     fieldSize: '1rem',
     fieldAlign: 'left' as 'left' | 'center' | 'right',

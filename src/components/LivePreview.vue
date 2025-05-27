@@ -133,7 +133,7 @@ const showFullscreen = ref(false)
           }"
         >
           <h1
-            class="text-2xl font-bold tracking-wide"
+            class="text-2xl font-bold tracking-wide font-f"
             :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align, paddingLeft: '1em'}"
           >
             {{ templateName }}
