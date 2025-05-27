@@ -131,6 +131,9 @@ const {
         :footerStyle="footerStyle"
         :showBackground="showBackground"
         :toggleFullscreen="toggleFullscreen"
+        :titleBackground="colors.titleBackground"
+        :titleText="colors.titleText"
+        :titleSettings="titleSettings"
       />
       <LivePreviewModal
         :previewRows="previewRows"
@@ -140,6 +143,9 @@ const {
         :rowStyle="rowStyle"
         :images="images"
         :headerUrl="headerUrl"
+        :titleBackground="colors.titleBackground"
+        :titleText="colors.titleText"
+        :titleSettings="titleSettings"
       />
 
     </div>
