@@ -16,19 +16,39 @@
         <h2 class="text-xl font-bold text-gray-800 mb-6">Upload Featured Images</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div v-for="(file, key) in model" :key="key" class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700 capitalize">
+          <div v-for="(file, key) in model" :key="key" class="space-y-3">
+            <label class="block text-sm font-medium text-gray-700 capitalize tracking-wide">
               {{ key.replace('_', ' ') }}
             </label>
-            <input
-            type="file"
-            accept="image/png, image/jpeg"
-            @change="onUpload($event, key)"
-            class="w-full border border-gray-300 rounded-lg px-4 py-2" />
-            <div v-if="previews[key]" class="rounded overflow-hidden border">
-              <img :src="previews[key]" class="w-full h-40 object-cover" />
+
+            <div class="relative group">
+              <input
+                type="file"
+                accept="image/png, image/jpeg"
+                @change="onUpload($event, key)"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 file:bg-indigo-600 file:text-white file:rounded-full file:px-4 file:py-2 file:border-0 file:cursor-pointer file:hover:bg-indigo-700"
+              />
+            </div>
+
+            <!-- Cuadro de texto informativo -->
+            <div
+              class="w-full bg-gray-100 text-gray-700 text-sm px-4 py-2 rounded-lg border border-gray-200 shadow-sm"
+            >
+              {{ formatKey(key) }} preview or description will be shown here.
+            </div>
+
+            <!-- Previsualización de imagen -->
+            <div
+              v-if="previews[key]"
+              class="rounded-xl overflow-hidden border border-gray-200 shadow-sm transition-transform hover:scale-[1.02]"
+            >
+              <img
+                :src="previews[key]"
+                class="w-full h-48 object-cover transition duration-300 rounded-xl"
+              />
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -85,6 +105,13 @@ function onUpload(event: Event, key: string) {
   model.value[key] = file
   previews.value[key] = URL.createObjectURL(file)
 }
+
+function formatKey(key: string) {
+  return key
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase())
+}
+
 </script>
 
 <style scoped>
