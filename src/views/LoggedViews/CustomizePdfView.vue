@@ -4,6 +4,8 @@ import ActiveFields from '@/components/ActiveFields.vue'
 import SearchFilter from '@/components/SearchFilter.vue'
 import StyleOptions from '@/components/StyleOptions.vue'
 import ImageUploader from '@/components/ImageUploader.vue'
+import TextOptions from '@/components/TextOptions.vue'
+import TextOptionsModal from '@/components/TextOptionsModal.vue'
 import LivePreview from '@/components/LivePreview.vue'
 import LivePreviewModal from '@/components/LivePreviewModal.vue'
 import BackButton from '@/components/BackButton.vue'
@@ -48,6 +50,15 @@ const {
   handleImageUpload,
   toggleFullscreen
 } = CustomizePdf()
+
+const textOptions = ref({
+  short: '',
+  long: '',
+  footer: ''
+})
+
+const showTextModal = ref(false)
+
 </script>
 
 <template>
@@ -106,6 +117,19 @@ const {
             cardId="imageUploader"
             @toggle="(id) => activeCard = activeCard === id ? null : id"
           />
+
+          <TextOptions
+            :activeCard="activeCard"
+            cardId="textOptions"
+            @toggle="() => showTextModal = true"
+          />
+
+          <TextOptionsModal
+            v-model="textOptions"
+            :show="showTextModal"
+            @close="showTextModal = false"
+          />
+
         </div>
 
         <button
