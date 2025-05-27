@@ -41,6 +41,7 @@ const {
   showBackground,
   headerStyle,
   titleBackgroundRgba,
+  titleTextRgba,
   rowStyle,
   cellStyle,
   footerStyle,
@@ -132,11 +133,11 @@ const {
         :footerStyle="footerStyle"
         :showBackground="showBackground"
         :toggleFullscreen="toggleFullscreen"
-        :titleBackground="colors.titleBackground"
-        :titleText="colors.titleText"
+        :titleBackground="titleBackgroundRgba"
+        :titleText="titleTextRgba"
         :titleSettings="titleSettings"
-        :titleBackgroundRgba="titleBackgroundRgba"
       />
+
       <LivePreviewModal
         :previewRows="previewRows"
         :activeFieldNames="activeFieldNames"
@@ -145,10 +146,14 @@ const {
         :rowStyle="rowStyle"
         :images="images"
         :headerUrl="headerUrl"
-        :titleBackground="colors.titleBackground"
-        :titleText="colors.titleText"
+        :footerUrl="footerUrl"
+        :backgroundUrl="backgroundUrl"
+        :coverUrl="coverUrl"
+        :secondUrl="secondUrl"
+        :footerStyle="footerStyle"
+        :titleBackground="titleBackgroundRgba"
+        :titleText="titleTextRgba"
         :titleSettings="titleSettings"
-        :titleBackgroundRgba="titleBackgroundRgba"
       />
 
     </div>

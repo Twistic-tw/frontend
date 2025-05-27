@@ -46,21 +46,15 @@
             v-model="colors.titleText"
             class="w-full h-10 rounded border shadow-sm"
           />
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Título - Fondo</label>
-          <input type="color" v-model="colors.titleBackground" class="w-full h-8 border rounded mb-1" />
           <input
             type="range"
             min="0"
             max="1"
             step="0.01"
-            v-model.number="colors.titleAlpha"
+            v-model.number="colors.titleTextAlpha"
             class="w-full bg-[#1e2939]"
           />
         </div>
-
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Primary Row</label>

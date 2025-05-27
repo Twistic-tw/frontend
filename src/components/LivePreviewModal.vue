@@ -50,7 +50,7 @@
                 class="text-center mb-4 py-2 px-4"
                 :style="{
                   backgroundColor: titleBackground,
-                  color: titleText
+                  color: titleTextRgba
                 }"
               >
                 <h1
@@ -138,9 +138,8 @@ const props = defineProps<{
   secondUrl?: string;
   backgroundUrl?: string;
   show: boolean;
-
+  titleTextRgba: string;
   titleBackground: string;
-  titleText: string;
   titleSettings: {
     font: string;
     align: 'left' | 'center' | 'right';

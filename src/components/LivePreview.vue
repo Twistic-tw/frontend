@@ -18,7 +18,7 @@ const {
   cellStyle,
   footerStyle,
   titleBackground,
-  titleText,
+  titleTextRgba,
   titleSettings,
   templateName
 } = defineProps<{
@@ -45,7 +45,7 @@ const {
   cellStyle: Record<string, string>,
   footerStyle: Record<string, string>,
   titleBackground: string
-  titleText: string
+  titleTextRgba: string
   titleSettings: {
     font: string
     align: 'left' | 'center' | 'right'
@@ -82,7 +82,7 @@ const showFullscreen = ref(false)
       :headerStyle="headerStyle"
       :templateName="templateName"
       :titleBackground="titleBackground"
-      :titleText="titleText"
+      :titleTextRgba="titleTextRgba"
       :titleSettings="titleSettings"
       :rowStyle="rowStyle"
       :footerStyle="footerStyle"
@@ -124,13 +124,13 @@ const showFullscreen = ref(false)
       >
         <!-- Cabecera -->
         <div v-if="images.header" style="height: 120px; overflow: hidden">
-          <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-t-lg" style="height: 120px" />
+          <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-b-lg" style="height: 120px" />
         </div>
         <div
-          class="text-center mb-4 py-2 px-4"
+          class="text-center mb-4 py-2 px-4 rounded"
           :style="{
             backgroundColor: titleBackground,
-            color: titleText
+            color: titleTextRgba
           }"
         >
           <h1
