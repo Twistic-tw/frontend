@@ -42,7 +42,7 @@ export function CustomizePdf() {
 
   const titleSettings = ref({
     size: '2rem',
-    align: 'center' as 'left' | 'center' | 'right',
+    align: 'left' as 'left' | 'center' | 'right',
     font: 'Arial',
     fieldFont: 'Arial',
     fieldSize: '1rem',

@@ -123,11 +123,11 @@ const showFullscreen = ref(false)
         }"
       >
         <!-- Cabecera -->
-        <div v-if="images.header" class="mb-4" style="height: 120px; overflow: hidden">
+        <div v-if="images.header" style="height: 120px; overflow: hidden">
           <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-b-lg" style="height: 120px" />
         </div>
         <div
-          class="text-center mt-6 mb-4 py-2 px-4 rounded"
+          class="text-center mb-4 py-2 px-4 rounded"
           :style="{
             backgroundColor: titleBackground,
             color: titleText

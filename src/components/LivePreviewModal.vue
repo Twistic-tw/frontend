@@ -42,12 +42,12 @@
               }"
             >
               <!-- Cabecera -->
-              <div v-if="headerUrl" class="mb-4" style="height: 120px; overflow: hidden">
+              <div v-if="headerUrl" style="height: 120px; overflow: hidden">
                 <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-lg" style="height: 120px" />
               </div>
               <!-- Título cabecera -->
               <div
-                class="text-center mt-6 mb-4 py-2 px-4 rounded"
+                class="text-center mb-4 py-2 px-4 rounded"
                 :style="{
                   backgroundColor: titleBackground,
                   color: titleText
