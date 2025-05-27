@@ -19,7 +19,8 @@ const {
   footerStyle,
   titleBackground,
   titleText,
-  titleSettings
+  titleSettings,
+  templateName
 } = defineProps<{
   previewRef: Ref<HTMLElement | null>,
   toggleFullscreen: () => void,
