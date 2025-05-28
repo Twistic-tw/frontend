@@ -18,7 +18,7 @@ import zh from './locales/zh.json'
 
 // Traducciones
 const i18n = createI18n({
-  locale: 'es', // idioma por defecto
+  locale: 'en', // idioma por defecto
   fallbackLocale: 'en',
   legacy: false,
   messages: {
