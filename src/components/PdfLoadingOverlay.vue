@@ -24,7 +24,7 @@
           d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
         ></path>
       </svg>
-      <span>{{ generating ? 'Creating your PDF...' : 'Loading template...' }}</span>
+      <span>{{ generating ? $t('creating_pdf') : $t('loading_template') }}</span>
     </div>
   </div>
 </template>

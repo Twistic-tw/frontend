@@ -185,5 +185,7 @@
     "long_placeholder": "Detailed description...",
     "footer_label": "Footer Text",
     "footer_placeholder": "Eg: Information subject to change",
-    "title_livepreview": "Live Preview"
+    "title_livepreview": "Live Preview",
+    "creating_pdf": "Creating your PDF...",
+    "loading_template": "Loading template..."
 }
