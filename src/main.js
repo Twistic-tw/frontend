@@ -5,16 +5,16 @@ import PrimeVue from 'primevue/config';
 import App from './App.vue';
 import router from './router';
 import { createI18n } from 'vue-i18n'
-import en from './locales/ar.json'
-import es from './locales/de.json'
+import ar from './locales/ar.json'
+import de from './locales/de.json'
 import en from './locales/en.json'
 import es from './locales/es.json'
-import en from './locales/fr.json'
-import es from './locales/it.json'
-import en from './locales/nl.json'
-import es from './locales/pt.json'
-import en from './locales/ru.json'
-import es from './locales/zh.json'
+import fr from './locales/fr.json'
+import it from './locales/it.json'
+import nl from './locales/nl.json'
+import pt from './locales/pt.json'
+import ru from './locales/ru.json'
+import zh from './locales/zh.json'
 
 // Traducciones
 const i18n = createI18n({
@@ -22,8 +22,16 @@ const i18n = createI18n({
   fallbackLocale: 'en',
   legacy: false,
   messages: {
+    ar,
+    de,
     en,
-    es
+    es,
+    fr,
+    it,
+    nl,
+    pt,
+    ru,
+    zh
   }
 })
 
