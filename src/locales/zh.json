@@ -1,3 +1,17 @@
 {
-    
-}
+  "welcome_title": "欢迎使用 TWISTIC 产品目录",
+  "welcome_subtitle": "从您的电子表格构建漂亮的 PDF 产品目录",
+  "step1_title_home": "1. 上传您的 Excel 文件",
+  "step1_description": "导入您的电子表格，让我们的智能引擎分析并提取所有重要字段。整个过程顺畅、引导明确且适合初学者。",
+  "step2_title_home": "2. 选择并组织字段",
+  "step2_description": "选择保留哪些字段，选择要显示的字段，并通过简单的拖放系统重新排序。您的数据，由您掌控。",
+  "step3_title_home": "3. 生成您的 PDF",
+  "step3_description": "添加您的徽标、颜色和图片。下载准备共享的 PDF 产品目录，专业且精美。",
+  "benefit1_title": "快速且智能",
+  "benefit1_text": "没有复杂步骤。只需上传、自定义和下载。",
+  "benefit2_title": "重复使用模板",
+  "benefit2_text": "不满意结果？可以重复使用相同模板并重新自定义。",
+  "benefit3_title": "品牌一致模板",
+  "benefit3_text": "在所有目录中保持品牌一致性。",
+  "cta_title": "准备好开始了吗？",
+  "cta_button": "联系我们！"
