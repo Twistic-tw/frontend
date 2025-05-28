@@ -4,6 +4,20 @@ import axios from 'axios';
 import PrimeVue from 'primevue/config';
 import App from './App.vue';
 import router from './router';
+import { createI18n } from 'vue-i18n'
+import en from './locales/en.json'
+import es from './locales/es.json'
+
+// Traducciones
+const i18n = createI18n({
+  locale: 'es', // idioma por defecto
+  fallbackLocale: 'en',
+  legacy: false,
+  messages: {
+    en,
+    es
+  }
+})
 
 // Toastification
 import Toast, { POSITION } from 'vue-toastification';
@@ -45,4 +59,5 @@ app.use(createPinia());
 app.use(router);
 app.use(PrimeVue);
 app.use(Toast, options);
+app.use(i18n);
 app.mount('#app');

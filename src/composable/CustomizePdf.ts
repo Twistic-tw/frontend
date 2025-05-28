@@ -65,6 +65,13 @@ export function CustomizePdf() {
   image_four: null
 })
 
+const featuredDescriptions = ref({
+  desc_one: '',
+  desc_two: '',
+  desc_three: '',
+  desc_four: ''
+})
+
   const coverUrl = ref('')
   const secondUrl = ref('')
   const headerUrl = ref('')
