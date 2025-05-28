@@ -5,8 +5,16 @@ import PrimeVue from 'primevue/config';
 import App from './App.vue';
 import router from './router';
 import { createI18n } from 'vue-i18n'
+import en from './locales/ar.json'
+import es from './locales/de.json'
 import en from './locales/en.json'
 import es from './locales/es.json'
+import en from './locales/fr.json'
+import es from './locales/it.json'
+import en from './locales/nl.json'
+import es from './locales/pt.json'
+import en from './locales/ru.json'
+import es from './locales/zh.json'
 
 // Traducciones
 const i18n = createI18n({
