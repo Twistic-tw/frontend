@@ -4,7 +4,7 @@
       class="flex items-center justify-between p-6 border-b border-gray-100 cursor-pointer"
       @click="showModal = true"
     >
-      <h2 class="text-xl font-bold text-gray-800">{{ t('filter_card.title') }}</h2>
+      <h2 class="text-xl font-bold text-gray-800">{{ t('title_search_by_field') }}</h2>
     </div>
 
     <transition name="fade-scale">
@@ -29,20 +29,20 @@
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('filter_card.search_by_field') }}</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('search_by_field') }}</label>
               <select
                 :value="searchField || ''"
                 @change="$emit('update:searchField', ($event.target as HTMLSelectElement).value); $emit('filter')"
                 class="w-full p-2 border rounded shadow-sm"
               >
-                <option disabled value="">{{ t('filter_card.select_field') }}</option>
+                <option disabled value="">{{ t('select_field') }}</option>
                 <option v-for="field in fields" :key="field.name" :value="field.name">
                   {{ field.name }}
                 </option>
               </select>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('filter_card.search_by_value') }}</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('search_by_value') }}</label>
               <input
                 :value="searchValue"
                 @input="$emit('update:searchValue', ($event.target as HTMLInputElement).value); $emit('filter')"
@@ -54,26 +54,26 @@
                 @click="$emit('clear')"
                 class="w-full bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition shadow-sm"
               >
-                {{ t('filter_card.clear') }}
+                {{ t('clear') }}
               </button>
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('filter_card.order_by_field') }}</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('order_by_field') }}</label>
               <select v-model="sortField" class="w-full p-2 border rounded shadow-sm">
-                <option disabled value="">{{ t('filter_card.order_by') }}</option>
+                <option disabled value="">{{ t('order_by') }}</option>
                 <option v-for="field in fields" :key="field.name" :value="field.name">
                   {{ field.name }}
                 </option>
               </select>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('filter_card.order_direction') }}</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('order_direction') }}</label>
               <select v-model="sortDirection" class="w-full p-2 border rounded shadow-sm">
-                <option value="asc">{{ t('filter_card.ascending') }}</option>
-                <option value="desc">{{ t('filter_card.descending') }}</option>
+                <option value="asc">{{ t('ascending') }}</option>
+                <option value="desc">{{ t('descending') }}</option>
               </select>
             </div>
           </div>
@@ -81,20 +81,20 @@
           <div v-if="filteredRows.length" class="overflow-auto border rounded-lg">
             <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
               <span class="text-sm text-gray-700">
-                {{ selectedRows.length }} {{ t('filter_card.of') }} {{ filteredRows.length }} {{ t('filter_card.selected') }}
+                {{ selectedRows.length }} {{ t('of') }} {{ filteredRows.length }} {{ t('selected') }}
               </span>
               <div class="flex gap-2">
                 <button
                   @click="$emit('selectAll')"
                   class="text-xs bg-indigo-600 text-white px-4 py-1.5 rounded hover:bg-indigo-700"
                 >
-                  {{ t('filter_card.show_all') }}
+                  {{ t('show_all') }}
                 </button>
                 <button
                   @click="$emit('deselectAll')"
                   class="text-xs bg-gray-400 text-white px-4 py-1.5 rounded hover:bg-gray-500"
                 >
-                  {{ t('filter_card.hide_all') }}
+                  {{ t('hide_all') }}
                 </button>
               </div>
             </div>
@@ -102,7 +102,7 @@
             <table class="min-w-full divide-y divide-gray-200 text-sm">
               <thead class="bg-gray-50 sticky top-0 z-10">
                 <tr>
-                  <th class="px-4 py-2 text-left font-semibold text-gray-700">{{ t('filter_card.visible') }}</th>
+                  <th class="px-4 py-2 text-left font-semibold text-gray-700">{{ t('visible') }}</th>
                   <th
                     v-for="field in fields"
                     :key="field.name"
@@ -143,7 +143,7 @@
           </div>
 
           <div v-else-if="searchField && searchValue" class="text-sm text-gray-500 mt-4 text-center">
-            {{ t('filter_card.no_results') }}
+            {{ t('no_results') }}
           </div>
         </div>
       </div>
