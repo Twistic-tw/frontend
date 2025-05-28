@@ -13,7 +13,7 @@ const { t } = useI18n()
     <!-- Header Section -->
     <section class="text-center animate-fadeInUp space-y-6">
       <h1 class="text-4xl md:text-6xl font-bold text-slate-800 tracking-tight transition duration-300">
-        {{ t("welcome_title") }} <span class="text-indigo-600">TWISTIC</span>
+        {{ t("welcome_title") }} <span class="text-indigo-600"></span>
       </h1>
       <p class="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
         {{ t("welcome_subtitle") }}
