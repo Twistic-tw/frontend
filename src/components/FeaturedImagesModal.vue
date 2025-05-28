@@ -6,6 +6,7 @@
       @click.self="$emit('close')"
     >
       <div class="bg-white w-[95%] max-w-3xl rounded-xl shadow-xl p-6 overflow-auto relative">
+        <!-- Botón cerrar -->
         <button
           @click="$emit('close')"
           class="absolute top-3 right-3 text-gray-500 hover:text-red-600 text-2xl font-bold"
@@ -16,39 +17,30 @@
         <h2 class="text-xl font-bold text-gray-800 mb-6">Upload Featured Images</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div v-for="(file, key) in model" :key="key" class="space-y-3">
-            <label class="block text-sm font-medium text-gray-700 capitalize tracking-wide">
-              {{ key.replace('_', ' ') }}
+          <div v-for="key in ['image_one', 'image_two', 'image_three', 'image_four']" :key="key" class="space-y-3">
+            <label class="block text-sm font-medium text-gray-700 capitalize">
+              {{ formatKey(key) }}
             </label>
 
-            <div class="relative group">
-              <input
-                type="file"
-                accept="image/png, image/jpeg"
-                @change="onUpload($event, key)"
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 file:bg-indigo-600 file:text-white file:rounded-full file:px-4 file:py-2 file:border-0 file:cursor-pointer file:hover:bg-indigo-700"
-              />
-            </div>
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              @change="onUpload($event, key)"
+              class="w-full border border-gray-300 rounded-lg px-4 py-2"
+            />
 
-            <!-- Cuadro de texto informativo -->
-            <div
-              class="w-full bg-gray-100 text-gray-700 text-sm px-4 py-2 rounded-lg border border-gray-200 shadow-sm"
-            >
-              {{ formatKey(key) }} preview or description will be shown here.
-            </div>
+            <input
+              type="text"
+              :placeholder="`Short description for ${formatKey(key)}`"
+              v-model="descriptions[getDescKey(key)]"
+              maxlength="60"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
+            />
 
-            <!-- Previsualización de imagen -->
-            <div
-              v-if="previews[key]"
-              class="rounded-xl overflow-hidden border border-gray-200 shadow-sm transition-transform hover:scale-[1.02]"
-            >
-              <img
-                :src="previews[key]"
-                class="w-full h-48 object-cover transition duration-300 rounded-xl"
-              />
+            <div v-if="previews[key]" class="rounded overflow-hidden border">
+              <img :src="previews[key]" class="w-full h-40 object-cover" />
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -56,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { Ref, ref, watch } from 'vue'
 import { useToast } from 'vue-toastification'
 
 defineProps<{ show: boolean }>()
@@ -64,12 +56,20 @@ defineEmits(['close'])
 
 const toast = useToast()
 
-const model = defineModel<{
+// Modelo separado: archivos e inputs
+const images = defineModel('images') as Ref<{
   image_one: File | null
   image_two: File | null
   image_three: File | null
   image_four: File | null
-}>()
+}>
+
+const descriptions = defineModel('descriptions') as Ref<{
+  desc_one: string
+  desc_two: string
+  desc_three: string
+  desc_four: string
+}>
 
 const previews = ref<Record<string, string>>({
   image_one: '',
@@ -78,8 +78,8 @@ const previews = ref<Record<string, string>>({
   image_four: ''
 })
 
-watch(model, () => {
-  Object.entries(model.value).forEach(([key, file]) => {
+watch(images, () => {
+  Object.entries(images.value).forEach(([key, file]) => {
     previews.value[key] = file ? URL.createObjectURL(file) : ''
   })
 })
@@ -102,16 +102,17 @@ function onUpload(event: Event, key: string) {
     return
   }
 
-  model.value[key] = file
+  images.value[key] = file
   previews.value[key] = URL.createObjectURL(file)
 }
 
-function formatKey(key: string) {
-  return key
-    .replace(/_/g, ' ')
-    .replace(/\b\w/g, (char) => char.toUpperCase())
+function getDescKey(k: string) {
+  return `desc_${k.split('_')[1]}` as keyof typeof descriptions.value
 }
 
+function formatKey(k: string) {
+  return k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+}
 </script>
 
 <style scoped>
