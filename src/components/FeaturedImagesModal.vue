@@ -95,13 +95,13 @@ function onUpload(event: Event, key: string) {
   const maxSizeMB = 2
 
   if (!validTypes.includes(file.type)) {
-    toast.error(t('toast.invalid_image_type', { file: file.name }))
+    toast.error(t('invalid_image_type', { file: file.name }))
     return
   }
 
   if (file.size > maxSizeMB * 1024 * 1024) {
     const sizeMB = (file.size / (1024 * 1024)).toFixed(2)
-    toast.error(t('toast.image_too_large', { file: file.name, size: sizeMB, max: maxSizeMB }))
+    toast.error(t('image_too_large', { file: file.name, size: sizeMB, max: maxSizeMB }))
     return
   }
 

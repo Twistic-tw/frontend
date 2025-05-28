@@ -130,7 +130,7 @@
     "templates.fields": "Fields",
     "templates.delete": "Delete",
     "templates.noneAvailable": "No templates available",
-    "label": "Back",
+    "back_button": "Back",
     "delete": "Delete",
     "cancel": "Cancel",
     "featured_images": "Featured Images",
