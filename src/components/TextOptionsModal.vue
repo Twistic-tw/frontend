@@ -13,35 +13,35 @@
           &times;
         </button>
 
-        <h2 class="text-xl font-bold text-gray-800 mb-4">Edit catalog texts</h2>
+        <h2 class="text-xl font-bold text-gray-800 mb-4">{{ $t('title_text_catalog') }}</h2>
 
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Short Description</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('short_label') }}</label>
           <input
             type="text"
             v-model="model.short"
             class="w-full border rounded px-3 py-2 shadow-sm"
-            placeholder="Eg: Seasonal catalog"
+            :placeholder="$t('short_placeholder')"
           />
         </div>
 
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Long Description</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('long_label') }}</label>
           <textarea
             v-model="model.long"
             rows="4"
             class="w-full border rounded px-3 py-2 shadow-sm"
-            placeholder="Detailed description..."
+            :placeholder="$t('long_placeholder')"
           />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Footer Text</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('footer_label') }}</label>
           <input
             type="text"
             v-model="model.footer"
             class="w-full border rounded px-3 py-2 shadow-sm"
-            placeholder="Eg: Information subject to change"
+            :placeholder="$t('footer_placeholder')"
           />
         </div>
       </div>
@@ -60,8 +60,7 @@ const model = defineModel<{
   footer: string
 }>()
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const emit = defineEmits(['close'])
+defineEmits(['close'])
 </script>
 
 <style scoped>

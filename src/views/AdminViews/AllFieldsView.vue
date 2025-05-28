@@ -2,6 +2,7 @@
 import { useFields } from '../../composable/fieldsList'
 import BackButton from '@/components/BackButton.vue'
 import ConfirmDialog from '../../components/ConfirmDialog.vue'
+import { useI18n } from 'vue-i18n'
 
 const {
   fields,
@@ -15,11 +16,12 @@ const {
   handleConfirm,
   cancelConfirm
 } = useFields()
+
+const { t } = useI18n()
 </script>
 
 <template>
-  <!-- Modal de confirmación con animación fade -->
-    <ConfirmDialog
+  <ConfirmDialog
     :visible="showConfirm"
     :message="confirmMessage"
     @confirm="handleConfirm"
@@ -27,7 +29,9 @@ const {
   />
 
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
-    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Available Fields</h2>
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+      {{ t('fields.title') }}
+    </h2>
 
     <div class="flex justify-end items-center mb-6 gap-4 flex-wrap">
       <div v-if="camposSeleccionados.length > 0">
@@ -35,13 +39,13 @@ const {
           @click="eliminarCamposSeleccionados"
           class="px-4 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition"
         >
-          Delete selected ({{ camposSeleccionados.length }})
+          {{ t('fields.deleteSelected', { count: camposSeleccionados.length }) }}
         </button>
       </div>
 
       <div class="flex items-center gap-2">
         <label for="toggle-select-all-fields" class="text-sm font-medium text-gray-700 dark:text-white">
-          {{ todosSeleccionados ? 'Unselect all' : 'Select all' }}
+          {{ todosSeleccionados ? t('fields.unselectAll') : t('fields.selectAll') }}
         </label>
         <label class="relative inline-flex items-center cursor-pointer">
           <input
@@ -78,23 +82,29 @@ const {
         </div>
 
         <p class="text-sm text-gray-500 dark:text-white mb-1">
-          Created: <span class="font-medium text-gray-700 dark:text-white">{{ new Date(field.created_at).toLocaleDateString() }}</span>
+          {{ t('fields.created') }}:
+          <span class="font-medium text-gray-700 dark:text-white">
+            {{ new Date(field.created_at).toLocaleDateString() }}
+          </span>
         </p>
         <p class="text-sm text-gray-500 dark:text-white mb-1">
-          Updated: <span class="font-medium text-gray-700 dark:text-white">{{ new Date(field.updated_at).toLocaleDateString() }}</span>
+          {{ t('fields.updated') }}:
+          <span class="font-medium text-gray-700 dark:text-white">
+            {{ new Date(field.updated_at).toLocaleDateString() }}
+          </span>
         </p>
 
         <button
           @click="eliminarCampo(field.id)"
           class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition mt-2"
         >
-          Delete
+          {{ t('fields.delete') }}
         </button>
       </div>
     </div>
 
     <div v-if="fields.length === 0" class="text-center text-gray-500 mt-8">
-      No fields available.
+      {{ t('fields.noneAvailable') }}
     </div>
 
     <div class="mt-12">

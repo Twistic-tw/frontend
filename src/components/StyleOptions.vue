@@ -7,7 +7,7 @@
       @click="$emit('toggle', cardId)"
     >
       <h2 class="text-xl font-bold text-gray-800">
-        Styles Options
+        {{ $t('title_styles') }}
       </h2>
       <svg
         :class="{ 'rotate-180': isOpen }"
@@ -23,80 +23,64 @@
     <!-- Contenido expandible -->
     <Transition name="expand">
       <div v-if="isOpen" class="p-6 flex flex-col gap-4">
-        <!-- ... -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">PDF Background</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('pdf_background') }}</label>
           <input type="color" v-model="colors.backgroundColor" class="w-full h-8 border rounded mb-1" />
           <input type="range" min="0" max="1" step="0.01" v-model.number="colors.backgroundAlpha" class="w-full bg-[#1e2939]" />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Title background color</label>
-          <input
-            type="color"
-            v-model="colors.titleBackground"
-            class="w-full h-10 rounded border shadow-sm"
-          />
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            v-model.number="colors.titleAlpha"
-            class="w-full bg-[#1e2939]"
-          />
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('title_background_color') }}</label>
+          <input type="color" v-model="colors.titleBackground" class="w-full h-10 rounded border shadow-sm" />
+          <input type="range" min="0" max="1" step="0.01" v-model.number="colors.titleAlpha" class="w-full bg-[#1e2939]" />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Title color</label>
-          <input
-            type="color"
-            v-model="colors.titleText"
-            class="w-full h-10 rounded border shadow-sm"
-          />
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('title_color') }}</label>
+          <input type="color" v-model="colors.titleText" class="w-full h-10 rounded border shadow-sm" />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Primary Row</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('primary_row') }}</label>
           <input type="color" v-model="colors.rowPrimaryColor" class="w-full h-8 border rounded mb-1" />
           <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowPrimaryAlpha" class="w-full bg-[#1e2939]" />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Alternate Row</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('alternate_row') }}</label>
           <input type="color" v-model="colors.rowAlternateColor" class="w-full h-8 border rounded mb-1" />
           <input type="range" min="0" max="1" step="0.01" v-model.number="colors.rowAlternateAlpha" class="w-full bg-[#1e2939]" />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Header Background</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('header_background') }}</label>
           <input type="color" v-model="colors.headerColor" class="w-full h-8 border rounded mb-1" />
           <input type="range" min="0" max="1" step="0.01" v-model.number="colors.headerAlpha" class="w-full bg-[#1e2939]" />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Header Text</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('header_text') }}</label>
           <input type="color" v-model="colors.headerText" class="w-full h-8 border rounded" />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Content Text</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('content_text') }}</label>
           <input type="color" v-model="colors.text" class="w-full h-8 border rounded" />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Footer Background</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('footer_background') }}</label>
           <input type="color" v-model="colors.footerColor" class="w-full h-8 border rounded mb-1" />
           <input type="range" min="0" max="1" step="0.01" v-model.number="colors.footerAlpha" class="w-full bg-[#1e2939]" />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Footer Text</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('footer_text') }}</label>
           <input type="color" v-model="colors.footerText" class="w-full h-8 border rounded" />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Show Table Borders</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('show_borders') }}</label>
           <label class="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" v-model="colors.showBorders" class="sr-only peer" />
             <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-[#1e2939] transition-all"></div>
@@ -105,13 +89,13 @@
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Field Font</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('field_font') }}</label>
           <select v-model="titleSettings.fieldFont" class="w-full p-2 border rounded">
-            <option value="Arial">Arial</option>
-            <option value="Helvetica">Helvetica</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Georgia">Georgia</option>
-            <option value="Courier New">Courier New</option>
+            <option value="Arial">{{ $t('font_arial') }}</option>
+            <option value="Helvetica">{{ $t('font_helvetica') }}</option>
+            <option value="Times New Roman">{{ $t('font_times') }}</option>
+            <option value="Georgia">{{ $t('font_georgia') }}</option>
+            <option value="Courier New">{{ $t('font_courier') }}</option>
           </select>
         </div>
       </div>

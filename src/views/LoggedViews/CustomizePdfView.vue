@@ -13,6 +13,9 @@ import LivePreviewModal from '@/components/LivePreviewModal.vue'
 import BackButton from '@/components/BackButton.vue'
 import { CustomizePdf } from '../../composable/CustomizePdf'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const activeCard = ref<string | null>(null)
 
@@ -62,7 +65,6 @@ const textOptions = ref({
 
 const showTextModal = ref(false)
 const showFeaturedModal = ref(false)
-
 </script>
 
 <template>
@@ -70,10 +72,12 @@ const showFeaturedModal = ref(false)
 
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-4 overflow-y-auto">
     <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center" style="margin: 1em 0 2em 0">
-      Customize {{ templateName }} Catalog
+      {{ t('customize_title', { catalogName: templateName }) }}
     </h1>
 
-    <div v-if="error" class="text-center text-red-500">Error loading data.</div>
+    <div v-if="error" class="text-center text-red-500">
+      {{ t('customize_error') }}
+    </div>
 
     <div class="flex flex-col md:flex-row gap-6 w-full max-w-[1600px] mx-auto px-4">
       <div class="h-auto md:w-[50%] space-y-8">
@@ -145,15 +149,13 @@ const showFeaturedModal = ref(false)
             :show="showFeaturedModal"
             @close="showFeaturedModal = false"
           />
-
-
         </div>
 
         <button
           @click="sendToBackend"
           class="w-full bg-[#4f46e5] text-white px-6 py-3 rounded-xl shadow-md transition-colors duration-300 hover:bg-[#1e2939] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Generate PDF
+          {{ t('customize_generate') }}
         </button>
       </div>
 
@@ -195,7 +197,6 @@ const showFeaturedModal = ref(false)
         :titleText="colors.titleText"
         :titleSettings="titleSettings"
       />
-
     </div>
 
     <div class="mt-12">

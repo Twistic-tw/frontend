@@ -14,7 +14,9 @@
           &times;
         </button>
 
-        <h2 class="text-xl font-bold text-gray-800 mb-6">Upload Featured Images</h2>
+        <h2 class="text-xl font-bold text-gray-800 mb-6">
+          {{ t('upload_featured_images') }}
+        </h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div v-for="key in ['image_one', 'image_two', 'image_three', 'image_four']" :key="key" class="space-y-3">
@@ -31,7 +33,7 @@
 
             <input
               type="text"
-              :placeholder="`Short description for ${formatKey(key)}`"
+              :placeholder="t('short_description', { image: formatKey(key) })"
               v-model="descriptions[getDescKey(key)]"
               maxlength="60"
               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
@@ -50,13 +52,14 @@
 <script setup lang="ts">
 import { Ref, ref, watch } from 'vue'
 import { useToast } from 'vue-toastification'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+const toast = useToast()
 
 defineProps<{ show: boolean }>()
 defineEmits(['close'])
 
-const toast = useToast()
-
-// Modelo separado: archivos e inputs
 const images = defineModel('images') as Ref<{
   image_one: File | null
   image_two: File | null
@@ -92,13 +95,13 @@ function onUpload(event: Event, key: string) {
   const maxSizeMB = 2
 
   if (!validTypes.includes(file.type)) {
-    toast.error(`"${file.name}" is not a valid image type. Please use JPG or PNG.`)
+    toast.error(t('toast.invalid_image_type', { file: file.name }))
     return
   }
 
   if (file.size > maxSizeMB * 1024 * 1024) {
     const sizeMB = (file.size / (1024 * 1024)).toFixed(2)
-    toast.error(`"${file.name}" is ${sizeMB}MB. Max allowed: ${maxSizeMB}MB.`)
+    toast.error(t('toast.image_too_large', { file: file.name, size: sizeMB, max: maxSizeMB }))
     return
   }
 

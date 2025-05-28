@@ -60,7 +60,7 @@ const showFullscreen = ref(false)
 
 <template>
   <div class="h-auto w-full bg-white rounded-2xl shadow-lg p-6 border border-gray-200" style="position: sticky; top: 100px; height: fit-content">
-    <h2 class="text-2xl font-semibold text-gray-800 mb-3">Live Preview
+    <h2 class="text-2xl font-semibold text-gray-800 mb-3">{{ $t('title_livepreview') }}
       <button
         @click="showFullscreen = true"
         class="absolute top-0 right-0 p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition z-10"

@@ -1,14 +1,12 @@
 <template>
   <div class="bg-white rounded-2xl shadow-lg border border-gray-200">
-    <!-- Encabezado del card -->
     <div
       class="flex items-center justify-between p-6 border-b border-gray-100 cursor-pointer"
       @click="showModal = true"
     >
-      <h2 class="text-xl font-bold text-gray-800">Search & Filter Data</h2>
+      <h2 class="text-xl font-bold text-gray-800">{{ t('filter_card.title') }}</h2>
     </div>
 
-    <!-- MODAL CON TRANSICIÓN -->
     <transition name="fade-scale">
       <div
         v-if="showModal"
@@ -16,43 +14,35 @@
         @click.self="showModal = false"
       >
         <div
-        class="bg-white w-[95%] h-[90vh] rounded-xl shadow-xl p-6 overflow-auto relative"
-        style="padding-top:3em;"
+          class="bg-white w-[95%] h-[90vh] rounded-xl shadow-xl p-6 overflow-auto relative"
+          style="padding-top:3em;"
         >
-          <!-- Botón cerrar -->
           <button
             @click="showModal = false"
             class="absolute top-4 right-4 bg-gray-800 text-white hover:bg-red-600 hover:scale-105 transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
             aria-label="Cerrar modal"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-          <!-- Filtros -->
+
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Search by field</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('filter_card.search_by_field') }}</label>
               <select
                 :value="searchField || ''"
                 @change="$emit('update:searchField', ($event.target as HTMLSelectElement).value); $emit('filter')"
                 class="w-full p-2 border rounded shadow-sm"
               >
-                <option disabled value="">Select field</option>
+                <option disabled value="">{{ t('filter_card.select_field') }}</option>
                 <option v-for="field in fields" :key="field.name" :value="field.name">
                   {{ field.name }}
                 </option>
               </select>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Search by value</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('filter_card.search_by_value') }}</label>
               <input
                 :value="searchValue"
                 @input="$emit('update:searchValue', ($event.target as HTMLInputElement).value); $emit('filter')"
@@ -64,55 +54,47 @@
                 @click="$emit('clear')"
                 class="w-full bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition shadow-sm"
               >
-                Clear Filter
+                {{ t('filter_card.clear') }}
               </button>
             </div>
           </div>
-          <!-- Ordenar campos -->
-           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Order by Field</label>
-              <select
-                v-model="sortField"
-                class="w-full p-2 border rounded shadow-sm"
-              >
-                <option disabled value="">Order by: </option>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('filter_card.order_by_field') }}</label>
+              <select v-model="sortField" class="w-full p-2 border rounded shadow-sm">
+                <option disabled value="">{{ t('filter_card.order_by') }}</option>
                 <option v-for="field in fields" :key="field.name" :value="field.name">
                   {{ field.name }}
                 </option>
               </select>
             </div>
-
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Order direction</label>
-              <select
-                v-model="sortDirection"
-                class="w-full p-2 border rounded shadow-sm"
-              >
-                <option value="asc">Upward</option>
-                <option value="desc">Falling</option>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('filter_card.order_direction') }}</label>
+              <select v-model="sortDirection" class="w-full p-2 border rounded shadow-sm">
+                <option value="asc">{{ t('filter_card.ascending') }}</option>
+                <option value="desc">{{ t('filter_card.descending') }}</option>
               </select>
             </div>
           </div>
 
-          <!-- Tabla moderna -->
           <div v-if="filteredRows.length" class="overflow-auto border rounded-lg">
             <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
               <span class="text-sm text-gray-700">
-                {{ selectedRows.length }} of {{ filteredRows.length }} selected
+                {{ selectedRows.length }} {{ t('filter_card.of') }} {{ filteredRows.length }} {{ t('filter_card.selected') }}
               </span>
               <div class="flex gap-2">
                 <button
                   @click="$emit('selectAll')"
                   class="text-xs bg-indigo-600 text-white px-4 py-1.5 rounded hover:bg-indigo-700"
                 >
-                  Show all
+                  {{ t('filter_card.show_all') }}
                 </button>
                 <button
                   @click="$emit('deselectAll')"
                   class="text-xs bg-gray-400 text-white px-4 py-1.5 rounded hover:bg-gray-500"
                 >
-                  Hide all
+                  {{ t('filter_card.hide_all') }}
                 </button>
               </div>
             </div>
@@ -120,7 +102,7 @@
             <table class="min-w-full divide-y divide-gray-200 text-sm">
               <thead class="bg-gray-50 sticky top-0 z-10">
                 <tr>
-                  <th class="px-4 py-2 text-left font-semibold text-gray-700">Visible</th>
+                  <th class="px-4 py-2 text-left font-semibold text-gray-700">{{ t('filter_card.visible') }}</th>
                   <th
                     v-for="field in fields"
                     :key="field.name"
@@ -161,7 +143,7 @@
           </div>
 
           <div v-else-if="searchField && searchValue" class="text-sm text-gray-500 mt-4 text-center">
-            No results found. Try another value.
+            {{ t('filter_card.no_results') }}
           </div>
         </div>
       </div>
@@ -171,53 +153,38 @@
 
 <script setup lang="ts">
 import { ref, defineEmits, defineProps, withDefaults, onMounted, onBeforeUnmount, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const showModal = ref(false)
 const sortField = ref('')
 const sortDirection = ref<'asc' | 'desc'>('asc')
 
-// Función para ordenar los resultados
 const sortedRows = computed(() => {
   if (!sortField.value) return props.filteredRows
-
   return [...props.filteredRows].sort((a, b) => {
     const aVal = a[sortField.value]
     const bVal = b[sortField.value]
-
     if (aVal === bVal) return 0
-    if (sortDirection.value === 'asc') {
-      return aVal > bVal ? 1 : -1
-    } else {
-      return aVal < bVal ? 1 : -1
-    }
+    return sortDirection.value === 'asc' ? (aVal > bVal ? 1 : -1) : (aVal < bVal ? 1 : -1)
   })
 })
 
-// Función para cerrar el modal al pulsar Esc
 const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.key === 'Escape') {
-    showModal.value = false
-  }
+  if (event.key === 'Escape') showModal.value = false
 }
+onMounted(() => window.addEventListener('keydown', handleKeyDown))
+onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyDown))
 
-// Añadir y quitar el event listener
-onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleKeyDown)
-})
-
-const emit = defineEmits<{
-  (e: 'update:searchField', value: string): void
-  (e: 'update:searchValue', value: string): void
-  (e: 'filter'): void
-  (e: 'clear'): void
-  (e: 'selectAll'): void
-  (e: 'deselectAll'): void
-  (e: 'toggleRow', index: number): void
-}>()
+const emit = defineEmits([
+  'update:searchField',
+  'update:searchValue',
+  'filter',
+  'clear',
+  'selectAll',
+  'deselectAll',
+  'toggleRow'
+])
 
 const props = withDefaults(defineProps<{
   fields: { name: string }[]
@@ -227,25 +194,21 @@ const props = withDefaults(defineProps<{
   selectedRows: number[]
 }>(), {
   searchField: '',
-  searchValue: '',
+  searchValue: ''
 })
 
 const handleToggle = (index: number) => emit('toggleRow', index)
 </script>
 
 <style scoped>
-/* Transición suave para el modal */
-.fade-scale-enter-active,
-.fade-scale-leave-active {
+.fade-scale-enter-active, .fade-scale-leave-active {
   transition: all 0.25s ease;
 }
-.fade-scale-enter-from,
-.fade-scale-leave-to {
+.fade-scale-enter-from, .fade-scale-leave-to {
   opacity: 0;
   transform: scale(0.95);
 }
-.fade-scale-enter-to,
-.fade-scale-leave-from {
+.fade-scale-enter-to, .fade-scale-leave-from {
   opacity: 1;
   transform: scale(1);
 }

@@ -1,7 +1,8 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
 import axios from 'axios'
-import BackButton from '@/components/BackButton.vue';
+import { useI18n } from 'vue-i18n'
+import BackButton from '@/components/BackButton.vue'
 
 interface Notification {
   id: number
@@ -20,11 +21,11 @@ export default defineComponent({
     BackButton
   },
   setup() {
+    const { t } = useI18n()
     const notifications = ref<Notification[]>([])
     const loading = ref(true)
     const error = ref(false)
 
-    // Obtiene las notificaciones
     const fetchNotifications = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_URL}/ShowNotifications`, {
@@ -32,7 +33,7 @@ export default defineComponent({
         })
         notifications.value = res.data.notifications.filter(
           (n: { status: string }) => n.status === 'Pending'
-        );
+        )
       } catch (err) {
         console.error(err)
         error.value = true
@@ -41,36 +42,30 @@ export default defineComponent({
       }
     }
 
-    // Obtener token XSRF
     const getXsrfToken = (): string | null => {
-      return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null;
-    };
-    // Aprueba una notificación, el status cambia a "approve"
-    // y se envía una solicitud POST a la API
-    // para marcarla como "In Progress"
+      return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
+    }
+
     const approveNotification = async (id: number) => {
       try {
-        const xsrfToken = getXsrfToken();
+        const xsrfToken = getXsrfToken()
         await axios.post(`${import.meta.env.VITE_URL}/ReadNotification/${id}`, {}, {
           headers: {
             'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
             'Accept': 'application/json'
           },
           withCredentials: true
-        });
+        })
         notifications.value = notifications.value.map(n =>
           n.id === id ? { ...n, status: 'Approved' } : n
-        );
-        await fetchNotifications();
+        )
+        await fetchNotifications()
       } catch (error) {
-        console.error('Error approving notification:', error);
-        alert('Error approving notification.');
+        console.error('Error approving notification:', error)
+        alert('Error approving notification.')
       }
-    };
+    }
 
-    // Analiza el campo fields_order y devuelve una cadena
-    // con los nombres de los campos separados por comas
-    // Si fields_order es null, devuelve '-'
     const parseFields = (jsonStr: string | null): string => {
       try {
         if (!jsonStr) return '-'
@@ -81,9 +76,8 @@ export default defineComponent({
       }
     }
 
-    // Formatea la fecha en el formato 'DD/MM/YYYY HH:mm'
     const formatDate = (dateStr: string): string => {
-    const date = new Date(dateStr)
+      const date = new Date(dateStr)
       return date.toLocaleString('en-GB', {
         day: '2-digit',
         month: '2-digit',
@@ -93,7 +87,6 @@ export default defineComponent({
       })
     }
 
-
     onMounted(fetchNotifications)
 
     return {
@@ -102,7 +95,8 @@ export default defineComponent({
       error,
       parseFields,
       formatDate,
-      approveNotification
+      approveNotification,
+      t
     }
   }
 })
@@ -111,15 +105,15 @@ export default defineComponent({
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-4">
     <h1 class="text-3xl font-bold text-[#0F172A] mb-6 text-center">
-      Notifications
+      {{ t('notifications.title') }}
     </h1>
 
     <div v-if="loading" class="text-center text-[#334155]">
-      Loading notifications...
+      {{ t('notifications.loading') }}
     </div>
 
     <div v-else-if="!notifications.length" class="text-center bg-white p-6 rounded-2xl shadow-md text-[#334155]">
-      No notifications available.
+      {{ t('notifications.none') }}
     </div>
 
     <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -133,56 +127,54 @@ export default defineComponent({
         </h2>
 
         <p class="text-[#334155] dark:text-white mb-1">
-          <strong>File path:</strong> {{ noti.file_path }}
+          <strong>{{ t('notifications.filePath') }}:</strong> {{ noti.file_path }}
         </p>
 
         <p class="text-[#334155] dark:text-white mb-1">
-          <strong>Fields order:</strong> {{ parseFields(noti.fields_order) }}
+          <strong>{{ t('notifications.fieldsOrder') }}:</strong> {{ parseFields(noti.fields_order) }}
         </p>
 
         <p class="text-[#334155] dark:text-white mb-1">
-          <strong>User ID:</strong> {{ noti.id_user }}
+          <strong>{{ t('notifications.userId') }}:</strong> {{ noti.id_user }}
         </p>
 
         <p class="text-[#334155] dark:text-white mb-1">
-          <strong>Created date:</strong> {{ formatDate(noti.created_at) }}
+          <strong>{{ t('notifications.createdAt') }}:</strong> {{ formatDate(noti.created_at) }}
         </p>
 
         <p class="text-[#334155] dark:text-white mb-1">
-          <strong>Message:</strong> {{ noti.message }}
+          <strong>{{ t('notifications.message') }}:</strong> {{ noti.message }}
         </p>
 
         <h2
-          class="font-medium mt-2 text-white px-2 py-1 rounded w-fit" :class="{
+          class="font-medium mt-2 text-white px-2 py-1 rounded w-fit"
+          :class="{
             'bg-[#10B981]': noti.status === 'Completed',
             'bg-[#F59E0B]': noti.status === 'Pending',
             'bg-[#3B82F6]': noti.status === 'In Progress'
           }"
         >
-          {{ noti.status }}
+          {{ t('notifications.status.' + noti.status.replace(/\s/g, '').toLowerCase()) }}
         </h2>
+
         <button
           v-if="noti.status === 'Pending'"
           @click="approveNotification(noti.id)"
           class="mt-3 px-4 py-2 text-white bg-green-600 hover:bg-green-700 rounded shadow"
         >
-         Approve
+          {{ t('notifications.approve') }}
         </button>
-
       </div>
     </div>
 
     <div v-if="error" class="text-center text-red-500 mt-6">
-      An error occurred while loading notifications.
+      {{ t('notifications.error') }}
     </div>
-    <!-- Botón Volver -->
+
     <div class="mt-12">
       <BackButton
-  class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
-/>
+        class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
+      />
     </div>
   </div>
 </template>
-
-
-

@@ -6,7 +6,7 @@
       @click="$emit('toggle', cardId)"
     >
       <h2 class="text-xl font-bold text-gray-800">
-        Images
+        {{ t('images') }}
       </h2>
       <svg
         :class="{ 'rotate-180': isOpen }"
@@ -34,7 +34,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps } from 'vue'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   handleImageUpload: (e: Event, key: string) => void
@@ -46,12 +49,12 @@ const handleUpload = (e: Event, key: string) => {
   props.handleImageUpload(e, key)
 }
 
-const imageLabels: Record<string, string> = {
-  cover: 'Cover (Required)',
-  second: 'Second Cover (Optional)',
-  header: 'Header (Required)',
-  footer: 'Footer (Optional)',
-  background: 'Background (Optional)',
+const imageLabels = {
+  cover: t('image_labels.cover'),
+  second: t('image_labels.second'),
+  header: t('image_labels.header'),
+  footer: t('image_labels.footer'),
+  background: t('image_labels.background'),
 }
 
 const isOpen = computed(() => props.activeCard === props.cardId)
