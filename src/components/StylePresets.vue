@@ -1,13 +1,14 @@
 <template>
+  <!-- Card que abre el modal -->
   <div
     class="bg-white p-4 rounded-2xl shadow-md mb-6 cursor-pointer hover:shadow-lg transition"
-    @click="handleOpenModal"
+    @click="openModal"
   >
     <h2 class="text-xl font-bold text-gray-800">
       {{ $t('style_presets_title') }}
     </h2>
 
-    <!-- Modal -->
+    <!-- Modal de estilos -->
     <StylePresetsModal
       v-if="showStyleModal"
       @close="showStyleModal = false"
@@ -28,34 +29,39 @@ import StylePresetsModal from './StylePresetsModal.vue'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 
+// Estado para mostrar/ocultar el modal
 const showStyleModal = ref(false)
+
+// Lista de estilos cargados desde el backend
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const stylePresets = ref<any[]>([])
+
+// Flag para evitar recargar estilos al volver a abrir el modal
+const hasFetched = ref(false)
+
+// Notificaciones
 const toast = useToast()
 
-const handleOpenModal = async () => {
-  if (stylePresets.value.length === 0) {
-    await fetchStylePresets()
-  }
+// Función para abrir el modal y cargar estilos solo la primera vez
+const openModal = async () => {
   showStyleModal.value = true
-}
 
-const fetchStylePresets = async () => {
-  try {
-    const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
-      withCredentials: true
-    })
-    stylePresets.value = res.data
-  } catch (error) {
-    toast.error('Error al cargar estilos guardados')
-    if (axios.isAxiosError(error)) {
-      console.error('Respuesta del servidor:', error.response?.data)
-    } else {
-      console.error('Error desconocido:', error)
+  // Si ya se han cargado, no hacer otra petición
+  if (!hasFetched.value) {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
+        withCredentials: true
+      })
+      stylePresets.value = res.data
+      hasFetched.value = true
+    } catch (error) {
+      toast.error('Error al cargar estilos guardados')
+      console.error('fetchStylePresets error:', error)
     }
   }
 }
 
+// Props que recibe desde el componente padre
 defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   titleSettings: any
