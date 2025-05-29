@@ -104,9 +104,13 @@ const featuredDescriptions = ref({
       })
       stylePresets.value = res.data
     } catch (error) {
-      toast.error('Error al cargar estilos guardados')
-      console.error('fetchStylePresets error:', error)
-    }
+  toast.error('Error al cargar estilos guardados')
+  if (axios.isAxiosError(error)) {
+    console.error('Respuesta del servidor:', error.response?.data)
+  } else {
+    console.error('Error desconocido:', error)
+  }
+}
   }
   const previewRows = computed(() => {
     const selected = excelData.value.filter((_, i) => selectedRows.value.includes(i))
