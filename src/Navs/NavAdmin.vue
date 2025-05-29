@@ -102,7 +102,7 @@ onBeforeUnmount(() => {
 
     <!-- Menú desplegable -->
     <div
-      class="w-46 bg-neutral-950 rounded-b-2xl fixed right-0 mt-[68px] flex flex-col overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] z-50"
+      class="w-auto min-w-[12rem] bg-neutral-950 rounded-b-2xl fixed right-0 mt-[68px] flex flex-col overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] z-50"
       :class="{ 'max-h-[630px]': navExpanded, 'max-h-0': !navExpanded }"
     >
       <RouterLink to="/dashboard" @click="closeNav" class="transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800">{{ $t('dashboard') }}</RouterLink>
