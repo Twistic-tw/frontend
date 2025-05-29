@@ -169,12 +169,26 @@ onMounted(async () => {
           <!-- Card de Estilos personalizados -->
           <StylePresets
             :is-active="showStyleModal"
+            :title-settings="titleSettings"
+            :header-style="headerStyle"
+            :row-style="rowStyle"
+            :cell-style="cellStyle"
+            :footer-style="footerStyle"
+            :colors="colors"
+            :presets="stylePresets"
             @open="showStyleModal = true"
+            @close="showStyleModal = false"
           />
 
           <StylePresetsModal
             :show="showStyleModal"
             :presets="stylePresets"
+            :title-settings="titleSettings"
+            :header-style="headerStyle"
+            :row-style="rowStyle"
+            :cell-style="cellStyle"
+            :footer-style="footerStyle"
+            :colors="colors"
             @close="showStyleModal = false"
             @apply="applyStylePreset"
             @delete="deleteStylePreset"
