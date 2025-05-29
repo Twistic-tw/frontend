@@ -8,8 +8,10 @@
     </h2>
 
     <!-- Modal -->
+     <transition name="fade">
     <StylePresetsModal
       v-if="isActive"
+
       :title-settings="titleSettings"
       :header-style="headerStyle"
       :row-style="rowStyle"
@@ -19,7 +21,9 @@
       :presets="presets"
       @close="$emit('close')"
     />
+    </transition>
   </div>
+
 </template>
 
 <script setup lang="ts">
@@ -46,3 +50,12 @@ defineProps<{
 
 defineEmits(['open', 'close'])
 </script>
+
+<style>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+</style>
