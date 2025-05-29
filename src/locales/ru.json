@@ -193,5 +193,12 @@
   "footer_placeholder": "Напр.: Информация может быть изменена",
   "title_livepreview": "Предварительный просмотр",
   "creating_pdf": "Создание PDF...",
-  "loading_template": "Загрузка шаблона..."
+  "loading_template": "Загрузка шаблона...",
+  "style_presets_title": "Сохранённые стили",
+  "style_presets_name": "Название",
+  "style_presets_date": "Дата создания",
+  "style_presets_actions": "Действия",
+  "style_presets_apply": "Применить",
+  "style_presets_view": "Просмотреть",
+  "style_presets_delete": "Удалить"
 }

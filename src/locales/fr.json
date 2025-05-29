@@ -193,5 +193,12 @@
   "footer_placeholder": "Ex : Informations sujettes à changement",
   "title_livepreview": "Aperçu en direct",
   "creating_pdf": "Création de votre PDF...",
-  "loading_template": "Chargement du modèle..."
+  "loading_template": "Chargement du modèle...",
+  "style_presets_title": "Styles enregistrés",
+  "style_presets_name": "Nom",
+  "style_presets_date": "Date de création",
+  "style_presets_actions": "Actions",
+  "style_presets_apply": "Appliquer",
+  "style_presets_view": "Voir",
+  "style_presets_delete": "Supprimer"
 }

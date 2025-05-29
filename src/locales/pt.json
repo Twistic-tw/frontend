@@ -193,5 +193,12 @@
   "footer_placeholder": "Ex: Informação sujeita a alterações",
   "title_livepreview": "Pré-visualização ao Vivo",
   "creating_pdf": "Criando seu PDF...",
-  "loading_template": "Carregando modelo..."
+  "loading_template": "Carregando modelo...",
+  "style_presets_title": "Estilos salvos",
+  "style_presets_name": "Nome",
+  "style_presets_date": "Data de criação",
+  "style_presets_actions": "Ações",
+  "style_presets_apply": "Aplicar",
+  "style_presets_view": "Ver",
+  "style_presets_delete": "Excluir"
 }

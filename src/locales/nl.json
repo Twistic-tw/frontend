@@ -193,5 +193,12 @@
   "footer_placeholder": "Bijv.: Informatie onder voorbehoud",
   "title_livepreview": "Live Voorbeeld",
   "creating_pdf": "PDF wordt aangemaakt...",
-  "loading_template": "Sjabloon laden..."
+  "loading_template": "Sjabloon laden...",
+  "style_presets_title": "Opgeslagen stijlen",
+  "style_presets_name": "Naam",
+  "style_presets_date": "Aanmaakdatum",
+  "style_presets_actions": "Acties",
+  "style_presets_apply": "Toepassen",
+  "style_presets_view": "Bekijken",
+  "style_presets_delete": "Verwijderen"
 }

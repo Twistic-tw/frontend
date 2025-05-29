@@ -176,6 +176,13 @@
   "content_text": "Inhaltstext",
   "footer_background": "Fußzeilenhintergrund",
   "footer_text": "Fußzeilentext",
-  "show_borders": "Tabellen"
+  "show_borders": "Tabellen",
+  "style_presets_title": "Gespeicherte Stile",
+  "style_presets_name": "Name",
+  "style_presets_date": "Erstellungsdatum",
+  "style_presets_actions": "Aktionen",
+  "style_presets_apply": "Anwenden",
+  "style_presets_view": "Anzeigen",
+  "style_presets_delete": "Löschen"
 }
  

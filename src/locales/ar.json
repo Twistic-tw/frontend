@@ -167,6 +167,13 @@
   "close_modal": "إغلاق النافذة",
   "title_styles": "خيارات الأنماط",
   "pdf_background": "خلفية PDF",
-  "title_background_color": "لون خلفية"
+  "title_background_color": "لون خلفية",
+  "style_presets_title": "الأنماط المحفوظة",
+  "style_presets_name": "الاسم",
+  "style_presets_date": "تاريخ الإنشاء",
+  "style_presets_actions": "الإجراءات",
+  "style_presets_apply": "تطبيق",
+  "style_presets_view": "عرض",
+  "style_presets_delete": "حذف"
 }
  

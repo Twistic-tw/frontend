@@ -193,5 +193,12 @@
     "footer_placeholder": "Eg: Information subject to change",
     "title_livepreview": "Live Preview",
     "creating_pdf": "Creating your PDF...",
-    "loading_template": "Loading template..."
+    "loading_template": "Loading template...",
+    "style_presets_title": "Saved styles",
+    "style_presets_name": "Name",
+    "style_presets_date": "Creation date",
+    "style_presets_actions": "Actions",
+    "style_presets_apply": "Apply",
+    "style_presets_view": "View",
+    "style_presets_delete": "Delete"
 }
