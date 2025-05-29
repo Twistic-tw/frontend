@@ -13,13 +13,18 @@ import LivePreviewModal from '@/components/LivePreviewModal.vue'
 import BackButton from '@/components/BackButton.vue'
 import { CustomizePdf } from '../../composable/CustomizePdf'
 import StylePresets from '@/components/StylePresets.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
 const activeCard = ref<string | null>(null)
 
+// Estado para el modal de texto y destacado
+const showTextModal = ref(false)
+const showFeaturedModal = ref(false)
+
+// Props del catálogo
 const {
   templateName,
   fields,
@@ -55,7 +60,8 @@ const {
   footerStyle,
   sendToBackend,
   handleImageUpload,
-  toggleFullscreen
+  toggleFullscreen,
+  fetchStylePresets
 } = CustomizePdf()
 
 const textOptions = ref({
@@ -64,8 +70,13 @@ const textOptions = ref({
   footer: ''
 })
 
-const showTextModal = ref(false)
-const showFeaturedModal = ref(false)
+// Estilos guardados
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const stylePresets = ref<any[]>([])
+
+onMounted(async () => {
+  stylePresets.value = await fetchStylePresets()
+})
 </script>
 
 <template>
@@ -151,13 +162,18 @@ const showFeaturedModal = ref(false)
             @close="showFeaturedModal = false"
           />
 
+          <!-- Card de Estilos -->
           <StylePresets
-            :titleSettings="titleSettings"
-            :headerStyle="headerStyle"
-            :rowStyle="rowStyle"
-            :cellStyle="cellStyle"
-            :footerStyle="footerStyle"
+            :is-active="activeCard === 'stylePresets'"
+            :title-settings="titleSettings"
+            :header-style="headerStyle"
+            :row-style="rowStyle"
+            :cell-style="cellStyle"
+            :footer-style="footerStyle"
             :colors="colors"
+            :presets="stylePresets"
+            @open="activeCard = 'stylePresets'"
+            @close="activeCard = null"
           />
 
         </div>
