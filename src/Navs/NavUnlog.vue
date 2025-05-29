@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { ref } from 'vue'
+import { ref, watch} from 'vue'
 import '../styles.css'
 
 const { locale } = useI18n()
-// Registrar función $t
 const { t } = useI18n()
+
+watch(locale, (newLang) => {
+  localStorage.setItem('selectedLanguage', newLang)
+})
 
 const languages = [
   { code: 'en', label: 'EN' },

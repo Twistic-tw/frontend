@@ -6,6 +6,10 @@ import '../styles.css'
 
 const { locale } = useI18n()
 
+watch(locale, (newLang) => {
+  localStorage.setItem('selectedLanguage', newLang)
+})
+
 // Lista de idiomas disponibles
 const languages = [
   { code: 'en', label: 'EN' },

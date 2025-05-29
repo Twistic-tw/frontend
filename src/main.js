@@ -16,6 +16,9 @@ import pt from './locales/pt.json'
 import ru from './locales/ru.json'
 import zh from './locales/zh.json'
 
+// Recuperar idioma guardado o usar 'en' por defecto
+const savedLang = localStorage.getItem('selectedLanguage') || 'en';
+
 // Traducciones
 const i18n = createI18n({
   locale: 'en', // idioma por defecto
