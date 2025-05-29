@@ -11,7 +11,6 @@
      <transition name="fade">
     <StylePresetsModal
       v-if="isActive"
-      :key="isActive ? 'visible' : 'hidden'"
       :title-settings="titleSettings"
       :header-style="headerStyle"
       :row-style="rowStyle"
