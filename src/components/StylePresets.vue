@@ -1,9 +1,9 @@
 <template>
   <div
     class="bg-white p-4 rounded-2xl shadow-md mb-6 cursor-pointer hover:shadow-lg transition"
-    @click="() => { if (!showStyleModal) openModal() }"
+    @click="openIfNotVisible"
   >
-
+    <!-- Título del card -->
     <h2 class="text-xl font-bold text-gray-800">
       {{ $t('style_presets_title') }}
     </h2>
@@ -29,17 +29,29 @@ import StylePresetsModal from './StylePresetsModal.vue'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 
-// Estado modal
+// Estado para mostrar u ocultar el modal
 const showStyleModal = ref(false)
+
+// Bandera para evitar múltiples peticiones
 const hasFetched = ref(false)
+
+// Lista de presets recibida desde la API
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const stylePresets = ref<any[]>([])
 
 const toast = useToast()
 
-// Función para abrir el modal y hacer fetch una sola vez
+// 👉 Función llamada desde el @click, se asegura de que el modal se abra sólo una vez
+const openIfNotVisible = () => {
+  if (!showStyleModal.value) {
+    openModal()
+  }
+}
+
+// 👉 Abre el modal y hace la petición si no se ha hecho ya
 const openModal = async () => {
   showStyleModal.value = true
+
   if (!hasFetched.value) {
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
@@ -54,11 +66,12 @@ const openModal = async () => {
   }
 }
 
-// Función para cerrar el modal
+// 👉 Cierra el modal
 const handleClose = () => {
   showStyleModal.value = false
 }
 
+// Props recibidas desde CustomizePdfView
 defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   titleSettings: any
