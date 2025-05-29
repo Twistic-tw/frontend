@@ -12,6 +12,7 @@ import LivePreview from '@/components/LivePreview.vue'
 import LivePreviewModal from '@/components/LivePreviewModal.vue'
 import BackButton from '@/components/BackButton.vue'
 import { CustomizePdf } from '../../composable/CustomizePdf'
+import StylePresets from '@/components/composable/StylePresets.vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -149,6 +150,16 @@ const showFeaturedModal = ref(false)
             :show="showFeaturedModal"
             @close="showFeaturedModal = false"
           />
+
+          <StylePresets
+            :titleSettings="titleSettings"
+            :headerStyle="headerStyle"
+            :rowStyle="rowStyle"
+            :cellStyle="cellStyle"
+            :footerStyle="footerStyle"
+            :colors="colors"
+          />
+
         </div>
 
         <button
