@@ -100,9 +100,6 @@ const props = defineProps<{
   presets: any[]
 }>()
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const emit = defineEmits(['close'])
-
 const toast = useToast()
 const expandedPreset = ref<number | null>(null)
 
