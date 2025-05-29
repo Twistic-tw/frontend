@@ -55,51 +55,11 @@
 
           <!-- Fila desplegable -->
           <div v-if="expandedPreset === preset.id" class="bg-gray-50 px-4 pb-4">
+            <!-- Colores -->
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-              <div class="flex flex-col items-start gap-1">
-                <span class="text-xs text-gray-500">🎨 {{ $t('title_background_color') }}</span>
-                <div :style="{ backgroundColor: preset.style_data?.colors?.titleBackground }"
-                    class="w-full h-8 rounded border"></div>
-              </div>
-              <div class="flex flex-col items-start gap-1">
-                <span class="text-xs text-gray-500">📝 {{ $t('title_color') }}</span>
-                <div :style="{ backgroundColor: preset.style_data?.colors?.titleText }"
-                    class="w-full h-8 rounded border"></div>
-              </div>
-              <div class="flex flex-col items-start gap-1">
-                <span class="text-xs text-gray-500">📌 {{ $t('header_background') }}</span>
-                <div :style="{ backgroundColor: preset.style_data?.colors?.headerColor }"
-                    class="w-full h-8 rounded border"></div>
-              </div>
-              <div class="flex flex-col items-start gap-1">
-                <span class="text-xs text-gray-500">🔤 {{ $t('header_text') }}</span>
-                <div :style="{ backgroundColor: preset.style_data?.colors?.headerText }"
-                    class="w-full h-8 rounded border"></div>
-              </div>
-              <div class="flex flex-col items-start gap-1">
-                <span class="text-xs text-gray-500">📄 {{ $t('primary_row') }}</span>
-                <div :style="{ backgroundColor: preset.style_data?.colors?.rowPrimaryColor }"
-                    class="w-full h-8 rounded border"></div>
-              </div>
-              <div class="flex flex-col items-start gap-1">
-                <span class="text-xs text-gray-500">📄 {{ $t('alternate_row') }}</span>
-                <div :style="{ backgroundColor: preset.style_data?.colors?.rowAlternateColor }"
-                    class="w-full h-8 rounded border"></div>
-              </div>
-              <div class="flex flex-col items-start gap-1">
-                <span class="text-xs text-gray-500">🖋️ {{ $t('content_text') }}</span>
-                <div :style="{ backgroundColor: preset.style_data?.colors?.text }"
-                    class="w-full h-8 rounded border"></div>
-              </div>
-              <div class="flex flex-col items-start gap-1">
-                <span class="text-xs text-gray-500">📥 {{ $t('footer_background') }}</span>
-                <div :style="{ backgroundColor: preset.style_data?.colors?.footerColor }"
-                    class="w-full h-8 rounded border"></div>
-              </div>
-              <div class="flex flex-col items-start gap-1">
-                <span class="text-xs text-gray-500">📢 {{ $t('footer_text') }}</span>
-                <div :style="{ backgroundColor: preset.style_data?.colors?.footerText }"
-                    class="w-full h-8 rounded border"></div>
+              <div class="flex flex-col items-start gap-1" v-for="(colorValue, key) in preset.style_data?.colors" :key="key">
+                <span class="text-xs text-gray-500">{{ key }}</span>
+                <div :style="{ backgroundColor: colorValue }" class="w-full h-8 rounded border"></div>
               </div>
             </div>
 
@@ -110,7 +70,6 @@
               <p><strong>{{ $t('show_borders') }}:</strong> {{ preset.style_data?.colors?.showBorders ? '✅' : '❌' }}</p>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -118,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 
@@ -134,40 +93,24 @@ const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   footerStyle: any,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  colors: any
+  colors: any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  presets: any[]
 }>()
 
-// Estado
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const presets = ref<any[]>([])
 const expandedPreset = ref<number | null>(null)
 const toast = useToast()
 
-// Obtener lista
-const fetchPresets = async () => {
-  try {
-    const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
-      withCredentials: true
-    })
-    presets.value = res.data
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (e) {
-    toast.error('Error loading saved styles')
-  }
-}
-
-// Expandir fila
 const toggleExpand = (id: number) => {
   expandedPreset.value = expandedPreset.value === id ? null : id
 }
 
-// Aplicar preset
 const applyPreset = async (id: number) => {
+  const preset = props.presets.find(p => p.id === id)
+  if (!preset) return
+
   try {
-    const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
-      withCredentials: true
-    })
-    const data = res.data.style_data
+    const data = preset.style_data
     Object.assign(props.titleSettings, data.titleSettings || {})
     Object.assign(props.headerStyle, data.headerStyle || {})
     Object.assign(props.rowStyle, data.rowStyle || {})
@@ -177,26 +120,23 @@ const applyPreset = async (id: number) => {
     toast.success('Estilo aplicado correctamente')
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
-    toast.error('Error applying style')
+    toast.error('Error aplicando el estilo')
   }
 }
 
-// Eliminar preset
 const deletePreset = async (id: number) => {
   try {
     await axios.delete(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
       withCredentials: true
     })
-    toast.success('Estilo eliminado')
-    fetchPresets()
+    toast.success('Estilo eliminado. Vuelve a abrir para ver los cambios.')
+    // Aquí no recargamos la lista automáticamente, la decisión queda al padre
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
-    toast.error('Error deleting style')
+    toast.error('Error al eliminar el estilo')
   }
 }
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' })
-
-onMounted(fetchPresets)
 </script>
