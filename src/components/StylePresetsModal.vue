@@ -12,14 +12,13 @@
         </svg>
       </button>
 
-
       <h2 class="text-2xl font-semibold text-gray-800 mb-6">
         {{ $t('style_presets_title') }}
       </h2>
 
       <div class="divide-y divide-gray-100 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
         <div
-          v-for="preset in presets"
+          v-for="preset in props.presets"
           :key="preset.id"
           class="bg-white hover:bg-gray-50 transition cursor-pointer"
         >
@@ -56,15 +55,17 @@
 
           <!-- Fila desplegable -->
           <div v-if="expandedPreset === preset.id" class="bg-gray-50 px-4 pb-4">
-            <!-- Colores -->
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-              <div class="flex flex-col items-start gap-1" v-for="(colorValue, key) in preset.style_data?.colors" :key="key">
+              <div
+                v-for="(colorValue, key) in preset.style_data?.colors"
+                :key="key"
+                class="flex flex-col items-start gap-1"
+              >
                 <span class="text-xs text-gray-500">{{ key }}</span>
                 <div :style="{ backgroundColor: colorValue }" class="w-full h-8 rounded border"></div>
               </div>
             </div>
 
-            <!-- Tipografía -->
             <div class="mt-6 text-sm text-gray-700">
               <p><strong>{{ $t('field_font') }}:</strong> {{ preset.style_data?.titleSettings?.fieldFont }}</p>
               <p><strong>{{ $t('font_size') }}:</strong> {{ preset.style_data?.titleSettings?.fieldSize }}</p>
@@ -99,30 +100,29 @@ const props = defineProps<{
   presets: any[]
 }>()
 
-const expandedPreset = ref<number | null>(null)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const emit = defineEmits(['close'])
+
 const toast = useToast()
+const expandedPreset = ref<number | null>(null)
 
 const toggleExpand = (id: number) => {
   expandedPreset.value = expandedPreset.value === id ? null : id
 }
 
-const applyPreset = async (id: number) => {
+const applyPreset = (id: number) => {
   const preset = props.presets.find(p => p.id === id)
   if (!preset) return
+  const data = preset.style_data
 
-  try {
-    const data = preset.style_data
-    Object.assign(props.titleSettings, data.titleSettings || {})
-    Object.assign(props.headerStyle, data.headerStyle || {})
-    Object.assign(props.rowStyle, data.rowStyle || {})
-    Object.assign(props.cellStyle, data.cellStyle || {})
-    Object.assign(props.footerStyle, data.footerStyle || {})
-    Object.assign(props.colors, data.colors || {})
-    toast.success('Estilo aplicado correctamente')
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (e) {
-    toast.error('Error aplicando el estilo')
-  }
+  Object.assign(props.titleSettings, data.titleSettings || {})
+  Object.assign(props.headerStyle, data.headerStyle || {})
+  Object.assign(props.rowStyle, data.rowStyle || {})
+  Object.assign(props.cellStyle, data.cellStyle || {})
+  Object.assign(props.footerStyle, data.footerStyle || {})
+  Object.assign(props.colors, data.colors || {})
+
+  toast.success('Estilo aplicado correctamente')
 }
 
 const deletePreset = async (id: number) => {
@@ -131,7 +131,6 @@ const deletePreset = async (id: number) => {
       withCredentials: true
     })
     toast.success('Estilo eliminado. Vuelve a abrir para ver los cambios.')
-    // Aquí no recargamos la lista automáticamente, la decisión queda al padre
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     toast.error('Error al eliminar el estilo')
@@ -139,5 +138,8 @@ const deletePreset = async (id: number) => {
 }
 
 const formatDate = (iso: string) =>
-  new Date(iso).toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' })
+  new Date(iso).toLocaleString('es-ES', {
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  })
 </script>
