@@ -166,7 +166,7 @@ onMounted(async () => {
             @close="showFeaturedModal = false"
           />
 
-          <!-- Card de Estilos -->
+          <!-- Card de Estilos personalizados -->
           <StylePresets
             :is-active="showStyleModal"
             @open="showStyleModal = true"
