@@ -53,7 +53,7 @@ const changeLanguage = (lang: string) => {
           class="mx-2 px-6 py-2 text-center text-lg font-semibold tracking-tight rounded-2xl transition duration-200 ease-in-out text-white hover:bg-slate-800"
           active-class="bg-slate-900"
         >
-          {{ t("welcome_subtitle") }}
+          {{ t("login") }}
         </RouterLink>
       </div>
     </nav>
