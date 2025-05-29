@@ -10,18 +10,17 @@ watch(locale, (newLang) => {
   localStorage.setItem('selectedLanguage', newLang)
 })
 
-// Lista de idiomas disponibles
 const languages = [
-  { code: 'en', label: 'EN' },
-  { code: 'es', label: 'ES' },
-  { code: 'de', label: 'DE' },
-  { code: 'fr', label: 'FR' },
-  { code: 'it', label: 'IT' },
-  { code: 'pt', label: 'PT' },
-  { code: 'nl', label: 'NL' },
-  { code: 'ru', label: 'RU' },
-  { code: 'zh', label: 'ZH' },
-  { code: 'ar', label: 'AR' }
+  { code: 'en', label: 'English' },
+  { code: 'es', label: 'Español' },
+  { code: 'de', label: 'Deutsch' },
+  { code: 'fr', label: 'Français' },
+  { code: 'it', label: 'Italiano' },
+  { code: 'pt', label: 'Português' },
+  { code: 'nl', label: 'Nederlands' },
+  { code: 'ru', label: 'Русский' },
+  { code: 'zh', label: '中文' },
+  { code: 'ar', label: 'العربية' }
 ]
 
 // Adquirir el rol del usuario
