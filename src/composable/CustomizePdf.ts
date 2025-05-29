@@ -98,20 +98,36 @@ const featuredDescriptions = ref({
    * desde el backend usando autenticación por cookies.
    */
   const fetchStylePresets = async () => {
-    try {
-      const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
-        withCredentials: true
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
+      withCredentials: true,
+    })
+
+    // Verificamos si la respuesta tiene datos esperados
+    if (Array.isArray(response.data)) {
+      stylePresets.value = response.data
+    } else {
+      toast.error('Formato de respuesta inesperado')
+      console.warn('Respuesta inesperada:', response.data)
+    }
+
+  } catch (error) {
+    toast.error('Error al cargar estilos guardados')
+
+    // Si es un error de Axios, mostramos detalles de la respuesta
+    if (axios.isAxiosError(error)) {
+      console.error('Error Axios:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        headers: error.response?.headers,
       })
-      stylePresets.value = res.data
-    } catch (error) {
-  toast.error('Error al cargar estilos guardados')
-  if (axios.isAxiosError(error)) {
-    console.error('Respuesta del servidor:', error.response?.data)
-  } else {
-    console.error('Error desconocido:', error)
+    } else {
+      // Otro tipo de error inesperado
+      console.error('Error desconocido:', error)
+    }
   }
 }
-  }
+
   const previewRows = computed(() => {
     const selected = excelData.value.filter((_, i) => selectedRows.value.includes(i))
     const pages = []
