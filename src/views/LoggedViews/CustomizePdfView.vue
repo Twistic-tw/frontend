@@ -166,7 +166,7 @@ onMounted(async () => {
           <StylePresets
             :is-active="activeCard === 'stylePresets'"
             @open="activeCard = 'stylePresets'"
-            @close="activeCard = null"
+            @close="() => { console.log('Recibido close'); activeCard = null }"
             :title-settings="titleSettings"
             :header-style="headerStyle"
             :row-style="rowStyle"
