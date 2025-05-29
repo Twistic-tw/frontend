@@ -9,17 +9,17 @@
 
     <!-- Modal -->
      <transition name="fade">
-    <StylePresetsModal
-      v-if="isActive"
-      :title-settings="titleSettings"
-      :header-style="headerStyle"
-      :row-style="rowStyle"
-      :cell-style="cellStyle"
-      :footer-style="footerStyle"
-      :colors="colors"
-      :presets="presets"
-      @close="$emit('close')"
-    />
+      <StylePresetsModal
+        v-if="isActive"
+        :title-settings="titleSettings"
+        :header-style="headerStyle"
+        :row-style="rowStyle"
+        :cell-style="cellStyle"
+        :footer-style="footerStyle"
+        :colors="colors"
+        :presets="presets"
+        @close="$emit('close')"
+      />
     </transition>
   </div>
 
@@ -29,7 +29,7 @@
 import { defineProps, defineEmits } from 'vue'
 import StylePresetsModal from './StylePresetsModal.vue'
 
-const props = defineProps<{
+const { isActive } = defineProps<{
   isActive: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   titleSettings: any
@@ -50,8 +50,9 @@ const props = defineProps<{
 const emit = defineEmits(['open', 'close'])
 
 const handleClick = () => {
-  if (!props.isActive) emit('open')
+  if (!isActive) emit('open')
 }
+
 </script>
 
 <style>
