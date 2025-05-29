@@ -89,7 +89,25 @@ const featuredDescriptions = ref({
   const searchActive = ref(false)
   const filteredRows = ref<Record<string, string>[]>([])
   const selectedRows = ref<number[]>([])
+  // Lista de estilos guardados del usuario
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const stylePresets = ref<any[]>([])
 
+  /**
+   * Cargar todos los estilos guardados por el usuario actual
+   * desde el backend usando autenticación por cookies.
+   */
+  const fetchStylePresets = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
+        withCredentials: true
+      })
+      stylePresets.value = res.data
+    } catch (error) {
+      toast.error('Error al cargar estilos guardados')
+      console.error('fetchStylePresets error:', error)
+    }
+  }
   const previewRows = computed(() => {
     const selected = excelData.value.filter((_, i) => selectedRows.value.includes(i))
     const pages = []
@@ -98,6 +116,54 @@ const featuredDescriptions = ref({
     }
     return pages
   })
+
+  /**
+ * Aplica un estilo guardado al editor cargando los datos desde el backend
+ * y asignándolos a los objetos reactivamente.
+ * @param id ID del preset guardado
+ */
+const applyStylePreset = async (id: number) => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
+        withCredentials: true
+      })
+
+      const data = res.data.style_data
+
+      // Asignar los estilos al editor actual
+      Object.assign(colors.value, data.colors || {})
+      Object.assign(titleSettings.value, data.titleSettings || {})
+      Object.assign(headerStyle.value, data.headerStyle || {})
+      Object.assign(rowStyle, data.rowStyle || {})
+      Object.assign(cellStyle.value, data.cellStyle || {})
+      Object.assign(footerStyle.value, data.footerStyle || {})
+
+      toast.success('Estilo aplicado correctamente')
+    } catch (error) {
+      toast.error('Error al aplicar el estilo guardado')
+      console.error('applyStylePreset error:', error)
+    }
+  }
+
+/**
+ * Elimina un estilo guardado del backend por ID
+ * y actualiza la lista tras eliminarlo.
+ * @param id ID del estilo a eliminar
+ */
+const deleteStylePreset = async (id: number) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
+        withCredentials: true
+      })
+      toast.success('Estilo eliminado correctamente')
+      await fetchStylePresets() // recarga lista tras eliminar
+    } catch (error) {
+      toast.error('Error al eliminar el estilo')
+      console.error('deleteStylePreset error:', error)
+    }
+  }
+
+
 
   function toggleRow(index: number) {
     if (selectedRows.value.includes(index)) {
@@ -416,6 +482,7 @@ const featuredDescriptions = ref({
     filterRows, selectAllFiltered, deselectAllFiltered, toggleRow, clearSearch,
     showBackground, handleImageUpload, sendToBackend,
     fetchTemplate, userId, fetchUserId, toggleFullscreen,
-    previewRef, titleBackgroundRgba, featuredImages
+    previewRef, titleBackgroundRgba, featuredImages, stylePresets,
+    fetchStylePresets, applyStylePreset, deleteStylePreset
   }
 }
