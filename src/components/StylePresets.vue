@@ -1,5 +1,4 @@
 <template>
-  <!-- Card que abre el modal -->
   <div
     class="bg-white p-4 rounded-2xl shadow-md mb-6 cursor-pointer hover:shadow-lg transition"
     @click="openModal"
@@ -11,7 +10,7 @@
     <!-- Modal de estilos -->
     <StylePresetsModal
       v-if="showStyleModal"
-      @close="showStyleModal = false"
+      @close="handleClose"
       :title-settings="titleSettings"
       :header-style="headerStyle"
       :row-style="rowStyle"
@@ -29,24 +28,17 @@ import StylePresetsModal from './StylePresetsModal.vue'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 
-// Estado para mostrar/ocultar el modal
+// Estado modal
 const showStyleModal = ref(false)
-
-// Lista de estilos cargados desde el backend
+const hasFetched = ref(false)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const stylePresets = ref<any[]>([])
 
-// Flag para evitar recargar estilos al volver a abrir el modal
-const hasFetched = ref(false)
-
-// Notificaciones
 const toast = useToast()
 
-// Función para abrir el modal y cargar estilos solo la primera vez
+// Función para abrir el modal y hacer fetch una sola vez
 const openModal = async () => {
   showStyleModal.value = true
-
-  // Si ya se han cargado, no hacer otra petición
   if (!hasFetched.value) {
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
@@ -61,7 +53,11 @@ const openModal = async () => {
   }
 }
 
-// Props que recibe desde el componente padre
+// Función para cerrar el modal
+const handleClose = () => {
+  showStyleModal.value = false
+}
+
 defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   titleSettings: any
