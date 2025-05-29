@@ -12,7 +12,12 @@ const languages = [
   { code: 'es', label: 'ES' },
   { code: 'de', label: 'DE' },
   { code: 'fr', label: 'FR' },
-  { code: 'it', label: 'IT' }
+  { code: 'it', label: 'IT' },
+  { code: 'pt', label: 'PT' },
+  { code: 'nl', label: 'NL' },
+  { code: 'ru', label: 'RU' },
+  { code: 'zh', label: 'ZH' },
+  { code: 'ar', label: 'AR' }
 ]
 
 // Adquirir el rol del usuario
@@ -96,16 +101,16 @@ onBeforeUnmount(() => {
       class="w-46 bg-neutral-950 rounded-b-2xl fixed right-0 mt-[68px] flex flex-col overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] z-50"
       :class="{ 'max-h-[630px]': navExpanded, 'max-h-0': !navExpanded }"
     >
-      <RouterLink to="/dashboard" @click="closeNav" class="transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800">Dashboard</RouterLink>
-      <RouterLink to="/profile" @click="closeNav" class="transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800">Profile</RouterLink>
-      <RouterLink to="/newTemplate" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">Create Template</RouterLink>
-      <RouterLink to="/catalogList" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">Create Catalogs</RouterLink>
-      <RouterLink to="/catalogs" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">Catalogs</RouterLink>
-      <RouterLink to="/templates" v-if="role && role === 'admin'" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">Templates</RouterLink>
-      <RouterLink to="/fields" v-if="role && role === 'admin'" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">Fields</RouterLink>
-      <RouterLink to="/notifications" v-if="role && role === 'admin'" @click="closeNav" class="transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800">Notifications</RouterLink>
-      <RouterLink to="/users" v-if="role && role === 'admin'" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">Users</RouterLink>
-      <RouterLink to="/logout" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">Log Out</RouterLink>
+      <RouterLink to="/dashboard" @click="closeNav" class="transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800">{{ $t('dashboard') }}</RouterLink>
+      <RouterLink to="/profile" @click="closeNav" class="transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800">{{ $t('profile') }}</RouterLink>
+      <RouterLink to="/newTemplate" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">{{ $t('dashboard_create_template_title') }}</RouterLink>
+      <RouterLink to="/catalogList" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">{{ $t('dashboard_create_catalog_title') }}</RouterLink>
+      <RouterLink to="/catalogs" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">{{ $t('dashboard_create_catalog_title') }}</RouterLink>
+      <RouterLink to="/templates" v-if="role && role === 'admin'" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">{{ $t('dashboard_view_catalog_title') }}</RouterLink>
+      <RouterLink to="/fields" v-if="role && role === 'admin'" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">{{ $t('dashboard_field_ops_title') }}</RouterLink>
+      <RouterLink to="/notifications" v-if="role && role === 'admin'" @click="closeNav" class="transition duration-500 ease-in-out text-white text-center p-4 text-xl hover:bg-slate-900" active-class="bg-slate-800">{{ $t('Notifications') }}</RouterLink>
+      <RouterLink to="/users" v-if="role && role === 'admin'" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">{{ $t('users') }}</RouterLink>
+      <RouterLink to="/logout" @click="closeNav" class="rounded-b-2xl transition duration-500 ease-in-out text-white text-center p-4 pb-5 text-xl hover:bg-slate-900" active-class="bg-slate-800">{{ $t('logout') }}</RouterLink>
     </div>
   </div>
 </template>

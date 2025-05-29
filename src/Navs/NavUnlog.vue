@@ -9,12 +9,16 @@ const { locale } = useI18n()
 const { t } = useI18n()
 
 const languages = [
-  { code: 'en', label: '🇬🇧 EN' },
-  { code: 'es', label: '🇪🇸 ES' },
-  { code: 'fr', label: '🇫🇷 FR' },
-  { code: 'de', label: '🇩🇪 DE' },
-  { code: 'it', label: '🇮🇹 IT' },
-  { code: 'zh', label: '🇨🇳 中文' }
+  { code: 'en', label: 'EN' },
+  { code: 'es', label: 'ES' },
+  { code: 'de', label: 'DE' },
+  { code: 'fr', label: 'FR' },
+  { code: 'it', label: 'IT' },
+  { code: 'pt', label: 'PT' },
+  { code: 'nl', label: 'NL' },
+  { code: 'ru', label: 'RU' },
+  { code: 'zh', label: 'ZH' },
+  { code: 'ar', label: 'AR' }
 ]
 
 const selectedLang = ref(locale.value)
