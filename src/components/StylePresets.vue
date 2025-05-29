@@ -1,7 +1,7 @@
 <template>
   <div
     class="bg-white p-4 rounded-2xl shadow-md mb-6 cursor-pointer hover:shadow-lg transition"
-    @click="openIfNotVisible"
+    @click="handleClick"
   >
     <!-- Título del card -->
     <h2 class="text-xl font-bold text-gray-800">
@@ -29,29 +29,28 @@ import StylePresetsModal from './StylePresetsModal.vue'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 
-// Estado para mostrar u ocultar el modal
+// Estado del modal
 const showStyleModal = ref(false)
 
-// Bandera para evitar múltiples peticiones
+// Bandera para saber si ya se ha hecho el fetch
 const hasFetched = ref(false)
 
-// Lista de presets recibida desde la API
+// Lista de presets obtenidos del backend
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const stylePresets = ref<any[]>([])
 
 const toast = useToast()
 
-// 👉 Función llamada desde el @click, se asegura de que el modal se abra sólo una vez
-const openIfNotVisible = () => {
+// Función que se ejecuta al hacer clic en el card
+const handleClick = () => {
   if (!showStyleModal.value) {
     openModal()
   }
 }
 
-// 👉 Abre el modal y hace la petición si no se ha hecho ya
+// Función que abre el modal y obtiene los estilos si aún no se han cargado
 const openModal = async () => {
   showStyleModal.value = true
-
   if (!hasFetched.value) {
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
@@ -66,13 +65,13 @@ const openModal = async () => {
   }
 }
 
-// 👉 Cierra el modal
+// Función que cierra el modal (se llama desde el evento @close del modal)
 const handleClose = () => {
-  console.log('Modal cerrado desde el padre')
+  console.log('Cerrando modal desde handleClose')
   showStyleModal.value = false
 }
 
-// Props recibidas desde CustomizePdfView
+// Props recibidas desde CustomizePdf
 defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   titleSettings: any
