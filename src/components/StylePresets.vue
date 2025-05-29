@@ -6,7 +6,7 @@
     <h2 class="text-xl font-bold text-gray-800">
       {{ $t('style_presets_title') }}
     </h2>
-
+    <div>{{ isActive }}</div>
     <StylePresetsModal
       v-if="isActive"
       @close="$emit('close')"
