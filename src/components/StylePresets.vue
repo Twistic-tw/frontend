@@ -6,10 +6,10 @@
     <h2 class="text-xl font-bold text-gray-800">
       {{ $t('style_presets_title') }}
     </h2>
-    <div>{{ isActive }}</div>
+
+    <!-- Modal -->
     <StylePresetsModal
       v-if="isActive"
-      @close="$emit('close')"
       :title-settings="titleSettings"
       :header-style="headerStyle"
       :row-style="rowStyle"
@@ -17,6 +17,7 @@
       :footer-style="footerStyle"
       :colors="colors"
       :presets="presets"
+      @close="$emit('close')"
     />
   </div>
 </template>
@@ -25,20 +26,20 @@
 import { defineProps, defineEmits } from 'vue'
 import StylePresetsModal from './StylePresetsModal.vue'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const props = defineProps<{
-  isActive: boolean,
+defineProps<{
+  isActive: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  titleSettings: any,
+  titleSettings: any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  headerStyle: any,
+  headerStyle: any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  rowStyle: any,
+  rowStyle: any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  cellStyle: any,// eslint-disable-next-line @typescript-eslint/no-explicit-any
-  footerStyle: any,
+  cellStyle: any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  colors: any,
+  footerStyle: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  colors: any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   presets: any[]
 }>()
