@@ -1,26 +1,30 @@
 <template>
-  <div
-    class="bg-white p-4 rounded-2xl shadow-md mb-6 cursor-pointer hover:shadow-lg transition"
-    @click="handleClick"
-  >
-    <!-- Título del card -->
+  <div class="bg-white p-4 rounded-2xl shadow-md mb-6 hover:shadow-lg transition">
+  <div class="flex justify-between items-center">
     <h2 class="text-xl font-bold text-gray-800">
       {{ $t('style_presets_title') }}
     </h2>
-
-    <!-- Modal de estilos -->
-    <StylePresetsModal
-      v-if="showStyleModal"
-      @close="handleClose"
-      :title-settings="titleSettings"
-      :header-style="headerStyle"
-      :row-style="rowStyle"
-      :cell-style="cellStyle"
-      :footer-style="footerStyle"
-      :colors="colors"
-      :presets="stylePresets"
-    />
+    <button
+      @click="handleClick"
+      class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition text-sm"
+    >
+    </button>
   </div>
+
+  <!-- Modal -->
+  <StylePresetsModal
+    v-if="showStyleModal"
+    @close="handleClose"
+    :title-settings="titleSettings"
+    :header-style="headerStyle"
+    :row-style="rowStyle"
+    :cell-style="cellStyle"
+    :footer-style="footerStyle"
+    :colors="colors"
+    :presets="stylePresets"
+  />
+</div>
+
 </template>
 
 <script setup lang="ts">
