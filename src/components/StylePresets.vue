@@ -4,15 +4,16 @@
 
     <!-- Modal -->
     <StylePresetsModal
-      v-if="openModal"
-      @close="openModal = false"
-      :titleSettings="titleSettings"
-      :headerStyle="headerStyle"
-      :rowStyle="rowStyle"
-      :cellStyle="cellStyle"
-      :footerStyle="footerStyle"
+      v-if="openModal "
+      @close="openModal  = false"
+      :title-settings="titleSettings"
+      :header-style="headerStyle"
+      :row-style="rowStyle"
+      :cell-style="cellStyle"
+      :footer-style="footerStyle"
       :colors="colors"
     />
+
   </div>
 </template>
 
