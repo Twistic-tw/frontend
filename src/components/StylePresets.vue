@@ -1,14 +1,11 @@
 <template>
-  <div class="bg-white p-4 rounded-2xl shadow-md mb-6 hover:shadow-lg transition">
+  <div class="bg-white p-4 rounded-2xl shadow-md mb-6 hover:shadow-lg transition"
+  @click="handleClick"
+  >
   <div class="flex justify-between items-center">
     <h2 class="text-xl font-bold text-gray-800">
       {{ $t('style_presets_title') }}
     </h2>
-    <button
-      @click="handleClick"
-      class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition text-sm"
-    >
-    </button>
   </div>
 
   <!-- Modal -->
