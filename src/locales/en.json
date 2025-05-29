@@ -200,5 +200,6 @@
     "style_presets_actions": "Actions",
     "style_presets_apply": "Apply",
     "style_presets_view": "View",
-    "style_presets_delete": "Delete"
+    "style_presets_delete": "Delete",
+    "artive_fields_title": "Active Fields"
 }

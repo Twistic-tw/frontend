@@ -200,5 +200,6 @@
   "style_presets_actions": "Actions",
   "style_presets_apply": "Appliquer",
   "style_presets_view": "Voir",
-  "style_presets_delete": "Supprimer"
+  "style_presets_delete": "Supprimer",
+  "artive_fields_title": "Champs actifs"
 }
