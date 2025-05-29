@@ -13,6 +13,7 @@ import LivePreviewModal from '@/components/LivePreviewModal.vue'
 import BackButton from '@/components/BackButton.vue'
 import { CustomizePdf } from '../../composable/CustomizePdf'
 import StylePresets from '@/components/StylePresets.vue'
+import StylePresetsModal from '@/components/StylePresetsModal.vue'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -23,6 +24,7 @@ const activeCard = ref<string | null>(null)
 // Estado para el modal de texto y destacado
 const showTextModal = ref(false)
 const showFeaturedModal = ref(false)
+const showStyleModal = ref(false)
 
 // Props del catálogo
 const {
@@ -61,7 +63,9 @@ const {
   sendToBackend,
   handleImageUpload,
   toggleFullscreen,
-  fetchStylePresets
+  fetchStylePresets,
+  applyStylePreset,
+  deleteStylePreset,
 } = CustomizePdf()
 
 const textOptions = ref({
@@ -164,16 +168,16 @@ onMounted(async () => {
 
           <!-- Card de Estilos -->
           <StylePresets
-            :is-active="activeCard === 'stylePresets'"
-            :title-settings="titleSettings"
-            :header-style="headerStyle"
-            :row-style="rowStyle"
-            :cell-style="cellStyle"
-            :footer-style="footerStyle"
-            :colors="colors"
+            :is-active="showStyleModal"
+            @open="showStyleModal = true"
+          />
+
+          <StylePresetsModal
+            :show="showStyleModal"
             :presets="stylePresets"
-            @open="activeCard = 'stylePresets'"
-            @close="activeCard = null"
+            @close="showStyleModal = false"
+            @apply="applyStylePreset"
+            @delete="deleteStylePreset"
           />
 
         </div>
