@@ -1,4 +1,5 @@
 {
+  "login": "登录",
   "welcome_title": "欢迎使用 TWISTIC 目录",
   "welcome_subtitle": "从您的电子表格构建漂亮的 PDF 目录",
   "step1_title_home": "1. 上传您的 Excel",
