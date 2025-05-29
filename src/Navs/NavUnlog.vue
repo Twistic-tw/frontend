@@ -5,6 +5,8 @@ import { ref } from 'vue'
 import '../styles.css'
 
 const { locale } = useI18n()
+// Registrar función $t
+const { t } = useI18n()
 
 const languages = [
   { code: 'en', label: '🇬🇧 EN' },
@@ -51,7 +53,7 @@ const changeLanguage = (lang: string) => {
           class="mx-2 px-6 py-2 text-center text-lg font-semibold tracking-tight rounded-2xl transition duration-200 ease-in-out text-white hover:bg-slate-800"
           active-class="bg-slate-900"
         >
-          Login
+          {{ t("welcome_subtitle") }}
         </RouterLink>
       </div>
     </nav>
