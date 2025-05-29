@@ -6,7 +6,7 @@
       class="p-4 cursor-pointer flex justify-between items-center"
       @click="$emit('toggle', cardId)"
     >
-      <h2 class="text-xl font-bold text-gray-800">Active Fields</h2>
+      <h2 class="text-xl font-bold text-gray-800">{{ $t('active_fields_title') }}</h2>
       <svg
         :class="{ 'rotate-180': isOpen }"
         class="w-5 h-5 transition-transform"
