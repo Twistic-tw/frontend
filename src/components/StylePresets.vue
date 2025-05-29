@@ -68,6 +68,7 @@ const openModal = async () => {
 
 // 👉 Cierra el modal
 const handleClose = () => {
+  console.log('Modal cerrado desde el padre')
   showStyleModal.value = false
 }
 

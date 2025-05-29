@@ -3,7 +3,8 @@
     <div class="bg-white w-full max-w-5xl rounded-2xl shadow-2xl p-6 overflow-auto relative">
       <!-- Botón cerrar -->
       <button
-        @click="$emit('close')"
+        @click="console.log('Cerrar modal');$emit('close')"
+
         class="absolute top-4 right-4 bg-gray-800 text-white hover:bg-red-600 hover:scale-105 transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
         aria-label="Cerrar modal"
       >
