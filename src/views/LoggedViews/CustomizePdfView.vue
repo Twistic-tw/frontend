@@ -165,6 +165,8 @@ onMounted(async () => {
           <!-- Card de Estilos -->
           <StylePresets
             :is-active="activeCard === 'stylePresets'"
+            @open="activeCard = 'stylePresets'"
+            @close="activeCard = null"
             :title-settings="titleSettings"
             :header-style="headerStyle"
             :row-style="rowStyle"
@@ -172,8 +174,6 @@ onMounted(async () => {
             :footer-style="footerStyle"
             :colors="colors"
             :presets="stylePresets"
-            @open="activeCard = 'stylePresets'"
-            @close="activeCard = null"
           />
 
         </div>
