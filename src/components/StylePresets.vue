@@ -8,9 +8,9 @@
     </h2>
 
     <!-- Modal -->
-     <transition name="fade">
+    <transition name="fade">
       <StylePresetsModal
-        v-if="isActive"
+        v-show="isActive"
         :title-settings="titleSettings"
         :header-style="headerStyle"
         :row-style="rowStyle"
@@ -18,18 +18,17 @@
         :footer-style="footerStyle"
         :colors="colors"
         :presets="presets"
-        @close="$emit('close')"
+        @close="handleClose"
       />
     </transition>
   </div>
-
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
 import StylePresetsModal from './StylePresetsModal.vue'
+import { defineProps, defineEmits } from 'vue'
 
-const { isActive } = defineProps<{
+const props = defineProps<{
   isActive: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   titleSettings: any
@@ -50,16 +49,12 @@ const { isActive } = defineProps<{
 const emit = defineEmits(['open', 'close'])
 
 const handleClick = () => {
-  if (!isActive) emit('open')
+  if (!props.isActive) {
+    emit('open')
+  }
 }
 
+const handleClose = () => {
+  emit('close')
+}
 </script>
-
-<style>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
-</style>
