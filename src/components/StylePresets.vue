@@ -1,23 +1,24 @@
 <template>
   <div
     class="bg-white p-4 rounded-2xl shadow-md mb-6 cursor-pointer hover:shadow-lg transition"
-    @click="emit('open')"
+    @click="handleClick"
   >
     <h2 class="text-xl font-bold text-gray-800">
       {{ $t('style_presets_title') }}
     </h2>
 
+    <!-- Modal -->
     <transition name="fade">
       <StylePresetsModal
-        v-if="isActive"
-        :title-settings="titleSettings"
-        :header-style="headerStyle"
-        :row-style="rowStyle"
-        :cell-style="cellStyle"
-        :footer-style="footerStyle"
-        :colors="colors"
-        :presets="presets"
-        @close="emit('close')"
+        v-if="props.isActive"
+        :title-settings="props.titleSettings"
+        :header-style="props.headerStyle"
+        :row-style="props.rowStyle"
+        :cell-style="props.cellStyle"
+        :footer-style="props.footerStyle"
+        :colors="props.colors"
+        :presets="props.presets"
+        @close="$emit('close')"
       />
     </transition>
   </div>
@@ -27,7 +28,6 @@
 import { defineProps, defineEmits } from 'vue'
 import StylePresetsModal from './StylePresetsModal.vue'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
   isActive: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,4 +47,17 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['open', 'close'])
+
+const handleClick = () => {
+  if (!props.isActive) emit('open')
+}
 </script>
+
+<style>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+</style>
