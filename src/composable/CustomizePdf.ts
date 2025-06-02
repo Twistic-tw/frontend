@@ -17,9 +17,7 @@ export function CustomizePdf() {
   const windowWidth = ref(window.innerWidth)
 
   const excelData = ref<Record<string, string>[]>([])
-  const activeFieldNames = computed(() =>
-    fields.value.filter((f) => f.active).map((f) => f.name)
-  )
+  const activeFieldNames = computed(() => fields.value.filter((f) => f.active).map((f) => f.name))
 
   const colors = ref({
     backgroundColor: '#ffffff',
@@ -59,18 +57,18 @@ export function CustomizePdf() {
   })
 
   const featuredImages = ref({
-  image_one: null,
-  image_two: null,
-  image_three: null,
-  image_four: null
-})
+    image_one: null,
+    image_two: null,
+    image_three: null,
+    image_four: null,
+  })
 
-const featuredDescriptions = ref({
-  desc_one: '',
-  desc_two: '',
-  desc_three: '',
-  desc_four: ''
-})
+  const featuredDescriptions = ref({
+    desc_one: '',
+    desc_two: '',
+    desc_three: '',
+    desc_four: '',
+  })
 
   const coverUrl = ref('')
   const secondUrl = ref('')
@@ -78,11 +76,36 @@ const featuredDescriptions = ref({
   const backgroundUrl = ref('')
   const footerUrl = ref('')
 
-  watch(() => images.value.cover, file => { coverUrl.value = file ? URL.createObjectURL(file) : '' })
-  watch(() => images.value.second, file => { secondUrl.value = file ? URL.createObjectURL(file) : '' })
-  watch(() => images.value.header, file => { headerUrl.value = file ? URL.createObjectURL(file) : '' })
-  watch(() => images.value.background, file => { backgroundUrl.value = file ? URL.createObjectURL(file) : '' })
-  watch(() => images.value.footer, file => { footerUrl.value = file ? URL.createObjectURL(file) : '' })
+  watch(
+    () => images.value.cover,
+    (file) => {
+      coverUrl.value = file ? URL.createObjectURL(file) : ''
+    },
+  )
+  watch(
+    () => images.value.second,
+    (file) => {
+      secondUrl.value = file ? URL.createObjectURL(file) : ''
+    },
+  )
+  watch(
+    () => images.value.header,
+    (file) => {
+      headerUrl.value = file ? URL.createObjectURL(file) : ''
+    },
+  )
+  watch(
+    () => images.value.background,
+    (file) => {
+      backgroundUrl.value = file ? URL.createObjectURL(file) : ''
+    },
+  )
+  watch(
+    () => images.value.footer,
+    (file) => {
+      footerUrl.value = file ? URL.createObjectURL(file) : ''
+    },
+  )
 
   const searchField = ref('')
   const searchValue = ref('')
@@ -95,39 +118,52 @@ const featuredDescriptions = ref({
   const stylePresets = ref<any[]>([])
 
   const handleSaveStyle = async (name: string) => {
-  showSaveStyleModal.value = false
+    showSaveStyleModal.value = false
 
-  const payload = {
-    name,
-    style_data: {
-      titleSettings: titleSettings.value,
-      colors: colors.value,
-      headerStyle: headerStyle.value,
-      rowStyle: rowStyle(0),
-      cellStyle: cellStyle.value,
-      footerStyle: footerStyle.value
+    const xsrfToken = getXsrfToken()
+    if (!xsrfToken) {
+      toast.error('No CSRF token found.')
+      return
+    }
+
+    const payload = {
+      name,
+      style_data: {
+        titleSettings: titleSettings.value,
+        colors: colors.value,
+        headerStyle: headerStyle.value,
+        rowStyle: rowStyle(0),
+        cellStyle: cellStyle.value,
+        footerStyle: footerStyle.value,
+      },
+    }
+
+    try {
+      await axios.post(`${import.meta.env.VITE_URL}/style-presets`, payload, {
+        withCredentials: true,
+      })
+      toast.success('Estilo guardado correctamente')
+      stylePresets.value = await fetchStylePresets()
+    } catch (err) {
+      toast.error('Error al guardar estilo')
+      console.error(err)
     }
   }
 
-  try {
-    await axios.post(`${import.meta.env.VITE_URL}/style-presets`, payload, {
-      withCredentials: true
-    })
-    toast.success('Estilo guardado correctamente')
-    stylePresets.value = await fetchStylePresets()
-  } catch (err) {
-    toast.error('Error al guardar estilo')
-    console.error(err)
-  }
-}
   /**
    * Cargar todos los estilos guardados por el usuario actual
    * desde el backend usando autenticación por cookies.
    */
   const fetchStylePresets = async () => {
+    const xsrfToken = getXsrfToken()
+    if (!xsrfToken) {
+      toast.error('No CSRF token found.')
+      return []
+    }
+
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
-        withCredentials: true
+        withCredentials: true,
       })
       return res.data
     } catch (error) {
@@ -147,19 +183,24 @@ const featuredDescriptions = ref({
   })
 
   /**
- * Aplica un estilo guardado al editor cargando los datos desde el backend
- * y asignándolos a los objetos reactivamente.
- * @param id ID del preset guardado
- */
-const applyStylePreset = async (id: number) => {
+   * Aplica un estilo guardado al editor cargando los datos desde el backend
+   * y asignándolos a los objetos reactivamente.
+   * @param id ID del preset guardado
+   */
+  const applyStylePreset = async (id: number) => {
+    const xsrfToken = getXsrfToken()
+    if (!xsrfToken) {
+      toast.error('No CSRF token found.')
+      return
+    }
+
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
-        withCredentials: true
+        withCredentials: true,
       })
 
       const data = res.data.style_data
 
-      // Asignar los estilos al editor actual
       Object.assign(colors.value, data.colors || {})
       Object.assign(titleSettings.value, data.titleSettings || {})
       Object.assign(headerStyle.value, data.headerStyle || {})
@@ -174,29 +215,33 @@ const applyStylePreset = async (id: number) => {
     }
   }
 
-/**
- * Elimina un estilo guardado del backend por ID
- * y actualiza la lista tras eliminarlo.
- * @param id ID del estilo a eliminar
- */
-const deleteStylePreset = async (id: number) => {
+  /**
+   * Elimina un estilo guardado del backend por ID
+   * y actualiza la lista tras eliminarlo.
+   * @param id ID del estilo a eliminar
+   */
+  const deleteStylePreset = async (id: number) => {
+    const xsrfToken = getXsrfToken()
+    if (!xsrfToken) {
+      toast.error('No CSRF token found.')
+      return
+    }
+
     try {
       await axios.delete(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
-        withCredentials: true
+        withCredentials: true,
       })
       toast.success('Estilo eliminado correctamente')
-      await fetchStylePresets() // recarga lista tras eliminar
+      stylePresets.value = await fetchStylePresets()
     } catch (error) {
       toast.error('Error al eliminar el estilo')
       console.error('deleteStylePreset error:', error)
     }
   }
 
-
-
   function toggleRow(index: number) {
     if (selectedRows.value.includes(index)) {
-      selectedRows.value = selectedRows.value.filter(i => i !== index)
+      selectedRows.value = selectedRows.value.filter((i) => i !== index)
     } else {
       selectedRows.value = [...selectedRows.value, index]
     }
@@ -220,7 +265,10 @@ const deleteStylePreset = async (id: number) => {
       return
     }
 
-    const queries = input.split(',').map(s => s.trim()).filter(Boolean)
+    const queries = input
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
     const resultadoFiltrado: Record<string, string>[] = []
     const nuevaSeleccion: number[] = []
 
@@ -229,9 +277,9 @@ const deleteStylePreset = async (id: number) => {
       const value = rawValue?.toString().toLowerCase()
       if (!value) return
 
-      const coincide = queries.some(query => {
+      const coincide = queries.some((query) => {
         if (query.includes('..')) {
-          const [min, max] = query.split('..').map(v => v.trim())
+          const [min, max] = query.split('..').map((v) => v.trim())
           const numVal = parseFloat(value)
           const isNumRange = !isNaN(parseFloat(min)) && !isNaN(parseFloat(max))
           return isNumRange ? numVal >= +min && numVal <= +max : value >= min && value <= max
@@ -243,12 +291,18 @@ const deleteStylePreset = async (id: number) => {
           const numValue = parseFloat(value)
           const numTarget = parseFloat(target.trim())
           switch (operator) {
-            case '>': return numValue > numTarget
-            case '<': return numValue < numTarget
-            case '>=': return numValue >= numTarget
-            case '<=': return numValue <= numTarget
-            case '=': return value === target
-            case '!=': return value !== target
+            case '>':
+              return numValue > numTarget
+            case '<':
+              return numValue < numTarget
+            case '>=':
+              return numValue >= numTarget
+            case '<=':
+              return numValue <= numTarget
+            case '=':
+              return value === target
+            case '!=':
+              return value !== target
           }
         }
 
@@ -299,9 +353,13 @@ const deleteStylePreset = async (id: number) => {
     const el = previewRef.value
     if (!el) return
     if (!document.fullscreenElement) {
-      el.requestFullscreen().catch(err => console.error(`Error entering fullscreen: ${err.message}`))
+      el.requestFullscreen().catch((err) =>
+        console.error(`Error entering fullscreen: ${err.message}`),
+      )
     } else {
-      document.exitFullscreen().catch(err => console.error(`Error exiting fullscreen: ${err.message}`))
+      document
+        .exitFullscreen()
+        .catch((err) => console.error(`Error exiting fullscreen: ${err.message}`))
     }
   }
 
@@ -317,7 +375,7 @@ const deleteStylePreset = async (id: number) => {
   }))
 
   const titleBackgroundRgba = computed(() =>
-    hexToRgba(colors.value.titleBackground, colors.value.titleAlpha)
+    hexToRgba(colors.value.titleBackground, colors.value.titleAlpha),
   )
 
   const headerStyle = computed(() => ({
@@ -328,7 +386,8 @@ const deleteStylePreset = async (id: number) => {
 
   const rowStyle = (ri: number) => ({
     gridTemplateColumns: `repeat(${activeFieldNames.value.length}, minmax(80px, 1fr))`,
-    backgroundColor: ri % 2 === 0 ? computedColors.value.rowPrimary : computedColors.value.rowAlternate,
+    backgroundColor:
+      ri % 2 === 0 ? computedColors.value.rowPrimary : computedColors.value.rowAlternate,
     color: computedColors.value.text,
     fontFamily: titleSettings.value.fieldFont,
     fontSize: titleSettings.value.fieldSize,
@@ -442,23 +501,26 @@ const deleteStylePreset = async (id: number) => {
       formData.append('template_name', templateName.value)
       formData.append('fields', JSON.stringify(activeFieldNames.value))
       formData.append('excel_data', JSON.stringify(excelData.value))
-      formData.append('style', JSON.stringify({
-        background: computedColors.value.background,
-        rowPrimary: computedColors.value.rowPrimary,
-        rowAlternate: computedColors.value.rowAlternate,
-        text: computedColors.value.text,
-        header: computedColors.value.header,
-        headerText: computedColors.value.headerText,
-        footerColor: computedColors.value.footer,
-        footerTextColor: computedColors.value.footerText,
-        size: titleSettings.value.size,
-        align: titleSettings.value.align,
-        fieldFont: titleSettings.value.fieldFont,
-        fieldSize: titleSettings.value.fieldSize,
-        borderColor: '#000000',
-        borderWidth: '1px',
-        showBorders: colors.value.showBorders,
-      }))
+      formData.append(
+        'style',
+        JSON.stringify({
+          background: computedColors.value.background,
+          rowPrimary: computedColors.value.rowPrimary,
+          rowAlternate: computedColors.value.rowAlternate,
+          text: computedColors.value.text,
+          header: computedColors.value.header,
+          headerText: computedColors.value.headerText,
+          footerColor: computedColors.value.footer,
+          footerTextColor: computedColors.value.footerText,
+          size: titleSettings.value.size,
+          align: titleSettings.value.align,
+          fieldFont: titleSettings.value.fieldFont,
+          fieldSize: titleSettings.value.fieldSize,
+          borderColor: '#000000',
+          borderWidth: '1px',
+          showBorders: colors.value.showBorders,
+        }),
+      )
       Object.entries(images.value).forEach(([key, file]) => {
         if (file) formData.append(key, file)
       })
@@ -482,7 +544,7 @@ const deleteStylePreset = async (id: number) => {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toast.error('Error generating PDF.')
       console.error(err)
@@ -502,16 +564,54 @@ const deleteStylePreset = async (id: number) => {
   })
 
   return {
-    templateName, fields, colors, titleSettings, images,
-    coverUrl, secondUrl, headerUrl, backgroundUrl, footerUrl,
-    excelData, activeFieldNames, loading, error, generating,
-    windowWidth, computedColors, headerStyle, rowStyle, cellStyle, footerStyle,
-    paginatedRows, limitedChunk, searchField, searchValue, searchActive,
-    filteredRows, selectedRows, previewRows,
-    filterRows, selectAllFiltered, deselectAllFiltered, toggleRow, clearSearch,
-    showBackground, handleImageUpload, sendToBackend,
-    fetchTemplate, userId, fetchUserId, toggleFullscreen,
-    previewRef, titleBackgroundRgba, featuredImages, stylePresets, handleSaveStyle,
-    fetchStylePresets, applyStylePreset, deleteStylePreset
+    templateName,
+    fields,
+    colors,
+    titleSettings,
+    images,
+    coverUrl,
+    secondUrl,
+    headerUrl,
+    backgroundUrl,
+    footerUrl,
+    excelData,
+    activeFieldNames,
+    loading,
+    error,
+    generating,
+    windowWidth,
+    computedColors,
+    headerStyle,
+    rowStyle,
+    cellStyle,
+    footerStyle,
+    paginatedRows,
+    limitedChunk,
+    searchField,
+    searchValue,
+    searchActive,
+    filteredRows,
+    selectedRows,
+    previewRows,
+    filterRows,
+    selectAllFiltered,
+    deselectAllFiltered,
+    toggleRow,
+    clearSearch,
+    showBackground,
+    handleImageUpload,
+    sendToBackend,
+    fetchTemplate,
+    userId,
+    fetchUserId,
+    toggleFullscreen,
+    previewRef,
+    titleBackgroundRgba,
+    featuredImages,
+    stylePresets,
+    handleSaveStyle,
+    fetchStylePresets,
+    applyStylePreset,
+    deleteStylePreset,
   }
 }
