@@ -15,7 +15,7 @@
         </button>
 
         <h2 class="text-xl font-bold text-gray-800 mb-4">
-          {{ $t('name_your_style') }}
+          {{ $t('style_name_placeholder') }}
         </h2>
 
         <input
