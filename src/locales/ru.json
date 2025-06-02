@@ -205,6 +205,7 @@
   "save_style_title": "Сохранить новый стиль",
   "style_name_placeholder": "Название стиля",
   "save": "Сохранить",
+  "save_current_style": "Сохранить текущий стиль",
   "style_saved_success": "Стиль успешно сохранён",
   "style_saved_error": "Ошибка при сохранении стиля",
   "style_applied_success": "Стиль успешно применён",

@@ -205,6 +205,7 @@
   "save_style_title": "Salva nuovo stile",
   "style_name_placeholder": "Nome dello stile",
   "save": "Salva",
+  "save_current_style": "Salva lo stile attuale",
   "style_saved_success": "Stile salvato correttamente",
   "style_saved_error": "Errore durante il salvataggio dello stile",
   "style_applied_success": "Stile applicato correttamente",

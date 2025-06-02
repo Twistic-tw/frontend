@@ -205,6 +205,7 @@
   "save_style_title": "Nieuwe stijl opslaan",
   "style_name_placeholder": "Naam van de stijl",
   "save": "Opslaan",
+  "save_current_style": "Huidige stijl opslaan",
   "style_saved_success": "Stijl succesvol opgeslagen",
   "style_saved_error": "Fout bij het opslaan van de stijl",
   "style_applied_success": "Stijl succesvol toegepast",

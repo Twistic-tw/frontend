@@ -179,6 +179,7 @@
   "save_style_title": "حفظ نمط جديد",
   "style_name_placeholder": "اسم النمط",
   "save": "حفظ",
+  "save_current_style": "حفظ النمط الحالي",
   "style_saved_success": "تم حفظ النمط بنجاح",
   "style_saved_error": "حدث خطأ أثناء حفظ النمط",
   "style_applied_success": "تم تطبيق النمط بنجاح",

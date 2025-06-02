@@ -188,6 +188,7 @@
   "save_style_title": "Neuen Stil speichern",
   "style_name_placeholder": "Name des Stils",
   "save": "Speichern",
+  "save_current_style": "Aktuellen Stil speichern",
   "style_saved_success": "Stil erfolgreich gespeichert",
   "style_saved_error": "Fehler beim Speichern des Stils",
   "style_applied_success": "Stil erfolgreich angewendet",

@@ -205,6 +205,7 @@
   "save_style_title": "Guardar nuevo estilo",
   "style_name_placeholder": "Nombre del estilo",
   "save": "Guardar",
+  "save_current_style": "Guardar estilo actual",
   "style_saved_success": "Estilo guardado correctamente",
   "style_saved_error": "Error al guardar el estilo",
   "style_applied_success": "Estilo aplicado correctamente",
