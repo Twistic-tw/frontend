@@ -117,10 +117,14 @@ export function CustomizePdf() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const stylePresets = ref<any[]>([])
 
+  const getXsrfToken = async () => {
+    await axios.get(`${import.meta.env.VITE_URL}/sanctum/csrf-cookie`, { withCredentials: true })
+    return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
+  }
+
   const handleSaveStyle = async (name: string) => {
     showSaveStyleModal.value = false
-
-    const xsrfToken = getXsrfToken()
+    const xsrfToken = await getXsrfToken()
     if (!xsrfToken) {
       toast.error('No CSRF token found.')
       return
@@ -134,17 +138,17 @@ export function CustomizePdf() {
         headerStyle: headerStyle.value,
         rowStyle: rowStyle(0),
         cellStyle: cellStyle.value,
-        footerStyle: footerStyle.value
-      }
+        footerStyle: footerStyle.value,
+      },
     }
 
     try {
       await axios.post(`${import.meta.env.VITE_URL}/style-presets`, payload, {
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
-        withCredentials: true
+        withCredentials: true,
       })
       toast.success('Estilo guardado correctamente')
       stylePresets.value = await fetchStylePresets()
@@ -153,6 +157,7 @@ export function CustomizePdf() {
       console.error(err)
     }
   }
+
 
   /**
    * Cargar todos los estilos guardados por el usuario actual
@@ -167,7 +172,7 @@ export function CustomizePdf() {
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
         headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'X-XSRF-TOKEN': decodeURIComponent(await xsrfToken),
           'Accept': 'application/json'
         },
         withCredentials: true
@@ -204,7 +209,7 @@ export function CustomizePdf() {
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
         headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'X-XSRF-TOKEN': decodeURIComponent(await xsrfToken),
           'Accept': 'application/json'
         },
         withCredentials: true
@@ -239,7 +244,7 @@ export function CustomizePdf() {
     try {
       await axios.delete(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
         headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'X-XSRF-TOKEN': decodeURIComponent(await xsrfToken),
           'Accept': 'application/json'
         },
         withCredentials: true
@@ -424,7 +429,7 @@ export function CustomizePdf() {
     right: '0',
   }))
 
-  const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
+  //const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
   const userId = ref<number | null>(null)
 
   const hexToRgba = (hex: string, alpha: number) => {
@@ -461,7 +466,7 @@ export function CustomizePdf() {
     if (!xsrfToken) return
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/user`, {
-        headers: { 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken), Accept: 'application/json' },
+        headers: { 'X-XSRF-TOKEN': decodeURIComponent(await xsrfToken), Accept: 'application/json' },
         withCredentials: true,
       })
       userId.value = res.data.user.id
@@ -473,7 +478,7 @@ export function CustomizePdf() {
 
   const fetchTemplate = async () => {
     try {
-      const xsrfToken = getXsrfToken()
+      const xsrfToken = await getXsrfToken()
       const res = await axios.get(`${import.meta.env.VITE_URL}/Templates/${templateId}/data`, {
         withCredentials: true,
         headers: {
@@ -543,7 +548,7 @@ export function CustomizePdf() {
 
       const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
         headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'X-XSRF-TOKEN': decodeURIComponent(await xsrfToken),
           Accept: 'application/json',
         },
         withCredentials: true,
