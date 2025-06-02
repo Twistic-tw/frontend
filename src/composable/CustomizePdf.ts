@@ -164,6 +164,10 @@ export function CustomizePdf() {
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
         withCredentials: true,
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'Accept': 'application/json'
+        }
       })
       return res.data
     } catch (error) {
@@ -197,6 +201,10 @@ export function CustomizePdf() {
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
         withCredentials: true,
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'Accept': 'application/json'
+        }
       })
 
       const data = res.data.style_data
@@ -230,6 +238,10 @@ export function CustomizePdf() {
     try {
       await axios.delete(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
         withCredentials: true,
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'Accept': 'application/json'
+        }
       })
       toast.success('Estilo eliminado correctamente')
       stylePresets.value = await fetchStylePresets()
