@@ -63,7 +63,7 @@ const {
           <button
             v-if="role === 'admin'"
             @click.stop.prevent="openDuplicateModal(template)"
-            class="mt-2 text-sm text-blue-600 hover:underline"
+            class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
           >
             {{ t("duplicate") }}
           </button>
