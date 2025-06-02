@@ -1,17 +1,23 @@
 <template>
-  <div class="flex gap-2">
-    <input
-      type="date"
-      v-model="start"
-      @input="emitFilter"
-      class="w-full p-2 border rounded shadow-sm"
-    />
-    <input
-      type="date"
-      v-model="end"
-      @input="emitFilter"
-      class="w-full p-2 border rounded shadow-sm"
-    />
+  <div class="space-y-2">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">{{ $t('start_date') }}</label>
+      <input
+        type="date"
+        v-model="start"
+        @input="emitFilter"
+        class="w-full p-2 border rounded shadow-sm"
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">{{ $t('end_date') }}</label>
+      <input
+        type="date"
+        v-model="end"
+        @input="emitFilter"
+        class="w-full p-2 border rounded shadow-sm"
+      />
+    </div>
   </div>
 </template>
 

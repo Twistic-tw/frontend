@@ -1,9 +1,12 @@
 <template>
-  <select v-model="selected" @change="emitFilter" class="w-full p-2 border rounded shadow-sm">
-    <option disabled value="">-- {{ $t('select_option') }} --</option>
-    <option value="true">{{ $t('yes') }}</option>
-    <option value="false">{{ $t('no') }}</option>
-  </select>
+  <div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('select_boolean_value') }}</label>
+    <select v-model="selected" @change="emitFilter" class="w-full p-2 border rounded shadow-sm">
+      <option disabled value="">-- {{ $t('select_option') }} --</option>
+      <option value="true">{{ $t('yes') }}</option>
+      <option value="false">{{ $t('no') }}</option>
+    </select>
+  </div>
 </template>
 
 <script setup lang="ts">
