@@ -29,8 +29,19 @@
           >
             <span>{{ preset.name }}</span>
             <div class="flex gap-2">
-              <button class="text-sm text-blue-600 hover:underline" @click="$emit('apply', preset.id)">{{ $t('apply') }}</button>
-              <button class="text-sm text-red-600 hover:underline" @click="$emit('delete', preset.id)">{{ $t('delete') }}</button>
+              <button
+                @click="$emit('apply', preset.id)"
+                class="px-4 py-1 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm"
+              >
+                {{ $t('apply') }}
+              </button>
+
+              <button
+                @click="$emit('delete', preset.id)"
+                class="px-4 py-1 rounded-xl text-sm font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm ml-2"
+              >
+                {{ $t('delete') }}
+              </button>
             </div>
           </li>
         </ul>
