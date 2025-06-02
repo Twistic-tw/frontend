@@ -14,6 +14,7 @@ import BackButton from '@/components/BackButton.vue'
 import { CustomizePdf } from '../../composable/CustomizePdf'
 import StylePresets from '@/components/StylePresets.vue'
 import StylePresetsModal from '@/components/StylePresetsModal.vue'
+import SaveStyleModal from '@/components/SaveStyleModal.vue'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -25,6 +26,10 @@ const activeCard = ref<string | null>(null)
 const showTextModal = ref(false)
 const showFeaturedModal = ref(false)
 const showStyleModal = ref(false)
+
+// Estado para el modal de guardar estilo
+const showSaveStyleModal = ref(false)
+const newStyleName = ref('')
 
 // Props del catálogo
 const {
@@ -63,6 +68,7 @@ const {
   sendToBackend,
   handleImageUpload,
   toggleFullscreen,
+  handleSaveStyle,
   fetchStylePresets,
   applyStylePreset,
   deleteStylePreset,
@@ -196,12 +202,30 @@ onMounted(async () => {
 
         </div>
 
+        <SaveStyleModal
+          :show="showSaveStyleModal"
+          :existing-names="stylePresets.map(p => p.name)"
+          v-model="newStyleName"
+          @close="showSaveStyleModal = false"
+          @save="handleSaveStyle"
+        />
+
+
         <button
           @click="sendToBackend"
           class="w-full bg-[#4f46e5] text-white px-6 py-3 rounded-xl shadow-md transition-colors duration-300 hover:bg-[#1e2939] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           {{ t('customize_generate') }}
         </button>
+        <div class="flex justify-end mb-4">
+        <button
+          @click="showSaveStyleModal = true"
+          class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow transition"
+        >
+          {{ $t('save_current_style') }}
+        </button>
+</div>
+
       </div>
 
       <LivePreview

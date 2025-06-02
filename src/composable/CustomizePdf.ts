@@ -7,7 +7,7 @@ export function CustomizePdf() {
   const route = useRoute()
   const templateId = route.params.id as string
   const toast = useToast()
-
+  const showSaveStyleModal = ref(false)
   const previewRef = ref<HTMLElement | null>(null)
   const templateName = ref('')
   const fields = ref<{ name: string; active: boolean }[]>([])
@@ -89,10 +89,37 @@ const featuredDescriptions = ref({
   const searchActive = ref(false)
   const filteredRows = ref<Record<string, string>[]>([])
   const selectedRows = ref<number[]>([])
+
   // Lista de estilos guardados del usuario
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const stylePresets = ref<any[]>([])
 
+  const handleSaveStyle = async (name: string) => {
+  showSaveStyleModal.value = false
+
+  const payload = {
+    name,
+    style_data: {
+      titleSettings: titleSettings.value,
+      colors: colors.value,
+      headerStyle: headerStyle.value,
+      rowStyle: rowStyle(0),
+      cellStyle: cellStyle.value,
+      footerStyle: footerStyle.value
+    }
+  }
+
+  try {
+    await axios.post(`${import.meta.env.VITE_URL}/style-presets`, payload, {
+      withCredentials: true
+    })
+    toast.success('Estilo guardado correctamente')
+    stylePresets.value = await fetchStylePresets()
+  } catch (err) {
+    toast.error('Error al guardar estilo')
+    console.error(err)
+  }
+}
   /**
    * Cargar todos los estilos guardados por el usuario actual
    * desde el backend usando autenticación por cookies.
@@ -484,7 +511,7 @@ const deleteStylePreset = async (id: number) => {
     filterRows, selectAllFiltered, deselectAllFiltered, toggleRow, clearSearch,
     showBackground, handleImageUpload, sendToBackend,
     fetchTemplate, userId, fetchUserId, toggleFullscreen,
-    previewRef, titleBackgroundRgba, featuredImages, stylePresets,
+    previewRef, titleBackgroundRgba, featuredImages, stylePresets, handleSaveStyle,
     fetchStylePresets, applyStylePreset, deleteStylePreset
   }
 }
