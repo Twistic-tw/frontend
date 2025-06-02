@@ -1,116 +1,92 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import BackButton from '@/components/BackButton.vue'
+import { ApprovedCatalog } from '../../composable/ApprovedCatalog'
+import { useI18n } from 'vue-i18n'
+import DuplicateModal from '@/components/modals/DuplicateModal.vue'
 
-const props = defineProps<{
-  show: boolean
-  defaultName: string
-  existingNames: string[]
-}>()
+const { t } = useI18n()
+const role = sessionStorage.getItem('userRole') || ''
 
-const emit = defineEmits<{
-  (e: 'close'): void
-  (e: 'confirm', newName: string): void
-}>()
-
-const newName = ref(props.defaultName)
-const errorMsg = ref('')
-const inputRef = ref<HTMLInputElement | null>(null)
-
-// Sincronizar cuando cambie el nombre por defecto
-watch(() => props.defaultName, async (val) => {
-  newName.value = val
-  errorMsg.value = ''
-  await nextTick()
-  inputRef.value?.focus()
-})
-
-// Validación al confirmar
-const validateAndConfirm = () => {
-  const trimmed = newName.value.trim()
-  if (!trimmed) {
-    errorMsg.value = 'El nombre no puede estar vacío.'
-    return
-  }
-
-  const conflict = props.existingNames.some(n => n.trim().toLowerCase() === trimmed.toLowerCase())
-  if (conflict) {
-    errorMsg.value = 'Ese nombre ya existe. Elige otro.'
-    return
-  }
-
-  emit('confirm', trimmed)
-}
-
-// Cerrar con tecla Escape
-const handleKey = (e: KeyboardEvent) => {
-  if (e.key === 'Escape') emit('close')
-}
-
-onMounted(() => window.addEventListener('keydown', handleKey))
-onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
+const {
+  approvedTemplates,
+  loading,
+  error,
+  formatDate,
+  showDuplicateModal,
+  duplicateName,
+  openDuplicateModal,
+  confirmDuplicate
+} = ApprovedCatalog()
 </script>
 
 <template>
-  <transition name="fade-scale">
-    <div
-      v-if="show"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-    >
-      <div class="bg-white rounded-xl shadow-lg w-full max-w-md mx-auto p-6 relative dark:bg-neutral-900 dark:text-white">
-        <button
-          @click="$emit('close')"
-          class="absolute top-3 right-3 text-gray-400 hover:text-gray-800 dark:hover:text-white text-2xl font-bold"
-        >
-          &times;
-        </button>
+  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+      {{ t("approved_title") }}
+    </h1>
 
-        <h2 class="text-xl font-semibold mb-4">
-          {{ $t('duplicate') }}
-        </h2>
+    <div v-if="loading" class="text-center text-gray-600">
+      {{ t("approved_loading") }}
+    </div>
 
-        <label class="block mb-2 text-sm">
-          {{ $t('template_name') }}
-        </label>
-        <input
-          ref="inputRef"
-          v-model="newName"
-          type="text"
-          class="w-full px-4 py-2 border rounded-lg mb-1 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-gray-700"
-        />
-        <p v-if="errorMsg" class="text-red-500 text-sm mt-1 mb-2">{{ errorMsg }}</p>
+    <div v-if="error" class="text-center text-red-600">
+      {{ t("approved_error") }}
+    </div>
 
-        <div class="flex justify-end gap-3 mt-4">
-          <button
-            @click="$emit('close')"
-            class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition dark:bg-gray-700 dark:hover:bg-gray-600"
-          >
-            {{ $t('cancel') }}
+    <div v-else-if="approvedTemplates.length === 0" class="text-center text-gray-600">
+      {{ t("approved_empty") }}
+    </div>
+
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <RouterLink
+        v-for="template in approvedTemplates"
+        :key="template.id_template"
+        :to="`/customizePdf/${template.id_template}`"
+        class="flex items-center justify-between p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800"
+      >
+        <!-- Contenido de texto -->
+        <div class="flex-1 pr-4">
+          <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">
+            {{ template.catalog_name }}
+          </h2>
+          <p class="text-sm text-gray-500 mb-1">
+            {{ t("approved_created") }} {{ formatDate(template.created_at) }}
+          </p>
+          <p class="text-sm text-gray-500 mb-4">
+            {{ t("approved_updated") }} {{ formatDate(template.updated_at) }}
+          </p>
+          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8">
+            {{ t("approved_customize_button") }}
           </button>
+
+          <!-- Botón Duplicar solo para admin -->
           <button
-            @click="validateAndConfirm"
-            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            v-if="role === 'admin'"
+            @click.stop.prevent="openDuplicateModal(template)"
+            class="mt-2 text-sm text-blue-600 hover:underline"
           >
-            {{ $t('duplicate') }}
+            {{ t("duplicate") }}
           </button>
         </div>
-      </div>
-    </div>
-  </transition>
-</template>
 
-<style scoped>
-.fade-scale-enter-from,
-.fade-scale-leave-to {
-  opacity: 0;
-  transform: scale(0.95);
-}
-.fade-scale-enter-to,
-.fade-scale-leave-from {
-  opacity: 1;
-  transform: scale(1);
-}
-.fade-scale-enter-active,
-.fade-scale-leave-active {
-  transition: all 250ms ease;
-}
-</style>
+        <!-- Imagen -->
+        <img src="/viewCatalog.png" alt="View Catalog" class="w-24 h-24 object-contain" />
+      </RouterLink>
+    </div>
+
+    <div class="mt-12">
+      <BackButton
+        class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6"
+      />
+    </div>
+  </div>
+
+  <!-- Componente modal -->
+  <DuplicateModal
+    :show="showDuplicateModal"
+    :default-name="duplicateName"
+    :existing-names="approvedTemplates.map(t => t.catalog_name)"
+    @close="showDuplicateModal = false"
+    @confirm="confirmDuplicate"
+  />
+</template>
