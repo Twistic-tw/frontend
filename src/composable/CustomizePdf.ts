@@ -134,13 +134,17 @@ export function CustomizePdf() {
         headerStyle: headerStyle.value,
         rowStyle: rowStyle(0),
         cellStyle: cellStyle.value,
-        footerStyle: footerStyle.value,
-      },
+        footerStyle: footerStyle.value
+      }
     }
 
     try {
       await axios.post(`${import.meta.env.VITE_URL}/style-presets`, payload, {
-        withCredentials: true,
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          'Accept': 'application/json'
+        },
+        withCredentials: true
       })
       toast.success('Estilo guardado correctamente')
       stylePresets.value = await fetchStylePresets()
@@ -160,14 +164,13 @@ export function CustomizePdf() {
       toast.error('No CSRF token found.')
       return []
     }
-
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
-        withCredentials: true,
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
           'Accept': 'application/json'
-        }
+        },
+        withCredentials: true
       })
       return res.data
     } catch (error) {
@@ -200,15 +203,14 @@ export function CustomizePdf() {
 
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
-        withCredentials: true,
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
           'Accept': 'application/json'
-        }
+        },
+        withCredentials: true
       })
 
       const data = res.data.style_data
-
       Object.assign(colors.value, data.colors || {})
       Object.assign(titleSettings.value, data.titleSettings || {})
       Object.assign(headerStyle.value, data.headerStyle || {})
@@ -234,14 +236,13 @@ export function CustomizePdf() {
       toast.error('No CSRF token found.')
       return
     }
-
     try {
       await axios.delete(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
-        withCredentials: true,
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
           'Accept': 'application/json'
-        }
+        },
+        withCredentials: true
       })
       toast.success('Estilo eliminado correctamente')
       stylePresets.value = await fetchStylePresets()
