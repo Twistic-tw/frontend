@@ -220,7 +220,7 @@ onMounted(async () => {
         <div class="flex justify-end mb-4">
         <button
           @click="showSaveStyleModal = true"
-          class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow transition"
+          class="w-full bg-[#4f46e5] text-white px-6 py-3 rounded-xl shadow-md transition-colors duration-300 hover:bg-[#1e2939] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           {{ $t('save_current_style') }}
         </button>
