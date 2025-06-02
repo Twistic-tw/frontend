@@ -151,6 +151,7 @@
   "invalid_image_type": "\"{file}\" is not a valid image type. Please use JPG or PNG.",
   "image_too_large": "\"{file}\" is {size}MB. Max allowed: {max}MB.",
   "images": "Images",
+  "cover": "Cover (Required)",
   "second": "Second Cover (Optional)",
   "header": "Header (Required)",
   "footer": "Footer (Optional)",

@@ -27,6 +27,7 @@
             </svg>
           </button>
 
+          <!-- Filtros básicos -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('search_by_field') }}</label>
@@ -59,6 +60,20 @@
             </div>
           </div>
 
+          <!-- Filtros avanzados dinámicos -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div v-for="field in fields" :key="field.name" class="p-4 border rounded-xl bg-gray-50">
+              <h3 class="text-sm font-semibold text-gray-700 mb-2">{{ field.name }}</h3>
+              <component
+                :is="getFilterComponent(getFieldType(field.name))"
+                :field-name="field.name"
+                :values="getColumnValues(field.name, filteredRows)"
+                @filter-change="updateAdvancedFilter(field.name, $event)"
+              />
+            </div>
+          </div>
+
+          <!-- Ordenación -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('order_by_field') }}</label>
@@ -78,10 +93,11 @@
             </div>
           </div>
 
-          <div v-if="filteredRows.length" class="overflow-auto border rounded-lg">
+          <!-- Tabla -->
+          <div v-if="sortedRows.length" class="overflow-auto border rounded-lg">
             <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
               <span class="text-sm text-gray-700">
-                {{ selectedRows.length }} {{ t('of') }} {{ filteredRows.length }} {{ t('selected') }}
+                {{ selectedRows.length }} {{ t('of') }} {{ sortedRows.length }} {{ t('selected') }}
               </span>
               <div class="flex gap-2">
                 <button
@@ -155,14 +171,34 @@
 import { ref, defineEmits, defineProps, withDefaults, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import {
+  getFieldType,
+  getFilterComponent,
+  getColumnValues,
+  updateAdvancedFilter,
+  applyAdvancedFilters,
+  fieldTypes,
+  inferFieldType
+} from '../composable/DynamicFiltersLogic'
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import TextFilter from '@/components/filters/TextFilter.vue'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import NumberRangeFilter from '@/components/filters/NumberRangeFilter.vue'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import DateRangeFilter from '@/components/filters/DateRangeFilter.vue'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import BooleanFilter from '@/components/filters/BooleanFilter.vue'
+
 const { t } = useI18n()
 const showModal = ref(false)
 const sortField = ref('')
 const sortDirection = ref<'asc' | 'desc'>('asc')
 
 const sortedRows = computed(() => {
-  if (!sortField.value) return props.filteredRows
-  return [...props.filteredRows].sort((a, b) => {
+  const rows = applyAdvancedFilters(props.filteredRows)
+  if (!sortField.value) return rows
+  return [...rows].sort((a, b) => {
     const aVal = a[sortField.value]
     const bVal = b[sortField.value]
     if (aVal === bVal) return 0
@@ -173,7 +209,15 @@ const sortedRows = computed(() => {
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.key === 'Escape') showModal.value = false
 }
-onMounted(() => window.addEventListener('keydown', handleKeyDown))
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+  if (props.filteredRows.length > 0) {
+    props.fields.forEach(field => {
+      const values = getColumnValues(field.name, props.filteredRows)
+      fieldTypes.value[field.name] = inferFieldType(values)
+    })
+  }
+})
 onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyDown))
 
 const emit = defineEmits([

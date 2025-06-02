@@ -1,0 +1,31 @@
+<template>
+  <div class="flex gap-2">
+    <input
+      type="date"
+      v-model="start"
+      @input="emitFilter"
+      class="w-full p-2 border rounded shadow-sm"
+    />
+    <input
+      type="date"
+      v-model="end"
+      @input="emitFilter"
+      class="w-full p-2 border rounded shadow-sm"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const props = defineProps<{ fieldName: string; values: string[] }>()
+const emit = defineEmits(['filter-change'])
+
+const start = ref('')
+const end = ref('')
+
+const emitFilter = () => {
+  emit('filter-change', { type: 'date', start: start.value, end: end.value })
+}
+</script>
