@@ -2,7 +2,7 @@
 import BackButton from '@/components/BackButton.vue'
 import { ApprovedCatalog } from '../../composable/ApprovedCatalog'
 import { useI18n } from 'vue-i18n'
-import DuplicateModal from '@/components/modals/DuplicateModal.vue'
+import DuplicateModal from '@/components/DuplicateModal.vue'
 
 const { t } = useI18n()
 const role = sessionStorage.getItem('userRole') || ''
