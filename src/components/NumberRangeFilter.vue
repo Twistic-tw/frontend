@@ -1,19 +1,25 @@
 <template>
-  <div class="flex gap-2">
-    <input
-      type="number"
-      v-model.number="min"
-      @input="emitFilter"
-      class="w-full p-2 border rounded shadow-sm"
-      :placeholder="$t('min')"
-    />
-    <input
-      type="number"
-      v-model.number="max"
-      @input="emitFilter"
-      class="w-full p-2 border rounded shadow-sm"
-      :placeholder="$t('max')"
-    />
+  <div class="space-y-2">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">{{ $t('minimum_value') }}</label>
+      <input
+        type="number"
+        v-model.number="min"
+        @input="emitFilter"
+        class="w-full p-2 border rounded shadow-sm"
+        :placeholder="$t('min')"
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">{{ $t('maximum_value') }}</label>
+      <input
+        type="number"
+        v-model.number="max"
+        @input="emitFilter"
+        class="w-full p-2 border rounded shadow-sm"
+        :placeholder="$t('max')"
+      />
+    </div>
   </div>
 </template>
 
