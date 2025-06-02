@@ -50,11 +50,11 @@ const handleUpload = (e: Event, key: string) => {
 }
 
 const imageLabels = {
-  cover: t('image_labels.cover'),
-  second: t('image_labels.second'),
-  header: t('image_labels.header'),
-  footer: t('image_labels.footer'),
-  background: t('image_labels.background'),
+  cover: t('cover'),
+  second: t('second'),
+  header: t('header'),
+  footer: t('footer'),
+  background: t('background'),
 }
 
 const isOpen = computed(() => props.activeCard === props.cardId)
