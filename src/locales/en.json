@@ -219,5 +219,15 @@
   "style_applied_error": "Error applying saved style",
   "style_deleted_success": "Style deleted successfully",
   "style_deleted_error": "Error deleting style",
-  "active_fields_title": "Active Fields"
+  "active_fields_title": "Active Fields",
+  "search_text": "Search text",
+  "type_to_filter": "Type to filter",
+  "minimum_value": "Minimum value",
+  "maximum_value": "Maximum value",
+  "start_date": "Start date",
+  "end_date": "End date",
+  "select_boolean_value": "Select boolean value",
+  "select_option": "Select an option",
+  "yes": "Yes",
+  "no": "No"
 }
