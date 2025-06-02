@@ -16,6 +16,11 @@ export function ApprovedCatalog() {
   const loading = ref(true);
   const error = ref(false);
 
+  // Estado para duplicar con nombre personalizado
+  const showDuplicateModal = ref(false);
+  const templateToDuplicate = ref<Notification | null>(null);
+  const duplicateName = ref('');
+
   const getXsrfToken = (): string | null => {
     return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null;
   };
@@ -51,6 +56,43 @@ export function ApprovedCatalog() {
     }
   };
 
+  // Abrir modal con nombre por defecto
+  const openDuplicateModal = (template: Notification) => {
+    templateToDuplicate.value = template;
+    duplicateName.value = `${template.catalog_name} (copy)`;
+    showDuplicateModal.value = true;
+  };
+
+  // Confirmar duplicación con nombre personalizado
+  const confirmDuplicate = async () => {
+    if (!templateToDuplicate.value) return;
+
+    try {
+      await axios.post(`${import.meta.env.VITE_URL}/templates/${templateToDuplicate.value.id_template}/duplicate`, {
+        name: duplicateName.value,
+      }, {
+        withCredentials: true
+      });
+
+      await fetchApprovedTemplates();
+      showDuplicateModal.value = false;
+    } catch (err) {
+      console.error('Error duplicating template:', err);
+    }
+  };
+
+  // Método clásico si no se usa input personalizado
+  const duplicateTemplate = async (id: number) => {
+    try {
+      await axios.post(`${import.meta.env.VITE_URL}/templates/${id}/duplicate`, {}, {
+        withCredentials: true
+      });
+      await fetchApprovedTemplates();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const formatDate = (dateStr: string): string => {
     const date = new Date(dateStr);
     const pad = (n: number) => n.toString().padStart(2, '0');
@@ -67,6 +109,12 @@ export function ApprovedCatalog() {
     approvedTemplates,
     loading,
     error,
-    formatDate
+    formatDate,
+    duplicateTemplate,
+    showDuplicateModal,
+    templateToDuplicate,
+    duplicateName,
+    openDuplicateModal,
+    confirmDuplicate
   };
 }
