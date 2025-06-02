@@ -12,10 +12,10 @@ import {
   inferFieldType
 } from './DynamicFiltersLogic'
 
-import TextFilter from '@/components/filters/TextFilter.vue'
-import NumberRangeFilter from '@/components/filters/NumberRangeFilter.vue'
-import DateRangeFilter from '@/components/filters/DateRangeFilter.vue'
-import BooleanFilter from '@/components/filters/BooleanFilter.vue'
+import TextFilter from '../components/TextFilter.vue'
+import NumberRangeFilter from '../components/NumberRangeFilter.vue'
+import DateRangeFilter from '../components/DateRangeFilter.vue'
+import BooleanFilter from '../components/BooleanFilter.vue'
 
 const { t } = useI18n()
 const showModal = ref(false)
