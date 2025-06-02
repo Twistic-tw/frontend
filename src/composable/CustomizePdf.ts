@@ -145,8 +145,8 @@ export function CustomizePdf() {
     try {
       await axios.post(`${import.meta.env.VITE_URL}/style-presets`, payload, {
         headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          Accept: 'application/json',
+          'X-XSRF-TOKEN': decodeURIComponent(await xsrfToken),
+          'Accept': 'application/json'
         },
         withCredentials: true,
       })
