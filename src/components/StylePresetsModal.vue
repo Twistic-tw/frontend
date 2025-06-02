@@ -19,8 +19,8 @@
 
         <h2 class="text-xl font-bold text-gray-800 mb-4">{{ $t('style_presets_title') }}</h2>
 
-        <!-- Aquí iría el contenido del modal, como la lista de estilos -->
-        <div v-if="presets.length === 0" class="text-gray-500">{{ $t('no_presets_found') }}</div>
+        <!-- Modal -->
+        <div v-if="presets.length === 0" class="text-gray-500"></div>
         <ul class="mt-4 space-y-2">
           <li
             v-for="preset in presets"
