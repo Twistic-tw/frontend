@@ -117,10 +117,6 @@ export function CustomizePdf() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const stylePresets = ref<any[]>([])
 
-  const getXsrfToken = async () => {
-    return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
-  }
-
   const handleSaveStyle = async (name: string) => {
     showSaveStyleModal.value = false
     const xsrfToken = await getXsrfToken()
@@ -144,8 +140,8 @@ export function CustomizePdf() {
     try {
       await axios.post(`${import.meta.env.VITE_URL}/style-presets`, payload, {
         headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(await xsrfToken),
-          'Accept': 'application/json'
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+          Accept: 'application/json',
         },
         withCredentials: true,
       })
@@ -171,7 +167,7 @@ export function CustomizePdf() {
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
         headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(await xsrfToken),
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
           'Accept': 'application/json'
         },
         withCredentials: true
@@ -208,7 +204,7 @@ export function CustomizePdf() {
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
         headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(await xsrfToken),
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
           'Accept': 'application/json'
         },
         withCredentials: true
@@ -243,7 +239,7 @@ export function CustomizePdf() {
     try {
       await axios.delete(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
         headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(await xsrfToken),
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
           'Accept': 'application/json'
         },
         withCredentials: true
@@ -428,7 +424,7 @@ export function CustomizePdf() {
     right: '0',
   }))
 
-  //const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
+  const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
   const userId = ref<number | null>(null)
 
   const hexToRgba = (hex: string, alpha: number) => {
@@ -465,7 +461,7 @@ export function CustomizePdf() {
     if (!xsrfToken) return
     try {
       const res = await axios.get(`${import.meta.env.VITE_URL}/user`, {
-        headers: { 'X-XSRF-TOKEN': decodeURIComponent(await xsrfToken), Accept: 'application/json' },
+        headers: { 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken), Accept: 'application/json' },
         withCredentials: true,
       })
       userId.value = res.data.user.id
@@ -477,7 +473,7 @@ export function CustomizePdf() {
 
   const fetchTemplate = async () => {
     try {
-      const xsrfToken = await getXsrfToken()
+      const xsrfToken = getXsrfToken()
       const res = await axios.get(`${import.meta.env.VITE_URL}/Templates/${templateId}/data`, {
         withCredentials: true,
         headers: {
@@ -547,7 +543,7 @@ export function CustomizePdf() {
 
       const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
         headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(await xsrfToken),
+          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
           Accept: 'application/json',
         },
         withCredentials: true,
