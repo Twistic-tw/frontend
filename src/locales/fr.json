@@ -201,5 +201,15 @@
   "style_presets_apply": "Appliquer",
   "style_presets_view": "Voir",
   "style_presets_delete": "Supprimer",
+  "save_style_button": "Enregistrer le style",
+  "save_style_title": "Enregistrer un nouveau style",
+  "style_name_placeholder": "Nom du style",
+  "save": "Enregistrer",
+  "style_saved_success": "Style enregistré avec succès",
+  "style_saved_error": "Erreur lors de l'enregistrement du style",
+  "style_applied_success": "Style appliqué avec succès",
+  "style_applied_error": "Erreur lors de l'application du style",
+  "style_deleted_success": "Style supprimé avec succès",
+  "style_deleted_error": "Erreur lors de la suppression du style",
   "active_fields_title": "Champs actifs"
 }

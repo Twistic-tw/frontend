@@ -201,5 +201,15 @@
   "style_presets_apply": "Aplicar",
   "style_presets_view": "Ver",
   "style_presets_delete": "Excluir",
+  "save_style_button": "Salvar estilo",
+  "save_style_title": "Salvar novo estilo",
+  "style_name_placeholder": "Nome do estilo",
+  "save": "Salvar",
+  "style_saved_success": "Estilo salvo com sucesso",
+  "style_saved_error": "Erro ao salvar o estilo",
+  "style_applied_success": "Estilo aplicado com sucesso",
+  "style_applied_error": "Erro ao aplicar o estilo",
+  "style_deleted_success": "Estilo excluído com sucesso",
+  "style_deleted_error": "Erro ao excluir o estilo",
   "active_fields_title": "Campos ativos"
 }

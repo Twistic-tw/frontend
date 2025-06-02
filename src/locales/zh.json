@@ -197,5 +197,15 @@
   "style_presets_apply": "应用",
   "style_presets_view": "查看",
   "style_presets_delete": "删除",
+  "save_style_button": "保存样式",
+  "save_style_title": "保存新样式",
+  "style_name_placeholder": "样式名称",
+  "save": "保存",
+  "style_saved_success": "样式保存成功",
+  "style_saved_error": "保存样式时出错",
+  "style_applied_success": "样式应用成功",
+  "style_applied_error": "应用样式时出错",
+  "style_deleted_success": "样式删除成功",
+  "style_deleted_error": "删除样式时出错",
   "active_fields_title": "激活字段"
 }

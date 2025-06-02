@@ -201,5 +201,15 @@
   "style_presets_apply": "Применить",
   "style_presets_view": "Просмотреть",
   "style_presets_delete": "Удалить",
+  "save_style_button": "Сохранить стиль",
+  "save_style_title": "Сохранить новый стиль",
+  "style_name_placeholder": "Название стиля",
+  "save": "Сохранить",
+  "style_saved_success": "Стиль успешно сохранён",
+  "style_saved_error": "Ошибка при сохранении стиля",
+  "style_applied_success": "Стиль успешно применён",
+  "style_applied_error": "Ошибка при применении стиля",
+  "style_deleted_success": "Стиль успешно удалён",
+  "style_deleted_error": "Ошибка при удалении стиля",
   "active_fields_title": "Активные поля"
 }

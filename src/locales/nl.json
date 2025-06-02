@@ -201,5 +201,15 @@
   "style_presets_apply": "Toepassen",
   "style_presets_view": "Bekijken",
   "style_presets_delete": "Verwijderen",
+  "save_style_button": "Stijl opslaan",
+  "save_style_title": "Nieuwe stijl opslaan",
+  "style_name_placeholder": "Naam van de stijl",
+  "save": "Opslaan",
+  "style_saved_success": "Stijl succesvol opgeslagen",
+  "style_saved_error": "Fout bij het opslaan van de stijl",
+  "style_applied_success": "Stijl succesvol toegepast",
+  "style_applied_error": "Fout bij het toepassen van de stijl",
+  "style_deleted_success": "Stijl succesvol verwijderd",
+  "style_deleted_error": "Fout bij het verwijderen van de stijl",
   "active_fields_title": "Actieve velden"
 }

@@ -184,6 +184,16 @@
   "style_presets_apply": "Anwenden",
   "style_presets_view": "Anzeigen",
   "style_presets_delete": "Löschen",
+  "save_style_button": "Stil speichern",
+  "save_style_title": "Neuen Stil speichern",
+  "style_name_placeholder": "Name des Stils",
+  "save": "Speichern",
+  "style_saved_success": "Stil erfolgreich gespeichert",
+  "style_saved_error": "Fehler beim Speichern des Stils",
+  "style_applied_success": "Stil erfolgreich angewendet",
+  "style_applied_error": "Fehler beim Anwenden des Stils",
+  "style_deleted_success": "Stil erfolgreich gelöscht",
+  "style_deleted_error": "Fehler beim Löschen des Stils",
   "active_fields_title": "Aktive Felder"
 }
  
