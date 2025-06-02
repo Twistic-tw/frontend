@@ -65,7 +65,7 @@
             <div v-for="field in fields" :key="field.name" class="p-4 border rounded-xl bg-gray-50">
               <h3 class="text-sm font-semibold text-gray-700 mb-2">{{ field.name }}</h3>
               <component
-                :is="getFilterComponent(getFieldType(field.name))"
+                :is="components[getFilterComponent(getFieldType(field.name))]"
                 :field-name="field.name"
                 :values="getColumnValues(field.name, filteredRows)"
                 @filter-change="updateAdvancedFilter(field.name, $event)"
@@ -167,9 +167,22 @@
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { ref, defineEmits, defineProps, withDefaults, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+
+import TextFilter from '@/components/filters/TextFilter.vue'
+import NumberRangeFilter from '@/components/filters/NumberRangeFilter.vue'
+import DateRangeFilter from '@/components/filters/DateRangeFilter.vue'
+import BooleanFilter from '@/components/filters/BooleanFilter.vue'
+
+const components = {
+  TextFilter,
+  NumberRangeFilter,
+  DateRangeFilter,
+  BooleanFilter,
+}
 
 import {
   getFieldType,
@@ -180,15 +193,6 @@ import {
   fieldTypes,
   inferFieldType
 } from '../composable/DynamicFiltersLogic'
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import TextFilter from '@/components/filters/TextFilter.vue'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import NumberRangeFilter from '@/components/filters/NumberRangeFilter.vue'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import DateRangeFilter from '@/components/filters/DateRangeFilter.vue'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import BooleanFilter from '@/components/filters/BooleanFilter.vue'
 
 const { t } = useI18n()
 const showModal = ref(false)
@@ -209,6 +213,7 @@ const sortedRows = computed(() => {
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.key === 'Escape') showModal.value = false
 }
+
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
   if (props.filteredRows.length > 0) {
@@ -218,6 +223,7 @@ onMounted(() => {
     })
   }
 })
+
 onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyDown))
 
 const emit = defineEmits([
