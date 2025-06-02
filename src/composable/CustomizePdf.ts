@@ -118,7 +118,6 @@ export function CustomizePdf() {
   const stylePresets = ref<any[]>([])
 
   const getXsrfToken = async () => {
-    await axios.get(`${import.meta.env.VITE_URL}/sanctum/csrf-cookie`, { withCredentials: true })
     return document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
   }
 
