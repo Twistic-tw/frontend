@@ -146,6 +146,7 @@ export function CustomizePdf() {
         withCredentials: true,
       })
       toast.success('Estilo guardado correctamente')
+      showSaveStyleModal.value = false
       stylePresets.value = await fetchStylePresets()
     } catch (err) {
       toast.error('Error al guardar estilo')
