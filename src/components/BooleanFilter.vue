@@ -1,5 +1,10 @@
 <template>
   <div>
+    <!-- Descripción breve del filtro -->
+    <p class="text-xs text-gray-500 mb-1">
+      {{ $t('boolean_filter_title') }}
+    </p>
+
     <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('select_boolean_value') }}</label>
     <select v-model="selected" @change="emitFilter" class="w-full p-2 border rounded shadow-sm">
       <option disabled value="">-- {{ $t('select_option') }} --</option>

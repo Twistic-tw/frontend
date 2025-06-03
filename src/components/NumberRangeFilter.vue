@@ -1,5 +1,6 @@
 <template>
   <div class="space-y-2">
+    <p class="text-xs text-gray-400">{{ $t('range_filter_description') }}</p>
     <div>
       <label class="block text-sm font-medium text-gray-700">{{ $t('minimum_value') }}</label>
       <input

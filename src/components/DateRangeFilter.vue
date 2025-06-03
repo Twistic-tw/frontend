@@ -1,5 +1,6 @@
 <template>
   <div class="space-y-2">
+    <p class="text-xs text-gray-500">{{ $t('filter_by_date_range') }}</p>
     <div>
       <label class="block text-sm font-medium text-gray-700">{{ $t('start_date') }}</label>
       <input

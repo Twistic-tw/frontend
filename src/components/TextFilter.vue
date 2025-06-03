@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div class="space-y-1">
+    <p class="text-xs text-gray-400">{{ $t('text_filter_description') }}</p>
+
     <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('search_text') }}</label>
     <input
       type="text"
@@ -14,13 +16,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const props = defineProps<{ fieldName: string; values: string[] }>()
+const props = defineProps<{ fieldName: string }>()
 const emit = defineEmits(['filter-change'])
 
 const inputValue = ref('')
 
 const emitFilter = () => {
-  emit('filter-change', { type: 'text', value: inputValue.value })
+  emit('filter-change', {
+    type: 'text',
+    fieldName: props.fieldName,
+    value: inputValue.value
+  })
 }
 </script>
