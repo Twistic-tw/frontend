@@ -16,16 +16,6 @@
         <div class="bg-white w-[95%] h-[90vh] rounded-xl shadow-xl overflow-hidden relative flex">
           <!-- Panel lateral de filtros -->
           <aside class="w-full md:w-1/3 lg:w-1/4 h-full overflow-y-auto border-r p-6 space-y-6 bg-gray-50">
-            <!-- Botón de cerrar -->
-            <button
-              @click="showModal = false"
-              class="sticky top-4 right-4 bg-gray-800 text-white hover:bg-red-600 hover:scale-105 transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-md float-right z-20"
-              aria-label="Cerrar modal"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
 
             <!-- Filtros básicos -->
             <div>
@@ -113,6 +103,16 @@
 
           <!-- Tabla -->
           <main class="flex-1 overflow-auto p-6">
+            <!-- Botón de cerrar -->
+            <button
+              @click="showModal = false"
+              class="sticky top-4 right-4 bg-gray-800 text-white hover:bg-red-600 hover:scale-105 transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-md float-right z-20"
+              aria-label="Cerrar modal"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
             <div v-if="sortedRows.length" class="border rounded-lg">
               <div class="sticky top-0 z-20 bg-gray-100 px-4 py-3 border-b flex justify-between items-center">
                 <span class="text-sm text-gray-700">
