@@ -170,7 +170,6 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
 import { ref, defineEmits, defineProps, withDefaults, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
