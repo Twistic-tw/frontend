@@ -19,7 +19,7 @@
             <!-- Botón de cerrar -->
             <button
               @click="showModal = false"
-              class="absolute top-4 right-4 bg-gray-800 text-white hover:bg-red-600 hover:scale-105 transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
+              class="sticky top-4 right-4 bg-gray-800 text-white hover:bg-red-600 hover:scale-105 transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-md float-right z-20"
               aria-label="Cerrar modal"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -29,7 +29,6 @@
 
             <!-- Filtros básicos -->
             <div>
-
               <select
                 :value="searchField || ''"
                 @change="$emit('update:searchField', ($event.target as HTMLSelectElement).value); $emit('filter')"
@@ -74,22 +73,24 @@
                 v-for="(filter, index) in customFilters"
                 :key="index"
                 :open="openIndex === index"
-                class="border rounded-xl bg-white overflow-hidden"
+                class="border rounded-xl bg-white overflow-hidden transition-all duration-300"
               >
                 <summary
-                  class="cursor-pointer font-semibold text-gray-700 p-3"
+                  class="cursor-pointer font-semibold text-gray-700 p-3 hover:bg-gray-100"
                   @click.prevent="toggleDetails(index)"
                 >
                   {{ filter.label }}
                 </summary>
-                <div v-show="openIndex === index" class="p-4">
-                  <component
-                    :is="filter.component"
-                    :field-name="filter.field"
-                    :values="[]"
-                    @filter-change="filter.handler"
-                  />
-                </div>
+                <transition name="fade-slide">
+                  <div v-show="openIndex === index" class="p-4">
+                    <component
+                      :is="filter.component"
+                      :field-name="filter.field"
+                      :values="[]"
+                      @filter-change="filter.handler"
+                    />
+                  </div>
+                </transition>
               </details>
             </div>
           </aside>
@@ -97,7 +98,7 @@
           <!-- Tabla -->
           <main class="flex-1 overflow-auto p-6">
             <div v-if="sortedRows.length" class="border rounded-lg">
-              <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
+              <div class="sticky top-0 z-20 bg-gray-100 px-4 py-3 border-b flex justify-between items-center">
                 <span class="text-sm text-gray-700">
                   {{ selectedRows.length }} {{ t('of') }} {{ sortedRows.length }} {{ t('selected') }}
                 </span>
@@ -118,7 +119,7 @@
               </div>
 
               <table class="min-w-full divide-y divide-gray-200 text-sm">
-                <thead class="bg-gray-50 sticky top-0 z-10">
+                <thead class="bg-gray-50 sticky top-12 z-10">
                   <tr>
                     <th class="px-4 py-2 text-left font-semibold text-gray-700">{{ t('visible') }}</th>
                     <th
