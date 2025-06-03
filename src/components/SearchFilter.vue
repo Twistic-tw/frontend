@@ -94,12 +94,17 @@
           </div>
           <!-- Filtros personalizados -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <TextFilter field-name="Texto" @filter-change="() => {}" />
-            <NumberRangeFilter field-name="Precio" :values="[]" @filter-change="() => {}" />
-            <DateRangeFilter field-name="Fecha" :values="[]" @filter-change="() => {}" />
-            <BooleanFilter field-name="Disponible" :values="[]" @filter-change="() => {}" />
-            <NumberRangeFilter field-name="Stock" :values="[]" @filter-change="() => {}" />
-            <NumberRangeFilter field-name="MinPriceExclude" :values="[]" @filter-change="() => {}" />
+            <details v-for="(filter, index) in customFilters" :key="index" :open="openIndex === index" class="border rounded-xl bg-gray-50">
+              <summary class="cursor-pointer font-semibold text-gray-700 p-4" @click.prevent="toggleDetails(index)">{{ filter.label }}</summary>
+              <div class="p-4">
+                <component
+                  :is="filter.component"
+                  :field-name="filter.field"
+                  :values="[]"
+                  @filter-change="filter.handler"
+                />
+              </div>
+            </details>
           </div>
 
           <!-- Tabla -->
@@ -258,6 +263,21 @@ const props = withDefaults(defineProps<{
 })
 
 const handleToggle = (index: number) => emit('toggleRow', index)
+
+const openIndex = ref<number | null>(null)
+
+const toggleDetails = (index: number) => {
+  openIndex.value = openIndex.value === index ? null : index
+}
+
+const customFilters = [
+  { label: 'Texto', field: 'Texto', component: TextFilter, handler: () => {} },
+  { label: 'Precio', field: 'Precio', component: NumberRangeFilter, handler: () => {} },
+  { label: 'Fecha', field: 'Fecha', component: DateRangeFilter, handler: () => {} },
+  { label: 'Disponible', field: 'Disponible', component: BooleanFilter, handler: () => {} },
+  { label: 'Stock', field: 'Stock', component: NumberRangeFilter, handler: () => {} },
+  { label: 'MinPriceExclude', field: 'MinPriceExclude', component: NumberRangeFilter, handler: () => {} },
+]
 </script>
 
 <style scoped>
