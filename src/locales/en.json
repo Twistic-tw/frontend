@@ -236,5 +236,7 @@
   "range_filter_description": "Filter results between a minimum and maximum value.",
   "date_filter_description": "Filter results between two dates.",
   "text_filter_description": "Filter using part of the text.",
-  "boolean_filter_description": "Filter based on whether the value is true or false."
+  "boolean_filter_description": "Filter based on whether the value is true or false.",
+  "filter_by_date_range": "Filter by date range",
+  "filter_by_date_range_description": "Show only the entries between a specific start and end date"
 }
