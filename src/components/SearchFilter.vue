@@ -29,7 +29,7 @@
 
             <!-- Filtros básicos -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('search_by_field') }}</label>
+
               <select
                 :value="searchField || ''"
                 @change="$emit('update:searchField', ($event.target as HTMLSelectElement).value); $emit('filter')"
