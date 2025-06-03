@@ -56,16 +56,23 @@
               </button>
             </div>
 
-            <!-- Filtros avanzados dinámicos -->
-            <div v-for="field in fields" :key="field.name" class="p-4 border rounded-xl bg-white">
-              <h3 class="text-sm font-semibold text-gray-700 mb-2">{{ field.name }}</h3>
-              <component
-                :is="components[getFilterComponent(getFieldType(field.name))]"
-                :field-name="field.name"
-                :values="getColumnValues(field.name, filteredRows)"
-                @filter-change="updateAdvancedFilter(field.name, $event)"
-              />
-            </div>
+            <!-- Filtros avanzados dinámicos en acordeón -->
+            <details class="border rounded-xl bg-white overflow-hidden">
+              <summary class="cursor-pointer font-semibold text-gray-700 p-3 hover:bg-gray-100">
+                {{ t('advanced_filters') }}
+              </summary>
+              <transition-group name="fade-slide" tag="div" class="space-y-4 p-4">
+                <div v-for="field in fields" :key="field.name" class="p-4 border rounded-xl bg-white">
+                  <h3 class="text-sm font-semibold text-gray-700 mb-2">{{ field.name }}</h3>
+                  <component
+                    :is="components[getFilterComponent(getFieldType(field.name))]"
+                    :field-name="field.name"
+                    :values="getColumnValues(field.name, filteredRows)"
+                    @filter-change="updateAdvancedFilter(field.name, $event)"
+                  />
+                </div>
+              </transition-group>
+            </details>
 
             <!-- Filtros personalizados -->
             <div class="space-y-4">
