@@ -229,5 +229,12 @@
   "select_boolean_value": "Select boolean value",
   "select_option": "Select an option",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "of": "of",
+  "selected": "selected",
+  "max": "Max",
+  "range_filter_description": "Filter results between a minimum and maximum value.",
+  "date_filter_description": "Filter results between two dates.",
+  "text_filter_description": "Filter using part of the text.",
+  "boolean_filter_description": "Filter based on whether the value is true or false."
 }
