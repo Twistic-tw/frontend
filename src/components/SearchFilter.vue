@@ -94,17 +94,31 @@
           </div>
           <!-- Filtros personalizados -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <details v-for="(filter, index) in customFilters" :key="index" :open="openIndex === index" class="border rounded-xl bg-gray-50">
-              <summary class="cursor-pointer font-semibold text-gray-700 p-4" @click.prevent="toggleDetails(index)">{{ filter.label }}</summary>
-              <div class="p-4">
-                <component
-                  :is="filter.component"
-                  :field-name="filter.field"
-                  :values="[]"
-                  @filter-change="filter.handler"
-                />
-              </div>
-            </details>
+            <transition-group name="accordion" tag="div" class="contents">
+              <details
+                v-for="(filter, index) in customFilters"
+                :key="index"
+                :open="openIndex === index"
+                class="border rounded-xl bg-gray-50 overflow-hidden transition-all duration-300"
+              >
+                <summary
+                  class="cursor-pointer font-semibold text-gray-700 p-4"
+                  @click.prevent="toggleDetails(index)"
+                >
+                  {{ filter.label }}
+                </summary>
+                <transition name="fade-slide">
+                  <div v-show="openIndex === index" class="p-4">
+                    <component
+                      :is="filter.component"
+                      :field-name="filter.field"
+                      :values="[]"
+                      @filter-change="filter.handler"
+                    />
+                  </div>
+                </transition>
+              </details>
+            </transition-group>
           </div>
 
           <!-- Tabla -->
@@ -281,15 +295,33 @@ const customFilters = [
 </script>
 
 <style scoped>
-.fade-scale-enter-active, .fade-scale-leave-active {
+.fade-scale-enter-active,
+.fade-scale-leave-active {
   transition: all 0.25s ease;
 }
-.fade-scale-enter-from, .fade-scale-leave-to {
+.fade-scale-enter-from,
+.fade-scale-leave-to {
   opacity: 0;
   transform: scale(0.95);
 }
-.fade-scale-enter-to, .fade-scale-leave-from {
+.fade-scale-enter-to,
+.fade-scale-leave-from {
   opacity: 1;
   transform: scale(1);
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s ease;
+}
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
