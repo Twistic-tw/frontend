@@ -62,7 +62,7 @@
                 {{ t('advanced_filters') }}
               </summary>
               <transition-group name="fade-slide" tag="div" class="space-y-4 p-4">
-                <div v-for="field in fields" :key="field.name" class="p-4 border rounded-xl bg-white">
+                <div v-for="field in fields" :key="field.name" class="p-4 border rounded-xl bg-white overflow-hidden transition-all duration-300">
                   <h3 class="text-sm font-semibold text-gray-700 mb-2">{{ field.name }}</h3>
                   <component
                     :is="components[getFilterComponent(getFieldType(field.name))]"
