@@ -282,13 +282,50 @@ const toggleDetails = (index: number) => {
 }
 
 const customFilters = [
-  { label: 'Texto', field: 'Texto', component: TextFilter, handler: () => {} },
-  { label: 'Precio', field: 'Precio', component: NumberRangeFilter, handler: () => {} },
-  { label: 'Fecha', field: 'Fecha', component: DateRangeFilter, handler: () => {} },
-  { label: 'Disponible', field: 'Disponible', component: BooleanFilter, handler: () => {} },
-  { label: 'Stock', field: 'Stock', component: NumberRangeFilter, handler: () => {} },
-  { label: 'MinPriceExclude', field: 'MinPriceExclude', component: NumberRangeFilter, handler: () => {} },
+  {
+    label: 'Texto',
+    field: 'Texto',
+    component: TextFilter,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handler: (value: any) => updateAdvancedFilter('Texto', value),
+  },
+  {
+    label: 'Precio',
+    field: 'Precio',
+    component: NumberRangeFilter,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handler: (value: any) => updateAdvancedFilter('Precio', value),
+  },
+  {
+    label: 'Fecha',
+    field: 'Fecha',
+    component: DateRangeFilter,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handler: (value: any) => updateAdvancedFilter('Fecha', value),
+  },
+  {
+    label: 'Disponible',
+    field: 'Disponible',
+    component: BooleanFilter,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handler: (value: any) => updateAdvancedFilter('Disponible', value),
+  },
+  {
+    label: 'Stock',
+    field: 'Stock',
+    component: NumberRangeFilter,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handler: (value: any) => updateAdvancedFilter('Stock', value),
+  },
+  {
+    label: 'MinPriceExclude',
+    field: 'MinPriceExclude',
+    component: NumberRangeFilter,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handler: (value: any) => updateAdvancedFilter('MinPriceExclude', value),
+  },
 ]
+
 </script>
 
 <style scoped>
