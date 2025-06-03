@@ -56,29 +56,38 @@
               </button>
             </div>
 
-            <!-- Filtros avanzados dinámicos en acordeón -->
-            <details class="border rounded-xl bg-white overflow-hidden">
-              <summary class="cursor-pointer font-semibold text-gray-700 p-3 hover:bg-gray-100">
-                {{ t('advanced_filters') }}
-              </summary>
-              <transition-group name="fade-slide" tag="div" class="space-y-4 p-4">
-                <div v-for="field in fields" :key="field.name" class="p-4 border rounded-xl bg-white overflow-hidden transition-all duration-300">
-                  <h3 class="text-sm font-semibold text-gray-700 mb-2">{{ field.name }}</h3>
-                  <component
-                    :is="components[getFilterComponent(getFieldType(field.name))]"
-                    :field-name="field.name"
-                    :values="getColumnValues(field.name, filteredRows)"
-                    @filter-change="updateAdvancedFilter(field.name, $event)"
-                  />
-                </div>
-              </transition-group>
-            </details>
+            <!-- Filtros avanzados dinámicos como acordeón -->
+            <div class="space-y-2">
+              <details
+                v-for="(field, index) in fields"
+                :key="'adv-' + field.name"
+                :open="openAccordionIndex === index"
+                class="border rounded-xl bg-white overflow-hidden transition-all duration-300"
+              >
+                <summary
+                  class="cursor-pointer font-semibold text-gray-700 p-3 hover:bg-gray-100"
+                  @click.prevent="toggleAccordion(index)"
+                >
+                  {{ field.name }}
+                </summary>
+                <transition name="fade-slide">
+                  <div v-show="openAccordionIndex === index" class="p-4">
+                    <component
+                      :is="components[getFilterComponent(getFieldType(field.name))]"
+                      :field-name="field.name"
+                      :values="getColumnValues(field.name, filteredRows)"
+                      @filter-change="updateAdvancedFilter(field.name, $event)"
+                    />
+                  </div>
+                </transition>
+              </details>
+            </div>
 
             <!-- Filtros personalizados -->
             <div class="space-y-4">
               <details
                 v-for="(filter, index) in customFilters"
-                :key="index"
+                :key="'cust-' + index"
                 :open="openIndex === index"
                 class="border rounded-xl bg-white overflow-hidden transition-all duration-300"
               >
@@ -177,6 +186,7 @@
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { ref, defineEmits, defineProps, withDefaults, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -222,6 +232,12 @@ const sortedRows = computed(() => {
 
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.key === 'Escape') showModal.value = false
+}
+
+const openAccordionIndex = ref<number | null>(null)
+
+const toggleAccordion = (index: number) => {
+  openAccordionIndex.value = openAccordionIndex.value === index ? null : index
 }
 
 onMounted(() => {
