@@ -92,6 +92,15 @@
               </select>
             </div>
           </div>
+          <!-- Filtros personalizados -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <TextFilter field-name="Texto" @filter-change="() => {}" />
+            <NumberRangeFilter field-name="Precio" :values="[]" @filter-change="() => {}" />
+            <DateRangeFilter field-name="Fecha" :values="[]" @filter-change="() => {}" />
+            <BooleanFilter field-name="Disponible" :values="[]" @filter-change="() => {}" />
+            <NumberRangeFilter field-name="Stock" :values="[]" @filter-change="() => {}" />
+            <NumberRangeFilter field-name="MinPriceExclude" :values="[]" @filter-change="() => {}" />
+          </div>
 
           <!-- Tabla -->
           <div v-if="sortedRows.length" class="overflow-auto border rounded-lg">
@@ -176,6 +185,7 @@ import TextFilter from '../components/TextFilter.vue'
 import NumberRangeFilter from '../components/NumberRangeFilter.vue'
 import DateRangeFilter from '../components/DateRangeFilter.vue'
 import BooleanFilter from '../components/BooleanFilter.vue'
+
 
 const components = {
   TextFilter,
