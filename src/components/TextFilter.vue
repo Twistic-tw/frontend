@@ -1,8 +1,6 @@
 <template>
   <div class="space-y-1">
     <p class="text-xs text-gray-400">{{ $t('text_filter_description') }}</p>
-
-    <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('search_text') }}</label>
     <input
       type="text"
       v-model="inputValue"
