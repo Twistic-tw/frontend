@@ -42,7 +42,6 @@
               </select>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('search_by_value') }}</label>
               <input
                 :value="searchValue"
                 @input="$emit('update:searchValue', ($event.target as HTMLInputElement).value); $emit('filter')"
