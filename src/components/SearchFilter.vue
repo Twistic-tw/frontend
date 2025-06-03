@@ -13,22 +13,21 @@
         class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
         @click.self="showModal = false"
       >
-        <div
-          class="bg-white w-[95%] h-[90vh] rounded-xl shadow-xl p-6 overflow-auto relative"
-          style="padding-top:3em;"
-        >
-          <button
-            @click="showModal = false"
-            class="absolute top-4 right-4 bg-gray-800 text-white hover:bg-red-600 hover:scale-105 transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
-            aria-label="Cerrar modal"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+        <div class="bg-white w-[95%] h-[90vh] rounded-xl shadow-xl overflow-hidden relative flex">
+          <!-- Panel lateral de filtros -->
+          <aside class="w-full md:w-1/3 lg:w-1/4 h-full overflow-y-auto border-r p-6 space-y-6 bg-gray-50">
+            <!-- Botón de cerrar -->
+            <button
+              @click="showModal = false"
+              class="absolute top-4 right-4 bg-gray-800 text-white hover:bg-red-600 hover:scale-105 transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
+              aria-label="Cerrar modal"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
 
-          <!-- Filtros básicos -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <!-- Filtros básicos -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('search_by_field') }}</label>
               <select
@@ -50,7 +49,7 @@
                 class="w-full p-2 border rounded shadow-sm"
               />
             </div>
-            <div class="flex items-end">
+            <div>
               <button
                 @click="$emit('clear')"
                 class="w-full bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition shadow-sm"
@@ -58,11 +57,9 @@
                 {{ t('clear') }}
               </button>
             </div>
-          </div>
 
-          <!-- Filtros avanzados dinámicos -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div v-for="field in fields" :key="field.name" class="p-4 border rounded-xl bg-gray-50">
+            <!-- Filtros avanzados dinámicos -->
+            <div v-for="field in fields" :key="field.name" class="p-4 border rounded-xl bg-white">
               <h3 class="text-sm font-semibold text-gray-700 mb-2">{{ field.name }}</h3>
               <component
                 :is="components[getFilterComponent(getFieldType(field.name))]"
@@ -71,124 +68,102 @@
                 @filter-change="updateAdvancedFilter(field.name, $event)"
               />
             </div>
-          </div>
 
-          <!-- Ordenación -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('order_by_field') }}</label>
-              <select v-model="sortField" class="w-full p-2 border rounded shadow-sm">
-                <option disabled value="">{{ t('order_by') }}</option>
-                <option v-for="field in fields" :key="field.name" :value="field.name">
-                  {{ field.name }}
-                </option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('order_direction') }}</label>
-              <select v-model="sortDirection" class="w-full p-2 border rounded shadow-sm">
-                <option value="asc">{{ t('ascending') }}</option>
-                <option value="desc">{{ t('descending') }}</option>
-              </select>
-            </div>
-          </div>
-          <!-- Filtros personalizados -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <transition-group name="accordion" tag="div" class="contents">
+            <!-- Filtros personalizados -->
+            <div class="space-y-4">
               <details
                 v-for="(filter, index) in customFilters"
                 :key="index"
                 :open="openIndex === index"
-                class="border rounded-xl bg-gray-50 overflow-hidden transition-all duration-300"
+                class="border rounded-xl bg-white overflow-hidden"
               >
                 <summary
-                  class="cursor-pointer font-semibold text-gray-700 p-4"
+                  class="cursor-pointer font-semibold text-gray-700 p-3"
                   @click.prevent="toggleDetails(index)"
                 >
                   {{ filter.label }}
                 </summary>
-                <transition name="fade-slide">
-                  <div v-show="openIndex === index" class="p-4">
-                    <component
-                      :is="filter.component"
-                      :field-name="filter.field"
-                      :values="[]"
-                      @filter-change="filter.handler"
-                    />
-                  </div>
-                </transition>
+                <div v-show="openIndex === index" class="p-4">
+                  <component
+                    :is="filter.component"
+                    :field-name="filter.field"
+                    :values="[]"
+                    @filter-change="filter.handler"
+                  />
+                </div>
               </details>
-            </transition-group>
-          </div>
+            </div>
+          </aside>
 
           <!-- Tabla -->
-          <div v-if="sortedRows.length" class="overflow-auto border rounded-lg">
-            <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
-              <span class="text-sm text-gray-700">
-                {{ selectedRows.length }} {{ t('of') }} {{ sortedRows.length }} {{ t('selected') }}
-              </span>
-              <div class="flex gap-2">
-                <button
-                  @click="$emit('selectAll')"
-                  class="text-xs bg-indigo-600 text-white px-4 py-1.5 rounded hover:bg-indigo-700"
-                >
-                  {{ t('show_all') }}
-                </button>
-                <button
-                  @click="$emit('deselectAll')"
-                  class="text-xs bg-gray-400 text-white px-4 py-1.5 rounded hover:bg-gray-500"
-                >
-                  {{ t('hide_all') }}
-                </button>
+          <main class="flex-1 overflow-auto p-6">
+            <div v-if="sortedRows.length" class="border rounded-lg">
+              <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
+                <span class="text-sm text-gray-700">
+                  {{ selectedRows.length }} {{ t('of') }} {{ sortedRows.length }} {{ t('selected') }}
+                </span>
+                <div class="flex gap-2">
+                  <button
+                    @click="$emit('selectAll')"
+                    class="text-xs bg-indigo-600 text-white px-4 py-1.5 rounded hover:bg-indigo-700"
+                  >
+                    {{ t('show_all') }}
+                  </button>
+                  <button
+                    @click="$emit('deselectAll')"
+                    class="text-xs bg-gray-400 text-white px-4 py-1.5 rounded hover:bg-gray-500"
+                  >
+                    {{ t('hide_all') }}
+                  </button>
+                </div>
               </div>
+
+              <table class="min-w-full divide-y divide-gray-200 text-sm">
+                <thead class="bg-gray-50 sticky top-0 z-10">
+                  <tr>
+                    <th class="px-4 py-2 text-left font-semibold text-gray-700">{{ t('visible') }}</th>
+                    <th
+                      v-for="field in fields"
+                      :key="field.name"
+                      class="px-4 py-2 text-left font-semibold text-gray-700"
+                    >
+                      {{ field.name }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                  <tr
+                    v-for="(row, index) in sortedRows"
+                    :key="'row-' + index"
+                    class="hover:bg-gray-50"
+                  >
+                    <td class="px-4 py-2">
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          :checked="selectedRows.includes(index)"
+                          @change="handleToggle(index)"
+                          class="sr-only peer"
+                        />
+                        <div class="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-[#1e2939] transition-all"></div>
+                        <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
+                      </label>
+                    </td>
+                    <td
+                      v-for="key in fields.map(f => f.name)"
+                      :key="key"
+                      class="px-4 py-2 text-gray-700"
+                    >
+                      {{ row[key] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-
-            <table class="min-w-full divide-y divide-gray-200 text-sm">
-              <thead class="bg-gray-50 sticky top-0 z-10">
-                <tr>
-                  <th class="px-4 py-2 text-left font-semibold text-gray-700">{{ t('visible') }}</th>
-                  <th
-                    v-for="field in fields"
-                    :key="field.name"
-                    class="px-4 py-2 text-left font-semibold text-gray-700"
-                  >
-                    {{ field.name }}
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-100">
-                <tr
-                  v-for="(row, index) in sortedRows"
-                  :key="'row-' + index"
-                  class="hover:bg-gray-50"
-                >
-                  <td class="px-4 py-2">
-                    <label class="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        :checked="selectedRows.includes(index)"
-                        @change="handleToggle(index)"
-                        class="sr-only peer"
-                      />
-                      <div class="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-[#1e2939] transition-all"></div>
-                      <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all"></div>
-                    </label>
-                  </td>
-                  <td
-                    v-for="key in fields.map(f => f.name)"
-                    :key="key"
-                    class="px-4 py-2 text-gray-700"
-                  >
-                    {{ row[key] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div v-else-if="searchField && searchValue" class="text-sm text-gray-500 mt-4 text-center">
-            {{ t('no_results') }}
-          </div>
+            <div v-else-if="searchField && searchValue" class="text-sm text-gray-500 mt-4 text-center">
+              {{ t('no_results') }}
+            </div>
+          </main>
         </div>
       </div>
     </transition>
