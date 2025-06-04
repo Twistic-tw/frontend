@@ -240,6 +240,8 @@
   "filter_by_date_range": "Filter by date range",
   "filter_by_date_range_description": "Show only the entries between a specific start and end date",
   "clear": "Clear filters",
+  "clear_filters": "Clear filters",
+  "no_results_found": "No results found",
   "fields": {
     "field_name": "Name",
     "field_description": "Description",
