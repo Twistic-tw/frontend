@@ -57,6 +57,7 @@
             </div>
             <!-- Filtros dinámicos por campo -->
             <div v-for="field in fields" :key="'adv-' + field.name">
+              <h4 class="text-sm text-gray-600 font-medium mb-1">{{ t('filter_for') }}: {{ field.name }}</h4>
               <component
                 :is="components[getFilterComponent(getFieldType(field.name))]"
                 :field-name="field.name"
