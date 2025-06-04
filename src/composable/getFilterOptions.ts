@@ -36,14 +36,19 @@ const filterOptionsMap: Record<string, FieldFilterOption[]> = {
 }
 
 /**
- * Obtiene el tipo de filtro para un campo, y devuelve sus opciones.
+ * Obtiene el tipo de filtro para un campo, normaliza y devuelve sus opciones.
  */
-export function getFilterOptionsFromFieldName(fieldName: string): FieldFilterOption[] {
-  const fieldDef = fieldFilterOptions[fieldName]
-  if (!fieldDef) return []
+function normalize(str: string): string {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+}
 
-  const type = fieldDef.type
-  return filterOptionsMap[type] || []
+export function getFilterOptionsFromFieldName(fieldName: string): FieldFilterOption[] {
+  const key = Object.keys(fieldFilterOptions).find(
+    def => normalize(def) === normalize(fieldName)
+  )
+  const fieldDef = key ? fieldFilterOptions[key] : null
+  if (!fieldDef) return []
+  return filterOptionsMap[fieldDef.type] || []
 }
 
 
