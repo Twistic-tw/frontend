@@ -43,12 +43,23 @@ function normalize(str: string): string {
 }
 
 export function getFilterOptionsFromFieldName(fieldName: string): FieldFilterOption[] {
+  console.log('Buscando filtros para:', fieldName) // 🔍 entrada
+
   const key = Object.keys(fieldFilterOptions).find(
     def => normalize(def) === normalize(fieldName)
   )
+
+  console.log('Clave encontrada en fieldFilterOptions:', key) // 🔍 clave real encontrada
   const fieldDef = key ? fieldFilterOptions[key] : null
-  if (!fieldDef) return []
+
+  if (!fieldDef) {
+    console.warn('❌ No se encontró configuración para:', fieldName)
+    return []
+  }
+
+  console.log('🎯 Filtros encontrados:', filterOptionsMap[fieldDef.type])
   return filterOptionsMap[fieldDef.type] || []
 }
+
 
 

@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import type { FilterConditionOption } from '../../types/FilterConditionOption'
 
 // Props y eventos
@@ -51,6 +51,13 @@ const inputs = ref<Record<string, string>>({})
 watch(() => props.fieldName, () => {
   inputs.value = {}
 })
+
+onMounted(() => {
+  console.log('🧩 Componente montado con props:', props.fieldName)
+  console.log('📋 Filtros recibidos:', props.filters)
+  console.log('🔢 Valores disponibles:', props.values)
+})
+
 
 // Emitir el filtro
 function applyFilter(condition: string) {
