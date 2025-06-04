@@ -32,7 +32,7 @@ export const fieldFilterOptions = {
   },
   "IGIC": {
     type: "number",
-    label: "field_neto_no_igic",
+    label: "field_igic",
     filters: ["greater_than", "less_than", "equals", "between"]
   },
   "Fecha de creación": {
