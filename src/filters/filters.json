@@ -9,6 +9,11 @@
     "label": "field_description",
     "filters": ["contains", "not_contains", "equals"]
   },
+  "DESCRIPCIÓN": {
+    "type": "text",
+    "label": "field_description",
+    "filters": ["contains", "not_contains", "equals"]
+  },
   "Categoría": {
     "type": "select",
     "label": "field_category",
