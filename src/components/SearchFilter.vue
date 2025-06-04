@@ -40,8 +40,11 @@
                 </option>
               </select>
             </div>
-              <transition name="fade-slide">
-                <div v-if="searchField" class="transition-all duration-300 ease-in-out">
+              <transition name="fade-slide" mode="out-in">
+                <div
+                  :key="searchField"
+                  class="transition-all duration-300 ease-in-out"
+                >
                   <component
                     :is="components[getFilterComponent(getFieldType(searchField))]"
                     :field-name="searchField"
