@@ -182,13 +182,13 @@ export function CustomizePdf() {
   }
 
   const previewRows = computed(() => {
-    const selected = excelData.value.filter((_, i) => selectedRows.value.includes(i))
-    const pages = []
-    for (let i = 0; i < selected.length; i += rowsPerPage) {
-      pages.push(selected.slice(i, i + rowsPerPage))
-    }
-    return pages
-  })
+  const selected = filteredRows.value.filter((_, i) => selectedRows.value.includes(i))
+  const pages = []
+  for (let i = 0; i < selected.length; i += rowsPerPage) {
+    pages.push(selected.slice(i, i + rowsPerPage))
+  }
+  return pages
+})
 
   /**
    * Aplica un estilo guardado al editor cargando los datos desde el backend
