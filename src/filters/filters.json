@@ -20,6 +20,12 @@
     "dynamicValues": true,
     "filters": ["equals", "not_equals", "in"]
   },
+  "CATEGORÍA": {
+    "type": "select",
+    "label": "field_category",
+    "dynamicValues": true,
+    "filters": ["equals", "not_equals", "in"]
+  },
   "Precio": {
     "type": "number",
     "label": "field_price",
