@@ -1,11 +1,9 @@
-// Este archivo define la lógica de inferencia y filtros avanzados
 import { ref } from 'vue'
 
 export const fieldTypes = ref<Record<string, 'text' | 'number' | 'date' | 'boolean'>>({})
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const advancedFilters = ref<Record<string, any>>({})
 
-// Inferir tipo de campo a partir de valores
 export function inferFieldType(values: string[]): 'text' | 'number' | 'date' | 'boolean' {
   let isNumber = true
   let isDate = true
@@ -26,9 +24,12 @@ export function inferFieldType(values: string[]): 'text' | 'number' | 'date' | '
   return 'text'
 }
 
-// Obtener tipo de campo con cache previa
 export function getFieldType(fieldName: string): 'text' | 'number' | 'date' | 'boolean' {
-  return fieldTypes.value[fieldName] || 'text'
+  const type = fieldTypes.value[fieldName]
+  if (!type) {
+    console.warn(`Field type not found for "${fieldName}". Defaulting to 'text'.`)
+  }
+  return type || 'text'
 }
 
 export function getFilterComponent(type: 'text' | 'number' | 'date' | 'boolean') {
@@ -41,21 +42,44 @@ export function getFilterComponent(type: 'text' | 'number' | 'date' | 'boolean')
   }
 }
 
-// Obtener valores de columna (solo no vacíos)
 export function getColumnValues(fieldName: string, rows: Record<string, string>[]): string[] {
   return rows.map(row => row[fieldName]).filter(v => !!v)
 }
 
-// Guardar filtro aplicado
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function updateAdvancedFilter(field: string, value: any) {
+  const expectedType = getFieldType(field)
+
+  const isValid = (() => {
+    switch (expectedType) {
+      case 'text':
+        return typeof value?.value === 'string'
+      case 'number':
+        return typeof value?.min === 'number' && typeof value?.max === 'number'
+      case 'date':
+        return Boolean(Date.parse(value?.start)) && Boolean(Date.parse(value?.end))
+      case 'boolean':
+        return typeof value?.value === 'boolean' || ['true', 'false', '1', '0', 'sí', 'no'].includes(value?.value?.toLowerCase?.())
+      default:
+        return false
+    }
+  })()
+
+  if (!isValid) {
+    console.warn(`Invalid filter value for field "${field}" of type "${expectedType}"`, value)
+    return
+  }
+
   advancedFilters.value[field] = value
 }
 
-// Aplicar filtros (ejemplo básico)
-export function applyAdvancedFilters(rows: Record<string, string>[]): Record<string, string>[] {
+export function applyAdvancedFilters(
+  rows: Record<string, string>[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filters: Record<string, any> = advancedFilters.value
+): Record<string, string>[] {
   return rows.filter(row => {
-    return Object.entries(advancedFilters.value).every(([field, filter]) => {
+    return Object.entries(filters).every(([field, filter]) => {
       const val = row[field]?.toString()?.toLowerCase()
       if (!val) return false
 

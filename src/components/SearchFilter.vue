@@ -154,8 +154,7 @@
 </template>
 
 <script setup lang="ts">
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ref, defineEmits, defineProps, computed } from 'vue'
+import { ref, defineEmits, defineProps } from 'vue'
 import { useI18n } from 'vue-i18n'
 import TextFilter from '../components/TextFilter.vue'
 import NumberRangeFilter from '../components/NumberRangeFilter.vue'
