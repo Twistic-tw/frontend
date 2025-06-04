@@ -1,5 +1,5 @@
-// src/filters/getFieldFilterOptions.ts
-
+// src/filters/getFilterOptions.ts
+import { fieldFilterOptions } from './FieldFilterOptions'
 export type FieldFilterOption = {
   value: string;
   label: string;
@@ -36,8 +36,12 @@ const filterOptionsMap: Record<string, FieldFilterOption[]> = {
 }
 
 /**
- * Retorna las opciones de filtro para un tipo de campo.
+ * Obtiene el tipo de filtro para un campo, y devuelve sus opciones.
  */
-export function getFieldFilterOptions(type: string): FieldFilterOption[] {
-  return filterOptionsMap[type] || []
+export function getFilterOptionsFromFieldName(fieldName: string): FieldFilterOption[] {
+  const fieldConfig = fieldFilterOptions[fieldName]
+  if (!fieldConfig) return []
+  return filterOptionsMap[fieldConfig.type] || []
 }
+
+

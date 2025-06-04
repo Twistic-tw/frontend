@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted, type Ref } from 'vue'
-import { getFieldFilterOptions } from '../../composable/getFilterOptions'
+import { getFilterOptionsFromFieldName } from '../../composable/getFilterOptions'
 import type { FilterConditionOption } from '../../types/FilterConditionOption'
 
 const props = defineProps<{
@@ -65,7 +65,7 @@ const rangeEnd = ref<number | null>(null)
 const filterOptions: Ref<FilterConditionOption[]> = ref([])
 
 onMounted(() => {
-  filterOptions.value = getFieldFilterOptions(props.fieldName)
+  filterOptions.value = getFilterOptionsFromFieldName(props.fieldName)
 })
 
 watch(
@@ -75,7 +75,7 @@ watch(
     filterValue.value = null
     rangeStart.value = null
     rangeEnd.value = null
-    filterOptions.value = getFieldFilterOptions(props.fieldName)
+    filterOptions.value = getFilterOptionsFromFieldName(props.fieldName)
   },
 )
 

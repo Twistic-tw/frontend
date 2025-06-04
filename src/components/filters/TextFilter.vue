@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, type Ref } from 'vue'
 import type { FilterConditionOption } from '../../types/FilterConditionOption'
-import { getFieldFilterOptions } from '../../composable/getFilterOptions'
+import { getFilterOptionsFromFieldName } from '../../composable/getFilterOptions'
 
 // Props y eventos
 const props = defineProps<{
@@ -58,7 +58,7 @@ const filterOptions: Ref<FilterConditionOption[]> = ref([])
 
 // Inicializar opciones al montar
 onMounted(() => {
-  filterOptions.value = getFieldFilterOptions(props.fieldName)
+  filterOptions.value = getFilterOptionsFromFieldName(props.fieldName)
 })
 
 // Reset y actualización si cambia el campo
@@ -67,7 +67,7 @@ watch(
   () => {
     selectedCondition.value = ''
     filterValue.value = ''
-    filterOptions.value = getFieldFilterOptions(props.fieldName)
+    filterOptions.value = getFilterOptionsFromFieldName(props.fieldName)
   },
 )
 

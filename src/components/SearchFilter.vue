@@ -50,7 +50,7 @@
                   :is="components[getFilterComponent(getFieldType(searchField))]"
                   :field-name="searchField"
                   :values="getColumnValues(searchField, filteredRows)"
-                  :filters="getFieldFilterOptions(searchField)"
+                  :filters="getFilterOptionsFromFieldName(searchField)"
                   @filter-change="val => handleAdvancedFilter(searchField, val)"
                 />
 
@@ -142,7 +142,7 @@ import DateRangeFilter from './filters/DateRangeFilter.vue'
 import BooleanFilter from './filters/BooleanFilter.vue'
 import NumberFilter from './filters/NumberFilter.vue'
 import SelectFilter from './filters/SelectFilter.vue'
-import { getFieldFilterOptions } from '../composable/getFilterOptions'
+import { getFilterOptionsFromFieldName } from '../composable/getFilterOptions'
 import {
   getFieldType,
   getFilterComponent,
