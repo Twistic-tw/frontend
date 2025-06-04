@@ -39,9 +39,11 @@ const filterOptionsMap: Record<string, FieldFilterOption[]> = {
  * Obtiene el tipo de filtro para un campo, y devuelve sus opciones.
  */
 export function getFilterOptionsFromFieldName(fieldName: string): FieldFilterOption[] {
-  const fieldConfig = fieldFilterOptions[fieldName]
-  if (!fieldConfig) return []
-  return filterOptionsMap[fieldConfig.type] || []
+  const fieldDef = fieldFilterOptions[fieldName]
+  if (!fieldDef) return []
+
+  const type = fieldDef.type
+  return filterOptionsMap[type] || []
 }
 
 
