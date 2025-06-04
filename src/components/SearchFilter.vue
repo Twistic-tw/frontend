@@ -14,7 +14,7 @@
         @click.self="showModal = false"
       >
         <div class="bg-white w-[95%] h-[90vh] rounded-xl shadow-xl overflow-hidden relative flex">
-          <!-- Botón de cerrar global -->
+          <!-- Botón de cerrar -->
           <button
             @click="showModal = false"
             class="absolute top-4 right-4 z-30 bg-gray-800 text-white hover:bg-red-600 hover:scale-105 transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
@@ -27,12 +27,11 @@
 
           <!-- Panel lateral de filtros -->
           <aside class="w-full md:w-1/3 lg:w-1/4 h-full overflow-y-auto border-r p-6 space-y-6 bg-gray-50">
-
             <!-- Filtros básicos -->
             <div>
               <select
-                :value="searchField || ''"
-                @change="$emit('update:searchField', ($event.target as HTMLSelectElement).value); $emit('filter')"
+                :value="searchField"
+                @change="onUpdateSearchField"
                 class="w-full p-2 border rounded shadow-sm"
               >
                 <option disabled value="">{{ t('select_field') }}</option>
@@ -44,7 +43,7 @@
             <div>
               <input
                 :value="searchValue"
-                @input="$emit('update:searchValue', ($event.target as HTMLInputElement).value); $emit('filter')"
+                @input="onUpdateSearchValue"
                 class="w-full p-2 border rounded shadow-sm"
               />
             </div>
@@ -77,34 +76,7 @@
                       :is="components[getFilterComponent(getFieldType(field.name))]"
                       :field-name="field.name"
                       :values="getColumnValues(field.name, filteredRows)"
-                      @filter-change="updateAdvancedFilter(field.name, $event)"
-                    />
-                  </div>
-                </transition>
-              </details>
-            </div>
-
-            <!-- Filtros personalizados -->
-            <div class="space-y-4">
-              <details
-                v-for="(filter, index) in customFilters"
-                :key="'cust-' + index"
-                :open="openIndex === index"
-                class="border rounded-xl bg-white overflow-hidden transition-all duration-300"
-              >
-                <summary
-                  class="cursor-pointer font-semibold text-gray-700 p-3 hover:bg-gray-100"
-                  @click.prevent="toggleDetails(index)"
-                >
-                  {{ filter.label }}
-                </summary>
-                <transition name="fade-slide">
-                  <div v-show="openIndex === index" class="p-4">
-                    <component
-                      :is="filter.component"
-                      :field-name="filter.field"
-                      :values="[]"
-                      @filter-change="filter.handler"
+                      @filter-change="val => handleAdvancedFilter(field.name, val)"
                     />
                   </div>
                 </transition>
@@ -114,22 +86,16 @@
 
           <!-- Tabla -->
           <main class="flex-1 overflow-auto p-6">
-            <div v-if="sortedRows.length" class="border rounded-lg">
+            <div v-if="filteredRows.length" class="border rounded-lg">
               <div class="sticky top-0 z-20 bg-gray-100 px-4 py-3 border-b flex justify-between items-center">
                 <span class="text-sm text-gray-700">
-                  {{ selectedRows.length }} {{ t('of') }} {{ sortedRows.length }} {{ t('selected') }}
+                  {{ selectedRows.length }} {{ t('of') }} {{ filteredRows.length }} {{ t('selected') }}
                 </span>
                 <div class="flex gap-2">
-                  <button
-                    @click="$emit('selectAll')"
-                    class="text-xs bg-indigo-600 text-white px-4 py-1.5 rounded hover:bg-indigo-700"
-                  >
+                  <button @click="$emit('selectAll')" class="text-xs bg-indigo-600 text-white px-4 py-1.5 rounded hover:bg-indigo-700">
                     {{ t('show_all') }}
                   </button>
-                  <button
-                    @click="$emit('deselectAll')"
-                    class="text-xs bg-gray-400 text-white px-4 py-1.5 rounded hover:bg-gray-500"
-                  >
+                  <button @click="$emit('deselectAll')" class="text-xs bg-gray-400 text-white px-4 py-1.5 rounded hover:bg-gray-500">
                     {{ t('hide_all') }}
                   </button>
                 </div>
@@ -150,7 +116,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                   <tr
-                    v-for="(row, index) in sortedRows"
+                    v-for="(row, index) in filteredRows"
                     :key="'row-' + index"
                     class="hover:bg-gray-50"
                   >
@@ -159,7 +125,7 @@
                         <input
                           type="checkbox"
                           :checked="selectedRows.includes(index)"
-                          @change="handleToggle(index)"
+                          @change="$emit('toggleRow', index)"
                           class="sr-only peer"
                         />
                         <div class="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-[#1e2939] transition-all"></div>
@@ -177,7 +143,7 @@
                 </tbody>
               </table>
             </div>
-            <div v-else-if="searchField && searchValue" class="text-sm text-gray-500 mt-4 text-center">
+            <div v-else class="text-sm text-gray-500 mt-4 text-center">
               {{ t('no_results') }}
             </div>
           </main>
@@ -188,69 +154,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, defineProps, withDefaults, onMounted, onBeforeUnmount, computed } from 'vue'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { ref, defineEmits, defineProps, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-
 import TextFilter from '../components/TextFilter.vue'
 import NumberRangeFilter from '../components/NumberRangeFilter.vue'
 import DateRangeFilter from '../components/DateRangeFilter.vue'
 import BooleanFilter from '../components/BooleanFilter.vue'
-
-
-const components = {
-  TextFilter,
-  NumberRangeFilter,
-  DateRangeFilter,
-  BooleanFilter,
-}
-
 import {
   getFieldType,
   getFilterComponent,
   getColumnValues,
-  updateAdvancedFilter,
-  applyAdvancedFilters,
-  fieldTypes,
-  inferFieldType
+  updateAdvancedFilter
 } from '../composable/DynamicFiltersLogic'
 
 const { t } = useI18n()
-const showModal = ref(false)
-const sortField = ref('')
-const sortDirection = ref<'asc' | 'desc'>('asc')
 
-const sortedRows = computed(() => {
-  const rows = applyAdvancedFilters(props.filteredRows)
-  if (!sortField.value) return rows
-  return [...rows].sort((a, b) => {
-    const aVal = a[sortField.value]
-    const bVal = b[sortField.value]
-    if (aVal === bVal) return 0
-    return sortDirection.value === 'asc' ? (aVal > bVal ? 1 : -1) : (aVal < bVal ? 1 : -1)
-  })
-})
-
-const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.key === 'Escape') showModal.value = false
-}
-
-const openAccordionIndex = ref<number | null>(null)
-
-const toggleAccordion = (index: number) => {
-  openAccordionIndex.value = openAccordionIndex.value === index ? null : index
-}
-
-onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
-  if (props.filteredRows.length > 0) {
-    props.fields.forEach(field => {
-      const values = getColumnValues(field.name, props.filteredRows)
-      fieldTypes.value[field.name] = inferFieldType(values)
-    })
-  }
-})
-
-onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyDown))
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const props = defineProps<{
+  fields: { name: string }[]
+  searchField: string
+  searchValue: string
+  filteredRows: Record<string, string>[]
+  selectedRows: number[]
+}>()
 
 const emit = defineEmits([
   'update:searchField',
@@ -262,70 +189,36 @@ const emit = defineEmits([
   'toggleRow'
 ])
 
-const props = withDefaults(defineProps<{
-  fields: { name: string }[]
-  searchField?: string
-  searchValue?: string
-  filteredRows: Record<string, string>[]
-  selectedRows: number[]
-}>(), {
-  searchField: '',
-  searchValue: ''
-})
+const showModal = ref(false)
+const openAccordionIndex = ref<number | null>(null)
 
-const handleToggle = (index: number) => emit('toggleRow', index)
-
-const openIndex = ref<number | null>(null)
-
-const toggleDetails = (index: number) => {
-  openIndex.value = openIndex.value === index ? null : index
+const toggleAccordion = (index: number) => {
+  openAccordionIndex.value = openAccordionIndex.value === index ? null : index
 }
 
-const customFilters = [
-  {
-    label: 'Texto',
-    field: 'Texto',
-    component: TextFilter,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    handler: (value: any) => updateAdvancedFilter('Texto', value),
-  },
-  {
-    label: 'Precio',
-    field: 'Precio',
-    component: NumberRangeFilter,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    handler: (value: any) => updateAdvancedFilter('Precio', value),
-  },
-  {
-    label: 'Fecha',
-    field: 'Fecha',
-    component: DateRangeFilter,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    handler: (value: any) => updateAdvancedFilter('Fecha', value),
-  },
-  {
-    label: 'Disponible',
-    field: 'Disponible',
-    component: BooleanFilter,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    handler: (value: any) => updateAdvancedFilter('Disponible', value),
-  },
-  {
-    label: 'Stock',
-    field: 'Stock',
-    component: NumberRangeFilter,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    handler: (value: any) => updateAdvancedFilter('Stock', value),
-  },
-  {
-    label: 'MinPriceExclude',
-    field: 'MinPriceExclude',
-    component: NumberRangeFilter,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    handler: (value: any) => updateAdvancedFilter('MinPriceExclude', value),
-  },
-]
+const onUpdateSearchField = (event: Event) => {
+  const value = (event.target as HTMLSelectElement).value
+  emit('update:searchField', value)
+  emit('filter')
+}
 
+const onUpdateSearchValue = (event: Event) => {
+  const value = (event.target as HTMLInputElement).value
+  emit('update:searchValue', value)
+  emit('filter')
+}
+
+const handleAdvancedFilter = (field: string, value: unknown) => {
+  updateAdvancedFilter(field, value)
+  emit('filter')
+}
+
+const components = {
+  TextFilter,
+  NumberRangeFilter,
+  DateRangeFilter,
+  BooleanFilter,
+}
 </script>
 
 <style scoped>
@@ -343,7 +236,6 @@ const customFilters = [
   opacity: 1;
   transform: scale(1);
 }
-
 .fade-slide-enter-active,
 .fade-slide-leave-active {
   transition: all 0.3s ease;
