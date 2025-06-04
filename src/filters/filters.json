@@ -1,0 +1,128 @@
+{
+  "Nombre": {
+    "type": "text",
+    "label": "field_name",
+    "filters": ["contains", "not_contains", "equals", "starts_with", "ends_with"]
+  },
+  "Descripción": {
+    "type": "text",
+    "label": "field_description",
+    "filters": ["contains", "not_contains", "equals"]
+  },
+  "Categoría": {
+    "type": "select",
+    "label": "field_category",
+    "dynamicValues": true,
+    "filters": ["equals", "not_equals", "in"]
+  },
+  "Precio": {
+    "type": "number",
+    "label": "field_price",
+    "filters": ["greater_than", "less_than", "equals", "between"]
+  },
+  "NETO": {
+    "type": "number",
+    "label": "field_neto",
+    "filters": ["greater_than", "less_than", "equals", "between"]
+  },
+  "NETO S/IGIC": {
+    "type": "number",
+    "label": "field_neto_no_igic",
+    "filters": ["greater_than", "less_than", "equals", "between"]
+  },
+  "Fecha de creación": {
+    "type": "date",
+    "label": "field_created_at",
+    "filters": ["before", "after", "between"]
+  },
+  "Fecha de alta": {
+    "type": "date",
+    "label": "field_register_date",
+    "filters": ["before", "after", "between"]
+  },
+  "Disponible": {
+    "type": "boolean",
+    "label": "field_available",
+    "filters": ["is_true", "is_false"]
+  },
+  "En stock": {
+    "type": "boolean",
+    "label": "field_in_stock",
+    "filters": ["is_true", "is_false"]
+  },
+  "Código": {
+    "type": "text",
+    "label": "field_code",
+    "filters": ["equals", "contains", "starts_with"]
+  },
+  "Marca": {
+    "type": "select",
+    "label": "field_brand",
+    "dynamicValues": true,
+    "filters": ["equals", "in"]
+  },
+  "Color": {
+    "type": "select",
+    "label": "field_color",
+    "dynamicValues": true,
+    "filters": ["equals", "contains"]
+  },
+  "Estado": {
+    "type": "select",
+    "label": "field_status",
+    "filters": ["equals", "not_equals"]
+  },
+  "Peso": {
+    "type": "number",
+    "label": "field_weight",
+    "filters": ["greater_than", "less_than", "equals", "between"]
+  },
+  "Imagen": {
+    "type": "text",
+    "label": "field_image",
+    "filters": ["contains", "not_contains"]
+  },
+  "Tamaño": {
+    "type": "select",
+    "label": "field_size",
+    "dynamicValues": true,
+    "filters": ["equals", "in"]
+  },
+  "Dimensiones": {
+    "type": "text",
+    "label": "field_dimensions",
+    "filters": ["contains", "not_contains"]
+  },
+  "Valoración media": {
+    "type": "number",
+    "label": "field_average_rating",
+    "filters": ["greater_than", "less_than", "equals", "between"]
+  },
+  "Número de valoraciones": {
+    "type": "number",
+    "label": "field_rating_count",
+    "filters": ["greater_than", "less_than", "equals", "between"]
+  },
+    "Fecha de última actualización": {
+        "type": "date",
+        "label": "field_last_updated",
+        "filters": ["before", "after", "between"]
+    },
+    "Vendedor": {
+        "type": "select",
+        "label": "field_seller",
+        "dynamicValues": true,
+        "filters": ["equals", "not_equals", "in"]
+    },
+    "Ubicación": {
+        "type": "text",
+        "label": "field_location",
+        "filters": ["contains", "not_contains", "equals"]
+    },
+    "Etiquetas": {
+        "type": "select",
+        "label": "field_tags",
+        "dynamicValues": true,
+        "filters": ["equals", "in"]
+    }
+}

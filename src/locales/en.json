@@ -238,5 +238,32 @@
   "text_filter_description": "Filter using part of the text.",
   "boolean_filter_description": "Filter based on whether the value is true or false.",
   "filter_by_date_range": "Filter by date range",
-  "filter_by_date_range_description": "Show only the entries between a specific start and end date"
+  "filter_by_date_range_description": "Show only the entries between a specific start and end date",
+  "clear": "Clear filters",
+  "fields": {
+    "field_name": "Name",
+    "field_description": "Description",
+    "field_category": "Category",
+    "field_price": "Price",
+    "field_neto": "Net",
+    "field_neto_no_igic": "Net w/o IGIC",
+    "field_created_at": "Created at",
+    "field_register_date": "Register date",
+    "field_available": "Available",
+    "field_in_stock": "In stock",
+    "field_code": "Code",
+    "field_brand": "Brand",
+    "field_color": "Color",
+    "field_status": "Status",
+    "field_weight": "Weight",
+    "field_image": "Image",
+    "field_size": "Size",
+    "field_dimensions": "Dimensions",
+    "field_average_rating": "Average rating",
+    "field_rating_count": "Rating count",
+    "field_last_updated": "Last updated",
+    "field_seller": "Seller",
+    "field_location": "Location",
+    "field_tags": "Tags"
+  }
 }

@@ -136,10 +136,12 @@
 <script setup lang="ts">
 import { ref, defineEmits, defineProps } from 'vue'
 import { useI18n } from 'vue-i18n'
-import TextFilter from '../components/TextFilter.vue'
-import NumberRangeFilter from '../components/NumberRangeFilter.vue'
-import DateRangeFilter from '../components/DateRangeFilter.vue'
-import BooleanFilter from '../components/BooleanFilter.vue'
+import TextFilter from './filters/TextFilter.vue'
+import NumberRangeFilter from './filters/NumberRangeFilter.vue'
+import DateRangeFilter from './filters/DateRangeFilter.vue'
+import BooleanFilter from './filters/BooleanFilter.vue'
+import NumberFilter from './filters/NumberFilter.vue'
+import SelectFilter from './filters/SelectFilter.vue'
 import {
   getFieldType,
   getFilterComponent,
@@ -173,11 +175,9 @@ const showFilter = ref(false)
 
 const onUpdateSearchField = (event: Event) => {
   const value = (event.target as HTMLSelectElement).value
-  showFilter.value = false // Oculta antes de cambiar
+  showFilter.value = false
   emit('update:searchField', value)
   emit('filter')
-
-  // Despliega después con delay (para activar animación)
   setTimeout(() => {
     showFilter.value = true
   }, 100)
@@ -191,8 +191,10 @@ const handleAdvancedFilter = (field: string, value: unknown) => {
 const components = {
   TextFilter,
   NumberRangeFilter,
+  NumberFilter,
   DateRangeFilter,
   BooleanFilter,
+  SelectFilter,
 }
 </script>
 
