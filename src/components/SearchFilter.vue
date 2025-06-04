@@ -55,32 +55,14 @@
                 {{ t('clear') }}
               </button>
             </div>
-
-            <!-- Filtros avanzados dinámicos como acordeón -->
-            <div class="space-y-2">
-              <details
-                v-for="(field, index) in fields"
-                :key="'adv-' + field.name"
-                :open="openAccordionIndex === index"
-                class="border rounded-xl bg-white overflow-hidden transition-all duration-300"
-              >
-                <summary
-                  class="cursor-pointer font-semibold text-gray-700 p-3 hover:bg-gray-100"
-                  @click.prevent="toggleAccordion(index)"
-                >
-                  {{ field.name }}
-                </summary>
-                <transition name="fade-slide">
-                  <div v-show="openAccordionIndex === index" class="p-4">
-                    <component
-                      :is="components[getFilterComponent(getFieldType(field.name))]"
-                      :field-name="field.name"
-                      :values="getColumnValues(field.name, filteredRows)"
-                      @filter-change="val => handleAdvancedFilter(field.name, val)"
-                    />
-                  </div>
-                </transition>
-              </details>
+            <!-- Filtros dinámicos por campo -->
+            <div v-for="field in fields" :key="'adv-' + field.name">
+              <component
+                :is="components[getFilterComponent(getFieldType(field.name))]"
+                :field-name="field.name"
+                :values="getColumnValues(field.name, filteredRows)"
+                @filter-change="val => handleAdvancedFilter(field.name, val)"
+              />
             </div>
           </aside>
 
@@ -189,11 +171,6 @@ const emit = defineEmits([
 ])
 
 const showModal = ref(false)
-const openAccordionIndex = ref<number | null>(null)
-
-const toggleAccordion = (index: number) => {
-  openAccordionIndex.value = openAccordionIndex.value === index ? null : index
-}
 
 const onUpdateSearchField = (event: Event) => {
   const value = (event.target as HTMLSelectElement).value
@@ -234,19 +211,5 @@ const components = {
 .fade-scale-leave-from {
   opacity: 1;
   transform: scale(1);
-}
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-  transition: all 0.3s ease;
-}
-.fade-slide-enter-from,
-.fade-slide-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-.fade-slide-enter-to,
-.fade-slide-leave-from {
-  opacity: 1;
-  transform: translateY(0);
 }
 </style>
