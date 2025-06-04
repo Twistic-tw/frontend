@@ -40,30 +40,23 @@
                 </option>
               </select>
             </div>
-            <div>
-              <input
-                :value="searchValue"
-                @input="onUpdateSearchValue"
-                class="w-full p-2 border rounded shadow-sm"
-              />
-            </div>
-            <div>
+            <div v-if="searchField">
+              <transition name="fade-slide">
+                <div v-if="searchField">
+                  <component
+                    :is="components[getFilterComponent(getFieldType(searchField))]"
+                    :field-name="searchField"
+                    :values="getColumnValues(searchField, filteredRows)"
+                    @filter-change="val => handleAdvancedFilter(searchField, val)"
+                  />
+                </div>
+              </transition>
               <button
                 @click="$emit('clear')"
-                class="w-full bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition shadow-sm"
+                class="w-full mt-4 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition shadow-sm"
               >
                 {{ t('clear') }}
               </button>
-            </div>
-            <!-- Filtros dinámicos por campo -->
-            <div v-for="field in fields" :key="'adv-' + field.name">
-              <h4 class="text-sm text-gray-600 font-medium mb-1">{{ t('filter_for') }}: {{ field.name }}</h4>
-              <component
-                :is="components[getFilterComponent(getFieldType(field.name))]"
-                :field-name="field.name"
-                :values="getColumnValues(field.name, filteredRows)"
-                @filter-change="val => handleAdvancedFilter(field.name, val)"
-              />
             </div>
           </aside>
 
@@ -179,12 +172,6 @@ const onUpdateSearchField = (event: Event) => {
   emit('filter')
 }
 
-const onUpdateSearchValue = (event: Event) => {
-  const value = (event.target as HTMLInputElement).value
-  emit('update:searchValue', value)
-  emit('filter')
-}
-
 const handleAdvancedFilter = (field: string, value: unknown) => {
   updateAdvancedFilter(field, value)
   emit('filter')
@@ -212,5 +199,19 @@ const components = {
 .fade-scale-leave-from {
   opacity: 1;
   transform: scale(1);
+}
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s ease;
+}
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
