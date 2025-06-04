@@ -1,4 +1,4 @@
-// src/filters/getFilterOptions.ts
+// src/composable/getFilterOptions.ts
 import { fieldFilterOptions } from './FieldFilterOptions'
 export type FieldFilterOption = {
   value: string;
