@@ -4,7 +4,7 @@
       class="flex items-center justify-between p-6 border-b border-gray-100 cursor-pointer"
       @click="showModal = true"
     >
-      <h2 class="text-xl font-bold text-gray-800">{{ t('title_search_by_field') }}</h2>
+      <h2 class="text-xl font-bold text-gray-800">{{ t('search_by_field') }}</h2>
     </div>
 
     <transition name="fade-scale">
@@ -18,7 +18,7 @@
           <button
             @click="showModal = false"
             class="absolute top-4 right-4 z-30 bg-gray-800 text-white hover:bg-red-600 hover:scale-105 transition-all duration-300 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
-            aria-label="Cerrar modal"
+            aria-label="Close modal"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -27,7 +27,6 @@
 
           <!-- Panel lateral de filtros -->
           <aside class="w-full md:w-1/3 lg:w-1/4 h-full overflow-y-auto border-r p-6 space-y-6 bg-gray-50">
-            <!-- Filtros básicos -->
             <div>
               <select
                 :value="searchField"
@@ -57,11 +56,10 @@
                   @click="$emit('clear')"
                   class="w-full mt-4 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition shadow-sm"
                 >
-                  {{ t('clear') }}
+                  {{ t('clear_filters') }}
                 </button>
               </div>
             </transition>
-
           </aside>
 
           <!-- Tabla -->
@@ -124,7 +122,7 @@
               </table>
             </div>
             <div v-else class="text-sm text-gray-500 mt-4 text-center">
-              {{ t('no_results') }}
+              {{ t('no_results_found') }}
             </div>
           </main>
         </div>
