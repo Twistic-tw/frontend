@@ -5,11 +5,7 @@
     </label>
     <select v-model="selectedCondition" class="w-full p-2 border rounded">
       <option disabled value="">{{ $t('select_condition') }}</option>
-      <option
-        v-for="condition in filterOptions"
-        :key="condition.value"
-        :value="condition.value"
-      >
+      <option v-for="condition in filters" :key="condition.value" :value="condition.value">
         {{ $t(condition.label) }}
       </option>
     </select>
@@ -40,10 +36,17 @@ import { ref, watch, onMounted, type Ref } from 'vue'
 import { getFieldFilterOptions } from '../../composable/getFilterOptions'
 import type { FilterConditionOption } from '../../types/FilterConditionOption'
 
-const props = defineProps<{ fieldName: string }>()
+const props = defineProps<{
+  fieldName: string
+  values: string[]
+  filters: FilterConditionOption[]
+}>()
 
 const emit = defineEmits<{
-  (e: 'filter-change', payload: { condition: string; value: string | { start: string; end: string } }): void
+  (
+    e: 'filter-change',
+    payload: { condition: string; value: string | { start: string; end: string } },
+  ): void
 }>()
 
 const selectedCondition = ref('')
@@ -56,13 +59,16 @@ onMounted(() => {
   filterOptions.value = getFieldFilterOptions(props.fieldName)
 })
 
-watch(() => props.fieldName, () => {
-  selectedCondition.value = ''
-  singleDate.value = ''
-  rangeStart.value = ''
-  rangeEnd.value = ''
-  filterOptions.value = getFieldFilterOptions(props.fieldName)
-})
+watch(
+  () => props.fieldName,
+  () => {
+    selectedCondition.value = ''
+    singleDate.value = ''
+    rangeStart.value = ''
+    rangeEnd.value = ''
+    filterOptions.value = getFieldFilterOptions(props.fieldName)
+  },
+)
 
 const applyFilter = () => {
   if (!selectedCondition.value) return

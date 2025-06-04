@@ -11,11 +11,7 @@
       aria-label="Filter condition"
     >
       <option disabled value="">{{ $t('select_condition') || 'Select condition' }}</option>
-      <option
-        v-for="condition in filterOptions"
-        :key="condition.value"
-        :value="condition.value"
-      >
+      <option v-for="condition in filters" :key="condition.value" :value="condition.value">
         {{ $t(condition.label) }}
       </option>
     </select>
@@ -47,6 +43,8 @@ import { getFieldFilterOptions } from '../../composable/getFilterOptions'
 // Props y eventos
 const props = defineProps<{
   fieldName: string
+  values: string[]
+  filters: FilterConditionOption[]
 }>()
 
 const emit = defineEmits<{
@@ -64,11 +62,14 @@ onMounted(() => {
 })
 
 // Reset y actualización si cambia el campo
-watch(() => props.fieldName, () => {
-  selectedCondition.value = ''
-  filterValue.value = ''
-  filterOptions.value = getFieldFilterOptions(props.fieldName)
-})
+watch(
+  () => props.fieldName,
+  () => {
+    selectedCondition.value = ''
+    filterValue.value = ''
+    filterOptions.value = getFieldFilterOptions(props.fieldName)
+  },
+)
 
 // Emitir si ambos valores están definidos
 const applyFilter = () => {

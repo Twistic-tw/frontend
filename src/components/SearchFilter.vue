@@ -50,8 +50,10 @@
                   :is="components[getFilterComponent(getFieldType(searchField))]"
                   :field-name="searchField"
                   :values="getColumnValues(searchField, filteredRows)"
+                  :filters="getFieldFilterOptions(searchField)"
                   @filter-change="val => handleAdvancedFilter(searchField, val)"
                 />
+
                 <button
                   @click="$emit('clear')"
                   class="w-full mt-4 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition shadow-sm"
@@ -140,6 +142,7 @@ import DateRangeFilter from './filters/DateRangeFilter.vue'
 import BooleanFilter from './filters/BooleanFilter.vue'
 import NumberFilter from './filters/NumberFilter.vue'
 import SelectFilter from './filters/SelectFilter.vue'
+import { getFieldFilterOptions } from '../composable/getFilterOptions'
 import {
   getFieldType,
   getFilterComponent,

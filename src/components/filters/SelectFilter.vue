@@ -5,11 +5,7 @@
     </label>
     <select v-model="selectedCondition" class="w-full p-2 border rounded">
       <option disabled value="">{{ $t('select_condition') }}</option>
-      <option
-        v-for="condition in filterOptions"
-        :key="condition.value"
-        :value="condition.value"
-      >
+      <option v-for="condition in filters" :key="condition.value" :value="condition.value">
         {{ $t(condition.label) }}
       </option>
     </select>
@@ -18,16 +14,8 @@
       <label class="block mt-2 text-sm font-medium text-gray-700">
         {{ $t('select_multiple_values') }}
       </label>
-      <select
-        v-model="multiValues"
-        multiple
-        class="w-full p-2 border rounded h-32"
-      >
-        <option
-          v-for="option in fieldOptions"
-          :key="option"
-          :value="option"
-        >
+      <select v-model="multiValues" multiple class="w-full p-2 border rounded h-32">
+        <option v-for="option in fieldOptions" :key="option" :value="option">
           {{ option }}
         </option>
       </select>
@@ -39,11 +27,7 @@
       </label>
       <select v-model="singleValue" class="w-full p-2 border rounded">
         <option disabled value="">{{ $t('select_value') }}</option>
-        <option
-          v-for="option in fieldOptions"
-          :key="option"
-          :value="option"
-        >
+        <option v-for="option in fieldOptions" :key="option" :value="option">
           {{ option }}
         </option>
       </select>
@@ -66,6 +50,7 @@ import type { FilterConditionOption } from '../../types/FilterConditionOption'
 const props = defineProps<{
   fieldName: string
   values: string[]
+  filters: FilterConditionOption[]
 }>()
 
 const emit = defineEmits<{
@@ -83,13 +68,16 @@ onMounted(() => {
   fieldOptions.value = props.values
 })
 
-watch(() => props.fieldName, () => {
-  selectedCondition.value = ''
-  singleValue.value = ''
-  multiValues.value = []
-  filterOptions.value = getFieldFilterOptions(props.fieldName)
-  fieldOptions.value = props.values
-})
+watch(
+  () => props.fieldName,
+  () => {
+    selectedCondition.value = ''
+    singleValue.value = ''
+    multiValues.value = []
+    filterOptions.value = getFieldFilterOptions(props.fieldName)
+    fieldOptions.value = props.values
+  },
+)
 
 const applyFilter = () => {
   if (!selectedCondition.value) return

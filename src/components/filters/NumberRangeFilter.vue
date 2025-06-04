@@ -4,11 +4,7 @@
       <label class="block text-sm font-medium text-gray-700">{{ $t('filter_condition') }}</label>
       <select v-model="selectedCondition" class="w-full p-2 border rounded">
         <option disabled value="">{{ $t('select_condition') }}</option>
-        <option
-          v-for="condition in filterOptions"
-          :key="condition.value"
-          :value="condition.value"
-        >
+        <option v-for="condition in filters" :key="condition.value" :value="condition.value">
           {{ $t(condition.label) }}
         </option>
       </select>
@@ -54,6 +50,8 @@ import type { FilterConditionOption } from '../../types/FilterConditionOption'
 
 const props = defineProps<{
   fieldName: string
+  values: string[]
+  filters: FilterConditionOption[]
 }>()
 
 const emit = defineEmits<{
@@ -70,13 +68,16 @@ onMounted(() => {
   filterOptions.value = getFieldFilterOptions(props.fieldName)
 })
 
-watch(() => props.fieldName, () => {
-  selectedCondition.value = ''
-  filterValue.value = null
-  rangeStart.value = null
-  rangeEnd.value = null
-  filterOptions.value = getFieldFilterOptions(props.fieldName)
-})
+watch(
+  () => props.fieldName,
+  () => {
+    selectedCondition.value = ''
+    filterValue.value = null
+    rangeStart.value = null
+    rangeEnd.value = null
+    filterOptions.value = getFieldFilterOptions(props.fieldName)
+  },
+)
 
 const applyFilter = () => {
   if (!selectedCondition.value) return
@@ -85,13 +86,13 @@ const applyFilter = () => {
     if (rangeStart.value === null || rangeEnd.value === null) return
     emit('filter-change', {
       condition: selectedCondition.value,
-      value: [rangeStart.value, rangeEnd.value]
+      value: [rangeStart.value, rangeEnd.value],
     })
   } else {
     if (filterValue.value === null) return
     emit('filter-change', {
       condition: selectedCondition.value,
-      value: filterValue.value
+      value: filterValue.value,
     })
   }
 }
