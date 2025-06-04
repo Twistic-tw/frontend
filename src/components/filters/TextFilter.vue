@@ -11,9 +11,9 @@
       aria-label="Filter condition"
     >
       <option disabled value="">{{ $t('select_condition') || 'Select condition' }}</option>
-      <option v-for="condition in filters" :key="condition.value" :value="condition.value">
-        {{ $t(condition.label) }}
-      </option>
+      <option v-for="condition in filterOptions" :key="condition.value" :value="condition.value">
+  {{ $t(condition.label) }}
+</option>
     </select>
 
     <!-- Input de valor -->
@@ -44,7 +44,6 @@ import { getFilterOptionsFromFieldName } from '../../composable/getFilterOptions
 const props = defineProps<{
   fieldName: string
   values: string[]
-  filters: FilterConditionOption[]
 }>()
 
 const emit = defineEmits<{
