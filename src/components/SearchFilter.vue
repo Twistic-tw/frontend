@@ -40,25 +40,28 @@
                 </option>
               </select>
             </div>
-              <transition name="fade-slide" mode="out-in">
-                <div
-                  :key="searchField"
-                  class="transition-all duration-300 ease-in-out"
+
+            <transition name="fade-slide" mode="out-in">
+              <div
+                v-if="showFilter"
+                :key="searchField"
+                class="transition-all duration-300 ease-in-out"
+              >
+                <component
+                  :is="components[getFilterComponent(getFieldType(searchField))]"
+                  :field-name="searchField"
+                  :values="getColumnValues(searchField, filteredRows)"
+                  @filter-change="val => handleAdvancedFilter(searchField, val)"
+                />
+                <button
+                  @click="$emit('clear')"
+                  class="w-full mt-4 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition shadow-sm"
                 >
-                  <component
-                    :is="components[getFilterComponent(getFieldType(searchField))]"
-                    :field-name="searchField"
-                    :values="getColumnValues(searchField, filteredRows)"
-                    @filter-change="val => handleAdvancedFilter(searchField, val)"
-                  />
-                  <button
-                    @click="$emit('clear')"
-                    class="w-full mt-4 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition shadow-sm"
-                  >
-                    {{ t('clear') }}
-                  </button>
-                </div>
-              </transition>
+                  {{ t('clear') }}
+                </button>
+              </div>
+            </transition>
+
           </aside>
 
           <!-- Tabla -->
@@ -166,11 +169,18 @@ const emit = defineEmits([
 ])
 
 const showModal = ref(false)
+const showFilter = ref(false)
 
 const onUpdateSearchField = (event: Event) => {
   const value = (event.target as HTMLSelectElement).value
+  showFilter.value = false // Oculta antes de cambiar
   emit('update:searchField', value)
   emit('filter')
+
+  // Despliega después con delay (para activar animación)
+  setTimeout(() => {
+    showFilter.value = true
+  }, 100)
 }
 
 const handleAdvancedFilter = (field: string, value: unknown) => {
