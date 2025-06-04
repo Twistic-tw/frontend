@@ -42,13 +42,19 @@
             </div>
             <div v-if="searchField">
               <transition name="fade-slide">
-                <div v-if="searchField">
+                <div v-if="searchField" class="transition-all duration-300 ease-in-out">
                   <component
                     :is="components[getFilterComponent(getFieldType(searchField))]"
                     :field-name="searchField"
                     :values="getColumnValues(searchField, filteredRows)"
                     @filter-change="val => handleAdvancedFilter(searchField, val)"
                   />
+                  <button
+                    @click="$emit('clear')"
+                    class="w-full mt-4 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition shadow-sm"
+                  >
+                    {{ t('clear') }}
+                  </button>
                 </div>
               </transition>
               <button
