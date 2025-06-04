@@ -32,7 +32,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import type { FilterConditionOption } from '../../types/FilterConditionOption'
-//import { getFilterOptionsFromFieldName } from '../../composable/getFilterOptions'
 
 // Props y eventos
 const props = defineProps<{

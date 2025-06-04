@@ -1,92 +1,105 @@
 <template>
-  <div class="space-y-2">
+  <div class="space-y-4">
     <label class="block text-sm font-medium text-gray-700">
-      {{ $t('filter_condition') }}
+      {{ $t('select_date_range') }}
     </label>
-    <select v-model="selectedCondition" class="w-full p-2 border rounded">
-      <option disabled value="">{{ $t('select_condition') }}</option>
-      <option v-for="condition in filters" :key="condition.value" :value="condition.value">
-        {{ $t(condition.label) }}
-      </option>
-    </select>
 
-    <input
-      v-if="selectedCondition !== 'between'"
-      v-model="singleDate"
-      type="date"
-      class="w-full p-2 border rounded"
-    />
+    <div class="space-y-2">
+      <label class="text-xs text-gray-600 font-semibold">
+        {{ $t('filter_before') }}
+      </label>
+      <input
+        type="date"
+        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        v-model="inputs.before"
+        @change="applyFilter('before')"
+      />
 
-    <div v-else class="flex gap-2">
-      <input v-model="rangeStart" type="date" class="w-full p-2 border rounded" />
-      <input v-model="rangeEnd" type="date" class="w-full p-2 border rounded" />
+      <label class="text-xs text-gray-600 font-semibold">
+        {{ $t('filter_after') }}
+      </label>
+      <input
+        type="date"
+        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        v-model="inputs.after"
+        @change="applyFilter('after')"
+      />
+
+      <label class="text-xs text-gray-600 font-semibold">
+        {{ $t('filter_between') }}
+      </label>
+      <div class="flex gap-2">
+        <input
+          type="date"
+          class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          v-model="inputs.betweenStart"
+        />
+        <input
+          type="date"
+          class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          v-model="inputs.betweenEnd"
+          @change="applyFilter('between')"
+        />
+      </div>
     </div>
 
     <button
-      @click="applyFilter"
-      class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+      @click="clearAll"
+      class="w-full bg-gray-300 text-gray-800 py-2 rounded hover:bg-gray-400 transition"
     >
-      {{ $t('apply_filter') }}
+      {{ $t('clear_filters') }}
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, type Ref } from 'vue'
-import { getFilterOptionsFromFieldName } from '../../composable/getFilterOptions'
-import type { FilterConditionOption } from '../../types/FilterConditionOption'
+import { ref, watch } from 'vue'
 
 const props = defineProps<{
   fieldName: string
-  values: string[]
-  filters: FilterConditionOption[]
 }>()
 
 const emit = defineEmits<{
-  (
-    e: 'filter-change',
-    payload: { condition: string; value: string | { start: string; end: string } },
-  ): void
+  (e: 'filter-change', payload: { condition: string; value: string | [string, string] }): void
 }>()
 
-const selectedCondition = ref('')
-const singleDate = ref('')
-const rangeStart = ref('')
-const rangeEnd = ref('')
-const filterOptions: Ref<FilterConditionOption[]> = ref([])
-
-onMounted(() => {
-  filterOptions.value = getFilterOptionsFromFieldName(props.fieldName)
+const inputs = ref({
+  before: '',
+  after: '',
+  betweenStart: '',
+  betweenEnd: ''
 })
 
-watch(
-  () => props.fieldName,
-  () => {
-    selectedCondition.value = ''
-    singleDate.value = ''
-    rangeStart.value = ''
-    rangeEnd.value = ''
-    filterOptions.value = getFilterOptionsFromFieldName(props.fieldName)
-  },
-)
+watch(() => props.fieldName, () => {
+  inputs.value = {
+    before: '',
+    after: '',
+    betweenStart: '',
+    betweenEnd: ''
+  }
+})
 
-const applyFilter = () => {
-  if (!selectedCondition.value) return
-  if (selectedCondition.value === 'between') {
-    if (!rangeStart.value || !rangeEnd.value) return
-    emit('filter-change', {
-      condition: 'between',
-      value: {
-        start: rangeStart.value,
-        end: rangeEnd.value,
-      },
-    })
+function applyFilter(condition: string) {
+  if (condition === 'between') {
+    const start = inputs.value.betweenStart
+    const end = inputs.value.betweenEnd
+    if (start && end) {
+      emit('filter-change', { condition, value: [start, end] })
+    }
   } else {
-    if (!singleDate.value) return
-    emit('filter-change', {
-      condition: selectedCondition.value,
-      value: singleDate.value,
-    })
+    const value = inputs.value[condition as 'before' | 'after']
+    if (value) {
+      emit('filter-change', { condition, value })
+    }
+  }
+}
+
+function clearAll() {
+  inputs.value = {
+    before: '',
+    after: '',
+    betweenStart: '',
+    betweenEnd: ''
   }
 }
 </script>

@@ -3,48 +3,41 @@
     <label class="block text-sm font-medium text-gray-700">
       {{ $t('filter_condition') }}
     </label>
-    <select v-model="selectedCondition" class="w-full p-2 border rounded">
-      <option disabled value="">{{ $t('select_condition') }}</option>
-      <option v-for="condition in filters" :key="condition.value" :value="condition.value">
+
+    <!-- Mostrar todos los filtros disponibles como selects -->
+    <div v-for="condition in filters" :key="condition.value" class="space-y-2">
+      <label class="text-xs text-gray-600 font-semibold">
         {{ $t(condition.label) }}
-      </option>
-    </select>
-
-    <div v-if="selectedCondition === 'in'">
-      <label class="block mt-2 text-sm font-medium text-gray-700">
-        {{ $t('select_multiple_values') }}
       </label>
-      <select v-model="multiValues" multiple class="w-full p-2 border rounded h-32">
-        <option v-for="option in fieldOptions" :key="option" :value="option">
-          {{ option }}
-        </option>
-      </select>
-    </div>
-
-    <div v-else>
-      <label class="block mt-2 text-sm font-medium text-gray-700">
-        {{ $t('select_value') }}
-      </label>
-      <select v-model="singleValue" class="w-full p-2 border rounded">
-        <option disabled value="">{{ $t('select_value') }}</option>
-        <option v-for="option in fieldOptions" :key="option" :value="option">
+      <select
+        v-model="selectedValues[condition.value]"
+        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option disabled value="">{{ $t('select_option') }}</option>
+        <option v-for="option in values" :key="option" :value="option">
           {{ option }}
         </option>
       </select>
     </div>
 
     <button
-      @click="applyFilter"
+      @click="applyAllFilters"
       class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
     >
       {{ $t('apply_filter') }}
+    </button>
+
+    <button
+      @click="clearAll"
+      class="w-full bg-gray-300 text-gray-800 py-2 rounded hover:bg-gray-400 transition"
+    >
+      {{ $t('clear_filters') }}
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
-import { getFilterOptionsFromFieldName } from '../../composable/getFilterOptions'
+import { ref, watch } from 'vue'
 import type { FilterConditionOption } from '../../types/FilterConditionOption'
 
 const props = defineProps<{
@@ -54,46 +47,25 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'filter-change', payload: { condition: string; value: string | string[] }): void
+  (e: 'filter-change', payload: { condition: string; value: string }): void
 }>()
 
-const selectedCondition = ref('')
-const singleValue = ref('')
-const multiValues = ref<string[]>([])
-const filterOptions = ref<FilterConditionOption[]>([])
-const fieldOptions = ref<string[]>([])
+const selectedValues = ref<Record<string, string>>({})
 
-onMounted(() => {
-  filterOptions.value = getFilterOptionsFromFieldName(props.fieldName)
-  fieldOptions.value = props.values
+watch(() => props.fieldName, () => {
+  selectedValues.value = {}
 })
 
-watch(
-  () => props.fieldName,
-  () => {
-    selectedCondition.value = ''
-    singleValue.value = ''
-    multiValues.value = []
-    filterOptions.value = getFilterOptionsFromFieldName(props.fieldName)
-    fieldOptions.value = props.values
-  },
-)
-
-const applyFilter = () => {
-  if (!selectedCondition.value) return
-
-  if (selectedCondition.value === 'in') {
-    if (!multiValues.value.length) return
-    emit('filter-change', {
-      condition: selectedCondition.value,
-      value: multiValues.value,
-    })
-  } else {
-    if (!singleValue.value) return
-    emit('filter-change', {
-      condition: selectedCondition.value,
-      value: singleValue.value,
-    })
+function applyAllFilters() {
+  for (const condition of props.filters) {
+    const value = selectedValues.value[condition.value]
+    if (value?.trim()) {
+      emit('filter-change', { condition: condition.value, value })
+    }
   }
+}
+
+function clearAll() {
+  selectedValues.value = {}
 }
 </script>
