@@ -53,8 +53,15 @@ export function Dashboard() {
 
   const fetchNotifications = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_URL}/ShowNotifications`, {
-        withCredentials: true
+      let url = `${import.meta.env.VITE_URL}/ShowNotifications`
+
+      // Si el usuario no es admin, añadimos el filtro por ID
+      if (role !== 'admin') {
+        url += `?id_user=${userId.value}`
+      }
+
+      const res = await axios.get(url, {
+        withCredentials: true,
       })
 
       allNotifications.value = res.data.notifications || []
@@ -67,8 +74,9 @@ export function Dashboard() {
     }
   }
 
+
   onMounted(async () => {
-    await fetchNotifications()
+    fetchNotifications()
   })
 
   return {
