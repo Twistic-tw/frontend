@@ -77,7 +77,6 @@ export function ApprovedCatalog() {
     return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`
   }
 
-  // Solo obtenemos notificaciones aprobadas, sin llamar a /user
   onMounted(async () => {
     fetchApprovedTemplates()
   })
