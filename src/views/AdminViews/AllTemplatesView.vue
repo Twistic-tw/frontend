@@ -17,6 +17,10 @@ const {
   cancelConfirm
 } = useTemplates()
 
+function onEliminar(id: number) {
+  eliminarPlantilla(id)
+}
+
 const { t } = useI18n()
 </script>
 
@@ -107,7 +111,7 @@ const { t } = useI18n()
         </div>
 
         <button
-          @click="() => eliminarPlantilla(plantilla.id)"
+           @click="() => onEliminar(plantilla.id)"
           class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition mt-4"
         >
           {{ t('templates.delete') }}
