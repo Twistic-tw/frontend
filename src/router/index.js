@@ -104,43 +104,55 @@ const router = createRouter({
 
 // Navigation Guard
 
+// Creamos una referencia reactiva para almacenar el usuario logueado
+// Esto se mantiene en memoria mientras no se recargue la página
+const user = ref<User | null>(null)
+
+// Guard de navegación que se ejecuta antes de cada cambio de ruta
 router.beforeEach(async (to, from, next) => {
-  // Paso 1: Comprobamos si la ruta requiere autenticación
+  // Comprobamos si la ruta que vamos a visitar requiere autenticación
   const requiresAuth = to.meta.requiereNavAdmin;
 
-  // Inicializamos el estado de sesión
+  // Inicializamos la variable para saber si el usuario está logueado
   let isLoggedIn = false;
 
-  try {
-    // Paso 2: Solicitamos nueva cookie CSRF
-    await fetch(`${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
-      credentials: 'include',
-    });
+  // Si todavía no hemos guardado los datos del usuario...
+  if (!user.value) {
+    try {
+      // Paso 1: Solicitamos la cookie CSRF (Laravel Sanctum la requiere antes de hacer login o leer /user)
+      await fetch(`${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
+        credentials: 'include', // Incluimos cookies en la petición
+      });
 
-    // Paso 3: Verificamos si el usuario está logueado
-    const res = await fetch(`${import.meta.env.VITE_URL}/user`, {
-      credentials: 'include',
-    });
+      // Paso 2: Solicitamos los datos del usuario logueado
+      const res = await fetch(`${import.meta.env.VITE_URL}/user`, {
+        credentials: 'include',
+      });
 
-    // Si la respuesta es válida, marcamos como logueado
-    if (res.ok) {
-      isLoggedIn = true;
-    } else {
-      console.warn(`Error al verificar autenticación: ${res.status} ${res.statusText}`);
+      // Si la respuesta es correcta (status 200)...
+      if (res.ok) {
+        // Guardamos el usuario en memoria para no repetir la llamada en futuras rutas
+        user.value = await res.json();
+        isLoggedIn = true;
+      }
+    } catch {
+      // Si falla cualquier paso, marcamos que no hay sesión activa
+      isLoggedIn = false;
     }
-
-  } catch (error) {
-    console.warn('Excepción al verificar autenticación (backend caído o sin sesión)');
+  } else {
+    // Si ya teníamos el usuario en memoria, consideramos que está logueado
+    isLoggedIn = true;
   }
 
-  // Paso 4: Si intenta entrar a una ruta protegida sin sesión, lo mandamos al login
+  // Si la ruta requiere autenticación y el usuario no está logueado, redirigimos al login
   if (requiresAuth && !isLoggedIn) {
     return next('/login');
   }
 
-  // Paso 5: Continuamos con la navegación normal
+  // En cualquier otro caso, permitimos continuar a la ruta solicitada
   return next();
 });
+
 
 
 export default router
