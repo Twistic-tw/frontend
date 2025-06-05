@@ -62,6 +62,7 @@ onMounted(() => {
 // Emitir el filtro
 function applyFilter(condition: string) {
   const value = inputs.value[condition]
+  console.log('📝 Filtro aplicado en TextFilter:', { condition, value })
   if (value?.trim()) {
     emit('filter-change', { condition, value })
   }
