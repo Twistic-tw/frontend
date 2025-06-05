@@ -3,6 +3,7 @@ import { ApprovedCatalog } from '../../composable/ApprovedCatalog'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+const role = sessionStorage.getItem('userRole') || ''
 
 const {
   approvedTemplates,
@@ -37,12 +38,20 @@ const {
         :to="`/customizePdf/${template.id_template}`"
         class="block p-6 bg-white rounded-2xl shadow hover:shadow-lg transition dark:bg-gray-800"
       >
-        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">
           {{ template.catalog_name }}
         </h2>
-        <p class="text-sm text-gray-500">
+        <p class="text-sm text-gray-500 mb-2">
           {{ t("approved_created") }} {{ formatDate(template.created_at) }}
         </p>
+
+        <!-- Botón visible solo para admin -->
+        <button
+          v-if="role === 'admin'"
+          class="mt-2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition hover:bg-gray-700"
+        >
+          {{ t("duplicate") }}
+        </button>
       </RouterLink>
     </div>
   </div>
