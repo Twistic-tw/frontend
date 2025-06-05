@@ -233,10 +233,10 @@ const handleAdvancedFilter = (field: string, value: unknown) => {
 // Limpiar todos los filtros
 function clearAllFilters() {
   advancedFilterValues.value = {}
+  emit('update:searchField', '') // resetea el campo seleccionado
   showFilter.value = false
-  emit('filter') // fuerza al padre a recalcular
+  emit('filter') // actualiza los resultados en el padre
 }
-
 
 const components = {
   TextFilter,
