@@ -1,6 +1,7 @@
 // src/composables/useNotificationsDashboard.ts
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
+console.log('🟢 Dashboard view mounted')
 
 export function Dashboard() {
   const role = sessionStorage.getItem('userRole')
