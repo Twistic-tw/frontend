@@ -186,6 +186,7 @@ import {
   getFilterComponent,
   getColumnValues,
   updateAdvancedFilter,
+  advancedFilters
 } from '../composable/DynamicFiltersLogic'
 
 const { t } = useI18n()
@@ -233,9 +234,11 @@ const handleAdvancedFilter = (field: string, value: unknown) => {
 // Limpiar todos los filtros
 function clearAllFilters() {
   advancedFilterValues.value = {}
-  emit('update:searchField', '') // resetea el campo seleccionado
+  Object.keys(advancedFilters.value).forEach(key => delete advancedFilters.value[key]) // limpiar filtros reales
+
+  emit('update:searchField', '')
   showFilter.value = false
-  emit('filter') // actualiza los resultados en el padre
+  emit('filter')
 }
 
 const components = {
