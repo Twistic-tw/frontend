@@ -1,12 +1,16 @@
 <template>
   <div class="space-y-4">
-    <!-- Mostrar cada condición de forma directa -->
-    <div v-for="condition in filters" :key="condition.value" class="flex items-center space-x-2">
+    <!-- Mostrar cada condición como checkbox -->
+    <div
+      v-for="condition in filters"
+      :key="condition.value"
+      class="flex items-center space-x-2"
+    >
       <input
         type="checkbox"
         :id="condition.value"
         :checked="selectedConditions.includes(condition.value)"
-        @change="toggleCondition(condition.value)"
+        @change="() => toggleCondition(condition)"
         class="form-checkbox h-5 w-5 text-blue-600"
       />
       <label :for="condition.value" class="text-sm text-gray-700">
@@ -14,6 +18,7 @@
       </label>
     </div>
 
+    <!-- Botón para limpiar filtros -->
     <button
       @click="clearFilters"
       class="w-full bg-gray-300 text-gray-800 py-2 rounded hover:bg-gray-400 transition"
@@ -43,21 +48,33 @@ watch(() => props.fieldName, () => {
   selectedConditions.value = []
 })
 
-function toggleCondition(condition: string) {
-  if (selectedConditions.value.includes(condition)) {
-    selectedConditions.value = selectedConditions.value.filter(c => c !== condition)
+// Toggle dinámico al marcar/desmarcar
+function toggleCondition(condition: FilterConditionOption) {
+  const index = selectedConditions.value.indexOf(condition.value)
+  const isSelected = index !== -1
+
+  if (isSelected) {
+    selectedConditions.value.splice(index, 1)
   } else {
-    selectedConditions.value.push(condition)
+    selectedConditions.value.push(condition.value)
   }
 
   emit('filter-change', {
     type: 'boolean',
-    condition,
-    value: condition === 'is_true'
+    condition: condition.value,
+    value: !isSelected && condition.value === 'is_true'
   })
 }
 
+// Limpiar filtros booleanos
 function clearFilters() {
+  for (const condition of props.filters) {
+    emit('filter-change', {
+      type: 'boolean',
+      condition: condition.value,
+      value: false
+    })
+  }
   selectedConditions.value = []
 }
 </script>

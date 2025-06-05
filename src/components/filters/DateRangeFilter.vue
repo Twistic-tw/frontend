@@ -51,12 +51,14 @@
 import { ref, watch } from 'vue'
 import type { FilterConditionOption } from '../../types/FilterConditionOption'
 
+// Props
 const props = defineProps<{
   fieldName: string
   values: string[]
   filters: FilterConditionOption[]
 }>()
 
+// Emit
 const emit = defineEmits<{
   (e: 'filter-change', payload:
     | { type: 'date'; condition: 'between'; start: string; end: string }
@@ -66,10 +68,12 @@ const emit = defineEmits<{
 
 const inputs = ref<Record<string, string>>({})
 
+// Reset al cambiar campo
 watch(() => props.fieldName, () => {
   inputs.value = {}
 })
 
+// Aplicar filtro al cambiar el input
 function applyFilter(condition: string) {
   if (condition === 'between') {
     const start = inputs.value['betweenStart']
@@ -85,7 +89,25 @@ function applyFilter(condition: string) {
   }
 }
 
+// Limpiar filtros
 function clearAll() {
+  const conditions = props.filters.map(f => f.value)
+  for (const condition of conditions) {
+    if (condition === 'between') {
+      emit('filter-change', {
+        type: 'date',
+        condition: 'between',
+        start: '',
+        end: ''
+      })
+    } else {
+      emit('filter-change', {
+        type: 'date',
+        condition,
+        value: ''
+      })
+    }
+  }
   inputs.value = {}
 }
 </script>

@@ -74,8 +74,15 @@ function applyAllFilters() {
   }
 }
 
-// Limpiar todos
+// Limpiar todos y emitir NaN
 function clearAll() {
   selectedValues.value = {}
+  props.filters.forEach(condition => {
+    emit('filter-change', {
+      type: 'number',
+      condition: condition.value,
+      value: NaN
+    })
+  })
 }
 </script>
