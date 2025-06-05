@@ -49,6 +49,7 @@ export function Login() {
             break
         }
 
+        sessionStorage.setItem('userId', response.data.id_user)
         sessionStorage.setItem('userRole', userRole)
         sessionStorage.setItem('userName', response.data.nombre)
         sessionStorage.setItem('userEmail', response.data.email)
