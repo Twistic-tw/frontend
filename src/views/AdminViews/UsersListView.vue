@@ -1,25 +1,25 @@
 <script setup lang="ts">
 import { useUserListManagement } from '../../composable/userListManagement';
 import BackButton from '@/components/BackButton.vue';
-//import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 
 const {
   error, searchQuery, filteredUsers, usuarioSeleccionado, nuevaPassword,
   newUser, idiomasDisponibles, deleteUser, editUser, mostrarModal, guardarCambios,
   openCreateModal, showCreateModal, submitCreateUser, closeCreateModal,
-  //showConfirm, confirmMessage, handleConfirm, cancelConfirm
+  showConfirm, confirmMessage, handleConfirm, cancelConfirm
 } = useUserListManagement();
 </script>
 
 <template>
-  <!-- Modal de confirmación con fade
+  <!-- Modal de confirmación con fade -->
   <ConfirmDialog
     :visible="showConfirm"
     :message="confirmMessage"
     @confirm="handleConfirm"
     @cancel="cancelConfirm"
   />
--->
+
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3">
     <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-800 mb-6 text-center">Users Management</h1>
 
