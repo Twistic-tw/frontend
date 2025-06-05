@@ -87,7 +87,7 @@ const {
 
   <!-- Modal de duplicado -->
   <DuplicateModal
-    :show="showDuplicateModal"
+    v-model:show="showDuplicateModal"
     :default-name="duplicateName"
     :existing-names="approvedTemplates.map(t => t.catalog_name)"
     @close="showDuplicateModal = false"
