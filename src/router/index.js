@@ -110,38 +110,14 @@ const router = createRouter({
 const user = ref(null)
 
 // Guard de navegación que se ejecuta antes de cada cambio de ruta
-router.beforeEach(async (to, from, next) => {
+router.beforeEach((to, from, next) => {
   const requiresAuth = to.meta.requiereNavAdmin
-  let isLoggedIn = false
+  const role = sessionStorage.getItem('userRole')
 
-  // Solo pedimos al backend si aún no tenemos el usuario
-  if (!user.value) {
-    try {
-      await fetch(`${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
-        credentials: 'include',
-      })
-
-      const res = await fetch(`${import.meta.env.VITE_URL}/user`, {
-        credentials: 'include',
-      })
-
-      if (res.ok) {
-        user.value = await res.json()
-        isLoggedIn = true
-      }
-    } catch (error) {
-      console.warn('Error al obtener /user:', error)
-    }
-  } else {
-    isLoggedIn = true
-  }
-
-  // Si necesita login y no está autenticado, redirige
-  if (requiresAuth && !isLoggedIn) {
+  if (requiresAuth && !role) {
     return next('/login')
   }
 
-  // 🔒 Asegúrate de que SIEMPRE se llama a next()
   return next()
 })
 
