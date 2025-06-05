@@ -110,21 +110,7 @@ const router = createRouter({
 const user = ref(null)
 
 // Guard de navegación que se ejecuta antes de cada cambio de ruta
-router.beforeEach(async (to, from, next) => {
-  console.log('➡️ Navegando a:', to.fullPath)
 
-  const requiresAuth = to.meta.requiereNavAdmin
-  const role = sessionStorage.getItem('userRole')
-  console.log('🔐 requiereAuth:', requiresAuth, '| role:', role)
-
-  if (requiresAuth && !role) {
-    console.log('⛔ Redirigiendo a login')
-    return next('/login')
-  }
-
-  console.log('✅ Permitir navegación')
-  return next()
-})
 
 
 export default router
