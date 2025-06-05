@@ -118,9 +118,10 @@ const { t } = useI18n()
     </div>
   </div>
   <ConfirmDialog
-    :visible="showConfirm"
-    :message="confirmMessage"
-    @confirm="handleConfirm"
-    @cancel="cancelConfirm"
-  />
+      v-if="showConfirm"
+      :visible="showConfirm"
+      :message="confirmMessage"
+      @confirm="handleConfirm"
+      @cancel="cancelConfirm"
+    />
 </template>
