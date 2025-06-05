@@ -2,6 +2,7 @@ import { ref, computed, onMounted, onUnmounted, watch, type CSSProperties } from
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
+import { applyAdvancedFilters } from '../composable/DynamicFiltersLogic'
 
 export function CustomizePdf() {
   const route = useRoute()
@@ -273,9 +274,9 @@ export function CustomizePdf() {
     const field = searchField.value
     const input = searchValue.value.trim().toLowerCase()
     if (!field || !input) {
-      filteredRows.value = [...excelData.value]
+      filteredRows.value = applyAdvancedFilters(excelData.value)
       selectedRows.value = filteredRows.value.map((_, i) => i)
-      searchActive.value = false
+      searchActive.value = true
       return
     }
 
