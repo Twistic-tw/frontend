@@ -1,10 +1,7 @@
 <template>
-  <transition name="fade">
-    <div
-      v-if="visible"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-    >
-      <div
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <transition name="fade">
+      <div  v-if="visible"
         class="bg-white p-6 rounded-lg shadow-xl text-center max-w-md w-full"
       >
         <p class="mb-4 text-lg font-medium text-gray-800">{{ message }}</p>
@@ -23,8 +20,8 @@
           </button>
         </div>
       </div>
-    </div>
-  </transition>
+    </transition>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -37,12 +34,10 @@ defineEmits(['confirm', 'cancel'])
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
+.fade-enter-active, .fade-leave-active {
   transition: opacity 0.2s ease;
 }
-.fade-enter-from,
-.fade-leave-to {
+.fade-enter-from, .fade-leave-to {
   opacity: 0;
 }
 </style>
