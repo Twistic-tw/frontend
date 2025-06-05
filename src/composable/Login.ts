@@ -14,15 +14,15 @@ export function Login() {
     loading.value = true
 
     try {
+      // Paso 1: Obtener cookie CSRF
       await axios.get(`${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
         withCredentials: true
       })
 
       const xsrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
-      if (!xsrfToken) {
-        throw new Error('No se encontró el token CSRF')
-      }
+      if (!xsrfToken) throw new Error('No se encontró el token CSRF')
 
+      // Paso 2: Login
       const response = await axios.post(`${import.meta.env.VITE_URL}/loginProcess`,
         {
           email: email.value,
@@ -37,26 +37,28 @@ export function Login() {
         }
       )
 
-      if (response.status === 200) {
-        let userRole = response.data.user_rol[0] || 'client'
+      if (response.status === 200 && response.data) {
+        const data = response.data
+        console.log('🟢 Login exitoso:', data)
 
-        switch (userRole) {
-          case 'ROLE_ADMINISTRATOR':
-            userRole = 'admin'
-            break
-          default:
-            userRole = 'client'
-            break
+        let userRole = data.user_rol?.[0] || 'client'
+        if (userRole === 'ROLE_ADMINISTRATOR') userRole = 'admin'
+        else userRole = 'client'
+
+        const idUser = parseInt(data.id_user)
+        if (isNaN(idUser) || idUser <= 0) {
+          throw new Error(`ID de usuario inválido: ${data.id_user}`)
         }
 
-        sessionStorage.setItem('userId', response.data.id_user)
+        // ✅ Guardar en sessionStorage
+        sessionStorage.setItem('userId', idUser.toString())
         sessionStorage.setItem('userRole', userRole)
-        sessionStorage.setItem('userName', response.data.nombre)
-        sessionStorage.setItem('userEmail', response.data.email)
+        sessionStorage.setItem('userName', data.nombre || '')
+        sessionStorage.setItem('userEmail', data.email || '')
 
         router.push('/dashboard')
       } else {
-        error.value = 'Error inesperado'
+        error.value = 'Error inesperado en la autenticación'
       }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -66,9 +68,9 @@ export function Login() {
       } else if (err.response?.status === 419) {
         error.value = 'Token CSRF inválido o caducado'
       } else {
-        error.value = 'Error de conexión'
+        error.value = 'Error de conexión o respuesta del servidor'
       }
-      console.error(error.value, err)
+      console.error('❌ Login error:', err)
     } finally {
       loading.value = false
     }
