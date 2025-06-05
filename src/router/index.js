@@ -107,7 +107,7 @@ const router = createRouter({
 
 // Creamos una referencia reactiva para almacenar el usuario logueado
 // Esto se mantiene en memoria mientras no se recargue la página
-const user = ref<User | null>(null)
+const user = ref<any | null>(null)
 
 // Guard de navegación que se ejecuta antes de cada cambio de ruta
 router.beforeEach(async (to, from, next) => {
