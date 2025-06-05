@@ -1,15 +1,49 @@
 <script setup lang="ts">
 import { ApprovedCatalog } from '../../composable/ApprovedCatalog'
+import { useI18n } from 'vue-i18n'
 
-const { approvedTemplates } = ApprovedCatalog()
+const { t } = useI18n()
+
+const {
+  approvedTemplates,
+  loading,
+  error,
+  formatDate,
+} = ApprovedCatalog()
 </script>
 
 <template>
-  <div class="p-6">
-    <h1 class="text-2xl font-bold">Render simple de templates</h1>
-    <div v-for="t in approvedTemplates" :key="t.id_template" class="p-2 border-b border-gray-300">
-      {{ t.catalog_name }}
+  <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+      {{ t("approved_title") }}
+    </h1>
+
+    <div v-if="loading" class="text-center text-gray-600">
+      {{ t("approved_loading") }}
     </div>
-    <router-link to="/dashboard" class="text-blue-500 underline mt-4 block">Ir a Dashboard</router-link>
+
+    <div v-if="error" class="text-center text-red-600">
+      {{ t("approved_error") }}
+    </div>
+
+    <div v-else-if="approvedTemplates.length === 0" class="text-center text-gray-600">
+      {{ t("approved_empty") }}
+    </div>
+
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <RouterLink
+        v-for="template in approvedTemplates"
+        :key="template.id_template"
+        :to="`/customizePdf/${template.id_template}`"
+        class="block p-6 bg-white rounded-2xl shadow hover:shadow-lg transition dark:bg-gray-800"
+      >
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
+          {{ template.catalog_name }}
+        </h2>
+        <p class="text-sm text-gray-500">
+          {{ t("approved_created") }} {{ formatDate(template.created_at) }}
+        </p>
+      </RouterLink>
+    </div>
   </div>
 </template>
