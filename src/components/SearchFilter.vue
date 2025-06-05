@@ -58,6 +58,7 @@
               >
                 <component
                   :is="components[getFilterComponent(getFieldType(searchField))]"
+                  v-model="advancedFilterValues[searchField]"
                   :field-name="searchField"
                   :values="getColumnValues(searchField, allRows)"
                   :filters="getFilterOptionsFromFieldName(searchField)"
@@ -199,7 +200,8 @@ const emit = defineEmits([
 
 const showModal = ref(false)
 const showFilter = ref(false)
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const advancedFilterValues = ref<Record<string, any>>({})
 const onUpdateSearchField = (event: Event) => {
   const value = (event.target as HTMLSelectElement).value
   showFilter.value = false
