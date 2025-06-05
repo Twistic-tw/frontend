@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Dashboard } from '../../composable/Dashboard'
 import { useI18n } from 'vue-i18n'
-console.log('🟢 Dashboard view mounted')
 const { t } = useI18n()
 
 const {
