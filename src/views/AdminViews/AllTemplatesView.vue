@@ -1,11 +1,33 @@
 <script setup lang="ts">
 import BackButton from '@/components/BackButton.vue'
+import ConfirmDialog from '@/components/ConfirmDialog.vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+
+const showConfirm = ref(false)
+const confirmMessage = ref('¿Estás seguro de que quieres eliminar esto?')
+
+const handleConfirm = () => {
+  console.log('Confirmado')
+  showConfirm.value = false
+}
+
+const cancelConfirm = () => {
+  console.log('Cancelado')
+  showConfirm.value = false
+}
 </script>
 
 <template>
+  <ConfirmDialog
+    :visible="showConfirm"
+    :message="confirmMessage"
+    @confirm="handleConfirm"
+    @cancel="cancelConfirm"
+  />
+
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
       {{ t('templates.title') }}
