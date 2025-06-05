@@ -27,7 +27,7 @@
 
           <!-- Panel lateral de filtros -->
           <aside class="w-full md:w-1/3 lg:w-1/4 h-full overflow-y-auto border-r p-6 space-y-6 bg-gray-50">
-          <h2 class="text-xl font-bold text-gray-800">{{ t('title_filter_colum') }}</h2>
+          <h2 class="text-xl font-bold text-gray-800">{{ t('title_filter_column') }}</h2>
             <div>
               <select
                 :value="searchField"
@@ -61,7 +61,7 @@
 
           <!-- Tabla -->
           <main class="flex-1 overflow-auto p-6">
-            <h2 class="text-xl font-bold text-gray-800 mb-6">{{ t('title_tabla_results_column') }}</h2>
+            <h2 class="text-xl font-bold text-gray-800 mb-6">{{ t('title_table_results_column') }}</h2>
             <div v-if="filteredRows.length" class="border rounded-lg">
               <div class="sticky top-0 z-20 bg-gray-100 px-4 py-3 border-b flex justify-between items-center">
                 <span class="text-sm text-gray-700">
