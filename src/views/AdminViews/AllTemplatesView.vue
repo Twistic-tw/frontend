@@ -23,12 +23,12 @@ const { t } = useI18n()
 <template>
   <!-- Modal solo se monta si showConfirm es true -->
   <ConfirmDialog
-    v-if="showConfirm"
-    :visible="showConfirm"
-    :message="confirmMessage"
-    @confirm="handleConfirm"
-    @cancel="cancelConfirm"
-  />
+  :visible="showConfirm"
+  :message="confirmMessage"
+  @confirm="handleConfirm"
+  @cancel="cancelConfirm"
+/>
+
 
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
