@@ -1,11 +1,10 @@
 <template>
   <div
+    v-show="visible"
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300"
-    :class="{ 'opacity-0 pointer-events-none': !visible, 'opacity-100': visible }"
   >
     <div
-      class="bg-white p-6 rounded-lg shadow-xl text-center max-w-md transition-transform duration-300"
-      :class="{ 'scale-95': !visible, 'scale-100': visible }"
+      class="bg-white p-6 rounded-lg shadow-xl text-center max-w-md scale-100 transition-all duration-300"
     >
       <p class="mb-4 text-lg font-medium text-gray-800">{{ message }}</p>
       <div class="flex justify-center gap-4">
