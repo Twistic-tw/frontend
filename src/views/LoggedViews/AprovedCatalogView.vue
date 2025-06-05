@@ -5,8 +5,11 @@ import { useI18n } from 'vue-i18n'
 import DuplicateModal from '@/components/DuplicateModal.vue'
 
 const { t } = useI18n()
+
+// El rol no es reactivo, pero se lee una vez al cargar
 const role = sessionStorage.getItem('userRole') || ''
 
+// Importamos todo del composable
 const {
   approvedTemplates,
   loading,
@@ -44,7 +47,7 @@ const {
         :to="`/customizePdf/${template.id_template}`"
         class="flex items-center justify-between p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition dark:bg-gray-800"
       >
-        <!-- Contenido de texto -->
+        <!-- Contenido -->
         <div class="flex-1 pr-4">
           <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">
             {{ template.catalog_name }}
@@ -55,11 +58,12 @@ const {
           <p class="text-sm text-gray-500 mb-4">
             {{ t("approved_updated") }} {{ formatDate(template.updated_at) }}
           </p>
+
           <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8">
             {{ t("approved_customize_button") }}
           </button>
 
-          <!-- Botón Duplicar solo para admin -->
+          <!-- Solo admins pueden duplicar -->
           <button
             v-if="role === 'admin'"
             @click.stop.prevent="openDuplicateModal(template)"
@@ -81,7 +85,7 @@ const {
     </div>
   </div>
 
-  <!-- Componente modal -->
+  <!-- Modal de duplicado -->
   <DuplicateModal
     :show="showDuplicateModal"
     :default-name="duplicateName"
