@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTemplates } from '../../composable/templateList'
 import BackButton from '@/components/BackButton.vue'
-
+import ConfirmDialog from '@/components/ConfirmDialog.vue'
 import { useI18n } from 'vue-i18n'
 
 const {
@@ -11,14 +11,16 @@ const {
   toggleSeleccionarTodas,
   eliminarPlantilla,
   eliminarSeleccionadas,
-
+  showConfirm,
+  confirmMessage,
+  handleConfirm,
+  cancelConfirm
 } = useTemplates()
 
 const { t } = useI18n()
 </script>
 
 <template>
-
 
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
@@ -115,4 +117,10 @@ const { t } = useI18n()
       />
     </div>
   </div>
+  <ConfirmDialog
+    :visible="showConfirm"
+    :message="confirmMessage"
+    @confirm="handleConfirm"
+    @cancel="cancelConfirm"
+  />
 </template>
