@@ -56,17 +56,23 @@ const {
             {{ t("approved_updated") }} {{ formatDate(template.updated_at) }}
           </p>
 
-          <button class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8">
-            {{ t("approved_customize_button") }}
-          </button>
+          <!-- Botones -->
+          <div class="flex items-center space-x-2 mt-2">
+            <button
+              class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8"
+            >
+              {{ t("approved_customize_button") }}
+            </button>
 
-          <button
-            v-if="role === 'admin'"
-            @click.prevent.stop="openDuplicateModal(template)"
-            class="mt-2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition hover:bg-gray-700"
-          >
-            {{ t("duplicate") }}
-          </button>
+            <!-- Solo admins pueden duplicar -->
+            <button
+              v-if="role === 'admin'"
+              @click.stop.prevent="openDuplicateModal(template)"
+              class="bg-gray-800 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:px-8"
+            >
+              {{ t("duplicate") }}
+            </button>
+          </div>
         </div>
 
         <!-- Imagen -->
