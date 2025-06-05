@@ -55,6 +55,7 @@ const {
   previewRows,
   featuredImages,
   filterRows,
+  excelData,
   selectAllFiltered,
   deselectAllFiltered,
   toggleRow,
@@ -113,6 +114,7 @@ onMounted(async () => {
           v-model:searchField="searchField"
           v-model:searchValue="searchValue"
           :fields="fields"
+          :allRows="excelData"
           :filteredRows="filteredRows"
           :selectedRows="selectedRows"
           :searchActive="searchActive"

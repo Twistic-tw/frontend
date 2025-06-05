@@ -59,7 +59,7 @@
                 <component
                   :is="components[getFilterComponent(getFieldType(searchField))]"
                   :field-name="searchField"
-                  :values="getColumnValues(searchField, filteredRows)"
+                  :values="getColumnValues(searchField, allRows)"
                   :filters="getFilterOptionsFromFieldName(searchField)"
                   @filter-change="(val) => handleAdvancedFilter(searchField, val)"
                 />
@@ -182,6 +182,7 @@ const props = defineProps<{
   searchValue: string
   filteredRows: Record<string, string>[]
   selectedRows: number[]
+  allRows: Record<string, string>[]
 }>()
 
 const emit = defineEmits([
