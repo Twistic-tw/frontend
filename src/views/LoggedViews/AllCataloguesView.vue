@@ -10,7 +10,7 @@ const {
   catalogos,
   usuarioSeleccionado,
   role,
-  baseUrl,
+  //baseUrl,
 } = useCatalogManager()
 </script>
 
@@ -51,7 +51,7 @@ const {
           <span class="font-medium text-gray-700 dark:text-white">{{ new Date(catalogo.created_at).toLocaleDateString() }}</span>
         </p>
         <a
-          :href="baseUrl + '/' + catalogo.file_path"
+          :href="'https://api-catalogos.twistic.app/' + catalogo.file_path"
           target="_blank"
           class="font-medium text-blue-600 hover:underline dark:text-blue-400"
         >
