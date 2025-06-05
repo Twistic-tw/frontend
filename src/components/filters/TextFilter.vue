@@ -41,7 +41,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'filter-change', payload: { condition: string; value: string }): void
+  (e: 'filter-change', payload: { condition: string; value: string; type: 'text' }): void
 }>()
 
 // Refs reactivas
@@ -64,7 +64,7 @@ function applyFilter(condition: string) {
   const value = inputs.value[condition]
   console.log('📝 Filtro aplicado en TextFilter:', { condition, value })
   if (value?.trim()) {
-    emit('filter-change', { condition, value })
+    emit('filter-change', { type: 'text', condition, value })
   }
 }
 
