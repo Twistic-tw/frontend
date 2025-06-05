@@ -5,7 +5,7 @@ import axios from 'axios'
 export function Dashboard() {
   const role = sessionStorage.getItem('userRole')
   const userName = sessionStorage.getItem('userName')
-  const userId = ref<number>(0)
+  const userId = ref<number>(parseInt(sessionStorage.getItem('userId') || '0'))
 
   const allNotifications = ref<Notification[]>([])
   const error = ref(false)
@@ -68,7 +68,6 @@ export function Dashboard() {
   }
 
   onMounted(async () => {
-    await fetchUserId()
     await fetchNotifications()
   })
 
