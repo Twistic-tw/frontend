@@ -111,49 +111,38 @@ const user = ref(null)
 
 // Guard de navegación que se ejecuta antes de cada cambio de ruta
 router.beforeEach(async (to, from, next) => {
-  // Comprobamos si la ruta que vamos a visitar requiere autenticación
-  const requiresAuth = to.meta.requiereNavAdmin;
+  const requiresAuth = to.meta.requiereNavAdmin
+  let isLoggedIn = false
 
-  // Inicializamos la variable para saber si el usuario está logueado
-  let isLoggedIn = false;
-
-  // Si todavía no hemos guardado los datos del usuario...
+  // Solo pedimos al backend si aún no tenemos el usuario
   if (!user.value) {
     try {
-      // Paso 1: Solicitamos la cookie CSRF (Laravel Sanctum la requiere antes de hacer login o leer /user)
       await fetch(`${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
-        credentials: 'include', // Incluimos cookies en la petición
-      });
+        credentials: 'include',
+      })
 
-      // Paso 2: Solicitamos los datos del usuario logueado
       const res = await fetch(`${import.meta.env.VITE_URL}/user`, {
         credentials: 'include',
-      });
+      })
 
-      // Si la respuesta es correcta (status 200)...
       if (res.ok) {
-        // Guardamos el usuario en memoria para no repetir la llamada en futuras rutas
-        user.value = await res.json();
-        isLoggedIn = true;
+        user.value = await res.json()
+        isLoggedIn = true
       }
-    } catch {
-      // Si falla cualquier paso, marcamos que no hay sesión activa
-      isLoggedIn = false;
+    } catch (error) {
+      console.warn('Error al obtener /user:', error)
     }
   } else {
-    // Si ya teníamos el usuario en memoria, consideramos que está logueado
-    isLoggedIn = true;
+    isLoggedIn = true
   }
 
-  // Si la ruta requiere autenticación y el usuario no está logueado, redirigimos al login
+  // Si necesita login y no está autenticado, redirige
   if (requiresAuth && !isLoggedIn) {
-    return next('/login');
+    return next('/login')
   }
 
-  // En cualquier otro caso, permitimos continuar a la ruta solicitada
-  return next();
-});
-
-
+  // 🔒 Asegúrate de que SIEMPRE se llama a next()
+  return next()
+})
 
 export default router
