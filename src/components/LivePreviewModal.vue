@@ -97,7 +97,7 @@
             </div>
 
             <!-- Página extra solo con footer -->
-            <div v-if="footerUrl" class="a4-page">
+            <div v-if="footerUrl" class="a4-page p-0">
               <div class="a4-image full-a4">
                 <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
               </div>
