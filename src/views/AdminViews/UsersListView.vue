@@ -12,13 +12,6 @@ const {
 </script>
 
 <template>
-  <!-- Modal de confirmación con fade -->
-  <ConfirmDialog
-  v-model:show="showConfirm"
-  :message="confirmMessage"
-  @confirm="handleConfirm"
-  @cancel="cancelConfirm"
-/>
 
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3">
     <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-800 mb-6 text-center">Users Management</h1>
@@ -172,6 +165,13 @@ const {
         </div>
       </div>
     </transition>
+
+    <ConfirmDialog
+      v-model:show="showConfirm"
+      :message="confirmMessage"
+      @confirm="handleConfirm"
+      @cancel="cancelConfirm"
+    />
 
     <!-- Botón Volver -->
     <div class="mt-12">

@@ -21,12 +21,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <ConfirmDialog
-  v-model:show="showConfirm"
-  :message="confirmMessage"
-  @confirm="handleConfirm"
-  @cancel="cancelConfirm"
-/>
+
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
       {{ t('fields.title') }}
@@ -105,6 +100,13 @@ const { t } = useI18n()
     <div v-if="fields.length === 0" class="text-center text-gray-500 mt-8">
       {{ t('fields.noneAvailable') }}
     </div>
+
+    <ConfirmDialog
+      v-model:show="showConfirm"
+      :message="confirmMessage"
+      @confirm="handleConfirm"
+      @cancel="cancelConfirm"
+    />
 
     <div class="mt-12">
       <BackButton class="fixed bottom-6 left-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow transition-all duration-300 ease-in-out hover:px-6" />
