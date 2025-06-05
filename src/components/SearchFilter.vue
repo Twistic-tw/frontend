@@ -170,7 +170,7 @@ import {
   getFieldType,
   getFilterComponent,
   getColumnValues,
-  updateAdvancedFilter,
+  updateAdvancedFilter
 } from '../composable/DynamicFiltersLogic'
 
 const { t } = useI18n()
@@ -191,7 +191,7 @@ const emit = defineEmits([
   'clear',
   'selectAll',
   'deselectAll',
-  'toggleRow',
+  'toggleRow'
 ])
 
 const showModal = ref(false)
@@ -201,7 +201,7 @@ const onUpdateSearchField = (event: Event) => {
   const value = (event.target as HTMLSelectElement).value
   showFilter.value = false
   emit('update:searchField', value)
-  emit('filter')
+  emit('filter') // Recalcular en el padre
   setTimeout(() => {
     showFilter.value = true
   }, 100)
@@ -209,7 +209,7 @@ const onUpdateSearchField = (event: Event) => {
 
 const handleAdvancedFilter = (field: string, value: unknown) => {
   updateAdvancedFilter(field, value)
-  emit('filter')
+  emit('filter') // Notifica al padre para que actualice filteredRows
 }
 
 const components = {
