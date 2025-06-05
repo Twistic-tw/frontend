@@ -18,6 +18,7 @@
             class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             :placeholder="$t('enter_min_value')"
             v-model="inputs.betweenMin"
+            @input="applyFilter('between')"
           />
           <input
             type="number"
@@ -35,6 +36,7 @@
           class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           :placeholder="$t('enter_value')"
           v-model="inputs[condition.value]"
+          @input="applyFilter('between')"
           @keyup.enter="applyFilter(condition.value)"
         />
       </template>

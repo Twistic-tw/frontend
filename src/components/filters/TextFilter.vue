@@ -16,6 +16,7 @@
         :placeholder="$t('enter_value')"
         v-model="inputs[condition.value]"
         @keyup.enter="applyFilter(condition.value)"
+        @input="emitFilter(condition.value)"
       />
     </div>
 
@@ -63,6 +64,13 @@ onMounted(() => {
 function applyFilter(condition: string) {
   const value = inputs.value[condition]
   console.log('📝 Filtro aplicado en TextFilter:', { condition, value })
+  if (value?.trim()) {
+    emit('filter-change', { type: 'text', condition, value })
+  }
+}
+
+function emitFilter(condition: string) {
+  const value = inputs.value[condition]
   if (value?.trim()) {
     emit('filter-change', { type: 'text', condition, value })
   }

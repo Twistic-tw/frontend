@@ -15,13 +15,6 @@
     </div>
 
     <button
-      @click="applyFilters"
-      class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
-    >
-      {{ $t('apply_filter') }}
-    </button>
-
-    <button
       @click="clearFilters"
       class="w-full bg-gray-300 text-gray-800 py-2 rounded hover:bg-gray-400 transition"
     >
@@ -56,15 +49,11 @@ function toggleCondition(condition: string) {
   } else {
     selectedConditions.value.push(condition)
   }
-}
 
-function applyFilters() {
-  selectedConditions.value.forEach(condition => {
-    emit('filter-change', {
-      type: 'boolean',
-      condition,
-      value: condition === 'is_true'
-    })
+  emit('filter-change', {
+    type: 'boolean',
+    condition,
+    value: condition === 'is_true'
   })
 }
 
