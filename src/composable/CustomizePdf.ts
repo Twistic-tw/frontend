@@ -271,72 +271,25 @@ export function CustomizePdf() {
   }
 
   function filterRows() {
-    const field = searchField.value
-    const input = searchValue.value.trim().toLowerCase()
-    if (!field || !input) {
-      filteredRows.value = applyAdvancedFilters(excelData.value)
-      selectedRows.value = filteredRows.value.map((_, i) => i)
-      searchActive.value = true
-      return
-    }
+  const input = searchValue.value.trim().toLowerCase()
 
-    const queries = input
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean)
-    const resultadoFiltrado: Record<string, string>[] = []
-    const nuevaSeleccion: number[] = []
-
-    excelData.value.forEach((row, index) => {
-      const rawValue = row[field]
-      const value = rawValue?.toString().toLowerCase()
-      if (!value) return
-
-      const coincide = queries.some((query) => {
-        if (query.includes('..')) {
-          const [min, max] = query.split('..').map((v) => v.trim())
-          const numVal = parseFloat(value)
-          const isNumRange = !isNaN(parseFloat(min)) && !isNaN(parseFloat(max))
-          return isNumRange ? numVal >= +min && numVal <= +max : value >= min && value <= max
-        }
-
-        const match = query.match(/^(>=|<=|!=|>|<|=)(.+)$/)
-        if (match) {
-          const [_, operator, target] = match
-          const numValue = parseFloat(value)
-          const numTarget = parseFloat(target.trim())
-          switch (operator) {
-            case '>':
-              return numValue > numTarget
-            case '<':
-              return numValue < numTarget
-            case '>=':
-              return numValue >= numTarget
-            case '<=':
-              return numValue <= numTarget
-            case '=':
-              return value === target
-            case '!=':
-              return value !== target
-          }
-        }
-
-        if (query.startsWith('*') && query.endsWith('*')) return value.includes(query.slice(1, -1))
-        if (query.startsWith('*')) return value.endsWith(query.slice(1))
-        if (query.endsWith('*')) return value.startsWith(query.slice(0, -1))
-        return value.includes(query)
-      })
-
-      if (coincide) {
-        resultadoFiltrado.push(row)
-        nuevaSeleccion.push(index)
-      }
+  // Si hay búsqueda libre, usarla
+  if (searchField.value && input) {
+    const resultadoFiltrado = excelData.value.filter(row => {
+      const value = row[searchField.value]?.toString().toLowerCase() || ''
+      return value.includes(input)
     })
 
     filteredRows.value = resultadoFiltrado
-    selectedRows.value = nuevaSeleccion
+    selectedRows.value = resultadoFiltrado.map((_, i) => i)
+    searchActive.value = true
+  } else {
+    // Si no hay búsqueda libre, aplicar los filtros inteligentes
+    filteredRows.value = applyAdvancedFilters(excelData.value)
+    selectedRows.value = filteredRows.value.map((_, i) => i)
     searchActive.value = true
   }
+}
 
   function clearSearch() {
     searchField.value = ''
