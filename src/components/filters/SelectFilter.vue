@@ -6,7 +6,7 @@
 
     <!-- Mostrar todos los filtros disponibles como selects -->
     <div v-for="condition in filters" :key="condition.value" class="space-y-2">
-      <label class="text-xs text-gray-600 font-semibold">
+      <label class="text-sm text-gray-600 font-semibold">
         {{ $t(condition.label) }}
       </label>
       <select

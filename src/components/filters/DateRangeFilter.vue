@@ -5,7 +5,7 @@
     </label>
 
     <div class="space-y-2">
-      <label class="text-xs text-gray-600 font-semibold">
+      <label class="text-sm text-gray-600 font-semibold">
         {{ $t('filter_before') }}
       </label>
       <input
