@@ -264,6 +264,8 @@
   "enter_maximum": "Enter maximum value",
   "no_options_available": "No options available",
   "clear_field_filter": "Clear field filter",
+  "title_filter_column": "Filter by Field",
+  "title_tabla_results_colum": "Results Table",
   "fields": {
     "field_name": "Name",
     "field_description": "Description",
