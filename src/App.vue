@@ -38,7 +38,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
           leave-to-class="opacity-0 translate-y-4"
           mode="out-in"
         >
-          <component :is="Component" />
+          <component :is="Component" :key="route.fullPath" />
         </transition>
       </RouterView>
     </main>
