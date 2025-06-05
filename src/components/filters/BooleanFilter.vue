@@ -44,9 +44,12 @@ const emit = defineEmits<{
 
 const selectedConditions = ref<string[]>([])
 
-watch(() => props.fieldName, () => {
-  selectedConditions.value = []
+watch(() => props.fieldName, (newVal, oldVal) => {
+  if (newVal !== oldVal) {
+    selectedConditions.value = []
+  }
 })
+
 
 // Toggle dinámico al marcar/desmarcar
 function toggleCondition(condition: FilterConditionOption) {

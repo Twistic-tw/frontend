@@ -48,8 +48,10 @@ const emit = defineEmits<{
 const inputs = ref<Record<string, string>>({})
 
 // Reset inputs al cambiar campo
-watch(() => props.fieldName, () => {
-  inputs.value = {}
+watch(() => props.fieldName, (newVal, oldVal) => {
+  if (newVal !== oldVal) {
+    inputs.value = {}
+  }
 })
 
 // Aplicar filtro manual (enter)

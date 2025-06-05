@@ -56,9 +56,12 @@ const emit = defineEmits<{
 const selectedValues = ref<Record<string, string>>({})
 
 // Reset cuando cambia el campo
-watch(() => props.fieldName, () => {
-  selectedValues.value = {}
+watch(() => props.fieldName, (newVal, oldVal) => {
+  if (newVal !== oldVal) {
+    selectedValues.value = {}
+  }
 })
+
 
 // Aplicar todos los filtros válidos
 function applyAllFilters() {
