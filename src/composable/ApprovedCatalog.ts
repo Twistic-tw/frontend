@@ -79,7 +79,7 @@ export function ApprovedCatalog() {
 
   // Solo obtenemos notificaciones aprobadas, sin llamar a /user
   onMounted(async () => {
-    await fetchApprovedTemplates()
+    fetchApprovedTemplates()
   })
 
   return {
