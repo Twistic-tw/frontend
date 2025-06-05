@@ -19,13 +19,13 @@
             class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
             @click="confirmAndClose"
           >
-            {{ $t('confirm_dialog.delete') }}
+            {{ $t('confirm_dialog_delete') }}
           </button>
           <button
             class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition"
             @click="cancelAndClose"
           >
-            {{ $t('confirm_dialog.cancel') }}
+            {{ $t('confirm_dialog_cancel') }}
           </button>
         </div>
       </div>

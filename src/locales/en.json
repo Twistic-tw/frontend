@@ -101,6 +101,8 @@
   "step6_another": "Create Another",
   "step6_dashboard": "Go to Dashboard",
   "step6_template": "Select template",
+  "confirm_dialog_delete": "Delete",
+  "confirm_dialog_confirm": "Confirm",
   "loading_analyzing": "Analyzing...",
   "notifications.title": "Notifications",
   "notifications.loading": "Loading notifications...",
