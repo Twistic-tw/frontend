@@ -22,11 +22,11 @@ const { t } = useI18n()
 
 <template>
   <ConfirmDialog
-    :visible="showConfirm"
-    :message="confirmMessage"
-    @confirm="handleConfirm"
-    @cancel="cancelConfirm"
-  />
+  v-model:show="showConfirm"
+  :message="confirmMessage"
+  @confirm="handleConfirm"
+  @cancel="cancelConfirm"
+/>
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
       {{ t('fields.title') }}

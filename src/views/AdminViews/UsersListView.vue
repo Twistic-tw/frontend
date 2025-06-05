@@ -14,11 +14,11 @@ const {
 <template>
   <!-- Modal de confirmación con fade -->
   <ConfirmDialog
-    :visible="showConfirm"
-    :message="confirmMessage"
-    @confirm="handleConfirm"
-    @cancel="cancelConfirm"
-  />
+  v-model:show="showConfirm"
+  :message="confirmMessage"
+  @confirm="handleConfirm"
+  @cancel="cancelConfirm"
+/>
 
   <div class="min-h-screen bg-gradient-to-b from-gray-100 to-white p-6 mt-3">
     <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-800 mb-6 text-center">Users Management</h1>
