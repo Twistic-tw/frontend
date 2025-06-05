@@ -48,6 +48,7 @@ export function getColumnValues(fieldName: string, rows: Record<string, string>[
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function updateAdvancedFilter(field: string, value: any) {
+  console.log('📦 Actualizando advancedFilters:', field, value)
   const expectedType = getFieldType(field)
 
   const isValid = (() => {
@@ -71,6 +72,7 @@ export function updateAdvancedFilter(field: string, value: any) {
   }
 
   advancedFilters.value[field] = value
+  console.log('✅ advancedFilters actualizado:', advancedFilters.value)
 }
 
 export function applyAdvancedFilters(

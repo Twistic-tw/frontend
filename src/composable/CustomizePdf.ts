@@ -271,6 +271,8 @@ export function CustomizePdf() {
   }
 
   function filterRows() {
+    console.log('🔍 Ejecutando filterRows()')
+  console.log('📋 Datos originales:', excelData.value.length)
   const input = searchValue.value.trim().toLowerCase()
 
   // Si hay búsqueda libre, usarla
@@ -288,6 +290,7 @@ export function CustomizePdf() {
     filteredRows.value = applyAdvancedFilters(excelData.value)
     selectedRows.value = filteredRows.value.map((_, i) => i)
     searchActive.value = true
+    console.log('✅ Resultados filtrados:', filteredRows.value.length)
   }
 }
 

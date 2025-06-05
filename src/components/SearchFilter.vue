@@ -209,6 +209,7 @@ const onUpdateSearchField = (event: Event) => {
 }
 
 const handleAdvancedFilter = (field: string, value: unknown) => {
+  console.log('📤 Emitiendo filtro desde SearchFilter:', { field, value })
   updateAdvancedFilter(field, value)
   emit('filter') // Notifica al padre para que actualice filteredRows
 }
