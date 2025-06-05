@@ -6,6 +6,7 @@ export function Dashboard() {
   const role = sessionStorage.getItem('userRole')
   const userName = sessionStorage.getItem('userName')
   const userId = ref<number>(parseInt(sessionStorage.getItem('userId') || '0'))
+  console.log(userId)
   if (userId.value === 0) {
   console.warn('⚠️ userId es 0. ¿Estás seguro de que el login lo está guardando correctamente?')
 }
