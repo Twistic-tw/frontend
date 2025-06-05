@@ -33,40 +33,52 @@
           </button>
 
           <!-- Panel lateral de filtros -->
-          <aside
-            class="w-full md:w-1/3 lg:w-1/4 h-full overflow-y-auto border-r p-6 space-y-6 bg-gray-50"
-          >
-            <h2 class="text-xl font-bold text-gray-800">{{ t('title_filter_column') }}</h2>
-            <div>
-              <select
-                :value="searchField"
-                @change="onUpdateSearchField"
-                class="w-full p-2 border rounded shadow-sm"
-              >
-                <option disabled value="">{{ t('select_field') }}</option>
-                <option v-for="field in fields" :key="field.name" :value="field.name">
-                  {{ field.name }}
-                </option>
-              </select>
-            </div>
+<aside
+  class="w-full md:w-1/3 lg:w-1/4 h-full overflow-y-auto border-r p-6 space-y-6 bg-gray-50"
+>
+  <h2 class="text-xl font-bold text-gray-800">{{ t('title_filter_column') }}</h2>
 
-            <transition name="fade-slide" mode="out-in">
-              <div
-                v-if="showFilter"
-                :key="searchField"
-                class="transition-all duration-300 ease-in-out"
-              >
-                <component
-                  :is="components[getFilterComponent(getFieldType(searchField))]"
-                  v-model="advancedFilterValues[searchField]"
-                  :field-name="searchField"
-                  :values="getColumnValues(searchField, allRows)"
-                  :filters="getFilterOptionsFromFieldName(searchField)"
-                  @filter-change="(val) => handleAdvancedFilter(searchField, val)"
-                />
-              </div>
-            </transition>
-          </aside>
+  <div>
+    <select
+      :value="searchField"
+      @change="onUpdateSearchField"
+      class="w-full p-2 border rounded shadow-sm"
+    >
+      <option disabled value="">{{ t('select_field') }}</option>
+      <option v-for="field in fields" :key="field.name" :value="field.name">
+        {{ field.name }}
+      </option>
+    </select>
+  </div>
+
+  <!-- ✅ Botón para eliminar todos los filtros -->
+  <div class="pt-2">
+    <button
+      @click="clearAllFilters"
+      class="w-full bg-red-100 text-red-700 py-2 rounded hover:bg-red-200 transition font-medium"
+    >
+      {{ t('clear_all_filters') }}
+    </button>
+  </div>
+
+  <transition name="fade-slide" mode="out-in">
+    <div
+      v-if="showFilter"
+      :key="searchField"
+      class="transition-all duration-300 ease-in-out"
+    >
+      <component
+        :is="components[getFilterComponent(getFieldType(searchField))]"
+        v-model="advancedFilterValues[searchField]"
+        :field-name="searchField"
+        :values="getColumnValues(searchField, allRows)"
+        :filters="getFilterOptionsFromFieldName(searchField)"
+        @filter-change="(val) => handleAdvancedFilter(searchField, val)"
+      />
+    </div>
+  </transition>
+</aside>
+
 
           <!-- Tabla -->
           <main class="flex-1 p-6">
@@ -217,6 +229,14 @@ const handleAdvancedFilter = (field: string, value: unknown) => {
   updateAdvancedFilter(field, value)
   emit('filter') // Notifica al padre para que actualice filteredRows
 }
+
+// Limpiar todos los filtros
+function clearAllFilters() {
+  advancedFilterValues.value = {}
+  showFilter.value = false
+  emit('filter') // fuerza al padre a recalcular
+}
+
 
 const components = {
   TextFilter,

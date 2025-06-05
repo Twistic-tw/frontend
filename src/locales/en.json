@@ -260,6 +260,7 @@
   "filter_is_true": "Is true",
   "filter_is_false": "Is false",
   "filter_in": "Is in list",
+  "clear_all_filters": "Empty all filters",
   "enter_minimum": "Enter minimum value",
   "enter_maximum": "Enter maximum value",
   "no_options_available": "No options available",
