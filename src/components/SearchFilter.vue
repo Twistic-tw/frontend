@@ -61,7 +61,7 @@
 
           <!-- Tabla -->
           <main class="flex-1 overflow-auto p-6">
-            <h2 class="text-xl font-bold text-gray-800">{{ t('title_tabla_results_colum') }}</h2>
+            <h2 class="text-xl font-bold text-gray-800 mb-6">{{ t('title_tabla_results_column') }}</h2>
             <div v-if="filteredRows.length" class="border rounded-lg">
               <div class="sticky top-0 z-20 bg-gray-100 px-4 py-3 border-b flex justify-between items-center">
                 <span class="text-sm text-gray-700">
