@@ -4,11 +4,13 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const {
+  userId,
   role,
   userName,
   pendingCount,
   inProgressCount,
 } = Dashboard()
+console.log(userId)
 </script>
 
 <template>
