@@ -14,7 +14,7 @@ const {
   showConfirm,
   confirmMessage,
   handleConfirm,
-  cancelConfirm
+  cancelConfirm,
 } = useTemplates()
 
 function onEliminar(id: number) {
@@ -25,15 +25,6 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <!-- Modal solo se monta si showConfirm es true -->
-  <ConfirmDialog
-  :visible="showConfirm"
-  :message="confirmMessage"
-  @confirm="handleConfirm"
-  @cancel="cancelConfirm"
-/>
-
-
   <div class="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen mt-3">
     <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
       {{ t('templates.title') }}
@@ -61,8 +52,12 @@ const { t } = useI18n()
             :checked="todasSeleccionadas"
             @change="toggleSeleccionarTodas"
           />
-          <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"></div>
-          <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"></div>
+          <div
+            class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"
+          ></div>
+          <div
+            class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"
+          ></div>
         </label>
       </div>
     </div>
@@ -82,8 +77,12 @@ const { t } = useI18n()
               :value="plantilla.id"
               v-model="plantillasSeleccionadas"
             />
-            <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"></div>
-            <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"></div>
+            <div
+              class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all duration-300"
+            ></div>
+            <div
+              class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-full transition-all duration-300"
+            ></div>
           </label>
         </div>
 
@@ -111,7 +110,7 @@ const { t } = useI18n()
         </div>
 
         <button
-           @click="() => onEliminar(plantilla.id)"
+          @click="() => onEliminar(plantilla.id)"
           class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition mt-4"
         >
           {{ t('templates.delete') }}
@@ -122,6 +121,14 @@ const { t } = useI18n()
     <div v-if="plantillas.length === 0" class="text-center text-gray-500 mt-8">
       {{ t('templates.noneAvailable') }}
     </div>
+
+    <!-- Modal solo se monta si showConfirm es true -->
+    <ConfirmDialog
+      v-model:show="showConfirm"
+      :message="confirmMessage"
+      @confirm="handleConfirm"
+      @cancel="cancelConfirm"
+    />
 
     <div class="mt-12">
       <BackButton

@@ -1,7 +1,7 @@
 <template>
   <transition name="fade-scale" appear>
     <div
-      v-if="visible"
+      v-if="show"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       @keydown.esc="onEscape"
       tabindex="0"
@@ -17,13 +17,13 @@
         <div class="flex justify-center gap-4">
           <button
             class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
-            @click="$emit('confirm')"
+            @click="confirmAndClose"
           >
             {{ $t('confirm_dialog.delete') }}
           </button>
           <button
             class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition"
-            @click="$emit('cancel')"
+            @click="cancelAndClose"
           >
             {{ $t('confirm_dialog.cancel') }}
           </button>
@@ -37,16 +37,15 @@
 import { ref, watch, nextTick } from 'vue'
 
 const props = defineProps<{
-  visible: boolean
+  show: boolean
   message: string
 }>()
 
-const emit = defineEmits(['confirm', 'cancel'])
+const emit = defineEmits(['confirm', 'cancel', 'update:show'])
 
 const modalRef = ref<HTMLElement | null>(null)
 
-// Enfocar el modal cuando se abre
-watch(() => props.visible, async (val) => {
+watch(() => props.show, async (val) => {
   if (val) {
     await nextTick()
     modalRef.value?.focus()
@@ -54,7 +53,17 @@ watch(() => props.visible, async (val) => {
 })
 
 function onEscape() {
+  cancelAndClose()
+}
+
+function confirmAndClose() {
+  emit('confirm')
+  emit('update:show', false)
+}
+
+function cancelAndClose() {
   emit('cancel')
+  emit('update:show', false)
 }
 </script>
 
