@@ -54,37 +54,46 @@
 import { ref, watch } from 'vue'
 import type { FilterConditionOption } from '../../types/FilterConditionOption'
 
+// Props
 const props = defineProps<{
   fieldName: string
   values: string[]
   filters: FilterConditionOption[]
 }>()
 
+// Emit
 const emit = defineEmits<{
-  (e: 'filter-change', payload: { condition: string; value: string | [string, string] }): void
+  (e: 'filter-change', payload:
+    | { type: 'number'; condition: 'between'; min: number; max: number }
+    | { type: 'number'; condition: string; value: number }
+  ): void
 }>()
 
 const inputs = ref<Record<string, string>>({})
 
+// Reset al cambiar campo
 watch(() => props.fieldName, () => {
   inputs.value = {}
 })
 
+// Aplicar filtro
 function applyFilter(condition: string) {
   if (condition === 'between') {
-    const min = inputs.value['betweenMin']
-    const max = inputs.value['betweenMax']
-    if (min && max) {
-      emit('filter-change', { condition, value: [min, max] })
+    const min = parseFloat(inputs.value['betweenMin'])
+    const max = parseFloat(inputs.value['betweenMax'])
+    if (!isNaN(min) && !isNaN(max)) {
+      emit('filter-change', { type: 'number', condition, min, max })
     }
   } else {
-    const value = inputs.value[condition]
-    if (value?.trim()) {
-      emit('filter-change', { condition, value })
+    const raw = inputs.value[condition]
+    const value = parseFloat(raw)
+    if (!isNaN(value)) {
+      emit('filter-change', { type: 'number', condition, value })
     }
   }
 }
 
+// Limpiar
 function clearAll() {
   inputs.value = {}
 }

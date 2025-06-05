@@ -40,31 +40,41 @@
 import { ref, watch } from 'vue'
 import type { FilterConditionOption } from '../../types/FilterConditionOption'
 
+// Props
 const props = defineProps<{
   fieldName: string
   values: string[]
   filters: FilterConditionOption[]
 }>()
 
+// Emit
 const emit = defineEmits<{
-  (e: 'filter-change', payload: { condition: string; value: string }): void
+  (e: 'filter-change', payload: { type: 'number'; condition: string; value: number }): void
 }>()
 
+// Inputs por condición
 const selectedValues = ref<Record<string, string>>({})
 
+// Reset cuando cambia el campo
 watch(() => props.fieldName, () => {
   selectedValues.value = {}
 })
 
+// Aplicar todos los filtros válidos
 function applyAllFilters() {
   for (const condition of props.filters) {
-    const value = selectedValues.value[condition.value]
-    if (value?.trim()) {
-      emit('filter-change', { condition: condition.value, value })
+    const input = selectedValues.value[condition.value]
+    if (input?.trim() && !isNaN(Number(input))) {
+      emit('filter-change', {
+        type: 'number',
+        condition: condition.value,
+        value: parseFloat(input)
+      })
     }
   }
 }
 
+// Limpiar todos
 function clearAll() {
   selectedValues.value = {}
 }

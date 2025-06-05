@@ -41,7 +41,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'filter-change', payload: { condition: string; value: boolean }): void
+  (e: 'filter-change', payload: { type: 'boolean'; condition: string; value: boolean }): void
 }>()
 
 const selectedConditions = ref<string[]>([])
@@ -60,7 +60,11 @@ function toggleCondition(condition: string) {
 
 function applyFilters() {
   selectedConditions.value.forEach(condition => {
-    emit('filter-change', { condition, value: condition === 'is_true' })
+    emit('filter-change', {
+      type: 'boolean',
+      condition,
+      value: condition === 'is_true'
+    })
   })
 }
 
