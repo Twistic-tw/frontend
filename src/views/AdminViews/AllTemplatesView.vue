@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useTemplates } from '../../composable/templateList'
 import BackButton from '@/components/BackButton.vue'
-import ConfirmDialog from '@/components/ConfirmDialog.vue'
 import { useI18n } from 'vue-i18n'
 
 const {
