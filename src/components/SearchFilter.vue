@@ -112,11 +112,13 @@
                       </th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-gray-100">
+
+                  <!-- Añadido <transition-group> para animación -->
+                  <transition-group name="fade-slide" tag="tbody" class="divide-y divide-gray-100">
                     <tr
                       v-for="(row, index) in filteredRows"
                       :key="'row-' + index"
-                      class="hover:bg-gray-50"
+                      class="hover:bg-gray-50 transition-all duration-300"
                     >
                       <td class="px-4 py-2">
                         <label class="relative inline-flex items-center cursor-pointer">
@@ -142,7 +144,7 @@
                         {{ row[key] }}
                       </td>
                     </tr>
-                  </tbody>
+                  </transition-group>
                 </table>
               </div>
               <div v-else class="text-sm text-gray-500 mt-4 text-center">
@@ -170,7 +172,7 @@ import {
   getFieldType,
   getFilterComponent,
   getColumnValues,
-  updateAdvancedFilter
+  updateAdvancedFilter,
 } from '../composable/DynamicFiltersLogic'
 
 const { t } = useI18n()
@@ -192,7 +194,7 @@ const emit = defineEmits([
   'clear',
   'selectAll',
   'deselectAll',
-  'toggleRow'
+  'toggleRow',
 ])
 
 const showModal = ref(false)
@@ -252,5 +254,17 @@ const components = {
 .fade-slide-leave-from {
   opacity: 1;
   transform: translateY(0);
+}
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s ease;
+}
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 </style>
