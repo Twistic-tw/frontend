@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 
 export function Dashboard() {
+  console.log('📦 Dashboard composable ejecutado')
   const role = sessionStorage.getItem('userRole')
   const userName = sessionStorage.getItem('userName')
   const userId = ref<number>(parseInt(sessionStorage.getItem('userId') || '0'))
@@ -53,6 +54,7 @@ export function Dashboard() {
 
   const fetchNotifications = async () => {
     try {
+      console.log('📡 Llamando a fetchNotifications()')
       let url = `${import.meta.env.VITE_URL}/ShowNotifications`
 
       // Si el usuario no es admin, añadimos el filtro por ID
@@ -73,6 +75,10 @@ export function Dashboard() {
       loading.value = false
     }
   }
+
+  console.log('👤 userId:', userId.value)
+console.log('🔐 role:', role)
+console.log('📄 allNotifications:', allNotifications.value)
 
 
   onMounted(async () => {
