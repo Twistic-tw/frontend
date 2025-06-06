@@ -124,7 +124,7 @@
                     class="featured-image-item placeholder"
                   >
                     <div class="image-placeholder">
-                      {{ $t('featured_image_placeholder', { number: index + 1 }) }}
+                      {{ $t('featured', { number: index + 1 }) }}
                     </div>
                   </div>
                 </div>
@@ -234,7 +234,7 @@ watch(
 
 // Computed para tamaño de fuente basado en filas del chunk actual
 const fontSizeForChunk = (chunk: Record<string, string>[]) => {
-  const baseSize = 10 // px base
+  const baseSize = 14 // px base
   const maxRows = 20 // si hay más filas, reducimos más
   const rowCount = chunk.length
   if (rowCount <= maxRows) return `${baseSize}px`
@@ -376,6 +376,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   text-align: center;
   color: #999;
   font-style: italic;
+  width: 120px;
   height: 120px;
   display: flex;
   align-items: center;
