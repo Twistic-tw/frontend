@@ -165,8 +165,7 @@
 </template>
 
 <script setup lang="ts">
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ref, watch, computed } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps<{
   previewRows: Record<string, string>[][]
@@ -227,7 +226,7 @@ watch(
 
 // Computed para tamaño de fuente basado en filas del chunk actual
 const fontSizeForChunk = (chunk: Record<string, string>[]) => {
-  const baseSize = 14 // px base
+  const baseSize = 10 // px base
   const maxRows = 20 // si hay más filas, reducimos más
   const rowCount = chunk.length
   if (rowCount <= maxRows) return `${baseSize}px`
@@ -342,7 +341,6 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 .table-row {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  border-bottom: 1px solid #ddd;
 }
 
 .table-cell {
