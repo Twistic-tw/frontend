@@ -14,16 +14,16 @@ const props = defineProps<{
     footer: File | null
   }
   featuredImages: {
-    image_one: File | null
-    image_two: File | null
-    image_three: File | null
-    image_four: File | null
-  }
+    image_one: File | null,
+    image_two: File | null,
+    image_three: File | null,
+    image_four: File | null,
+  },
   featuredDescriptions: {
-    desc_one: string
-    desc_two: string
-    desc_three: string
-    desc_four: string
+    desc_one: string,
+    desc_two: string,
+    desc_three: string,
+    desc_four: string,
   }
   coverUrl: string
   secondUrl: string
@@ -111,22 +111,31 @@ const showFullscreen = ref(false)
       @close="showFullscreen = false"
     />
 
-    <div id="pdf-content" ref="previewRef" class="pdf-page">
+    <div
+      id="pdf-content"
+      ref="previewRef"
+      class="pdf-page"
+    >
       <!-- Portada -->
       <div v-if="images.cover" class="cover-section">
-        <img :src="coverUrl" alt="Cover Image" class="cover-image" />
+        <img
+          :src="coverUrl"
+          alt="Cover Image"
+          class="cover-image"
+        />
       </div>
 
       <!-- Segunda portada -->
       <div v-if="images.second" class="second-cover-section">
-        <img :src="secondUrl" alt="Second Cover" class="second-cover-image" />
+        <img
+          :src="secondUrl"
+          alt="Second Cover"
+          class="second-cover-image"
+        />
       </div>
 
       <!-- Título catálogo -->
-      <div
-        class="catalog-title-section"
-        :style="{ backgroundColor: titleBackground, color: titleText }"
-      >
+      <div class="catalog-title-section" :style="{ backgroundColor: titleBackground, color: titleText }">
         <h1
           :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align }"
           class="catalog-title"
@@ -149,10 +158,7 @@ const showFullscreen = ref(false)
               v-for="(key, i) in activeFieldNames"
               :key="'header-' + i"
               class="table-header-cell"
-              :style="[
-                cellStyle,
-                { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' },
-              ]"
+              :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' }]"
             >
               {{ key }}
             </div>
@@ -176,39 +182,36 @@ const showFullscreen = ref(false)
         </div>
 
         <!-- Imágenes destacadas a la derecha (solo hueco reservado) -->
-        <div class="featured-images">
-          <div
-            v-for="(key, index) in ['image_one', 'image_two', 'image_three', 'image_four']"
-            :key="key"
-            class="featured-image-item placeholder"
-          >
-            <div class="image-placeholder">
-              {{ $t('featured_image_placeholder', { number: index + 1 }) }}
+            <div class="featured-images">
+              <div v-for="(key, index) in ['image_one', 'image_two', 'image_three', 'image_four']" :key="key" class="featured-image-item placeholder">
+                <div class="image-placeholder">
+                  {{ $t('featured_image_placeholder', { number: index + 1 }) }}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Descripción larga -->
-        <div v-if="model.long" class="long-description">
-          <p style="white-space: pre-wrap">{{ model.long }}</p>
-        </div>
-
-        <!-- Footer y número de página -->
-        <div class="footer-bar" :style="footerStyle">
-          <div class="footer-text">{{ model.footer }}</div>
-          <div class="page-number">1</div>
-        </div>
+      <!-- Descripción larga -->
+      <div v-if="model.long" class="long-description">
+        <p style="white-space: pre-wrap;">{{ model.long }}</p>
       </div>
+
+      <!-- Footer y número de página -->
+      <div class="footer-bar" :style="footerStyle">
+        <div class="footer-text">{{ model.footer }}</div>
+        <div class="page-number">1</div>
+      </div>
+    </div>
     </div>
   </div>
 </template>
 
 <style scoped>
 .pdf-page {
-  width: 794px; /* Ancho A4 */
+  width: 794px;  /* Ancho A4 */
   height: 1123px; /* Alto A4 */
   background-color: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
   box-sizing: border-box;
   position: relative;
   font-size: 12px;
@@ -281,7 +284,7 @@ const showFullscreen = ref(false)
 
 .table-header-cell {
   padding: 0.5rem;
-  border-right: 1px solid rgba(255, 255, 255, 0.5);
+  border-right: 1px solid rgba(255,255,255,0.5);
 }
 
 .table-header-cell:last-child {
