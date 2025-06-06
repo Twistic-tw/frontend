@@ -380,7 +380,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 .featured-image-item.placeholder {
   border: 1px solid #ccc;
   border-radius: 0.3rem;
-  padding: 1rem;
+  margin: 2rem 0;
   text-align: center;
   color: #999;
   font-style: italic;
