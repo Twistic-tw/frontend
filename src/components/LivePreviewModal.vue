@@ -297,7 +297,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 
 .catalog-title {
   font-size: 24px;
-  padding-left: 1em;
+  padding: 0.2rem 0 0.2rem 1em;
   font-weight: bold;
 }
 

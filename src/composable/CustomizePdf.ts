@@ -38,6 +38,8 @@ export function CustomizePdf() {
     titleBackground: '#ffffff',
     titleText: '#1f2937',
     titleAlpha: 1,
+    longDescriptionText: '#4f46e5',
+    shortDescriptionText: '#4f46e5',
   })
 
   const titleSettings = ref({
@@ -381,6 +383,18 @@ export function CustomizePdf() {
     left: '0',
     right: '0',
   }))
+
+  const shortDescriptionStyle = computed(() => ({
+  color: colors.value.shortDescriptionText || colors.value.text,
+  fontFamily: titleSettings.value.fieldFont,
+  fontSize: titleSettings.value.fieldSize,
+}))
+
+const longDescriptionStyle = computed(() => ({
+  color: colors.value.longDescriptionText || colors.value.text,
+  fontFamily: titleSettings.value.fieldFont,
+  fontSize: titleSettings.value.fieldSize,
+}))
 
   const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
   const userId = ref<number | null>(null)
