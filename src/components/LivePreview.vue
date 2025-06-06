@@ -261,15 +261,15 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 
 <style scoped>
 .pdf-page {
-  width: 794px;  /* Ancho A4 */
-  height: 1123px; /* Alto A4 */
+  width: 794px;
+  height: 1123px;
   background-color: white;
   padding: 1.5rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   box-sizing: border-box;
   position: relative;
   font-size: 12px;
-  overflow: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
