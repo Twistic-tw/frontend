@@ -28,92 +28,72 @@
               <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
             </div>
 
-            <!-- Descripción corta -->
-            <div v-if="model?.short" class="a4-page p-6">
-              <h2 class="text-xl font-semibold mb-4">{{ $t('short_description_title') }}</h2>
-              <p>{{ model.short }}</p>
-            </div>
-
-            <!-- Descripción larga -->
-            <div v-if="model?.long" class="a4-page p-6">
-              <h2 class="text-xl font-semibold mb-4">{{ $t('long_description_title') }}</h2>
-              <p style="white-space: pre-wrap;">{{ model.long }}</p>
-            </div>
-
-            <!-- Páginas de contenido -->
-            <div
-              v-for="(chunk, index) in previewRows"
-              :key="'page-' + index"
-              class="a4-page"
-              :style="{
-                backgroundImage: backgroundUrl ? `url(${backgroundUrl})` : 'none',
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-                padding: '0'
-              }"
-            >
-              <!-- Cabecera -->
-              <div v-if="headerUrl" style="height: 120px; overflow: hidden">
-                <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-t-lg" style="height: 120px" />
-              </div>
-              <!-- Título cabecera -->
-              <div
-                class="text-center mb-4 py-2 px-4"
-                :style="{
-                  backgroundColor: titleBackground,
-                  color: titleText
-                }"
+            <!-- Título catálogo -->
+            <div class="catalog-title-section" :style="{ backgroundColor: titleBackground, color: titleText }">
+              <h1
+                :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align }"
+                class="catalog-title"
               >
-                <h1
-                  class="text-2xl font-bold tracking-wide"
-                  :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align, paddingLeft: '1em'}"
-                >
-                  {{ templateName }}
-                </h1>
+                {{ templateName }}
+              </h1>
+            </div>
+
+            <!-- Contenedor principal con tabla e imágenes destacadas -->
+            <div class="main-content">
+              <!-- Descripción corta -->
+              <div v-if="model.short" class="short-description">
+                <p>{{ model.short }}</p>
               </div>
 
               <!-- Tabla -->
-              <div class="w-full h-full text-sm border border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow" style="padding-bottom: 60px;">
-                <div class="grid font-medium" :style="headerStyle">
+              <div class="data-table-container">
+                <div class="table-header" :style="headerStyle">
                   <div
                     v-for="(key, i) in activeFieldNames"
                     :key="'header-' + i"
-                    class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
-                    style="max-width: 250px; overflow: hidden; text-overflow: ellipsis"
+                    class="table-header-cell"
+                    :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' }]"
                   >
                     {{ key }}
                   </div>
                 </div>
 
                 <div
-                  v-for="(row, ri) in chunk"
-                  :key="'row-' + index + '-' + ri"
-                  class="grid"
+                  v-for="(row, ri) in previewRows.flat()"
+                  :key="'row-' + ri"
+                  class="table-row"
                   :style="rowStyle(ri)"
                 >
                   <div
                     v-for="(key, i) in activeFieldNames"
-                    :key="'cell-' + index + '-' + ri + '-' + i"
-                    class="px-4 py-2 last:border-r-0"
+                    :key="'cell-' + ri + '-' + i"
+                    class="table-cell"
+                    :style="cellStyle"
                   >
                     {{ row[key] }}
                   </div>
                 </div>
               </div>
 
-              <!-- Footer fijo en cada página -->
-              <div class="footer-bar absolute bottom-4 right-6 text-sm text-gray-500 italic" :style="footerStyle">
-                <div>{{ index + 1 }}</div>
-                <div>{{ model?.footer }}</div>
+              <!-- Imágenes destacadas a la derecha (solo hueco reservado) -->
+              <div class="featured-images">
+                <div v-for="(key, index) in ['image_one', 'image_two', 'image_three', 'image_four']" :key="key" class="featured-image-item placeholder">
+                  <div class="image-placeholder">
+                    {{ $t('featured_image_placeholder', { number: index + 1 }) }}
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- Página extra solo con footer -->
-            <div v-if="footerUrl" class="a4-page" style="padding: 0;">
-              <div class="a4-image full-a4">
-                <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
-              </div>
+            <!-- Descripción larga -->
+            <div v-if="model.long" class="long-description">
+              <p style="white-space: pre-wrap;">{{ model.long }}</p>
+            </div>
+
+            <!-- Footer y número de página -->
+            <div class="footer-bar" :style="footerStyle">
+              <div class="footer-text">{{ model.footer }}</div>
+              <div class="page-number">1</div>
             </div>
           </div>
 
@@ -139,34 +119,47 @@
 import { ref, watch } from 'vue'
 
 const props = defineProps<{
-  previewRows: Record<string, string>[][];
-  activeFieldNames: string[];
-  headerStyle: Record<string, string>;
+  previewRows: Record<string, string>[][]
+  activeFieldNames: string[]
+  headerStyle: Record<string, string>
   templateName: string
-  footerStyle: Record<string, string>;
-  rowStyle: (index: number) => Record<string, string>;
-  headerUrl?: string;
-  footerUrl?: string;
-  coverUrl?: string;
-  secondUrl?: string;
-  backgroundUrl?: string;
-  show: boolean;
-  titleBackground: string;
-  titleText: string;
+  footerStyle: Record<string, string>
+  rowStyle: (index: number) => Record<string, string>
+  cellStyle: Record<string, string>
+  headerUrl?: string
+  footerUrl?: string
+  coverUrl?: string
+  secondUrl?: string
+  backgroundUrl?: string
+  show: boolean
+  featuredImages: {
+    image_one: File | null
+    image_two: File | null
+    image_three: File | null
+    image_four: File | null
+  }
+  featuredDescriptions: {
+    desc_one: string
+    desc_two: string
+    desc_three: string
+    desc_four: string
+  }
+  titleBackground: string
+  titleText: string
   titleSettings: {
-    font: string;
-    align: 'left' | 'center' | 'right';
-    size: string;
-    fieldFont: string;
-    fieldSize: string;
-    fieldAlign: 'left' | 'center' | 'right';
-  };
-  model?: {
-    short: string;
-    long: string;
-    footer: string;
-  };
-}>();
+    font: string
+    align: 'left' | 'center' | 'right'
+    size: string
+    fieldFont: string
+    fieldSize: string
+    fieldAlign: 'left' | 'center' | 'right'
+  }
+  model: {
+    short: string
+    long: string
+    footer: string
+  }
+}>()
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const emit = defineEmits<{
@@ -212,14 +205,129 @@ watch(() => props.show, (value) => {
 .no-radius {
   border-radius: 0;
 }
+
+.catalog-title-section {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.catalog-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.main-content {
+  display: flex;
+  flex-grow: 1;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.short-description {
+  flex-basis: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 0.25rem;
+}
+
+.data-table-container {
+  flex: 3;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  font-weight: bold;
+  background-color: #5c6ac4;
+  color: white;
+  padding: 0.3rem;
+  border-radius: 0.3rem 0.3rem 0 0;
+}
+
+.table-header-cell {
+  padding: 0.5rem;
+  border-right: 1px solid rgba(255,255,255,0.5);
+}
+
+.table-header-cell:last-child {
+  border-right: none;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  border-bottom: 1px solid #ddd;
+}
+
+.table-cell {
+  padding: 0.4rem;
+  border-right: 1px solid #eee;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.table-cell:last-child {
+  border-right: none;
+}
+
+.featured-images {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.featured-image-item.placeholder {
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
+  padding: 1rem;
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-placeholder {
+  user-select: none;
+}
+
+.long-description {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 0.25rem;
+  max-height: 100px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
 .footer-bar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
-  font-size: 0.75rem;
+  border-top: 1px solid #ccc;
+  padding-top: 0.5rem;
+  font-size: 0.8rem;
   color: #666;
-  height: 40px;
-  border-top: 1px solid #ddd;
 }
+
+.footer-text {
+  flex-grow: 1;
+}
+
+.page-number {
+  flex-shrink: 0;
+}
+
 </style>

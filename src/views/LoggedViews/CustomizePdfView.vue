@@ -75,6 +75,14 @@ const {
   deleteStylePreset,
 } = CustomizePdf()
 
+// Nuevo: gestión reactiva de las descripciones de imágenes destacadas
+const featuredDescriptions = ref({
+  desc_one: '',
+  desc_two: '',
+  desc_three: '',
+  desc_four: ''
+})
+
 const textOptions = ref({
   short: '',
   long: '',
@@ -151,16 +159,17 @@ onMounted(async () => {
           />
 
           <TextOptions
-            :activeCard="activeCard"
-            cardId="textOptions"
-            @toggle="() => showTextModal = true"
-          />
+  :activeCard="activeCard"
+  cardId="textOptions"
+  @toggle="() => showTextModal = true"
+/>
 
-          <TextOptionsModal
-            v-model="textOptions"
-            :show="showTextModal"
-            @close="showTextModal = false"
-          />
+<TextOptionsModal
+  v-model="textOptions"
+  :show="showTextModal"
+  @close="showTextModal = false"
+/>
+
 
           <FeaturedImages
             :activeCard="activeCard"
@@ -170,6 +179,7 @@ onMounted(async () => {
 
           <FeaturedImagesModal
             v-model="featuredImages"
+            v-model:descriptions="featuredDescriptions"
             :show="showFeaturedModal"
             @close="showFeaturedModal = false"
           />
@@ -201,7 +211,6 @@ onMounted(async () => {
             @apply="applyStylePreset"
             @delete="deleteStylePreset"
           />
-
         </div>
 
         <SaveStyleModal
@@ -212,7 +221,6 @@ onMounted(async () => {
           @save="handleSaveStyle"
         />
 
-
         <button
           @click="sendToBackend"
           class="w-full bg-[#4f46e5] text-white px-6 py-3 rounded-xl shadow-md transition-colors duration-300 hover:bg-[#1e2939] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -220,14 +228,13 @@ onMounted(async () => {
           {{ t('customize_generate') }}
         </button>
         <div class="flex justify-end mb-4">
-        <button
-          @click="showSaveStyleModal = true"
-          class="w-full bg-[#4f46e5] text-white px-6 py-3 rounded-xl shadow-md transition-colors duration-300 hover:bg-[#1e2939] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          {{ $t('save_current_style') }}
-        </button>
-</div>
-
+          <button
+            @click="showSaveStyleModal = true"
+            class="w-full bg-[#4f46e5] text-white px-6 py-3 rounded-xl shadow-md transition-colors duration-300 hover:bg-[#1e2939] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            {{ $t('save_current_style') }}
+          </button>
+        </div>
       </div>
 
       <LivePreview
@@ -250,6 +257,8 @@ onMounted(async () => {
         :titleText="colors.titleText"
         :titleSettings="titleSettings"
         :model="textOptions"
+        :featuredImages="featuredImages"
+        :featuredDescriptions="featuredDescriptions"
       />
 
       <LivePreviewModal
@@ -268,6 +277,8 @@ onMounted(async () => {
         :titleBackground="titleBackgroundRgba"
         :titleText="colors.titleText"
         :titleSettings="titleSettings"
+        :featuredImages="featuredImages"
+        :featuredDescriptions="featuredDescriptions"
       />
     </div>
 
