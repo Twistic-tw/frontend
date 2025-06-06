@@ -19,12 +19,12 @@
           <!-- Vista completa del catálogo -->
           <div id="pdf-content" class="origin-top-left w-full h-fit-content bg-gray-100">
             <!-- Portada -->
-            <div v-if="coverUrl" class="a4-page" style="padding: 0;">
+            <div v-if="coverUrl" class="a4-page no-padding">
               <img :src="coverUrl" alt="Cover Image" class="a4-image-content no-radius w-full h-full object-cover" />
             </div>
 
             <!-- Segunda portada -->
-            <div v-if="secondUrl" class="a4-page" style="padding: 0;">
+            <div v-if="secondUrl" class="a4-page no-padding">
               <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
             </div>
 
@@ -33,8 +33,20 @@
               v-for="(chunk, pageIndex) in previewRows"
               :key="'page-' + pageIndex"
               class="a4-page"
-              :style="{ position: 'relative', padding: '1rem' }"
+              :style="{
+                position: 'relative',
+                padding: '1rem',
+                backgroundImage: backgroundUrl ? `url(${backgroundUrl})` : 'none',
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center'
+              }"
             >
+              <!-- Cabecera -->
+              <div v-if="headerUrl" class="header-image-container">
+                <img :src="headerUrl" alt="Header Image" class="header-image" />
+              </div>
+
               <!-- Título catálogo -->
               <div class="catalog-title-section" :style="{ backgroundColor: titleBackground, color: titleText }">
                 <h1
@@ -107,7 +119,6 @@
                 <div class="page-number">{{ pageIndex + 1 }}</div>
               </div>
             </div>
-
           </div>
 
           <!-- Botón flotante abajo -->
@@ -132,45 +143,45 @@
 import { ref, watch } from 'vue'
 
 const props = defineProps<{
-  previewRows: Record<string, string>[][]
-  activeFieldNames: string[]
-  headerStyle: Record<string, string>
-  templateName: string
-  footerStyle: Record<string, string>
-  rowStyle: (index: number) => Record<string, string>
-  cellStyle: Record<string, string>
-  headerUrl?: string
-  footerUrl?: string
-  coverUrl?: string
-  secondUrl?: string
-  backgroundUrl?: string
-  show: boolean
+  previewRows: Record<string, string>[][],
+  activeFieldNames: string[],
+  headerStyle: Record<string, string>,
+  templateName: string,
+  footerStyle: Record<string, string>,
+  rowStyle: (index: number) => Record<string, string>,
+  cellStyle: Record<string, string>,
+  headerUrl?: string,
+  footerUrl?: string,
+  coverUrl?: string,
+  secondUrl?: string,
+  backgroundUrl?: string,
+  show: boolean,
   featuredImages: {
-    image_one: File | null
-    image_two: File | null
-    image_three: File | null
-    image_four: File | null
-  }
+    image_one: File | null,
+    image_two: File | null,
+    image_three: File | null,
+    image_four: File | null,
+  },
   featuredDescriptions: {
-    desc_one: string
-    desc_two: string
-    desc_three: string
-    desc_four: string
-  }
-  titleBackground: string
-  titleText: string
+    desc_one: string,
+    desc_two: string,
+    desc_three: string,
+    desc_four: string,
+  },
+  titleBackground: string,
+  titleText: string,
   titleSettings: {
-    font: string
-    align: 'left' | 'center' | 'right'
-    size: string
-    fieldFont: string
-    fieldSize: string
-    fieldAlign: 'left' | 'center' | 'right'
-  }
+    font: string,
+    align: 'left' | 'center' | 'right',
+    size: string,
+    fieldFont: string,
+    fieldSize: string,
+    fieldAlign: 'left' | 'center' | 'right',
+  },
   model: {
-    short: string
-    long: string
-    footer: string
+    short: string,
+    long: string,
+    footer: string,
   }
 }>()
 
@@ -187,6 +198,21 @@ watch(() => props.show, (value) => {
 </script>
 
 <style scoped>
+.fade-scale-enter-active,
+.fade-scale-leave-active {
+  transition: all 0.25s ease;
+}
+.fade-scale-enter-from,
+.fade-scale-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.fade-scale-enter-to,
+.fade-scale-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .a4-page {
   margin-bottom: 2rem;
   padding: 1rem;
@@ -196,6 +222,10 @@ watch(() => props.show, (value) => {
   position: relative;
   display: flex;
   flex-direction: column;
+}
+
+.no-padding {
+  padding: 0 !important;
 }
 
 .a4-image-content {
@@ -220,6 +250,19 @@ watch(() => props.show, (value) => {
   font-weight: bold;
 }
 
+.header-image-container {
+  height: 120px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.header-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
 .content-main {
   display: flex;
   gap: 1rem;
@@ -230,9 +273,9 @@ watch(() => props.show, (value) => {
 .short-description {
   margin-bottom: 1rem;
   padding: 0.5rem;
+  width: 100%;
   border: 1px solid #ddd;
   border-radius: 0.25rem;
-  width: 100%;
 }
 
 .data-table-container {
@@ -258,7 +301,7 @@ watch(() => props.show, (value) => {
 
 .table-header-cell {
   padding: 0.5rem;
-  border-right: 1px solid rgba(255, 255, 255, 0.5);
+  border-right: 1px solid rgba(255,255,255,0.5);
 }
 
 .table-header-cell:last-child {
@@ -309,8 +352,6 @@ watch(() => props.show, (value) => {
 .long-description {
   padding: 0.5rem;
   margin-bottom: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 0.25rem;
   max-height: 100px;
   overflow-y: auto;
   white-space: pre-wrap;
@@ -327,9 +368,11 @@ watch(() => props.show, (value) => {
 
 .footer-text {
   flex-grow: 1;
+  text-align: left;
 }
 
 .page-number {
   flex-shrink: 0;
+  text-align: right;
 }
 </style>
