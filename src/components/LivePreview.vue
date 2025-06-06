@@ -112,96 +112,135 @@ const showFullscreen = ref(false)
     />
 
     <div
-      id="pdf-content"
-      ref="previewRef"
-      class="pdf-page"
-    >
-      <!-- Portada -->
-      <div v-if="images.cover" class="cover-section">
-        <img
-          :src="coverUrl"
-          alt="Cover Image"
-          class="cover-image"
-        />
-      </div>
+  id="pdf-content"
+  ref="previewRef"
+  class="pdf-container"
+>
+  <!-- Portada -->
+  <div v-if="images.cover" class="a4-page">
+    <img
+      :src="coverUrl"
+      alt="Cover Image"
+      class="a4-image-content no-radius"
+    />
+  </div>
 
-      <!-- Segunda portada -->
-      <div v-if="images.second" class="second-cover-section">
-        <img
-          :src="secondUrl"
-          alt="Second Cover"
-          class="second-cover-image"
-        />
-      </div>
+  <!-- Segunda portada -->
+  <div v-if="images.second" class="a4-page">
+    <img
+      :src="secondUrl"
+      alt="Second Cover"
+      class="a4-image-content no-radius"
+    />
+  </div>
 
-      <!-- Título catálogo -->
-      <div class="catalog-title-section" :style="{ backgroundColor: titleBackground, color: titleText }">
+  <!-- Descripción corta -->
+  <div v-if="model.short" class="a4-page p-6">
+    <h2 class="text-xl font-semibold mb-4">{{ $t('short_description_title') }}</h2>
+    <p>{{ model.short }}</p>
+  </div>
+
+  <!-- Descripción larga -->
+  <div v-if="model.long" class="a4-page p-6">
+    <h2 class="text-xl font-semibold mb-4">{{ $t('long_description_title') }}</h2>
+    <p style="white-space: pre-wrap;">{{ model.long }}</p>
+  </div>
+
+  <!-- Páginas de contenido con tabla e imágenes destacadas a la derecha -->
+  <div
+    v-for="(chunk, index) in previewRows"
+    :key="'page-' + index"
+    class="a4-page flex"
+    :style="{
+      backgroundImage: showBackground(index) ? `url(${backgroundUrl})` : 'none',
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+    }"
+  >
+    <div class="content-left flex-grow flex flex-col">
+      <!-- Cabecera -->
+      <div v-if="images.header" style="height: 120px; overflow: hidden">
+        <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-t-lg" style="height: 120px" />
+      </div>
+      <div
+        class="text-center mb-4 py-2 px-4"
+        :style="{
+          backgroundColor: titleBackground,
+          color: titleText,
+        }"
+      >
         <h1
-          :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align }"
-          class="catalog-title"
+          class="text-2xl font-bold tracking-wide"
+          :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align, paddingLeft: '1em' }"
         >
           {{ templateName }}
         </h1>
       </div>
 
-      <!-- Contenedor principal con tabla y imágenes destacadas -->
-      <div class="main-content">
-        <!-- Descripción corta -->
-        <div v-if="model.short" class="short-description">
-          <p>{{ model.short }}</p>
-        </div>
-
-        <!-- Tabla de datos -->
-        <div class="data-table-container">
-          <div class="table-header" :style="headerStyle">
-            <div
-              v-for="(key, i) in activeFieldNames"
-              :key="'header-' + i"
-              class="table-header-cell"
-              :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' }]"
-            >
-              {{ key }}
-            </div>
-          </div>
-
+      <!-- Tabla con padding para dejar espacio al footer -->
+      <div
+        class="w-full h-full text-sm border border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow overflow-auto"
+        style="padding-bottom: 60px;"
+      >
+        <div class="grid font-medium" :style="headerStyle">
           <div
-            v-for="(row, ri) in previewRows.flat()"
-            :key="'row-' + ri"
-            class="table-row"
-            :style="rowStyle(ri)"
+            v-for="(key, i) in activeFieldNames"
+            :key="'header-' + i"
+            class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
+            :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' }]"
           >
-            <div
-              v-for="(key, i) in activeFieldNames"
-              :key="'cell-' + ri + '-' + i"
-              class="table-cell"
-              :style="cellStyle"
-            >
-              {{ row[key] }}
-            </div>
+            {{ key }}
           </div>
         </div>
 
-        <!-- Imágenes destacadas a la derecha (solo hueco reservado) -->
-            <div class="featured-images">
-              <div v-for="(key, index) in ['image_one', 'image_two', 'image_three', 'image_four']" :key="key" class="featured-image-item placeholder">
-                <div class="image-placeholder">
-                  {{ $t('featured_image_placeholder', { number: index + 1 }) }}
+        <div
+          v-for="(row, ri) in chunk"
+          :key="'row-' + index + '-' + ri"
+          class="grid"
+          :style="rowStyle(ri)"
+        >
+          <div
+            v-for="(key, i) in activeFieldNames"
+            :key="'cell-' + index + '-' + ri + '-' + i"
+            class="px-4 py-2 last:border-r-0"
+            :style="cellStyle"
+          >
+            {{ row[key] }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer fijo en cada página -->
+      <div class="footer-bar" :style="footerStyle">
+        <div>{{ index + 1 }}</div>
+        <div>{{ model.footer }}</div>
+      </div>
+    </div>
+
+    <!-- Imágenes destacadas a la derecha (solo hueco reservado) -->
+              <div class="featured-images">
+                <div v-for="(key, index) in ['image_one', 'image_two', 'image_three', 'image_four']" :key="key" class="featured-image-item placeholder">
+                  <div class="image-placeholder">
+                    {{ $t('featured_image_placeholder', { number: index + 1 }) }}
+                  </div>
                 </div>
               </div>
-            </div>
+  </div>
 
-      <!-- Descripción larga -->
-      <div v-if="model.long" class="long-description">
-        <p style="white-space: pre-wrap;">{{ model.long }}</p>
-      </div>
+  <!-- Página extra solo con footer -->
+  <div v-if="images.footer" class="a4-page">
+    <div class="a4-image full-a4">
+      <img
+        :src="footerUrl"
+        alt="Footer Image"
+        class="a4-image-content no-radius"
+      />
+    </div>
+  </div>
+</div>
 
-      <!-- Footer y número de página -->
-      <div class="footer-bar" :style="footerStyle">
-        <div class="footer-text">{{ model.footer }}</div>
-        <div class="page-number">1</div>
-      </div>
-    </div>
-    </div>
+
   </div>
 </template>
 
