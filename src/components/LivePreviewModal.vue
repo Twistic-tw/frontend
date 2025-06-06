@@ -28,73 +28,86 @@
               <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
             </div>
 
-            <!-- Título catálogo -->
-            <div class="catalog-title-section" :style="{ backgroundColor: titleBackground, color: titleText }">
-              <h1
-                :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align }"
-                class="catalog-title"
-              >
-                {{ templateName }}
-              </h1>
-            </div>
+            <!-- Páginas con contenido estructurado -->
+            <div
+              v-for="(chunk, pageIndex) in previewRows"
+              :key="'page-' + pageIndex"
+              class="a4-page"
+              :style="{ position: 'relative', padding: '1rem' }"
+            >
+              <!-- Título catálogo -->
+              <div class="catalog-title-section" :style="{ backgroundColor: titleBackground, color: titleText }">
+                <h1
+                  :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align }"
+                  class="catalog-title"
+                >
+                  {{ templateName }}
+                </h1>
+              </div>
 
-            <!-- Contenedor principal con tabla e imágenes destacadas -->
-            <div class="main-content">
               <!-- Descripción corta -->
               <div v-if="model.short" class="short-description">
                 <p>{{ model.short }}</p>
               </div>
 
-              <!-- Tabla -->
-              <div class="data-table-container">
-                <div class="table-header" :style="headerStyle">
+              <!-- Contenedor con tabla a la izquierda y imágenes a la derecha -->
+              <div class="content-main">
+                <!-- Tabla -->
+                <div class="data-table-container">
+                  <div class="table-header" :style="headerStyle">
+                    <div
+                      v-for="(key, i) in activeFieldNames"
+                      :key="'header-' + i"
+                      class="table-header-cell"
+                      :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' }]"
+                    >
+                      {{ key }}
+                    </div>
+                  </div>
+
                   <div
-                    v-for="(key, i) in activeFieldNames"
-                    :key="'header-' + i"
-                    class="table-header-cell"
-                    :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' }]"
+                    v-for="(row, ri) in chunk"
+                    :key="'row-' + pageIndex + '-' + ri"
+                    class="table-row"
+                    :style="rowStyle(ri)"
                   >
-                    {{ key }}
+                    <div
+                      v-for="(key, i) in activeFieldNames"
+                      :key="'cell-' + pageIndex + '-' + ri + '-' + i"
+                      class="table-cell"
+                      :style="cellStyle"
+                    >
+                      {{ row[key] }}
+                    </div>
                   </div>
                 </div>
 
-                <div
-                  v-for="(row, ri) in previewRows.flat()"
-                  :key="'row-' + ri"
-                  class="table-row"
-                  :style="rowStyle(ri)"
-                >
+                <!-- Imágenes destacadas -->
+                <div class="featured-images">
                   <div
-                    v-for="(key, i) in activeFieldNames"
-                    :key="'cell-' + ri + '-' + i"
-                    class="table-cell"
-                    :style="cellStyle"
+                    v-for="(key, index) in ['image_one', 'image_two', 'image_three', 'image_four']"
+                    :key="key"
+                    class="featured-image-item placeholder"
                   >
-                    {{ row[key] }}
+                    <div class="image-placeholder">
+                      {{ $t('featured_image_placeholder', { number: index + 1 }) }}
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Imágenes destacadas a la derecha (solo hueco reservado) -->
-              <div class="featured-images">
-                <div v-for="(key, index) in ['image_one', 'image_two', 'image_three', 'image_four']" :key="key" class="featured-image-item placeholder">
-                  <div class="image-placeholder">
-                    {{ $t('featured_image_placeholder', { number: index + 1 }) }}
-                  </div>
-                </div>
+              <!-- Descripción larga -->
+              <div v-if="model.long" class="long-description">
+                <p style="white-space: pre-wrap;">{{ model.long }}</p>
+              </div>
+
+              <!-- Footer y número de página -->
+              <div class="footer-bar" :style="footerStyle">
+                <div class="footer-text">{{ model.footer }}</div>
+                <div class="page-number">{{ pageIndex + 1 }}</div>
               </div>
             </div>
 
-            <!-- Descripción larga -->
-            <div v-if="model.long" class="long-description">
-              <p style="white-space: pre-wrap;">{{ model.long }}</p>
-            </div>
-
-            <!-- Footer y número de página -->
-            <div class="footer-bar" :style="footerStyle">
-              <div class="footer-text">{{ model.footer }}</div>
-              <div class="page-number">1</div>
-            </div>
           </div>
 
           <!-- Botón flotante abajo -->
@@ -174,20 +187,6 @@ watch(() => props.show, (value) => {
 </script>
 
 <style scoped>
-.fade-scale-enter-active,
-.fade-scale-leave-active {
-  transition: all 0.25s ease;
-}
-.fade-scale-enter-from,
-.fade-scale-leave-to {
-  opacity: 0;
-  transform: scale(0.95);
-}
-.fade-scale-enter-to,
-.fade-scale-leave-from {
-  opacity: 1;
-  transform: scale(1);
-}
 .a4-page {
   margin-bottom: 2rem;
   padding: 1rem;
@@ -195,13 +194,17 @@ watch(() => props.show, (value) => {
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
+
 .a4-image-content {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 0.5rem;
 }
+
 .no-radius {
   border-radius: 0;
 }
@@ -217,19 +220,19 @@ watch(() => props.show, (value) => {
   font-weight: bold;
 }
 
-.main-content {
+.content-main {
   display: flex;
-  flex-grow: 1;
   gap: 1rem;
+  flex-grow: 1;
   margin-bottom: 1rem;
 }
 
 .short-description {
-  flex-basis: 100%;
   margin-bottom: 1rem;
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 0.25rem;
+  width: 100%;
 }
 
 .data-table-container {
@@ -255,7 +258,7 @@ watch(() => props.show, (value) => {
 
 .table-header-cell {
   padding: 0.5rem;
-  border-right: 1px solid rgba(255,255,255,0.5);
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .table-header-cell:last-child {
@@ -329,5 +332,4 @@ watch(() => props.show, (value) => {
 .page-number {
   flex-shrink: 0;
 }
-
 </style>
