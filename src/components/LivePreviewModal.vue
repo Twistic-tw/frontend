@@ -13,19 +13,27 @@
             maxWidth: '794px',
             maxHeight: 'calc(100vh - 4rem)',
             width: '100%',
-            height: 'auto'
+            height: 'auto',
           }"
         >
           <!-- Vista completa del catálogo -->
           <div id="pdf-content" class="origin-top-left w-full h-fit-content bg-gray-100">
             <!-- Portada -->
             <div v-if="coverUrl" class="a4-page no-padding">
-              <img :src="coverUrl" alt="Cover Image" class="a4-image-content no-radius w-full h-full object-cover" />
+              <img
+                :src="coverUrl"
+                alt="Cover Image"
+                class="a4-image-content no-radius w-full h-full object-cover"
+              />
             </div>
 
             <!-- Segunda portada -->
             <div v-if="secondUrl" class="a4-page no-padding">
-              <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
+              <img
+                :src="secondUrl"
+                alt="Second Cover"
+                class="a4-image-content no-radius w-full h-full object-contain"
+              />
             </div>
 
             <!-- Páginas con contenido estructurado -->
@@ -39,7 +47,7 @@
                 backgroundImage: backgroundUrl ? `url(${backgroundUrl})` : 'none',
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center'
+                backgroundPosition: 'center',
               }"
             >
               <!-- Cabecera -->
@@ -48,7 +56,10 @@
               </div>
 
               <!-- Título catálogo -->
-              <div class="catalog-title-section" :style="{ backgroundColor: titleBackground, color: titleText }">
+              <div
+                class="catalog-title-section"
+                :style="{ backgroundColor: titleBackground, color: titleText }"
+              >
                 <h1
                   :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align }"
                   class="catalog-title"
@@ -65,13 +76,16 @@
               <!-- Contenedor con tabla a la izquierda y imágenes a la derecha -->
               <div class="content-main">
                 <!-- Tabla -->
-                <div class="data-table-container">
+                <div class="data-table-container" :style="{ fontSize: fontSizeForChunk(chunk) }">
                   <div class="table-header" :style="headerStyle">
                     <div
                       v-for="(key, i) in activeFieldNames"
                       :key="'header-' + i"
                       class="table-header-cell"
-                      :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' }]"
+                      :style="[
+                        cellStyle,
+                        { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' },
+                      ]"
                     >
                       {{ key }}
                     </div>
@@ -110,7 +124,7 @@
 
               <!-- Descripción larga -->
               <div v-if="model.long" class="long-description">
-                <p style="white-space: pre-wrap;">{{ model.long }}</p>
+                <p style="white-space: pre-wrap">{{ model.long }}</p>
               </div>
 
               <!-- Footer y número de página -->
@@ -128,8 +142,19 @@
               class="bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-900 transition"
               title="Cerrar"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -140,48 +165,49 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { ref, watch, computed } from 'vue'
 
 const props = defineProps<{
-  previewRows: Record<string, string>[][],
-  activeFieldNames: string[],
-  headerStyle: Record<string, string>,
-  templateName: string,
-  footerStyle: Record<string, string>,
-  rowStyle: (index: number) => Record<string, string>,
-  cellStyle: Record<string, string>,
-  headerUrl?: string,
-  footerUrl?: string,
-  coverUrl?: string,
-  secondUrl?: string,
-  backgroundUrl?: string,
-  show: boolean,
+  previewRows: Record<string, string>[][]
+  activeFieldNames: string[]
+  headerStyle: Record<string, string>
+  templateName: string
+  footerStyle: Record<string, string>
+  rowStyle: (index: number) => Record<string, string>
+  cellStyle: Record<string, string>
+  headerUrl?: string
+  footerUrl?: string
+  coverUrl?: string
+  secondUrl?: string
+  backgroundUrl?: string
+  show: boolean
   featuredImages: {
-    image_one: File | null,
-    image_two: File | null,
-    image_three: File | null,
-    image_four: File | null,
-  },
+    image_one: File | null
+    image_two: File | null
+    image_three: File | null
+    image_four: File | null
+  }
   featuredDescriptions: {
-    desc_one: string,
-    desc_two: string,
-    desc_three: string,
-    desc_four: string,
-  },
-  titleBackground: string,
-  titleText: string,
+    desc_one: string
+    desc_two: string
+    desc_three: string
+    desc_four: string
+  }
+  titleBackground: string
+  titleText: string
   titleSettings: {
-    font: string,
-    align: 'left' | 'center' | 'right',
-    size: string,
-    fieldFont: string,
-    fieldSize: string,
-    fieldAlign: 'left' | 'center' | 'right',
-  },
+    font: string
+    align: 'left' | 'center' | 'right'
+    size: string
+    fieldFont: string
+    fieldSize: string
+    fieldAlign: 'left' | 'center' | 'right'
+  }
   model: {
-    short: string,
-    long: string,
-    footer: string,
+    short: string
+    long: string
+    footer: string
   }
 }>()
 
@@ -192,9 +218,23 @@ const emit = defineEmits<{
 
 const showFullscreen = ref(false)
 
-watch(() => props.show, (value) => {
-  showFullscreen.value = value
-})
+watch(
+  () => props.show,
+  (value) => {
+    showFullscreen.value = value
+  },
+)
+
+// Computed para tamaño de fuente basado en filas del chunk actual
+const fontSizeForChunk = (chunk: Record<string, string>[]) => {
+  const baseSize = 14 // px base
+  const maxRows = 20 // si hay más filas, reducimos más
+  const rowCount = chunk.length
+  if (rowCount <= maxRows) return `${baseSize}px`
+  // Reducir tamaño hasta un mínimo de 8px
+  const size = Math.max(8, baseSize - (rowCount - maxRows) * 0.5)
+  return `${size}px`
+}
 </script>
 
 <style scoped>
@@ -215,7 +255,6 @@ watch(() => props.show, (value) => {
 
 .a4-page {
   margin-bottom: 2rem;
-  padding: 1rem;
   background: #fff;
   position: relative;
   display: flex;
@@ -275,7 +314,6 @@ watch(() => props.show, (value) => {
 
 .data-table-container {
   flex: 3;
-  overflow-y: auto;
   padding: 0.5rem;
   max-height: 400px;
   display: flex;
@@ -294,7 +332,7 @@ watch(() => props.show, (value) => {
 
 .table-header-cell {
   padding: 0.5rem;
-  border-right: 1px solid rgba(255,255,255,0.5);
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .table-header-cell:last-child {
