@@ -234,7 +234,7 @@ watch(
 
 // Computed para tamaño de fuente basado en filas del chunk actual
 const fontSizeForChunk = (chunk: Record<string, string>[]) => {
-  const baseSize = 14 // px base
+  const baseSize = 8 // px base
   const maxRows = 20 // si hay más filas, reducimos más
   const rowCount = chunk.length
   if (rowCount <= maxRows) return `${baseSize}px`
@@ -290,13 +290,13 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 
 .catalog-title {
   font-size: 24px;
+  padding-left: 1em;
   font-weight: bold;
 }
 
 .header-image-container {
   height: 120px;
   overflow: hidden;
-  margin-bottom: 1rem;
 }
 
 .header-image {
@@ -315,7 +315,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 
 .short-description {
   margin-bottom: 1rem;
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
   width: 100%;
 }
 
@@ -331,6 +331,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   font-weight: bold;
+  text-align: center;
   background-color: #5c6ac4;
   color: white;
   padding: 0.3rem;
@@ -349,6 +350,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 .table-row {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  text-align: center;
 }
 
 .table-cell {
