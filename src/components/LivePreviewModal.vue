@@ -17,7 +17,7 @@
           }"
         >
           <!-- Vista completa del catálogo -->
-          <div id="pdf-content" class="origin-top-left w-full h-fit-content bg-gray-100">
+          <div id="pdf-content" class="origin-top-left w-full h-fit-content bg-gray-100 no-padding">
             <!-- Portada -->
             <div v-if="coverUrl" class="a4-page no-padding">
               <img
