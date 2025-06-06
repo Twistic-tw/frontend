@@ -303,7 +303,7 @@ export function CustomizePdf() {
     searchActive.value = false
   }
 
-  const rowsPerPage = 24
+  const rowsPerPage = 18
   const paginatedRows = computed(() => {
     const chunks = []
     for (let i = 0; i < excelData.value.length; i += rowsPerPage) {
