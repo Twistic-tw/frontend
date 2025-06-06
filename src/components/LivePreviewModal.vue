@@ -218,7 +218,7 @@ const props = defineProps<{
     footer: string
   }
 }>()
-
+console.log(props.rowsPerPage)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const emit = defineEmits<{
   (e: 'close'): void
@@ -237,7 +237,6 @@ watch(
 const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   const baseSize = 8 // px base
   const maxRows = props.rowsPerPage
-  console.log(props.rowsPerPage)
   const rowCount = chunk.length
   if (rowCount <= maxRows) return `${baseSize}px`
   // Reducir tamaño hasta un mínimo de 8px
