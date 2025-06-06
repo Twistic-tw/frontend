@@ -77,14 +77,22 @@
               <div class="content-main">
                 <!-- Tabla -->
                 <div class="data-table-container" :style="{ fontSize: fontSizeForChunk(chunk) }">
-                  <div class="table-header" :style="headerStyle">
+                  <div
+                    class="table-header"
+                    :style="[headerStyle, { fontSize: fontSizeForChunk(chunk) }]"
+                  >
                     <div
                       v-for="(key, i) in activeFieldNames"
                       :key="'header-' + i"
                       class="table-header-cell"
                       :style="[
                         cellStyle,
-                        { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' },
+                        {
+                          maxWidth: '250px',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          fontSize: fontSizeForChunk(chunk),
+                        },
                       ]"
                     >
                       {{ key }}
@@ -95,13 +103,13 @@
                     v-for="(row, ri) in chunk"
                     :key="'row-' + pageIndex + '-' + ri"
                     class="table-row"
-                    :style="rowStyle(ri)"
+                    :style="[rowStyle(ri), { fontSize: fontSizeForChunk(chunk) }]"
                   >
                     <div
                       v-for="(key, i) in activeFieldNames"
                       :key="'cell-' + pageIndex + '-' + ri + '-' + i"
                       class="table-cell"
-                      :style="cellStyle"
+                      :style="[cellStyle, { fontSize: fontSizeForChunk(chunk) }]"
                     >
                       {{ row[key] }}
                     </div>
