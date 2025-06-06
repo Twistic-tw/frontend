@@ -4,6 +4,7 @@ import LivePreviewModal from './LivePreviewModal.vue'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
+  rowsPerPage: number
   previewRef: Ref<HTMLElement | null>
   toggleFullscreen: () => void
   images: {
@@ -108,6 +109,7 @@ const showFullscreen = ref(false)
       :featuredImages="featuredImages"
       :featuredDescriptions="featuredDescriptions"
       :model="model"
+      :rowsPerPage="rowsPerPage"
       @close="showFullscreen = false"
     />
 

@@ -181,6 +181,7 @@ const props = defineProps<{
   headerStyle: Record<string, string>
   templateName: string
   footerStyle: Record<string, string>
+  rowsPerPage: number
   rowStyle: (index: number) => Record<string, string>
   cellStyle: Record<string, string>
   headerUrl?: string
@@ -235,7 +236,7 @@ watch(
 // Computed para tamaño de fuente basado en filas del chunk actual
 const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   const baseSize = 8 // px base
-  const maxRows = 25 // si hay más filas, reducimos más
+  const maxRows = props.rowsPerPage
   const rowCount = chunk.length
   if (rowCount <= maxRows) return `${baseSize}px`
   // Reducir tamaño hasta un mínimo de 8px

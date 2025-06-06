@@ -564,6 +564,7 @@ export function CustomizePdf() {
     filteredRows,
     selectedRows,
     previewRows,
+    rowsPerPage,
     filterRows,
     selectAllFiltered,
     deselectAllFiltered,
