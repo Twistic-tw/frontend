@@ -94,7 +94,7 @@ const textOptions = ref({
 const stylePresets = ref<any[]>([])
 
 // Add rowsPerPage with a default value, e.g., 10
-const rowsPerPage = ref(10)
+const { rowsPerPage } = CustomizePdf()
 
 onMounted(async () => {
   stylePresets.value = await fetchStylePresets()
