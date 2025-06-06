@@ -236,7 +236,7 @@ watch(
 // Computed para tamaño de fuente basado en filas del chunk actual
 const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   const baseSize = 8 // px base
-  const maxRows = 24
+  const maxRows = parseInt(props.rowsPerPage as unknown as string, 10)
   const rowCount = chunk.length
   if (rowCount <= maxRows) return `${baseSize}px`
   // Reducir tamaño hasta un mínimo de 8px
