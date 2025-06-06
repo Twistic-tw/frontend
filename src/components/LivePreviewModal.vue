@@ -217,8 +217,6 @@ watch(() => props.show, (value) => {
   margin-bottom: 2rem;
   padding: 1rem;
   background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -232,7 +230,6 @@ watch(() => props.show, (value) => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 0.5rem;
 }
 
 .no-radius {
@@ -274,15 +271,11 @@ watch(() => props.show, (value) => {
   margin-bottom: 1rem;
   padding: 0.5rem;
   width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 0.25rem;
 }
 
 .data-table-container {
   flex: 3;
   overflow-y: auto;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
   padding: 0.5rem;
   max-height: 400px;
   display: flex;
@@ -360,7 +353,6 @@ watch(() => props.show, (value) => {
 .footer-bar {
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid #ccc;
   padding-top: 0.5rem;
   font-size: 0.8rem;
   color: #666;
