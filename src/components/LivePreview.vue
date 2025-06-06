@@ -38,6 +38,8 @@ const props = defineProps<{
   headerStyle: Record<string, string>
   rowStyle: (index: number) => Record<string, string>
   cellStyle: Record<string, string>
+  shortDescriptionStyle: Record<string, string>
+  longDescriptionStyle: Record<string, string>
   footerStyle: Record<string, string>
   titleBackground: string
   titleText: string
@@ -100,6 +102,8 @@ const showFullscreen = ref(false)
       :titleSettings="titleSettings"
       :rowStyle="rowStyle"
       :cellStyle="cellStyle"
+      :shortDescriptionStyle="shortDescriptionStyle"
+      :longDescriptionStyle="longDescriptionStyle"
       :footerStyle="footerStyle"
       :headerUrl="headerUrl"
       :footerUrl="footerUrl"
