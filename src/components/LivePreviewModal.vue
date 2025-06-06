@@ -28,6 +28,18 @@
               <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
             </div>
 
+            <!-- Descripción corta -->
+            <div v-if="model?.short" class="a4-page p-6">
+              <h2 class="text-xl font-semibold mb-4">{{ $t('short_description_title') }}</h2>
+              <p>{{ model.short }}</p>
+            </div>
+
+            <!-- Descripción larga -->
+            <div v-if="model?.long" class="a4-page p-6">
+              <h2 class="text-xl font-semibold mb-4">{{ $t('long_description_title') }}</h2>
+              <p style="white-space: pre-wrap;">{{ model.long }}</p>
+            </div>
+
             <!-- Páginas de contenido -->
             <div
               v-for="(chunk, index) in previewRows"
@@ -92,7 +104,8 @@
 
               <!-- Footer fijo en cada página -->
               <div class="footer-bar absolute bottom-4 right-6 text-sm text-gray-500 italic" :style="footerStyle">
-                {{ index + 1 }}
+                <div>{{ index + 1 }}</div>
+                <div>{{ model?.footer }}</div>
               </div>
             </div>
 
@@ -148,6 +161,11 @@ const props = defineProps<{
     fieldSize: string;
     fieldAlign: 'left' | 'center' | 'right';
   };
+  model?: {
+    short: string;
+    long: string;
+    footer: string;
+  };
 }>();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -193,5 +211,15 @@ watch(() => props.show, (value) => {
 }
 .no-radius {
   border-radius: 0;
+}
+.footer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  font-size: 0.75rem;
+  color: #666;
+  height: 40px;
+  border-top: 1px solid #ddd;
 }
 </style>

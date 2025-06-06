@@ -249,6 +249,7 @@ onMounted(async () => {
         :titleBackground="titleBackgroundRgba"
         :titleText="colors.titleText"
         :titleSettings="titleSettings"
+        :model="textOptions"
       />
 
       <LivePreviewModal

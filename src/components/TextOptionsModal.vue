@@ -19,19 +19,21 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('short_label') }}</label>
           <input
             type="text"
-            v-model="modelTextOptions.short"
+            :value="modelValue.short"
             class="w-full border rounded px-3 py-2 shadow-sm"
             :placeholder="$t('short_placeholder')"
+            @input="e => emit('update:modelValue', { ...modelValue, short: e.target })"
           />
         </div>
 
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('long_label') }}</label>
           <textarea
-            v-model="modelTextOptions.long"
+            :value="modelValue.long"
             rows="4"
             class="w-full border rounded px-3 py-2 shadow-sm"
             :placeholder="$t('long_placeholder')"
+            @input="e => emit('update:modelValue', { ...modelValue, long: e.target })"
           />
         </div>
 
@@ -39,9 +41,10 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('footer_label') }}</label>
           <input
             type="text"
-            v-model="modelTextOptions.footer"
+            :value="modelValue.footer"
             class="w-full border rounded px-3 py-2 shadow-sm"
             :placeholder="$t('footer_placeholder')"
+            @input="e => emit('update:modelValue', { ...modelValue, footer: e.target })"
           />
         </div>
       </div>
@@ -50,17 +53,17 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const props = defineProps<{
   show: boolean
+  modelValue: {
+    short: string
+    long: string
+    footer: string
+  }
 }>()
 
-const modelTextOptions = defineModel<{
-  short: string
-  long: string
-  footer: string
-}>()
-
-defineEmits(['close'])
+const emit = defineEmits(['close', 'update:modelValue'])
 </script>
 
 <style scoped>

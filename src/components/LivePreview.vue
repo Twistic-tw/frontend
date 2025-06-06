@@ -1,26 +1,9 @@
 <script setup lang="ts">
 import { type Ref, ref } from 'vue'
 import LivePreviewModal from './LivePreviewModal.vue'
-import modelTextOptions from './TextOptionsModal.vue'
-const {
-  previewRef,
-  images,
-  coverUrl,
-  secondUrl,
-  headerUrl,
-  backgroundUrl,
-  footerUrl,
-  previewRows,
-  showBackground,
-  activeFieldNames,
-  headerStyle,
-  rowStyle,
-  cellStyle,
-  footerStyle,
-  titleBackground,
-  titleSettings,
-  templateName,
-} = defineProps<{
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const props = defineProps<{
   previewRef: Ref<HTMLElement | null>,
   toggleFullscreen: () => void,
   images: {
@@ -33,7 +16,7 @@ const {
   coverUrl: string,
   secondUrl: string,
   headerUrl: string,
-  templateName: string
+  templateName: string,
   backgroundUrl: string,
   footerUrl: string,
   previewRows: Record<string, string>[][],
@@ -43,15 +26,20 @@ const {
   rowStyle: (index: number) => Record<string, string>,
   cellStyle: Record<string, string>,
   footerStyle: Record<string, string>,
-  titleBackground: string
+  titleBackground: string,
   titleText: string,
   titleSettings: {
-    font: string
-    align: 'left' | 'center' | 'right'
-    size: string
-    fieldFont: string
-    fieldSize: string
-    fieldAlign: 'left' | 'center' | 'right'
+    font: string,
+    align: 'left' | 'center' | 'right',
+    size: string,
+    fieldFont: string,
+    fieldSize: string,
+    fieldAlign: 'left' | 'center' | 'right',
+  },
+  model: {
+    short: string,
+    long: string,
+    footer: string
   }
 }>()
 
@@ -59,17 +47,31 @@ const showFullscreen = ref(false)
 </script>
 
 <template>
-  <div class="h-auto w-full bg-white rounded-2xl shadow-lg p-6 border border-gray-200" style="position: sticky; top: 100px; height: fit-content">
-    <h2 class="text-2xl font-semibold text-gray-800 mb-3">{{ $t('title_livepreview') }}
+  <div
+    class="h-auto w-full bg-white rounded-2xl shadow-lg p-6 border border-gray-200"
+    style="position: sticky; top: 100px; height: fit-content"
+  >
+    <h2 class="text-2xl font-semibold text-gray-800 mb-3">
+      {{ $t('title_livepreview') }}
       <button
         @click="showFullscreen = true"
         class="absolute top-0 right-0 p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition z-10"
         title="Fullscreen"
         style="margin: 0.5em;"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M8 3H5a2 2 0 00-2 2v3m0 8v3a2 2 0 002 2h3m8-18h3a2 2 0 012 2v3m0 8v3a2 2 0 01-2 2h-3" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8 3H5a2 2 0 00-2 2v3m0 8v3a2 2 0 002 2h3m8-18h3a2 2 0 012 2v3m0 8v3a2 2 0 01-2 2h-3"
+          />
         </svg>
       </button>
     </h2>
@@ -101,24 +103,32 @@ const showFullscreen = ref(false)
     >
       <!-- Portada -->
       <div v-if="images.cover" class="a4-page">
-        <img :src="coverUrl" alt="Cover Image" class="a4-image-content no-radius w-full h-full object-cover" />
+        <img
+          :src="coverUrl"
+          alt="Cover Image"
+          class="a4-image-content no-radius w-full h-full object-cover"
+        />
       </div>
 
       <!-- Segunda portada -->
       <div v-if="images.second" class="a4-page">
-        <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
+        <img
+          :src="secondUrl"
+          alt="Second Cover"
+          class="a4-image-content no-radius w-full h-full object-contain"
+        />
       </div>
 
       <!-- Descripción corta -->
-      <div v-if="modelTextOptions.short" class="a4-page p-6">
+      <div v-if="model.short" class="a4-page p-6">
         <h2 class="text-xl font-semibold mb-4">{{ $t('short_description_title') }}</h2>
-        <p>{{ modelTextOptions.short }}</p>
+        <p>{{ model.short }}</p>
       </div>
 
       <!-- Descripción larga -->
-      <div v-if="modelTextOptions.long" class="a4-page p-6">
+      <div v-if="model.long" class="a4-page p-6">
         <h2 class="text-xl font-semibold mb-4">{{ $t('long_description_title') }}</h2>
-        <p style="white-space: pre-wrap;">{{ modelTextOptions.long }}</p>
+        <p style="white-space: pre-wrap;">{{ model.long }}</p>
       </div>
 
       <!-- Páginas de contenido -->
@@ -135,18 +145,23 @@ const showFullscreen = ref(false)
       >
         <!-- Cabecera -->
         <div v-if="images.header" style="height: 120px; overflow: hidden">
-          <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-t-lg" style="height: 120px" />
+          <img
+            :src="headerUrl"
+            alt="Header Image"
+            class="w-full object-cover rounded-t-lg"
+            style="height: 120px"
+          />
         </div>
         <div
           class="text-center mb-4 py-2 px-4"
           :style="{
             backgroundColor: titleBackground,
-            color: titleText
+            color: titleText,
           }"
         >
           <h1
             class="text-2xl font-bold tracking-wide"
-            :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align, paddingLeft: '1em'}"
+            :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align, paddingLeft: '1em' }"
           >
             {{ templateName }}
           </h1>
@@ -162,7 +177,8 @@ const showFullscreen = ref(false)
               v-for="(key, i) in activeFieldNames"
               :key="'header-' + i"
               class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
-              :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' }]">
+              :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' }]"
+            >
               {{ key }}
             </div>
           </div>
@@ -187,14 +203,18 @@ const showFullscreen = ref(false)
         <!-- Footer fijo en cada página -->
         <div class="footer-bar" :style="footerStyle">
           <div>{{ index + 1 }}</div>
-          <div>{{ modelTextOptions.footer }}</div>
+          <div>{{ model.footer }}</div>
         </div>
       </div>
 
       <!-- Página extra solo con footer -->
       <div v-if="images.footer" class="a4-page">
         <div class="a4-image full-a4">
-          <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
+          <img
+            :src="footerUrl"
+            alt="Footer Image"
+            class="a4-image-content no-radius"
+          />
         </div>
       </div>
     </div>
