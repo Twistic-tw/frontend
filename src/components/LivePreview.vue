@@ -205,12 +205,13 @@ const showFullscreen = ref(false)
 
 <style scoped>
 .pdf-page {
-  height: 1123px;
+  width: 794px; /* Ancho A4 */
+  height: 1123px; /* Alto A4 */
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   position: relative;
-  font-size: clamp(10px, 1vw, 14px);
+  font-size: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -238,7 +239,7 @@ const showFullscreen = ref(false)
 }
 
 .catalog-title {
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: 24px;
   font-weight: bold;
 }
 
@@ -263,7 +264,7 @@ const showFullscreen = ref(false)
   border: 1px solid #ccc;
   border-radius: 0.5rem;
   padding: 0.5rem;
-  max-height: 400px;
+  max-height: 400px; /* para controlar altura si hace falta */
   display: flex;
   flex-direction: column;
 }
@@ -272,11 +273,10 @@ const showFullscreen = ref(false)
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   font-weight: bold;
-  background-color: #5c6ac4;
+  background-color: #5c6ac4; /* ejemplo color */
   color: white;
   padding: 0.3rem;
   border-radius: 0.3rem 0.3rem 0 0;
-  font-size: clamp(10px, 1vw, 14px);
 }
 
 .table-header-cell {
@@ -292,7 +292,6 @@ const showFullscreen = ref(false)
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   border-bottom: 1px solid #ddd;
-  font-size: clamp(10px, 1vw, 14px);
 }
 
 .table-cell {
@@ -312,7 +311,7 @@ const showFullscreen = ref(false)
   flex-direction: column;
   gap: 1rem;
   overflow-y: auto;
-  max-height: 400px;
+  max-height: 400px; /* ajustar si quieres scroll en estas imágenes */
 }
 
 .featured-image-item {
@@ -347,18 +346,15 @@ const showFullscreen = ref(false)
   justify-content: space-between;
   border-top: 1px solid #ccc;
   padding-top: 0.5rem;
-  font-size: clamp(10px, 1vw, 14px);
+  font-size: 0.8rem;
   color: #666;
 }
 
 .footer-text {
   flex-grow: 1;
-  text-align: left;
 }
 
 .page-number {
   flex-shrink: 0;
-  text-align: right;
 }
 </style>
-
