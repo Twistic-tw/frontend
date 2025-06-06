@@ -373,6 +373,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1rem;
   max-height: 700px;
 }
