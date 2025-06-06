@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type Ref, ref } from 'vue'
 import LivePreviewModal from './LivePreviewModal.vue'
-
+import modelTextOptions from './TextOptionsModal.vue'
 const {
   previewRef,
   images,
@@ -19,7 +19,7 @@ const {
   footerStyle,
   titleBackground,
   titleSettings,
-  templateName
+  templateName,
 } = defineProps<{
   previewRef: Ref<HTMLElement | null>,
   toggleFullscreen: () => void,
@@ -109,6 +109,18 @@ const showFullscreen = ref(false)
         <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius w-full h-full object-contain" />
       </div>
 
+      <!-- Descripción corta -->
+      <div v-if="modelTextOptions.short" class="a4-page p-6">
+        <h2 class="text-xl font-semibold mb-4">{{ $t('short_description_title') }}</h2>
+        <p>{{ modelTextOptions.short }}</p>
+      </div>
+
+      <!-- Descripción larga -->
+      <div v-if="modelTextOptions.long" class="a4-page p-6">
+        <h2 class="text-xl font-semibold mb-4">{{ $t('long_description_title') }}</h2>
+        <p style="white-space: pre-wrap;">{{ modelTextOptions.long }}</p>
+      </div>
+
       <!-- Páginas de contenido -->
       <div
         v-for="(chunk, index) in previewRows"
@@ -140,7 +152,6 @@ const showFullscreen = ref(false)
           </h1>
         </div>
 
-
         <!-- Tabla con padding para dejar espacio al footer -->
         <div
           class="w-full h-full text-sm border border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow"
@@ -151,8 +162,7 @@ const showFullscreen = ref(false)
               v-for="(key, i) in activeFieldNames"
               :key="'header-' + i"
               class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
-              :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' }]"
-            >
+              :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' }]">
               {{ key }}
             </div>
           </div>
@@ -175,7 +185,10 @@ const showFullscreen = ref(false)
         </div>
 
         <!-- Footer fijo en cada página -->
-        <div class="footer-bar" :style="footerStyle">{{ index + 1 }}</div>
+        <div class="footer-bar" :style="footerStyle">
+          <div>{{ index + 1 }}</div>
+          <div>{{ modelTextOptions.footer }}</div>
+        </div>
       </div>
 
       <!-- Página extra solo con footer -->
@@ -237,5 +250,15 @@ const showFullscreen = ref(false)
 .fade-scale-leave-from {
   opacity: 1;
   transform: scale(1);
+}
+.footer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  font-size: 0.75rem;
+  color: #666;
+  height: 40px;
+  border-top: 1px solid #ddd;
 }
 </style>

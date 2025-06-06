@@ -19,7 +19,7 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('short_label') }}</label>
           <input
             type="text"
-            v-model="model.short"
+            v-model="modelTextOptions.short"
             class="w-full border rounded px-3 py-2 shadow-sm"
             :placeholder="$t('short_placeholder')"
           />
@@ -28,7 +28,7 @@
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('long_label') }}</label>
           <textarea
-            v-model="model.long"
+            v-model="modelTextOptions.long"
             rows="4"
             class="w-full border rounded px-3 py-2 shadow-sm"
             :placeholder="$t('long_placeholder')"
@@ -39,7 +39,7 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('footer_label') }}</label>
           <input
             type="text"
-            v-model="model.footer"
+            v-model="modelTextOptions.footer"
             class="w-full border rounded px-3 py-2 shadow-sm"
             :placeholder="$t('footer_placeholder')"
           />
@@ -54,7 +54,7 @@ defineProps<{
   show: boolean
 }>()
 
-const model = defineModel<{
+const modelTextOptions = defineModel<{
   short: string
   long: string
   footer: string
