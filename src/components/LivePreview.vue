@@ -4,41 +4,41 @@ import LivePreviewModal from './LivePreviewModal.vue'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
-  previewRef: Ref<HTMLElement | null>,
-  toggleFullscreen: () => void,
+  previewRef: Ref<HTMLElement | null>
+  toggleFullscreen: () => void
   images: {
-    cover: File | null,
-    second: File | null,
-    header: File | null,
-    background: File | null,
+    cover: File | null
+    second: File | null
+    header: File | null
+    background: File | null
     footer: File | null
-  },
-  coverUrl: string,
-  secondUrl: string,
-  headerUrl: string,
-  templateName: string,
-  backgroundUrl: string,
-  footerUrl: string,
-  previewRows: Record<string, string>[][],
-  showBackground: (index: number) => boolean,
-  activeFieldNames: string[],
-  headerStyle: Record<string, string>,
-  rowStyle: (index: number) => Record<string, string>,
-  cellStyle: Record<string, string>,
-  footerStyle: Record<string, string>,
-  titleBackground: string,
-  titleText: string,
+  }
+  coverUrl: string
+  secondUrl: string
+  headerUrl: string
+  templateName: string
+  backgroundUrl: string
+  footerUrl: string
+  previewRows: Record<string, string>[][]
+  showBackground: (index: number) => boolean
+  activeFieldNames: string[]
+  headerStyle: Record<string, string>
+  rowStyle: (index: number) => Record<string, string>
+  cellStyle: Record<string, string>
+  footerStyle: Record<string, string>
+  titleBackground: string
+  titleText: string
   titleSettings: {
-    font: string,
-    align: 'left' | 'center' | 'right',
-    size: string,
-    fieldFont: string,
-    fieldSize: string,
-    fieldAlign: 'left' | 'center' | 'right',
-  },
+    font: string
+    align: 'left' | 'center' | 'right'
+    size: string
+    fieldFont: string
+    fieldSize: string
+    fieldAlign: 'left' | 'center' | 'right'
+  }
   model: {
-    short: string,
-    long: string,
+    short: string
+    long: string
     footer: string
   }
 }>()
@@ -57,7 +57,7 @@ const showFullscreen = ref(false)
         @click="showFullscreen = true"
         class="absolute top-0 right-0 p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition z-10"
         title="Fullscreen"
-        style="margin: 0.5em;"
+        style="margin: 0.5em"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -98,8 +98,8 @@ const showFullscreen = ref(false)
     <div
       id="pdf-content"
       ref="previewRef"
-      class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full h-fit-content bg-gray-100"
-      style="aspect-ratio: 794/1123; transform: scale(1)"
+      class="overflow-y-auto overflow-x-hidden max-w-full origin-top-left w-full bg-gray-100"
+      style="aspect-ratio: 794 / 1123; max-height: 1123px; transform: scale(1)"
     >
       <!-- Portada -->
       <div v-if="images.cover" class="a4-page">
@@ -126,9 +126,9 @@ const showFullscreen = ref(false)
       </div>
 
       <!-- Descripción larga -->
-      <div v-if="model.long" class="a4-page p-6">
+      <div v-if="model.long" class="a4-page p-6 description-long">
         <h2 class="text-xl font-semibold mb-4">{{ $t('long_description_title') }}</h2>
-        <p style="white-space: pre-wrap;">{{ model.long }}</p>
+        <p style="white-space: pre-wrap">{{ model.long }}</p>
       </div>
 
       <!-- Páginas de contenido -->
@@ -161,7 +161,11 @@ const showFullscreen = ref(false)
         >
           <h1
             class="text-2xl font-bold tracking-wide"
-            :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align, paddingLeft: '1em' }"
+            :style="{
+              fontFamily: titleSettings.font,
+              textAlign: titleSettings.align,
+              paddingLeft: '1em',
+            }"
           >
             {{ templateName }}
           </h1>
@@ -170,14 +174,17 @@ const showFullscreen = ref(false)
         <!-- Tabla con padding para dejar espacio al footer -->
         <div
           class="w-full h-full text-sm border border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow"
-          style="padding-bottom: 60px;"
+          style="padding-bottom: 60px"
         >
           <div class="grid font-medium" :style="headerStyle">
             <div
               v-for="(key, i) in activeFieldNames"
               :key="'header-' + i"
               class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
-              :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' }]"
+              :style="[
+                cellStyle,
+                { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis' },
+              ]"
             >
               {{ key }}
             </div>
@@ -210,11 +217,7 @@ const showFullscreen = ref(false)
       <!-- Página extra solo con footer -->
       <div v-if="images.footer" class="a4-page">
         <div class="a4-image full-a4">
-          <img
-            :src="footerUrl"
-            alt="Footer Image"
-            class="a4-image-content no-radius"
-          />
+          <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
         </div>
       </div>
     </div>
@@ -225,12 +228,15 @@ const showFullscreen = ref(false)
 .a4-page {
   position: relative;
   height: 1123px;
+  width: 794px;
   background-color: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  margin: 0 auto 2rem;
+  margin: 0 auto;
+  margin-bottom: 2rem;
   page-break-after: always;
   overflow: hidden;
-  z-index: 1;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 .a4-page > *:not(.absolute) {
   position: relative;
@@ -257,6 +263,22 @@ const showFullscreen = ref(false)
   margin-bottom: 40px;
   width: 100%;
 }
+.footer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  font-size: 0.75rem;
+  color: #666;
+  height: 40px;
+  border-top: 1px solid #ddd;
+  box-sizing: border-box;
+}
+.description-long {
+  max-height: 150px;     /* limita el alto para que no crezca y descoloque */
+  overflow-y: auto;      /* añade scroll vertical */
+  white-space: pre-wrap; /* conserva saltos de línea */
+}
 .fade-scale-enter-active,
 .fade-scale-leave-active {
   transition: all 0.4s ease-in-out;
@@ -271,14 +293,5 @@ const showFullscreen = ref(false)
   opacity: 1;
   transform: scale(1);
 }
-.footer-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
-  font-size: 0.75rem;
-  color: #666;
-  height: 40px;
-  border-top: 1px solid #ddd;
-}
+
 </style>
