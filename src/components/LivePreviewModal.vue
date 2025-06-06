@@ -261,11 +261,16 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 }
 
 .a4-page {
-  margin-bottom: 2rem;
+  height: 1123px;
   background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  margin-bottom: 2rem;
   position: relative;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .no-padding {
@@ -303,7 +308,6 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   width: 100%;
   height: 120px;
   object-fit: cover;
-  border-radius: 0.5rem 0.5rem 0 0;
 }
 
 .content-main {
@@ -317,6 +321,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   margin-bottom: 1rem;
   padding: 0.5rem 0.5rem 0.5rem 1rem;
   width: 100%;
+  font-size: 10px;
 }
 
 .data-table-container {
@@ -350,12 +355,11 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 .table-row {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  text-align: center;
 }
 
 .table-cell {
   padding: 0.4rem;
-  border-right: 1px solid #eee;
+  text-align: center;
   word-wrap: break-word;
   white-space: normal;
 }
@@ -393,8 +397,8 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   padding: 0.5rem;
   margin-bottom: 1rem;
   max-height: 100px;
-  overflow-y: auto;
   white-space: pre-wrap;
+  font-size: 10px;
 }
 
 .footer-bar {
