@@ -218,7 +218,7 @@ const props = defineProps<{
     footer: string
   }
 }>()
-console.log(props.rowsPerPage)
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const emit = defineEmits<{
   (e: 'close'): void
