@@ -93,6 +93,9 @@ const textOptions = ref({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const stylePresets = ref<any[]>([])
 
+// Add rowsPerPage with a default value, e.g., 10
+const rowsPerPage = ref(10)
+
 onMounted(async () => {
   stylePresets.value = await fetchStylePresets()
 })
@@ -267,6 +270,7 @@ onMounted(async () => {
         :headerStyle="headerStyle"
         :templateName="templateName"
         :rowStyle="rowStyle"
+        :rowsPerPage = "rowsPerPage"
         :images="images"
         :headerUrl="headerUrl"
         :footerUrl="footerUrl"
