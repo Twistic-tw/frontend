@@ -16,37 +16,37 @@
         <h2 class="text-xl font-bold text-gray-800 mb-4">{{ $t('title_text_catalog') }}</h2>
 
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('short_label') }}</label>
-          <input
-            type="text"
-            :value="modelValue.short"
-            class="w-full border rounded px-3 py-2 shadow-sm"
-            :placeholder="$t('short_placeholder')"
-            @input="e => emit('update:modelValue', { ...modelValue, short: e.target })"
-          />
-        </div>
+  <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('short_label') }}</label>
+  <input
+    type="text"
+    :value="modelValue.short"
+    @input="e => emit('update:modelValue', { ...modelValue, short: (e.target as HTMLInputElement).value })"
+    class="w-full border rounded px-3 py-2 shadow-sm"
+    :placeholder="$t('short_placeholder')"
+  />
+</div>
 
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('long_label') }}</label>
-          <textarea
-            :value="modelValue.long"
-            rows="4"
-            class="w-full border rounded px-3 py-2 shadow-sm"
-            :placeholder="$t('long_placeholder')"
-            @input="e => emit('update:modelValue', { ...modelValue, long: e.target })"
-          />
-        </div>
+<div class="mb-4">
+  <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('long_label') }}</label>
+  <textarea
+    :value="modelValue.long"
+    @input="e => emit('update:modelValue', { ...modelValue, long: (e.target as HTMLInputElement).value })"
+    rows="4"
+    class="w-full border rounded px-3 py-2 shadow-sm"
+    :placeholder="$t('long_placeholder')"
+  />
+</div>
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('footer_label') }}</label>
-          <input
-            type="text"
-            :value="modelValue.footer"
-            class="w-full border rounded px-3 py-2 shadow-sm"
-            :placeholder="$t('footer_placeholder')"
-            @input="e => emit('update:modelValue', { ...modelValue, footer: e.target })"
-          />
-        </div>
+<div>
+  <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('footer_label') }}</label>
+  <input
+    type="text"
+    :value="modelValue.footer"
+    @input="e => emit('update:modelValue', { ...modelValue, footer: (e.target as HTMLInputElement).value })"
+    class="w-full border rounded px-3 py-2 shadow-sm"
+    :placeholder="$t('footer_placeholder')"
+  />
+</div>
       </div>
     </div>
   </transition>
