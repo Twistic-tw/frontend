@@ -89,6 +89,10 @@ const textOptions = ref({
   footer: ''
 })
 
+// Add missing shortDescription and longDescription refs for v-model usage
+const shortDescription = ref('')
+const longDescription = ref('')
+
 // Estilos guardados
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const stylePresets = ref<any[]>([])
@@ -143,6 +147,8 @@ onMounted(async () => {
           <StyleOptions
             v-model:colors="colors"
             v-model:titleSettings="titleSettings"
+            v-model:shortDescription="shortDescription"
+            v-model:longDescription="longDescription"
             :activeCard="activeCard"
             cardId="styleOptions"
             @toggle="(id) => activeCard = activeCard === id ? null : id"

@@ -64,6 +64,30 @@
         </div>
 
         <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            {{ $t('short_description') }}
+          </label>
+          <textarea
+            v-model="shortDescription"
+            rows="2"
+            class="w-full p-2 border rounded resize-none"
+            :placeholder="$t('short_description_placeholder')"
+          ></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            {{ $t('long_description') }}
+          </label>
+          <textarea
+            v-model="longDescription"
+            rows="4"
+            class="w-full p-2 border rounded resize-y"
+            :placeholder="$t('long_description_placeholder')"
+          ></textarea>
+        </div>
+
+        <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('content_text') }}</label>
           <input type="color" v-model="colors.text" class="w-full h-8 border rounded" />
         </div>
@@ -111,11 +135,29 @@ const props = defineProps<{
   colors: any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   titleSettings: any
+  shortDescription: string
+  longDescription: string
   activeCard: string | null
   cardId: string
 }>()
 
+const emit = defineEmits<{
+  (e: 'update:shortDescription', value: string): void
+  (e: 'update:longDescription', value: string): void
+  (e: 'toggle', cardId: string): void
+}>()
+
 const isOpen = computed(() => props.activeCard === props.cardId)
+
+const shortDescription = computed({
+  get: () => props.shortDescription,
+  set: val => emit('update:shortDescription', val),
+})
+
+const longDescription = computed({
+  get: () => props.longDescription,
+  set: val => emit('update:longDescription', val),
+})
 </script>
 
 <style scoped>
