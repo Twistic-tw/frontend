@@ -235,7 +235,7 @@ watch(
 // Computed para tamaño de fuente basado en filas del chunk actual
 const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   const baseSize = 8 // px base
-  const maxRows = 20 // si hay más filas, reducimos más
+  const maxRows = 25 // si hay más filas, reducimos más
   const rowCount = chunk.length
   if (rowCount <= maxRows) return `${baseSize}px`
   // Reducir tamaño hasta un mínimo de 8px
@@ -327,7 +327,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 .data-table-container {
   flex: 3;
   padding: 0.5rem;
-  max-height: 400px;
+  max-height: 700px;
   display: flex;
   flex-direction: column;
 }
@@ -373,6 +373,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-height: 700px;
 }
 
 .featured-image-item.placeholder {
