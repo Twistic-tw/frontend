@@ -127,141 +127,131 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
       @close="showFullscreen = false"
     />
 
-    <div id="pdf-content" ref="previewRef" class="pdf-container">
-      <!-- Portada -->
-      <div v-if="images.cover" class="a4-page">
-        <img :src="coverUrl" alt="Cover Image" class="a4-image-content no-radius" />
-      </div>
+    <div id="pdf-content" class="origin-top-left w-full h-fit-content bg-gray-100 no-padding">
+            <!-- Portada -->
+            <div v-if="coverUrl" class="a4-page no-padding">
+              <img
+                :src="coverUrl"
+                alt="Cover Image"
+                class="a4-image-content no-radius w-full h-full object-cover"
+              />
+            </div>
 
-      <!-- Segunda portada -->
-      <div v-if="images.second" class="a4-page">
-        <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius" />
-      </div>
+            <!-- Segunda portada -->
+            <div v-if="secondUrl" class="a4-page no-padding">
+              <img
+                :src="secondUrl"
+                alt="Second Cover"
+                class="a4-image-content no-radius w-full h-full object-contain"
+              />
+            </div>
 
-      <!-- Descripción corta -->
-      <div v-if="model.short" class="a4-page p-6" :style="shortDescriptionStyle">
-        <p>{{ model.short }}</p>
-      </div>
-
-      <!-- Descripción larga -->
-      <div v-if="model.long" class="a4-page p-6" :style="longDescriptionStyle">
-        <p style="white-space: pre-wrap">{{ model.long }}</p>
-      </div>
-
-      <!-- Páginas de contenido con tabla e imágenes destacadas a la derecha -->
-      <div
-        v-for="(chunk, index) in previewRows"
-        :key="'page-' + index"
-        class="a4-page flex"
-        :style="{
-          backgroundImage: showBackground(index) ? `url(${backgroundUrl})` : 'none',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-        }"
-      >
-        <div class="content-left flex-grow flex flex-col">
-          <!-- Cabecera -->
-          <div v-if="images.header" style="height: 120px; overflow: hidden">
-            <img
-              :src="headerUrl"
-              alt="Header Image"
-              class="w-full object-cover rounded-t-lg"
-              style="height: 120px"
-            />
-          </div>
-          <div
-            class="text-center mb-4 py-2 px-4"
-            :style="{
-              backgroundColor: titleBackground,
-              color: titleText,
-            }"
-          >
-            <h1
-              class="text-2xl font-bold tracking-wide"
+            <!-- Páginas con contenido estructurado -->
+            <div
+              v-for="(chunk, pageIndex) in previewRows"
+              :key="'page-' + pageIndex"
+              class="a4-page"
               :style="{
-                fontFamily: titleSettings.font,
-                textAlign: titleSettings.align,
-                paddingLeft: '1em',
+                position: 'relative',
+                padding: '1rem',
+                backgroundImage: backgroundUrl ? `url(${backgroundUrl})` : 'none',
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
               }"
             >
-              {{ templateName }}
-            </h1>
-          </div>
+              <!-- Cabecera -->
+              <div v-if="headerUrl" class="header-image-container">
+                <img :src="headerUrl" alt="Header Image" class="header-image" />
+              </div>
 
-          <!-- Tabla con padding para dejar espacio al footer -->
-          <div
-            class="w-full h-full text-sm border border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow overflow-auto"
-            style="padding-bottom: 60px"
-          >
-            <div
-              class="grid font-medium"
-              :style="[headerStyle, { fontSize: fontSizeForChunk(chunk) }]"
-            >
+              <!-- Título catálogo -->
               <div
-                v-for="(key, i) in activeFieldNames"
-                :key="'header-' + i"
-                class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
-                :style="[
-                  cellStyle,
-                  {
-                    maxWidth: '250px',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    fontSize: fontSizeForChunk(chunk),
-                  },
-                ]"
+                class="catalog-title-section"
+                :style="{ backgroundColor: titleBackground, color: titleText }"
               >
-                {{ key }}
+                <h1
+                  :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align }"
+                  class="catalog-title"
+                >
+                  {{ templateName }}
+                </h1>
+              </div>
+
+              <!-- Descripción corta -->
+              <div v-if="model.short" class="short-description">
+                <p>{{ model.short }}</p>
+              </div>
+
+              <!-- Contenedor con tabla a la izquierda y imágenes a la derecha -->
+              <div class="content-main">
+                <!-- Tabla -->
+                <div class="data-table-container" :style="{ fontSize: fontSizeForChunk(chunk) }">
+                  <div
+                    class="table-header"
+                    :style="[headerStyle, { fontSize: fontSizeForChunk(chunk) }]"
+                  >
+                    <div
+                      v-for="(key, i) in activeFieldNames"
+                      :key="'header-' + i"
+                      class="table-header-cell"
+                      :style="[
+                        cellStyle,
+                        {
+                          maxWidth: '250px',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          fontSize: fontSizeForChunk(chunk),
+                        },
+                      ]"
+                    >
+                      {{ key }}
+                    </div>
+                  </div>
+
+                  <div
+                    v-for="(row, ri) in chunk"
+                    :key="'row-' + pageIndex + '-' + ri"
+                    class="table-row"
+                    :style="[rowStyle(ri), { fontSize: fontSizeForChunk(chunk) }]"
+                  >
+                    <div
+                      v-for="(key, i) in activeFieldNames"
+                      :key="'cell-' + pageIndex + '-' + ri + '-' + i"
+                      class="table-cell"
+                      :style="[cellStyle, { fontSize: fontSizeForChunk(chunk) }]"
+                    >
+                      {{ row[key] }}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Imágenes destacadas -->
+                <div class="featured-images">
+                  <div
+                    v-for="(key, index) in ['image_one', 'image_two', 'image_three', 'image_four']"
+                    :key="key"
+                    class="featured-image-item placeholder"
+                  >
+                    <div class="image-placeholder">
+                      {{ $t('featured', { number: index + 1 }) }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Descripción larga -->
+              <div v-if="model.long" class="long-description">
+                <p style="white-space: pre-wrap">{{ model.long }}</p>
+              </div>
+
+              <!-- Footer y número de página -->
+              <div class="footer-bar" :style="footerStyle">
+                <div class="footer-text">{{ model.footer }}</div>
+                <div class="page-number">{{ pageIndex + 1 }}</div>
               </div>
             </div>
-
-            <div
-              v-for="(row, ri) in chunk"
-              :key="'row-' + index + '-' + ri"
-              class="grid"
-              :style="rowStyle(ri)"
-            >
-              <div
-                v-for="(key, i) in activeFieldNames"
-                :key="'cell-' + index + '-' + ri + '-' + i"
-                class="px-4 py-2 last:border-r-0"
-                :style="[cellStyle, { fontSize: fontSizeForChunk(chunk) }]"
-              >
-                {{ row[key] }}
-              </div>
-            </div>
           </div>
-
-          <!-- Footer fijo en cada página -->
-          <div class="footer-bar" :style="footerStyle">
-            <div>{{ index + 1 }}</div>
-            <div>{{ model.footer }}</div>
-          </div>
-        </div>
-
-        <!-- Imágenes destacadas a la derecha (solo hueco reservado) -->
-        <!-- Imágenes destacadas -->
-        <div class="featured-images">
-          <div
-            v-for="(key, index) in ['image_one', 'image_two', 'image_three', 'image_four']"
-            :key="key"
-            class="featured-image-item placeholder"
-          >
-            <div class="image-placeholder">
-              {{ $t('featured', { number: index + 1 }) }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Página extra solo con footer -->
-      <div v-if="images.footer" class="a4-page">
-        <div class="a4-image full-a4">
-          <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
