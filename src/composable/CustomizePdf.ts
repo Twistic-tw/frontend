@@ -465,96 +465,103 @@ export function CustomizePdf() {
     }
   }
 
-  const sendToBackend = async () => {
-    if (!userId.value || !images.value.cover || !images.value.header) {
-      toast.error('Please upload required images and ensure user is authenticated.')
-      generating.value = false
-      return
-    }
+  const model = ref({
+  short: '',
+  long: '',
+  footer: '',
+})
 
-    const xsrfToken = getXsrfToken()
-    if (!xsrfToken) {
-      toast.error('No CSRF token found.')
-      return
-    }
-
-    generating.value = true
-    try {
-      const formData = new FormData()
-      formData.append('id_user', userId.value.toString())
-      formData.append('template_name', templateName.value)
-      formData.append('fields', JSON.stringify(activeFieldNames.value))
-      formData.append('excel_data', JSON.stringify(excelData.value))
-
-      // Añadir descripciones de imágenes destacadas
-      formData.append('desc_one', featuredDescriptions.value.desc_one)
-      formData.append('desc_two', featuredDescriptions.value.desc_two)
-      formData.append('desc_three', featuredDescriptions.value.desc_three)
-      formData.append('desc_four', featuredDescriptions.value.desc_four)
-
-      // Añadir estilos personalizados
-      formData.append(
-        'style',
-        JSON.stringify({
-          background: computedColors.value.background,
-          rowPrimary: computedColors.value.rowPrimary,
-          rowAlternate: computedColors.value.rowAlternate,
-          text: computedColors.value.text,
-          header: computedColors.value.header,
-          headerText: computedColors.value.headerText,
-          footerColor: computedColors.value.footer,
-          footerTextColor: computedColors.value.footerText,
-          size: titleSettings.value.size,
-          align: titleSettings.value.align,
-          font: titleSettings.value.font,
-          fieldFont: titleSettings.value.fieldFont,
-          fieldSize: titleSettings.value.fieldSize,
-          fieldAlign: titleSettings.value.fieldAlign,
-          borderColor: '#000000',
-          borderWidth: '1px',
-          showBorders: colors.value.showBorders,
-          titleBackground: colors.value.titleBackground,
-          titleText: colors.value.titleText,
-          shortDescriptionText: colors.value.shortDescriptionText,
-          longDescriptionText: colors.value.longDescriptionText,
-        }),
-      )
-
-      // Añadir imágenes principales
-      Object.entries(images.value).forEach(([key, file]) => {
-        if (file) formData.append(key, file)
-      })
-
-      // Añadir imágenes destacadas
-      Object.entries(featuredImages.value).forEach(([key, file]) => {
-        if (file) formData.append(key, file)
-      })
-
-      // Enviar al backend y generar PDF
-      const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          Accept: 'application/json',
-        },
-        withCredentials: true,
-        responseType: 'blob',
-      })
-
-      const blob = new Blob([res.data], { type: 'application/pdf' })
-      const link = document.createElement('a')
-      link.href = URL.createObjectURL(blob)
-      link.download = `${templateName.value}.pdf`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      toast.error('Error generating PDF.')
-      console.error(err)
-    } finally {
-      generating.value = false
-    }
+const sendToBackend = async () => {
+  if (!userId.value || !images.value.cover || !images.value.header) {
+    toast.error('Please upload required images and ensure user is authenticated.')
+    generating.value = false
+    return
   }
+
+  const xsrfToken = getXsrfToken()
+  if (!xsrfToken) {
+    toast.error('No CSRF token found.')
+    return
+  }
+
+  generating.value = true
+  try {
+    const formData = new FormData()
+    formData.append('id_user', userId.value.toString())
+    formData.append('template_name', templateName.value)
+    formData.append('fields', JSON.stringify(activeFieldNames.value))
+    formData.append('excel_data', JSON.stringify(excelData.value))
+
+    // Descripciones destacadas
+    formData.append('desc_one', featuredDescriptions.value.desc_one)
+    formData.append('desc_two', featuredDescriptions.value.desc_two)
+    formData.append('desc_three', featuredDescriptions.value.desc_three)
+    formData.append('desc_four', featuredDescriptions.value.desc_four)
+
+    // Estilos personalizados
+    formData.append(
+      'style',
+      JSON.stringify({
+        background: computedColors.value.background,
+        rowPrimary: computedColors.value.rowPrimary,
+        rowAlternate: computedColors.value.rowAlternate,
+        text: computedColors.value.text,
+        header: computedColors.value.header,
+        headerText: computedColors.value.headerText,
+        footerColor: computedColors.value.footer,
+        footerTextColor: computedColors.value.footerText,
+        size: titleSettings.value.size,
+        align: titleSettings.value.align,
+        font: titleSettings.value.font,
+        fieldFont: titleSettings.value.fieldFont,
+        fieldSize: titleSettings.value.fieldSize,
+        fieldAlign: titleSettings.value.fieldAlign,
+        borderColor: '#000000',
+        borderWidth: '1px',
+        showBorders: colors.value.showBorders,
+        titleBackground: colors.value.titleBackground,
+        titleText: colors.value.titleText,
+        shortDescriptionText: colors.value.shortDescriptionText,
+        longDescriptionText: colors.value.longDescriptionText,
+        short: model.value.short,
+        long: model.value.long,
+        footerText: model.value.footer,
+      })
+    )
+
+    // Imágenes
+    Object.entries(images.value).forEach(([key, file]) => {
+      if (file) formData.append(key, file)
+    })
+
+    Object.entries(featuredImages.value).forEach(([key, file]) => {
+      if (file) formData.append(key, file)
+    })
+
+    const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
+      headers: {
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+        Accept: 'application/json',
+      },
+      withCredentials: true,
+      responseType: 'blob',
+    })
+
+    const blob = new Blob([res.data], { type: 'application/pdf' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = `${templateName.value}.pdf`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+  } catch (err: unknown) {
+    toast.error('Error generating PDF.')
+    console.error(err)
+  } finally {
+    generating.value = false
+  }
+}
 
   onMounted(() => {
     window.addEventListener('resize', () => (windowWidth.value = window.innerWidth))
@@ -607,6 +614,7 @@ export function CustomizePdf() {
     sendToBackend,
     fetchTemplate,
     userId,
+    model,
     fetchUserId,
     toggleFullscreen,
     previewRef,
