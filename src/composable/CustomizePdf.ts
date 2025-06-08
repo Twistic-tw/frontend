@@ -157,7 +157,6 @@ export function CustomizePdf() {
     }
   }
 
-
   /**
    * Cargar todos los estilos guardados por el usuario actual
    * desde el backend usando autenticación por cookies.
@@ -172,9 +171,9 @@ export function CustomizePdf() {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets`, {
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
-        withCredentials: true
+        withCredentials: true,
       })
       return res.data
     } catch (error) {
@@ -185,13 +184,13 @@ export function CustomizePdf() {
   }
 
   const previewRows = computed(() => {
-  const selected = filteredRows.value.filter((_, i) => selectedRows.value.includes(i))
-  const pages = []
-  for (let i = 0; i < selected.length; i += rowsPerPage) {
-    pages.push(selected.slice(i, i + rowsPerPage))
-  }
-  return pages
-})
+    const selected = filteredRows.value.filter((_, i) => selectedRows.value.includes(i))
+    const pages = []
+    for (let i = 0; i < selected.length; i += rowsPerPage) {
+      pages.push(selected.slice(i, i + rowsPerPage))
+    }
+    return pages
+  })
 
   /**
    * Aplica un estilo guardado al editor cargando los datos desde el backend
@@ -209,9 +208,9 @@ export function CustomizePdf() {
       const res = await axios.get(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
-        withCredentials: true
+        withCredentials: true,
       })
 
       const data = res.data.style_data
@@ -244,9 +243,9 @@ export function CustomizePdf() {
       await axios.delete(`${import.meta.env.VITE_URL}/style-presets/${id}`, {
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
-        withCredentials: true
+        withCredentials: true,
       })
       toast.success('Estilo eliminado correctamente')
       stylePresets.value = await fetchStylePresets()
@@ -274,27 +273,27 @@ export function CustomizePdf() {
 
   function filterRows() {
     console.log('🔍 Ejecutando filterRows()')
-  console.log('📋 Datos originales:', excelData.value.length)
-  const input = searchValue.value.trim().toLowerCase()
+    console.log('📋 Datos originales:', excelData.value.length)
+    const input = searchValue.value.trim().toLowerCase()
 
-  // Si hay búsqueda libre, usarla
-  if (searchField.value && input) {
-    const resultadoFiltrado = excelData.value.filter(row => {
-      const value = row[searchField.value]?.toString().toLowerCase() || ''
-      return value.includes(input)
-    })
+    // Si hay búsqueda libre, usarla
+    if (searchField.value && input) {
+      const resultadoFiltrado = excelData.value.filter((row) => {
+        const value = row[searchField.value]?.toString().toLowerCase() || ''
+        return value.includes(input)
+      })
 
-    filteredRows.value = resultadoFiltrado
-    selectedRows.value = resultadoFiltrado.map((_, i) => i)
-    searchActive.value = true
-  } else {
-    // Si no hay búsqueda libre, aplicar los filtros inteligentes
-    filteredRows.value = applyAdvancedFilters(excelData.value)
-    selectedRows.value = filteredRows.value.map((_, i) => i)
-    searchActive.value = true
-    console.log('✅ Resultados filtrados:', filteredRows.value.length)
+      filteredRows.value = resultadoFiltrado
+      selectedRows.value = resultadoFiltrado.map((_, i) => i)
+      searchActive.value = true
+    } else {
+      // Si no hay búsqueda libre, aplicar los filtros inteligentes
+      filteredRows.value = applyAdvancedFilters(excelData.value)
+      selectedRows.value = filteredRows.value.map((_, i) => i)
+      searchActive.value = true
+      console.log('✅ Resultados filtrados:', filteredRows.value.length)
+    }
   }
-}
 
   function clearSearch() {
     searchField.value = ''
@@ -385,16 +384,16 @@ export function CustomizePdf() {
   }))
 
   const shortDescriptionStyle = computed(() => ({
-  color: colors.value.shortDescriptionText || colors.value.text,
-  fontFamily: titleSettings.value.fieldFont,
-  fontSize: titleSettings.value.fieldSize,
-}))
+    color: colors.value.shortDescriptionText || colors.value.text,
+    fontFamily: titleSettings.value.fieldFont,
+    fontSize: titleSettings.value.fieldSize,
+  }))
 
-const longDescriptionStyle = computed(() => ({
-  color: colors.value.longDescriptionText || colors.value.text,
-  fontFamily: titleSettings.value.fieldFont,
-  fontSize: titleSettings.value.fieldSize,
-}))
+  const longDescriptionStyle = computed(() => ({
+    color: colors.value.longDescriptionText || colors.value.text,
+    fontFamily: titleSettings.value.fieldFont,
+    fontSize: titleSettings.value.fieldSize,
+  }))
 
   const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
   const userId = ref<number | null>(null)
@@ -486,6 +485,14 @@ const longDescriptionStyle = computed(() => ({
       formData.append('template_name', templateName.value)
       formData.append('fields', JSON.stringify(activeFieldNames.value))
       formData.append('excel_data', JSON.stringify(excelData.value))
+
+      // Añadir descripciones de imágenes destacadas
+      formData.append('desc_one', featuredDescriptions.value.desc_one)
+      formData.append('desc_two', featuredDescriptions.value.desc_two)
+      formData.append('desc_three', featuredDescriptions.value.desc_three)
+      formData.append('desc_four', featuredDescriptions.value.desc_four)
+
+      // Añadir estilos personalizados
       formData.append(
         'style',
         JSON.stringify({
@@ -499,20 +506,31 @@ const longDescriptionStyle = computed(() => ({
           footerTextColor: computedColors.value.footerText,
           size: titleSettings.value.size,
           align: titleSettings.value.align,
+          font: titleSettings.value.font,
           fieldFont: titleSettings.value.fieldFont,
           fieldSize: titleSettings.value.fieldSize,
+          fieldAlign: titleSettings.value.fieldAlign,
           borderColor: '#000000',
           borderWidth: '1px',
           showBorders: colors.value.showBorders,
+          titleBackground: colors.value.titleBackground,
+          titleText: colors.value.titleText,
+          shortDescriptionText: colors.value.shortDescriptionText,
+          longDescriptionText: colors.value.longDescriptionText,
         }),
       )
+
+      // Añadir imágenes principales
       Object.entries(images.value).forEach(([key, file]) => {
         if (file) formData.append(key, file)
       })
+
+      // Añadir imágenes destacadas
       Object.entries(featuredImages.value).forEach(([key, file]) => {
         if (file) formData.append(key, file)
       })
 
+      // Enviar al backend y generar PDF
       const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
         headers: {
           'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
@@ -529,7 +547,6 @@ const longDescriptionStyle = computed(() => ({
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toast.error('Error generating PDF.')
       console.error(err)
