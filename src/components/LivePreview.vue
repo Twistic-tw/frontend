@@ -62,7 +62,7 @@ const showFullscreen = ref(false)
 
 // Computed para tamaño de fuente basado en filas del chunk actual
 const fontSizeForChunk = (chunk: Record<string, string>[]) => {
-  const baseSize = 8 // px base
+  const baseSize = 10 // px base
   const maxRows = 18
   const rowCount = chunk.length
   if (rowCount <= maxRows) return `${baseSize}px`
