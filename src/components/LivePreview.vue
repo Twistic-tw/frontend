@@ -153,13 +153,11 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 
       <!-- Descripción corta -->
       <div v-if="model.short" class="a4-page p-6" :style="shortDescriptionStyle">
-        <h2 class="text-xl font-semibold mb-4">{{ $t('short_description_title') }}</h2>
         <p>{{ model.short }}</p>
       </div>
 
       <!-- Descripción larga -->
       <div v-if="model.long" class="a4-page p-6" :style="longDescriptionStyle">
-        <h2 class="text-xl font-semibold mb-4">{{ $t('long_description_title') }}</h2>
         <p style="white-space: pre-wrap;">{{ model.long }}</p>
       </div>
 
@@ -366,9 +364,9 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1rem;
-  overflow-y: auto;
-  max-height: 400px; /* ajustar si quieres scroll en estas imágenes */
+  max-height: 700px;
 }
 
 .featured-image-item {
@@ -381,6 +379,20 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 .featured-image-item img {
   max-width: 100%;
   border-radius: 0.3rem;
+}
+
+.featured-image-item.placeholder {
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
+  margin: 2rem 0;
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .featured-image-desc {
