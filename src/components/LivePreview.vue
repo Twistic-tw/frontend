@@ -256,33 +256,32 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 </template>
 
 <style scoped>
-.pdf-page {
-  width: 794px;
+.a4-page {
   height: 1123px;
-  background-color: white;
-  padding: 1.5rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
   box-sizing: border-box;
+  margin-bottom: 2rem;
   position: relative;
-  font-size: 12px;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  padding: 0 !important;
 }
 
-.cover-section,
-.second-cover-section {
-  width: 100%;
-  height: 150px;
-  margin-bottom: 0.5rem;
+.no-padding {
+  padding: 0 !important;
 }
 
-.cover-image,
-.second-cover-image {
+.a4-image-content {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 0.5rem;
+}
+
+.no-radius {
+  border-radius: 0;
 }
 
 .catalog-title-section {
@@ -293,31 +292,38 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 
 .catalog-title {
   font-size: 24px;
+  padding: 0.2rem 0 0.2rem 1em;
   font-weight: bold;
 }
 
-.main-content {
+.header-image-container {
+  height: 120px;
+  overflow: hidden;
+}
+
+.header-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.content-main {
   display: flex;
-  flex-grow: 1;
   gap: 1rem;
   margin-bottom: 1rem;
 }
 
 .short-description {
-  flex-basis: 100%;
   margin-bottom: 1rem;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 0.25rem;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  width: 100%;
+  font-size: 12px;
 }
 
 .data-table-container {
   flex: 3;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
   padding: 0.5rem;
-  max-height: 400px; /* para controlar altura si hace falta */
+  max-height: 700px;
   display: flex;
   flex-direction: column;
 }
@@ -326,7 +332,8 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   font-weight: bold;
-  background-color: #5c6ac4; /* ejemplo color */
+  text-align: center;
+  background-color: #5c6ac4;
   color: white;
   padding: 0.3rem;
   border-radius: 0.3rem 0.3rem 0 0;
@@ -344,12 +351,11 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 .table-row {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  border-bottom: 1px solid #ddd;
 }
 
 .table-cell {
   padding: 0.4rem;
-  border-right: 1px solid #eee;
+  text-align: center;
   word-wrap: break-word;
   white-space: normal;
 }
@@ -367,18 +373,6 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   max-height: 700px;
 }
 
-.featured-image-item {
-  border: 1px solid #ccc;
-  border-radius: 0.3rem;
-  padding: 0.5rem;
-  text-align: center;
-}
-
-.featured-image-item img {
-  max-width: 100%;
-  border-radius: 0.3rem;
-}
-
 .featured-image-item.placeholder {
   border: 1px solid #ccc;
   border-radius: 0.3rem;
@@ -393,25 +387,21 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   justify-content: center;
 }
 
-.featured-image-desc {
-  margin-top: 0.3rem;
-  font-size: 0.85rem;
+.image-placeholder {
+  user-select: none;
 }
 
 .long-description {
   padding: 0.5rem;
   margin-bottom: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 0.25rem;
   max-height: 100px;
-  overflow-y: auto;
   white-space: pre-wrap;
+  font-size: 12px;
 }
 
 .footer-bar {
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid #ccc;
   padding-top: 0.5rem;
   font-size: 0.8rem;
   color: #666;
@@ -419,9 +409,11 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 
 .footer-text {
   flex-grow: 1;
+  text-align: left;
 }
 
 .page-number {
   flex-shrink: 0;
+  text-align: right;
 }
 </style>
