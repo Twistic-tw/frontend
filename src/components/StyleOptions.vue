@@ -67,24 +67,22 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">
             {{ $t('short_description') }}
           </label>
-          <textarea
+          <input
+            type="color"
             v-model="shortDescription"
-            rows="2"
-            class="w-full p-2 border rounded resize-none"
-            :placeholder="$t('short_description_placeholder')"
-          ></textarea>
+            class="w-full h-8 border rounded"
+          />
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
             {{ $t('long_description') }}
           </label>
-          <textarea
+          <input
+            type="color"
             v-model="longDescription"
-            rows="4"
-            class="w-full p-2 border rounded resize-y"
-            :placeholder="$t('long_description_placeholder')"
-          ></textarea>
+            class="w-full h-8 border rounded"
+          />
         </div>
 
         <div>
