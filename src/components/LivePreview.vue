@@ -15,16 +15,16 @@ const props = defineProps<{
     footer: File | null
   }
   featuredImages: {
-    image_one: File | null,
-    image_two: File | null,
-    image_three: File | null,
-    image_four: File | null,
-  },
+    image_one: File | null
+    image_two: File | null
+    image_three: File | null
+    image_four: File | null
+  }
   featuredDescriptions: {
-    desc_one: string,
-    desc_two: string,
-    desc_three: string,
-    desc_four: string,
+    desc_one: string
+    desc_two: string
+    desc_three: string
+    desc_four: string
   }
   coverUrl: string
   secondUrl: string
@@ -128,27 +128,15 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
       @close="showFullscreen = false"
     />
 
-    <div
-      id="pdf-content"
-      ref="previewRef"
-      class="pdf-container"
-    >
+    <div id="pdf-content" ref="previewRef" class="pdf-container">
       <!-- Portada -->
       <div v-if="images.cover" class="a4-page">
-        <img
-          :src="coverUrl"
-          alt="Cover Image"
-          class="a4-image-content no-radius"
-        />
+        <img :src="coverUrl" alt="Cover Image" class="a4-image-content no-radius" />
       </div>
 
       <!-- Segunda portada -->
       <div v-if="images.second" class="a4-page">
-        <img
-          :src="secondUrl"
-          alt="Second Cover"
-          class="a4-image-content no-radius"
-        />
+        <img :src="secondUrl" alt="Second Cover" class="a4-image-content no-radius" />
       </div>
 
       <!-- Descripción corta -->
@@ -158,7 +146,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 
       <!-- Descripción larga -->
       <div v-if="model.long" class="a4-page p-6" :style="longDescriptionStyle">
-        <p style="white-space: pre-wrap;">{{ model.long }}</p>
+        <p style="white-space: pre-wrap">{{ model.long }}</p>
       </div>
 
       <!-- Páginas de contenido con tabla e imágenes destacadas a la derecha -->
@@ -176,7 +164,12 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
         <div class="content-left flex-grow flex flex-col">
           <!-- Cabecera -->
           <div v-if="images.header" style="height: 120px; overflow: hidden">
-            <img :src="headerUrl" alt="Header Image" class="w-full object-cover rounded-t-lg" style="height: 120px" />
+            <img
+              :src="headerUrl"
+              alt="Header Image"
+              class="w-full object-cover rounded-t-lg"
+              style="height: 120px"
+            />
           </div>
           <div
             class="text-center mb-4 py-2 px-4"
@@ -187,7 +180,11 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
           >
             <h1
               class="text-2xl font-bold tracking-wide"
-              :style="{ fontFamily: titleSettings.font, textAlign: titleSettings.align, paddingLeft: '1em' }"
+              :style="{
+                fontFamily: titleSettings.font,
+                textAlign: titleSettings.align,
+                paddingLeft: '1em',
+              }"
             >
               {{ templateName }}
             </h1>
@@ -196,14 +193,25 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
           <!-- Tabla con padding para dejar espacio al footer -->
           <div
             class="w-full h-full text-sm border border-transparent rounded-[8px] shadow-sm p-6 table-preview-shadow overflow-auto"
-            style="padding-bottom: 60px;"
+            style="padding-bottom: 60px"
           >
-            <div class="grid font-medium" :style="[headerStyle, { fontSize: fontSizeForChunk(chunk) }]">
+            <div
+              class="grid font-medium"
+              :style="[headerStyle, { fontSize: fontSizeForChunk(chunk) }]"
+            >
               <div
                 v-for="(key, i) in activeFieldNames"
                 :key="'header-' + i"
                 class="px-4 py-2 text-left border-r border-indigo-500 last:border-r-0"
-                :style="[cellStyle, { maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: fontSizeForChunk(chunk) }]"
+                :style="[
+                  cellStyle,
+                  {
+                    maxWidth: '250px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    fontSize: fontSizeForChunk(chunk),
+                  },
+                ]"
               >
                 {{ key }}
               </div>
@@ -234,10 +242,15 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
         </div>
 
         <!-- Imágenes destacadas a la derecha (solo hueco reservado) -->
+        <!-- Imágenes destacadas -->
         <div class="featured-images">
-          <div v-for="(key, index) in ['image_one', 'image_two', 'image_three', 'image_four']" :key="key" class="featured-image-item placeholder">
+          <div
+            v-for="(key, index) in ['image_one', 'image_two', 'image_three', 'image_four']"
+            :key="key"
+            class="featured-image-item placeholder"
+          >
             <div class="image-placeholder">
-              {{ $t('featured_image_placeholder', { number: index + 1 }) }}
+              {{ $t('featured', { number: index + 1 }) }}
             </div>
           </div>
         </div>
@@ -246,11 +259,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
       <!-- Página extra solo con footer -->
       <div v-if="images.footer" class="a4-page">
         <div class="a4-image full-a4">
-          <img
-            :src="footerUrl"
-            alt="Footer Image"
-            class="a4-image-content no-radius"
-          />
+          <img :src="footerUrl" alt="Footer Image" class="a4-image-content no-radius" />
         </div>
       </div>
     </div>
@@ -263,7 +272,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
   height: 1123px;
   background-color: white;
   padding: 1.5rem;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   position: relative;
   font-size: 12px;
@@ -336,7 +345,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 
 .table-header-cell {
   padding: 0.5rem;
-  border-right: 1px solid rgba(255,255,255,0.5);
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .table-header-cell:last-child {
