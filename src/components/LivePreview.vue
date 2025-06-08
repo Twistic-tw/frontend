@@ -75,7 +75,6 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 <template>
   <div
     class="w-full bg-white rounded-2xl shadow-lg p-6 border border-gray-200 sticky top-[100px] h-[1123px] overflow-y-scroll"
-    style="position: sticky; top: 100px; height: fit-content"
   >
     <h2 class="text-2xl font-semibold text-gray-800 mb-3">
       {{ $t('title_livepreview') }}
