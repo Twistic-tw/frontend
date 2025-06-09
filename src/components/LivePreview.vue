@@ -3,6 +3,9 @@ import { computed, type Ref, ref } from 'vue'
 import LivePreviewModal from './LivePreviewModal.vue'
 
 const textOptions = computed(() => props.descriptions)
+const shortDescriptionColorComputed = computed(() => props.shortDescriptionColor || '#000000')
+const longDescriptionColorComputed = computed(() => props.longDescriptionColor || '#000000')
+
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
@@ -117,8 +120,8 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
       :titleSettings="titleSettings"
       :rowStyle="rowStyle"
       :cellStyle="cellStyle"
-      :shortDescriptionStyle="shortDescriptionStyle"
-      :longDescriptionStyle="longDescriptionStyle"
+      :shortDescriptionStyle="shortDescriptionColorComputed"
+      :longDescriptionStyle="longDescriptionColorComputed"
       :footerStyle="footerStyle"
       :headerUrl="headerUrl"
       :footerUrl="footerUrl"
