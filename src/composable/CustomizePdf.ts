@@ -293,7 +293,6 @@ export function CustomizePdf() {
       filteredRows.value = applyAdvancedFilters(excelData.value)
       selectedRows.value = filteredRows.value.map((_, i) => i)
       searchActive.value = true
-      console.log('✅ Resultados filtrados:', filteredRows.value.length)
     }
   }
 
@@ -306,7 +305,7 @@ export function CustomizePdf() {
     searchActive.value = false
   }
 
-  const rowsPerPage = 18
+  const rowsPerPage = 16
   const paginatedRows = computed(() => {
     const chunks = []
     for (let i = 0; i < excelData.value.length; i += rowsPerPage) {
