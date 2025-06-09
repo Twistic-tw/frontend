@@ -403,7 +403,6 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 }
 
 .long-description {
-  padding: 0.5rem;
   margin-bottom: 1rem;
   max-height: 100px;
   white-space: pre-wrap;
