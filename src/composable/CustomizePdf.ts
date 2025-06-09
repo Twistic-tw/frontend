@@ -389,6 +389,13 @@ export function CustomizePdf() {
     fontSize: titleSettings.value.fieldSize,
   }))
 
+    // Opciones de texto para descripciones y pie de página
+  const textOptions = ref({
+    short: '',
+    long: '',
+    footer: '',
+  })
+
   const longDescriptionStyle = computed(() => ({
     color: colors.value.longDescriptionText || colors.value.text,
     fontFamily: titleSettings.value.fieldFont,
@@ -465,12 +472,6 @@ export function CustomizePdf() {
     }
   }
 
-  const model = ref({
-  short: '',
-  long: '',
-  footer: '',
-})
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function formDataToJson(fd: FormData): Record<string, any> {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -533,9 +534,9 @@ const sendToBackend = async () => {
         titleText: colors.value.titleText,
         shortDescriptionText: colors.value.shortDescriptionText,
         longDescriptionText: colors.value.longDescriptionText,
-        short: model.value.short,
-        long: model.value.long,
-        footerText: model.value.footer,
+        short: textOptions.value.short,
+        long: textOptions.value.long,
+        footerText: textOptions.value.footer,
         fontSize: fontSizeForChunk(previewRows.value[0]) // Enviar tamaño de fuente estimado
       })
     )
@@ -628,7 +629,7 @@ const sendToBackend = async () => {
     sendToBackend,
     fetchTemplate,
     userId,
-    model,
+    textOptions,
     fetchUserId,
     toggleFullscreen,
     previewRef,
