@@ -17,7 +17,7 @@
 
         <div class="mb-4">
   <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('short_label') }}</label>
-  <input
+  <textarea
     type="text"
     :value="modelValue.short"
     @input="e => emit('update:modelValue', { ...modelValue, short: (e.target as HTMLInputElement).value })"
