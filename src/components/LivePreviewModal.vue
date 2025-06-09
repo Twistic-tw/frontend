@@ -132,7 +132,7 @@
 
               <!-- Descripción larga -->
               <div v-if="descriptions.long" class="long-description">
-                <p :style="longDescriptionStyle">{{ descriptions.long  || "Vacio"}}</p>
+                <p :style="shortDescriptionColor">{{ descriptions.long  || "Vacio"}}</p>
               </div>
 
               <!-- Footer y número de página -->

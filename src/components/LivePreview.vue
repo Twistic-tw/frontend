@@ -117,7 +117,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
       :rowStyle="rowStyle"
       :cellStyle="cellStyle"
       :shortDescriptionStyle="shortDescriptionStyle"
-      :longDescriptionStyle="shortDescriptionStyle"
+      :longDescriptionStyle="longDescriptionStyle"
       :footerStyle="footerStyle"
       :headerUrl="headerUrl"
       :footerUrl="footerUrl"
