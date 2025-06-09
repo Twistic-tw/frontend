@@ -562,6 +562,11 @@ const sendToBackend = async () => {
     console.error(err)
   } finally {
     generating.value = false
+    console.log('📦 Enviando descripciones:', {
+      short: model.value.short,
+      long: model.value.long,
+      footer: model.value.footer,
+    })
   }
 }
 

@@ -100,12 +100,6 @@ const stylePresets = ref<any[]>([])
 // Add rowsPerPage with a default value, e.g., 10
 const { rowsPerPage } = CustomizePdf()
 
-console.log('📦 Enviando descripciones:', {
-      short: model.value.short,
-      long: model.value.long,
-      footer: model.value.footer,
-    })
-
 onMounted(async () => {
   stylePresets.value = await fetchStylePresets()
 })
