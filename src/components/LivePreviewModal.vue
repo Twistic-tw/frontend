@@ -70,7 +70,7 @@
 
               <!-- Descripción corta -->
               <div v-if="descriptions.short" class="short-description">
-                <p :style="{ color: shortDescriptionColor || '#000' }">{{ descriptions.short || "Vacio"}}</p>
+                <p :style="{ color: (typeof shortDescriptionStyle === 'string' ? shortDescriptionStyle : '#000') }">{{ descriptions.short || "Vacio"}}</p>
               </div>
 
               <!-- Contenedor con tabla a la izquierda y imágenes a la derecha -->
@@ -132,7 +132,7 @@
 
               <!-- Descripción larga -->
               <div v-if="descriptions.long" class="long-description">
-                <p :style="{ color: longDescriptionColor || '#000' }">{{ descriptions.long  || "Vacio"}}</p>
+                <p :style="{ color: typeof longDescriptionStyle === 'string' ? longDescriptionStyle : '#000' }">{{ descriptions.long  || "Vacio"}}</p>
               </div>
 
               <!-- Footer y número de página -->
