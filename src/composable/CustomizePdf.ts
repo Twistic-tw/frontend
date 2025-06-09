@@ -539,7 +539,7 @@ const sendToBackend = async () => {
       if (file) formData.append(key, file)
     })
 
-    console.log(formData)
+    console.log(JSON.stringify(formDataToJson(formData), null, 2))
     const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
       headers: {
         'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
@@ -548,7 +548,7 @@ const sendToBackend = async () => {
       withCredentials: true,
       responseType: 'blob',
     })
-    console.log(res)
+    console.log(JSON.stringify(formDataToJson(formData), null, 2))
 
     const blob = new Blob([res.data], { type: 'application/pdf' })
     const link = document.createElement('a')
@@ -644,5 +644,10 @@ function fontSizeForChunk(chunk: Record<string, string>[]): string {
   if (chunk.length > 12) return '11px'
   if (chunk.length > 8) return '12px'
   return '13px'
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function formDataToJson(formData: FormData): any {
+  throw new Error('Function not implemented.')
 }
 
