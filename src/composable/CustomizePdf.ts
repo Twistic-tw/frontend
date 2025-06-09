@@ -539,6 +539,15 @@ const sendToBackend = async () => {
       if (file) formData.append(key, file)
     })
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    function formDataToJson(fd: FormData): Record<string, any> {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const obj: Record<string, any> = {}
+      fd.forEach((value, key) => {
+        obj[key] = value
+      })
+      return obj
+    }
     console.log(JSON.stringify(formDataToJson(formData), null, 2))
     const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
       headers: {
@@ -644,10 +653,5 @@ function fontSizeForChunk(chunk: Record<string, string>[]): string {
   if (chunk.length > 12) return '11px'
   if (chunk.length > 8) return '12px'
   return '13px'
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function formDataToJson(formData: FormData): any {
-  throw new Error('Function not implemented.')
 }
 
