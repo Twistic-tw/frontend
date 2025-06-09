@@ -70,7 +70,7 @@
 
               <!-- Descripción corta -->
               <div v-if="descriptions.short" class="short-description">
-                <p :style="{ color: shortDescriptionColor || '#000' }">{{ descriptions.short || "Vacio"}}</p>
+                <p :style="{ color: shortDescriptionColor || '#000' }">{{ descriptions.short }}</p>
               </div>
 
               <!-- Contenedor con tabla a la izquierda y imágenes a la derecha -->
@@ -132,12 +132,12 @@
 
               <!-- Descripción larga -->
               <div v-if="descriptions.long" class="long-description">
-                <p :style="{ color: longDescriptionColor || '#000' }">{{ descriptions.long  || "Vacio"}}</p>
+                <p :style="{ color: longDescriptionColor || '#000' }">{{ descriptions.long }}</p>
               </div>
 
               <!-- Footer y número de página -->
               <div class="footer-bar" :style="footerStyle">
-                <div class="footer-text">{{ descriptions.footer  || "Vacio"}}</div>
+                <div class="footer-text">{{ descriptions.footer }}</div>
                 <div class="page-number">{{ pageIndex + 1 }}</div>
               </div>
             </div>
@@ -217,7 +217,6 @@ const props = defineProps<{
     long: string
     footer: string
   }
-
   shortDescriptionColor?: string
   longDescriptionColor?: string
 }>()
@@ -233,195 +232,15 @@ watch(
   () => props.show,
   (value) => {
     showFullscreen.value = value
-  },
+  }
 )
 
-// Computed para tamaño de fuente basado en filas del chunk actual
 const fontSizeForChunk = (chunk: Record<string, string>[]) => {
-  const baseSize = 8 // px base
+  const baseSize = 8
   const maxRows = 18
   const rowCount = chunk.length
   if (rowCount <= maxRows) return `${baseSize}px`
-  // Reducir tamaño hasta un mínimo de 8px
   const size = Math.max(8, baseSize - (rowCount - maxRows) * 0.5)
   return `${size}px`
 }
 </script>
-
-<style scoped>
-.fade-scale-enter-active,
-.fade-scale-leave-active {
-  transition: all 0.25s ease;
-}
-.fade-scale-enter-from,
-.fade-scale-leave-to {
-  opacity: 0;
-  transform: scale(0.95);
-}
-.fade-scale-enter-to,
-.fade-scale-leave-from {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.a4-page {
-  height: 1123px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  box-sizing: border-box;
-  margin-bottom: 2rem;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  padding: 0 !important;
-}
-
-.no-padding {
-  padding: 0 !important;
-}
-
-.a4-image-content {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.no-radius {
-  border-radius: 0;
-}
-
-.catalog-title-section {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.catalog-title {
-  font-size: 24px;
-  padding: 0.2rem 0 0.2rem 1em;
-  font-weight: bold;
-}
-
-.header-image-container {
-  height: 120px;
-  overflow: hidden;
-}
-
-.header-image {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-}
-
-.content-main {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.short-description {
-  margin-bottom: 1rem;
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
-  width: 100%;
-  font-size: 12px;
-}
-
-.data-table-container {
-  flex: 3;
-  padding: 0.5rem;
-  max-height: 700px;
-  display: flex;
-  flex-direction: column;
-}
-
-.table-header {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  font-weight: bold;
-  text-align: center;
-  background-color: #5c6ac4;
-  color: white;
-  padding: 0.3rem;
-  border-radius: 0.3rem 0.3rem 0 0;
-}
-
-.table-header-cell {
-  padding: 0.5rem;
-  border-right: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.table-header-cell:last-child {
-  border-right: none;
-}
-
-.table-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-}
-
-.table-cell {
-  padding: 0.4rem;
-  text-align: center;
-  word-wrap: break-word;
-  white-space: normal;
-}
-
-.table-cell:last-child {
-  border-right: none;
-}
-
-.featured-images {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  max-height: 700px;
-}
-
-.featured-image-item.placeholder {
-  border: 1px solid #ccc;
-  border-radius: 0.3rem;
-  margin: 2rem 0;
-  text-align: center;
-  color: #999;
-  font-style: italic;
-  width: 120px;
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-placeholder {
-  user-select: none;
-}
-
-.long-description {
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  max-height: 100px;
-  white-space: pre-wrap;
-  font-size: 12px;
-}
-
-.footer-bar {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 0.5rem;
-  font-size: 0.8rem;
-  color: #666;
-}
-
-.footer-text {
-  flex-grow: 1;
-  text-align: left;
-}
-
-.page-number {
-  flex-shrink: 0;
-  text-align: right;
-}
-</style>
