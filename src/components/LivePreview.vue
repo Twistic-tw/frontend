@@ -6,8 +6,6 @@ const textOptions = computed(() => props.descriptions)
 const shortDescriptionColorComputed = computed(() => props.shortDescriptionColor || '#000000')
 const longDescriptionColorComputed = computed(() => props.longDescriptionColor || '#000000')
 
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
   rowsPerPage: number
   previewRef: Ref<HTMLElement | null>
