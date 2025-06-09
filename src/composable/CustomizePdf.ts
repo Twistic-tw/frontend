@@ -471,6 +471,16 @@ export function CustomizePdf() {
   footer: '',
 })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+    function formDataToJson(fd: FormData): Record<string, any> {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const obj: Record<string, any> = {}
+      fd.forEach((value, key) => {
+        obj[key] = value
+      })
+      return obj
+    }
+
 const sendToBackend = async () => {
   if (!userId.value || !images.value.cover || !images.value.header) {
     toast.error('Please upload required images and ensure user is authenticated.')
@@ -539,15 +549,6 @@ const sendToBackend = async () => {
       if (file) formData.append(key, file)
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    function formDataToJson(fd: FormData): Record<string, any> {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const obj: Record<string, any> = {}
-      fd.forEach((value, key) => {
-        obj[key] = value
-      })
-      return obj
-    }
     console.log(JSON.stringify(formDataToJson(formData), null, 2))
     const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
       headers: {
