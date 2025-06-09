@@ -217,6 +217,9 @@ const props = defineProps<{
     long: string
     footer: string
   }
+
+  shortDescriptionColor?: string
+  longDescriptionColor?: string
 }>()
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -65,22 +65,22 @@
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            {{ $t('short_description') }}
+            {{ $t('short_description_color') }}
           </label>
           <input
             type="color"
-            v-model="shortDescription"
+            v-model="colors.shortDescriptionColor"
             class="w-full h-8 border rounded"
           />
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            {{ $t('long_description') }}
+            {{ $t('long_description_color') }}
           </label>
           <input
             type="color"
-            v-model="longDescription"
+            v-model="colors.longDescriptionColor"
             class="w-full h-8 border rounded"
           />
         </div>
@@ -129,16 +129,37 @@
 import { computed } from 'vue'
 
 const props = defineProps<{
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  colors: any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  titleSettings: any
+  colors: {
+    backgroundColor?: string
+    backgroundAlpha?: number
+    titleBackground?: string
+    titleAlpha?: number
+    titleText?: string
+    rowPrimaryColor?: string
+    rowPrimaryAlpha?: number
+    rowAlternateColor?: string
+    rowAlternateAlpha?: number
+    headerColor?: string
+    headerAlpha?: number
+    headerText?: string
+    text?: string
+    footerColor?: string
+    footerAlpha?: number
+    footerText?: string
+    showBorders?: boolean
+    shortDescriptionColor?: string
+    longDescriptionColor?: string
+  }
+  titleSettings: {
+    fieldFont?: string
+  }
   shortDescription: string
   longDescription: string
   activeCard: string | null
   cardId: string
 }>()
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const emit = defineEmits<{
   (e: 'update:shortDescription', value: string): void
   (e: 'update:longDescription', value: string): void
@@ -147,15 +168,6 @@ const emit = defineEmits<{
 
 const isOpen = computed(() => props.activeCard === props.cardId)
 
-const shortDescription = computed({
-  get: () => props.shortDescription,
-  set: val => emit('update:shortDescription', val),
-})
-
-const longDescription = computed({
-  get: () => props.longDescription,
-  set: val => emit('update:longDescription', val),
-})
 </script>
 
 <style scoped>

@@ -62,6 +62,9 @@ const props = defineProps<{
     long: string
     footer: string
   }
+
+  shortDescriptionColor?: string
+  longDescriptionColor?: string
 }>()
 
 const showFullscreen = ref(false)
@@ -187,7 +190,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 
         <!-- Descripción corta -->
         <div v-if="descriptions.short" class="short-description">
-          <p>{{ descriptions.short }}</p>
+          <p :style="{ color: shortDescriptionColor || '#000' }">{{ descriptions.short }}</p>
         </div>
 
         <!-- Contenedor con tabla a la izquierda y imágenes a la derecha -->
@@ -246,7 +249,7 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
 
         <!-- Descripción larga -->
         <div v-if="descriptions.long" class="long-description">
-          <p style="white-space: pre-wrap">{{ descriptions.long }}</p>
+          <p :style="{ color: longDescriptionColor || '#000' }">{{ descriptions.long }}</p>
         </div>
 
         <!-- Footer y número de página -->

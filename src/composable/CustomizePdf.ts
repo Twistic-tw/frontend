@@ -40,6 +40,8 @@ export function CustomizePdf() {
     titleAlpha: 1,
     longDescriptionText: '#4f46e5',
     shortDescriptionText: '#4f46e5',
+    shortDescriptionColor: '#000000',
+    longDescriptionColor: '#000000',
   })
 
   const titleSettings = ref({
