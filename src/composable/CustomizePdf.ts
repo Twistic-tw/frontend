@@ -526,8 +526,16 @@ const sendToBackend = async () => {
         short: model.value.short,
         long: model.value.long,
         footerText: model.value.footer,
+        fontSize: fontSizeForChunk(previewRows.value[0]) // Enviar tamaño de fuente estimado
       })
     )
+
+    console.log('📦 Enviando descripciones:', {
+      short: model.value.short,
+      long: model.value.long,
+      footer: model.value.footer,
+    })
+
 
     // Imágenes
     Object.entries(images.value).forEach(([key, file]) => {
@@ -555,7 +563,8 @@ const sendToBackend = async () => {
     link.click()
     document.body.removeChild(link)
 
-  } catch (err: unknown) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     toast.error('Error generating PDF.')
     console.error(err)
   } finally {
@@ -627,3 +636,18 @@ const sendToBackend = async () => {
     deleteStylePreset,
   }
 }
+/**
+ * Estimate a suitable font size for a given chunk of preview rows.
+ * This helps ensure the text fits well in the PDF page.
+ * @param chunk Array of row objects to be rendered on a page
+ * @returns Font size as a string (e.g., "12px")
+ */
+function fontSizeForChunk(chunk: Record<string, string>[]): string {
+  // Heuristic: more rows = smaller font
+  if (!chunk || chunk.length === 0) return '14px'
+  if (chunk.length > 16) return '10px'
+  if (chunk.length > 12) return '11px'
+  if (chunk.length > 8) return '12px'
+  return '13px'
+}
+
