@@ -70,7 +70,7 @@
 
               <!-- Descripción corta -->
               <div v-if="descriptions.short" class="short-description">
-                <p>{{ textOptions.short }}</p>
+                <p>{{ descriptions.short }}</p>
               </div>
 
               <!-- Contenedor con tabla a la izquierda y imágenes a la derecha -->
@@ -132,12 +132,12 @@
 
               <!-- Descripción larga -->
               <div v-if="descriptions.long" class="long-description">
-                <p style="white-space: pre-wrap">{{ textOptions.long }}</p>
+                <p style="white-space: pre-wrap">{{ descriptions.long }}</p>
               </div>
 
               <!-- Footer y número de página -->
               <div class="footer-bar" :style="footerStyle">
-                <div class="footer-text">{{ textOptions.footer }}</div>
+                <div class="footer-text">{{ descriptions.footer }}</div>
                 <div class="page-number">{{ pageIndex + 1 }}</div>
               </div>
             </div>
@@ -174,12 +174,6 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-
-const textOptions = ref({
-  short: '',
-  long: '',
-  footer: ''
-})
 
 const props = defineProps<{
   previewRows: Record<string, string>[][]
