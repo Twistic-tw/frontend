@@ -1,12 +1,5 @@
 <script setup lang="ts">
 import { type Ref, ref } from 'vue'
-import LivePreviewModal from './LivePreviewModal.vue'
-
-const textOptions = ref({
-  short: '',
-  long: '',
-  footer: ''
-})
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
@@ -109,33 +102,6 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
         </svg>
       </button>
     </h2>
-
-    <LivePreviewModal
-      :show="showFullscreen"
-      :previewRows="previewRows"
-      :activeFieldNames="activeFieldNames"
-      :headerStyle="headerStyle"
-      :templateName="templateName"
-      :titleBackground="titleBackground"
-      :titleText="titleText"
-      :titleSettings="titleSettings"
-      :rowStyle="rowStyle"
-      :cellStyle="cellStyle"
-      :shortDescriptionStyle="shortDescriptionStyle"
-      :longDescriptionStyle="longDescriptionStyle"
-      :footerStyle="footerStyle"
-      :headerUrl="headerUrl"
-      :footerUrl="footerUrl"
-      :coverUrl="coverUrl"
-      :secondUrl="secondUrl"
-      :backgroundUrl="backgroundUrl"
-      :featuredImages="featuredImages"
-      :featuredDescriptions="featuredDescriptions"
-      :descriptions="textOptions"
-      :rowsPerPage="rowsPerPage"
-      @close="showFullscreen = false"
-    />
-
 
     <div id="pdf-content" class="origin-top-left w-full h-fit-content bg-gray-100 no-padding">
       <!-- Portada -->
