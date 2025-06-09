@@ -38,8 +38,6 @@ export function CustomizePdf() {
     titleBackground: '#ffffff',
     titleText: '#1f2937',
     titleAlpha: 1,
-    longDescriptionText: '#4f46e5',
-    shortDescriptionText: '#4f46e5',
     shortDescriptionColor: '#000000',
     longDescriptionColor: '#000000',
   })
@@ -384,24 +382,12 @@ export function CustomizePdf() {
     right: '0',
   }))
 
-  const shortDescriptionStyle = computed(() => ({
-    color: colors.value.shortDescriptionText || colors.value.text,
-    fontFamily: titleSettings.value.fieldFont,
-    fontSize: titleSettings.value.fieldSize,
-  }))
-
     // Opciones de texto para descripciones y pie de página
   const textOptions = ref({
     short: '',
     long: '',
     footer: '',
   })
-
-  const longDescriptionStyle = computed(() => ({
-    color: colors.value.longDescriptionText || colors.value.text,
-    fontFamily: titleSettings.value.fieldFont,
-    fontSize: titleSettings.value.fieldSize,
-  }))
 
   const getXsrfToken = () => document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || null
   const userId = ref<number | null>(null)
@@ -538,7 +524,7 @@ const sendToBackend = async () => {
         short: textOptions.value.short,
         long: textOptions.value.long,
         footerText: textOptions.value.footer,
-        fontSize: fontSizeForChunk(previewRows.value[0]) // Enviar tamaño de fuente estimado
+        fontSize: fontSizeForChunk(previewRows.value[0])
       })
     )
 
