@@ -9,7 +9,7 @@ import FeaturedImagesModal from '@/components/FeaturedImagesModal.vue'
 import TextOptions from '@/components/TextOptions.vue'
 import TextOptionsModal from '@/components/TextOptionsModal.vue'
 import LivePreview from '@/components/LivePreview.vue'
-import LivePreviewModal from '@/components/LivePreviewModal.vue'
+//import LivePreviewModal from '@/components/LivePreviewModal.vue'
 import BackButton from '@/components/BackButton.vue'
 import { CustomizePdf } from '../../composable/CustomizePdf'
 import StylePresets from '@/components/StylePresets.vue'
@@ -93,7 +93,7 @@ const longDescription = ref('')
 const stylePresets = ref<any[]>([])
 
 // Add rowsPerPage with a default value, e.g., 10
-const { rowsPerPage } = CustomizePdf()
+//const { rowsPerPage } = CustomizePdf()
 
 onMounted(async () => {
   stylePresets.value = await fetchStylePresets()
@@ -267,29 +267,7 @@ onMounted(async () => {
         :featuredDescriptions="featuredDescriptions"
       />
 
-      <LivePreviewModal
-        :previewRows="previewRows"
-        :activeFieldNames="activeFieldNames"
-        :headerStyle="headerStyle"
-        :templateName="templateName"
-        :rowStyle="rowStyle"
-        :rowsPerPage = "rowsPerPage"
-        :images="images"
-        :headerUrl="headerUrl"
-        :footerUrl="footerUrl"
-        :backgroundUrl="backgroundUrl"
-        :coverUrl="coverUrl"
-        :secondUrl="secondUrl"
-        :footerStyle="footerStyle"
-        :titleBackground="titleBackgroundRgba"
-        :titleText="colors.titleText"
-        :descriptions="textOptions"
-        :shortDescriptionColor="colors.shortDescriptionColor"
-        :longDescriptionColor="colors.longDescriptionColor"
-        :titleSettings="titleSettings"
-        :featuredImages="featuredImages"
-        :featuredDescriptions="featuredDescriptions"
-      />
+
     </div>
 
     <div class="mt-12">
