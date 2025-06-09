@@ -548,6 +548,7 @@ const sendToBackend = async () => {
       withCredentials: true,
       responseType: 'blob',
     })
+    console.log(res)
 
     const blob = new Blob([res.data], { type: 'application/pdf' })
     const link = document.createElement('a')
