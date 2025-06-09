@@ -3,8 +3,6 @@ import { computed, type Ref, ref } from 'vue'
 import LivePreviewModal from './LivePreviewModal.vue'
 
 const textOptions = computed(() => props.descriptions)
-const shortDescriptionColorComputed = computed(() => props.shortDescriptionColor || '#000000')
-const longDescriptionColorComputed = computed(() => props.longDescriptionColor || '#000000')
 
 const props = defineProps<{
   rowsPerPage: number
@@ -118,8 +116,8 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
       :titleSettings="titleSettings"
       :rowStyle="rowStyle"
       :cellStyle="cellStyle"
-      :shortDescriptionStyle="shortDescriptionColorComputed"
-      :longDescriptionStyle="longDescriptionColorComputed"
+      :shortDescriptionStyle="shortDescriptionStyle"
+      :longDescriptionStyle="shortDescriptionStyle"
       :footerStyle="footerStyle"
       :headerUrl="headerUrl"
       :footerUrl="footerUrl"
