@@ -530,13 +530,6 @@ const sendToBackend = async () => {
       })
     )
 
-    console.log('📦 Enviando descripciones:', {
-      short: model.value.short,
-      long: model.value.long,
-      footer: model.value.footer,
-    })
-
-
     // Imágenes
     Object.entries(images.value).forEach(([key, file]) => {
       if (file) formData.append(key, file)
@@ -544,6 +537,12 @@ const sendToBackend = async () => {
 
     Object.entries(featuredImages.value).forEach(([key, file]) => {
       if (file) formData.append(key, file)
+    })
+
+    console.log('📦 Enviando descripciones:', {
+      short: model.value.short,
+      long: model.value.long,
+      footer: model.value.footer,
     })
 
     const res = await axios.post(`${import.meta.env.VITE_URL}/Pdf`, formData, {
