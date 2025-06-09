@@ -3,6 +3,9 @@ import { useRoute } from 'vue-router'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import { applyAdvancedFilters } from '../composable/DynamicFiltersLogic'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 export function CustomizePdf() {
   const route = useRoute()
@@ -124,7 +127,7 @@ export function CustomizePdf() {
     showSaveStyleModal.value = false
     const xsrfToken = await getXsrfToken()
     if (!xsrfToken) {
-      toast.error('No CSRF token found.')
+      toast.error(t('csrf_not_found'))
       return
     }
 
@@ -148,7 +151,7 @@ export function CustomizePdf() {
         },
         withCredentials: true,
       })
-      toast.success('Estilo guardado correctamente')
+      toast.success(t('style_saved_success'))
       showSaveStyleModal.value = false
       stylePresets.value = await fetchStylePresets()
     } catch (err) {
@@ -164,7 +167,7 @@ export function CustomizePdf() {
   const fetchStylePresets = async () => {
     const xsrfToken = getXsrfToken()
     if (!xsrfToken) {
-      toast.error('No CSRF token found.')
+      toast.error(t('csrf_not_found'))
       return []
     }
     try {
@@ -177,7 +180,7 @@ export function CustomizePdf() {
       })
       return res.data
     } catch (error) {
-      toast.error('Error al cargar estilos guardados')
+      toast.error(t('style_saved_load_error'))
       console.error('fetchStylePresets error:', error)
       return []
     }
@@ -200,7 +203,7 @@ export function CustomizePdf() {
   const applyStylePreset = async (id: number) => {
     const xsrfToken = getXsrfToken()
     if (!xsrfToken) {
-      toast.error('No CSRF token found.')
+      toast.error(t('csrf_not_found'))
       return
     }
 
@@ -221,9 +224,9 @@ export function CustomizePdf() {
       Object.assign(cellStyle.value, data.cellStyle || {})
       Object.assign(footerStyle.value, data.footerStyle || {})
 
-      toast.success('Estilo aplicado correctamente')
+      toast.success(t('save_current_style'))
     } catch (error) {
-      toast.error('Error al aplicar el estilo guardado')
+      toast.error(t('style_saved_error'))
       console.error('applyStylePreset error:', error)
     }
   }
@@ -236,7 +239,7 @@ export function CustomizePdf() {
   const deleteStylePreset = async (id: number) => {
     const xsrfToken = getXsrfToken()
     if (!xsrfToken) {
-      toast.error('No CSRF token found.')
+      toast.error(t('csrf_not_found'))
       return
     }
     try {
@@ -247,10 +250,10 @@ export function CustomizePdf() {
         },
         withCredentials: true,
       })
-      toast.success('Estilo eliminado correctamente')
+      toast.success(t('style_deleted_success'))
       stylePresets.value = await fetchStylePresets()
     } catch (error) {
-      toast.error('Error al eliminar el estilo')
+      toast.error(t('style_deleted_error'))
       console.error('deleteStylePreset error:', error)
     }
   }
@@ -406,7 +409,7 @@ export function CustomizePdf() {
     const maxSizeMB = 2
 
     if (!validTypes.includes(file.type)) {
-      toast.error(`"${file.name}" is not a valid image type. Please, use JPG or PNG.`)
+      toast.error(t("invalid_image_type"))
       ;(e.target as HTMLInputElement).value = ''
       return
     }
@@ -471,14 +474,14 @@ export function CustomizePdf() {
 
 const sendToBackend = async () => {
   if (!userId.value || !images.value.cover || !images.value.header) {
-    toast.error('Please upload required images and ensure user is authenticated.')
+    toast.error('upload_images_empty.')
     generating.value = false
     return
   }
 
   const xsrfToken = getXsrfToken()
   if (!xsrfToken) {
-    toast.error('No CSRF token found.')
+    toast.error(t('csrf_not_found'))
     return
   }
 
@@ -558,7 +561,7 @@ const sendToBackend = async () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    toast.error('Error generating PDF.')
+    toast.error(t('customize_generate_error'))
     console.error(err)
   } finally {
     generating.value = false
