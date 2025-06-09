@@ -73,6 +73,7 @@ const {
   fetchStylePresets,
   applyStylePreset,
   deleteStylePreset,
+  textOptions
 } = CustomizePdf()
 
 // Nuevo: gestión reactiva de las descripciones de imágenes destacadas
@@ -81,12 +82,6 @@ const featuredDescriptions = ref({
   desc_two: '',
   desc_three: '',
   desc_four: ''
-})
-
-const textOptions = ref({
-  short: '',
-  long: '',
-  footer: ''
 })
 
 // Add missing shortDescription and longDescription refs for v-model usage
@@ -168,16 +163,16 @@ onMounted(async () => {
           />
 
           <TextOptions
-  :activeCard="activeCard"
-  cardId="textOptions"
-  @toggle="() => showTextModal = true"
-/>
+            :activeCard="activeCard"
+            cardId="textOptions"
+            @toggle="() => showTextModal = true"
+          />
 
-<TextOptionsModal
-  v-model="textOptions"
-  :show="showTextModal"
-  @close="showTextModal = false"
-/>
+          <TextOptionsModal
+            v-model="textOptions"
+            :show="showTextModal"
+            @close="showTextModal = false"
+          />
 
 
           <FeaturedImages
@@ -265,7 +260,7 @@ onMounted(async () => {
         :titleBackground="titleBackgroundRgba"
         :titleText="colors.titleText"
         :titleSettings="titleSettings"
-        :model="textOptions"
+        :descriptions="textOptions"
         :featuredImages="featuredImages"
         :featuredDescriptions="featuredDescriptions"
       />

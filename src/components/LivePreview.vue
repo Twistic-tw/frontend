@@ -2,6 +2,12 @@
 import { type Ref, ref } from 'vue'
 import LivePreviewModal from './LivePreviewModal.vue'
 
+const textOptions = ref({
+  short: '',
+  long: '',
+  footer: ''
+})
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
   rowsPerPage: number
@@ -51,7 +57,7 @@ const props = defineProps<{
     fieldSize: string
     fieldAlign: 'left' | 'center' | 'right'
   }
-  model: {
+  descriptions: {
     short: string
     long: string
     footer: string
@@ -122,10 +128,11 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
       :backgroundUrl="backgroundUrl"
       :featuredImages="featuredImages"
       :featuredDescriptions="featuredDescriptions"
-      :model="model"
+      :descriptions="textOptions"
       :rowsPerPage="rowsPerPage"
       @close="showFullscreen = false"
     />
+
 
     <div id="pdf-content" class="origin-top-left w-full h-fit-content bg-gray-100 no-padding">
       <!-- Portada -->
@@ -179,8 +186,8 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
         </div>
 
         <!-- Descripción corta -->
-        <div v-if="model.short" class="short-description">
-          <p>{{ model.short }}</p>
+        <div v-if="descriptions.short" class="short-description">
+          <p>{{ descriptions.short }}</p>
         </div>
 
         <!-- Contenedor con tabla a la izquierda y imágenes a la derecha -->
@@ -238,13 +245,13 @@ const fontSizeForChunk = (chunk: Record<string, string>[]) => {
         </div>
 
         <!-- Descripción larga -->
-        <div v-if="model.long" class="long-description">
-          <p style="white-space: pre-wrap">{{ model.long }}</p>
+        <div v-if="descriptions.long" class="long-description">
+          <p style="white-space: pre-wrap">{{ descriptions.long }}</p>
         </div>
 
         <!-- Footer y número de página -->
         <div class="footer-bar" :style="footerStyle">
-          <div class="footer-text">{{ model.footer }}</div>
+          <div class="footer-text">{{ descriptions.footer }}</div>
           <div class="page-number">{{ pageIndex + 1 }}</div>
         </div>
       </div>
