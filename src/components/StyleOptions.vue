@@ -65,7 +65,7 @@
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            {{ $t('short_description_color') }}
+            {{ $t('short_description') }}
           </label>
           <input
             type="color"
@@ -76,7 +76,7 @@
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            {{ $t('long_description_color') }}
+            {{ $t('long_description') }}
           </label>
           <input
             type="color"
