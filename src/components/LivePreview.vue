@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { type Ref, ref } from 'vue'
+import { computed, type Ref, ref } from 'vue'
 import LivePreviewModal from './LivePreviewModal.vue'
 
-const textOptions = ref({
-  short: '',
-  long: '',
-  footer: ''
-})
+const textOptions = computed(() => props.descriptions)
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
